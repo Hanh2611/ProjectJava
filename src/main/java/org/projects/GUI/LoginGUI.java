@@ -5,8 +5,12 @@ import org.projects.BUS.LoginBUS;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LoginGUI extends JFrame {
     private JButton dangNhapButton;
@@ -98,31 +102,38 @@ public class LoginGUI extends JFrame {
         rightContent.add(matKhauField);
 
         //icon an hien mat khau
-        JButton iconOpenEye = createButtonIcon("src/main/java/org/projects/assets/icon/hidden.png",25,25);
+        JButton iconOpenEye = createButtonIcon("src/main/java/org/projects/assets/icon/hide.png",20,20);
         iconOpenEye.setBounds(270,5, 30,30);
-        matKhauField.add(iconOpenEye);
         iconOpenEye.setVisible(true);
-        
+        matKhauField.add(iconOpenEye);
 
-        //checkbox hien thi matkhau
-        // JCheckBox hienThiMatKhauCheckBox = new JCheckBox("Hiển thị mật khẩu");
-        // hienThiMatKhauCheckBox.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
-        // hienThiMatKhauCheckBox.setForeground(Color.BLACK);
-        // hienThiMatKhauCheckBox.setBounds(60,300,310,30);
-        // rightContent.add(hienThiMatKhauCheckBox);
+        JButton iconCloseEye = createButtonIcon("src/main/java/org/projects/assets/icon/view.png", 20, 20);
+        iconCloseEye.setBounds(270,5,30,30);
+        iconCloseEye.setVisible(false);
+        matKhauField.add(iconCloseEye);
 
-        // hienThiMatKhauCheckBox.addActionListener(e -> {
-        //     if(hienThiMatKhauCheckBox.isSelected()) {
-        //         matKhauField.setEchoChar((char)0);
-        //     }else{
-        //         if(matKhauField.getPassword().length == 0) {
-        //             matKhauField.setText("Nhập mật khẩu....");
-        //             matKhauField.setForeground(Color.BLACK);
-        //             matKhauField.setEchoChar((char) 0);
-        //         }
-        //         matKhauField.setEchoChar('*');
-        //     }
-        // });
+        //su kien an hien mat khau
+        iconCloseEye.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(!String.valueOf(matKhauField.getPassword()).isEmpty()) {
+                    matKhauField.setEchoChar((char) 0); // hien thi mat khau
+                    iconOpenEye.setVisible(true);
+                    iconCloseEye.setVisible(false);
+                    matKhauField.requestFocusInWindow();
+                }
+            }
+        });
+
+        iconOpenEye.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                matKhauField.setEchoChar('*');
+                iconCloseEye.setVisible(true);
+                iconOpenEye.setVisible(false);
+                matKhauField.requestFocusInWindow();
+            }
+        });
 
         //button dang nhap
         dangNhapButton = new JButton("Đăng nhập");
