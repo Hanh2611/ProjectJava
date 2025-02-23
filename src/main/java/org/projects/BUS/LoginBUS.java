@@ -14,9 +14,9 @@ public class LoginBUS implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getSource().equals(loginGUI.getDangKyLabel2())){
-            loginGUI.HienThiDangKy();
-        }
+        // if(e.getSource().equals(loginGUI.getDangKyLabel2())){
+        //     loginGUI.HienThiDangKy();
+        // }
     }
 
     @Override
