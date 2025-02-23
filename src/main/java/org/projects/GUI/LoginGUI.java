@@ -5,7 +5,6 @@ import org.projects.BUS.LoginBUS;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -24,14 +23,16 @@ public class LoginGUI extends JFrame {
         this.init();
 
     }
-    public JButton createButtonIcon(String iconPath) {
-        ImageIcon iconButton = new ImageIcon(new ImageIcon(iconPath).getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH));
+    public JButton createButtonIcon(String iconPath,int width,int height) {
+        ImageIcon iconButton = new ImageIcon(new ImageIcon(iconPath).getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH));
         JButton button = new JButton(iconButton);
         button.setBorder(BorderFactory.createEmptyBorder());  // Xóa viền của JButton
         button.setOpaque(false);  // tắt nền
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);  // tắt viền
         button.setBackground(null);
+        button.setFocusPainted(false); // xoa vien khi click
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
     }
     private void init() {
@@ -78,36 +79,50 @@ public class LoginGUI extends JFrame {
         JLabel matKhauLabel = new JLabel("Mật Khẩu");
         matKhauLabel.setFont(new Font("JetBrains Mono",Font.PLAIN,20));
         matKhauLabel.setForeground(Color.BLACK);
-        matKhauLabel.setBounds(60,230,310,30);
+        matKhauLabel.setBounds(60,240,310,30);
         rightContent.add(matKhauLabel);
 
         //field ten dang nhap
         JTextField tenDangNhapField = new JTextField("nhập tên đăng nhập.....");
         tenDangNhapField.setFont(new Font("JetBrains Mono",Font.PLAIN,13));
-        tenDangNhapField.setForeground(Color.BLACK);
-        tenDangNhapField.setBounds(60,180,310,40);
+        tenDangNhapField.setForeground(Color.GRAY);
+        tenDangNhapField.setBounds(60,190,310,40);
         rightContent.add(tenDangNhapField);
 
         //field mat khau
         JPasswordField matKhauField = new JPasswordField("Nhập mật khẩu....");
         matKhauField.setFont(new Font("JetBrains Mono",Font.PLAIN,13));
         matKhauField.setEchoChar((char) 0);
-        matKhauField.setForeground(Color.BLACK);
-        matKhauField.setBounds(60,260,310,40);
+        matKhauField.setForeground(Color.GRAY);
+        matKhauField.setBounds(60, 280,310,40);
         rightContent.add(matKhauField);
 
-        //checkbox hien thi matkhau
-        JCheckBox hienThiMatKhauCheckBox = new JCheckBox("Hiển thị mật khẩu");
-        hienThiMatKhauCheckBox.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
-        hienThiMatKhauCheckBox.setForeground(Color.BLACK);
-        hienThiMatKhauCheckBox.setBounds(60,300,310,30);
-        rightContent.add(hienThiMatKhauCheckBox);
+        //icon an hien mat khau
+        JButton iconOpenEye = createButtonIcon("src/main/java/org/projects/assets/icon/hidden.png",25,25);
+        iconOpenEye.setBounds(270,5, 30,30);
+        matKhauField.add(iconOpenEye);
+        iconOpenEye.setVisible(true);
+        
 
-        hienThiMatKhauCheckBox.addActionListener(e -> {
-            if(hienThiMatKhauCheckBox.isSelected()) {
-                matKhauField.setEchoChar((char)0);
-            }else matKhauField.setEchoChar('*');
-        });
+        //checkbox hien thi matkhau
+        // JCheckBox hienThiMatKhauCheckBox = new JCheckBox("Hiển thị mật khẩu");
+        // hienThiMatKhauCheckBox.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
+        // hienThiMatKhauCheckBox.setForeground(Color.BLACK);
+        // hienThiMatKhauCheckBox.setBounds(60,300,310,30);
+        // rightContent.add(hienThiMatKhauCheckBox);
+
+        // hienThiMatKhauCheckBox.addActionListener(e -> {
+        //     if(hienThiMatKhauCheckBox.isSelected()) {
+        //         matKhauField.setEchoChar((char)0);
+        //     }else{
+        //         if(matKhauField.getPassword().length == 0) {
+        //             matKhauField.setText("Nhập mật khẩu....");
+        //             matKhauField.setForeground(Color.BLACK);
+        //             matKhauField.setEchoChar((char) 0);
+        //         }
+        //         matKhauField.setEchoChar('*');
+        //     }
+        // });
 
         //button dang nhap
         dangNhapButton = new JButton("Đăng nhập");
@@ -116,12 +131,12 @@ public class LoginGUI extends JFrame {
         dangNhapButton.setForeground(Color.WHITE);
         dangNhapButton.setBackground(MainColor);
         dangNhapButton.setBorderPainted(false); // xoa vien border
-        dangNhapButton.setBounds(60,350,310,40);
+        dangNhapButton.setBounds(60,340,310,40);
         rightContent.add(dangNhapButton);
 
         //Link dang ki
         JPanel dangKyPanel = new JPanel(new FlowLayout());
-        dangKyPanel.setBounds(60,395,320,30);
+        dangKyPanel.setBounds(60,385,320,30);
         JLabel dangKyLabel1 = new JLabel("Bạn chưa có tài khoản ?");
         dangKyLabel1.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
         dangKyLabel1.setForeground(Color.BLACK);
@@ -179,6 +194,7 @@ public class LoginGUI extends JFrame {
                 }
             }
         });
+        
         //tranh run tu dong focus vao jtextfield
         JPanel loginPanel = new JPanel();
         loginPanel.setBounds(0,0,0,0);
@@ -192,10 +208,10 @@ public class LoginGUI extends JFrame {
             this.setSize(500,500);
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            dialogInit();
+            this.init();
             this.setVisible(true);
         }
-        public void dialogInit() {
+        private void init() {
             this.setLayout(null);
             this.setBackground(Color.WHITE);
             //title dang ky
@@ -208,28 +224,28 @@ public class LoginGUI extends JFrame {
             //label sdt
             JLabel sdtLabel = new JLabel("Số điện thoại ");
             sdtLabel.setFont(new Font("JetBrains Mono",Font.PLAIN,18));
-            sdtLabel.setForeground(Color.BLACK);
+            sdtLabel.setForeground(Color.GRAY);
             sdtLabel.setBounds(100,100,200,30);
             this.add(sdtLabel);
 
             //label ten dang nhap
             JLabel tenDangNhapLabel = new JLabel("Tên đăng nhập ");
             tenDangNhapLabel.setFont(new Font("JetBrains Mono",Font.PLAIN, 18));
-            tenDangNhapLabel.setForeground(Color.BLACK);
+            tenDangNhapLabel.setForeground(Color.GRAY);
             tenDangNhapLabel.setBounds(100,170,200,30);
             this.add(tenDangNhapLabel);
             
             //label mat khau
             JLabel matKhauLabel = new JLabel("Mật Khẩu ");
             matKhauLabel.setFont(new Font("JetBrains Mono",Font.PLAIN, 18));
-            matKhauLabel.setForeground(Color.BLACK);
+            matKhauLabel.setForeground(Color.GRAY);
             matKhauLabel.setBounds(100,240,200,30);
             this.add(matKhauLabel);
 
             //label nhap lai mat khau
             JLabel nhapLaiMatKhauLabel = new JLabel("Nhập lại mật Khẩu ");
             nhapLaiMatKhauLabel.setFont(new Font("JetBrains Mono",Font.PLAIN, 18));
-            nhapLaiMatKhauLabel.setForeground(Color.BLACK);
+            nhapLaiMatKhauLabel.setForeground(Color.GRAY);
             nhapLaiMatKhauLabel.setBounds(100,310,200,30);
             this.add(nhapLaiMatKhauLabel);
             
@@ -247,16 +263,18 @@ public class LoginGUI extends JFrame {
             tenDangNhapField.setBounds(100, 200, 300, 40);
             this.add(tenDangNhapField);
             //textfield mat khau
-            JTextField matKhauField = new JTextField("nhập mật khẩu....");
+            JPasswordField matKhauField = new JPasswordField("nhập mật khẩu....");
             matKhauField.setFont(new Font("JetBrains Mono",Font.PLAIN, 13));
             matKhauField.setForeground(Color.GRAY);
             matKhauField.setBounds(100, 270, 300, 40);
+            matKhauField.setEchoChar((char) 0);
             this.add(matKhauField);
             //textfield nhap lai mat khau
-            JTextField nhapLaiMatKhauField = new JTextField("nhập lại mật khẩu....");
+            JPasswordField nhapLaiMatKhauField = new JPasswordField("nhập lại mật khẩu....");
             nhapLaiMatKhauField.setFont(new Font("JetBrains Mono",Font.PLAIN, 13));
             nhapLaiMatKhauField.setForeground(Color.GRAY);
             nhapLaiMatKhauField.setBounds(100, 340, 300, 40);
+            nhapLaiMatKhauField.setEchoChar((char) 0);
             this.add(nhapLaiMatKhauField);
 
             //button dang ky
@@ -268,6 +286,89 @@ public class LoginGUI extends JFrame {
             dangKyButton.setBorderPainted(false);
             dangKyButton.setBounds(100,400,300,45);
             this.add(dangKyButton);
+
+            //su kien hover textfield
+            sdtField.addFocusListener(new FocusListener() {
+
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if(String.valueOf(sdtField.getText()).equals("nhập số điện thoại....")) {
+                        sdtField.setText("");
+                        sdtField.setForeground(Color.BLACK);
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(String.valueOf(sdtField.getText()).equals("")) {
+                        sdtField.setText("nhập số điện thoại....");
+                        sdtField.setForeground(Color.GRAY);
+                    }
+                }
+            });
+
+            tenDangNhapField.addFocusListener(new FocusListener() {
+
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if(String.valueOf(tenDangNhapField.getText()).equals("nhập tên đăng nhập....")) {
+                        tenDangNhapField.setText("");
+                        tenDangNhapField.setForeground(Color.BLACK);
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(String.valueOf(tenDangNhapField.getText()).equals("")) {
+                        tenDangNhapField.setText("nhập tên đăng nhập....");
+                        tenDangNhapField.setForeground(Color.GRAY);
+                    }
+                }
+            });
+
+            matKhauField.addFocusListener(new FocusListener() {
+
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if(String.valueOf(matKhauField.getPassword()).equals("nhập mật khẩu....")) {
+                        matKhauField.setText("");
+                        matKhauField.setForeground(Color.BLACK);
+                        matKhauField.setEchoChar('*');
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(String.valueOf(matKhauField.getPassword()).equals("")) {
+                        matKhauField.setText("nhập mật khẩu....");
+                        matKhauField.setForeground(Color.GRAY);
+                        matKhauField.setEchoChar((char) 0);
+                    }
+                }
+                
+            });
+
+            nhapLaiMatKhauField.addFocusListener(new FocusListener() {
+
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if(String.valueOf(nhapLaiMatKhauField.getPassword()).equals("nhập lại mật khẩu....")) {
+                        nhapLaiMatKhauField.setText("");
+                        nhapLaiMatKhauField.setForeground(Color.BLACK);
+                        nhapLaiMatKhauField.setEchoChar('*');
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(String.valueOf(nhapLaiMatKhauField.getPassword()).equals("")) {
+                        nhapLaiMatKhauField.setText("nhập lại mật khẩu....");
+                        nhapLaiMatKhauField.setForeground(Color.GRAY);
+                        nhapLaiMatKhauField.setEchoChar((char) 0);
+                    }
+                }
+                
+            });
         }
     }
 
