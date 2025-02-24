@@ -108,8 +108,8 @@ public class LoginGUI extends JFrame {
         panel.add(tenDangNhapField);
 
         //panel chua mat khau field + icon an/hien
-        JLayeredPane matKhauPanel = new JLayeredPane();
-        matKhauPanel.setBounds(60,280,310,40);
+        JLayeredPane matKhauPane = new JLayeredPane();
+        matKhauPane.setBounds(60,280,310,40);
         
         //field mat khau
         JPasswordField matKhauField = handleComponents.createPasswordField(
@@ -120,7 +120,6 @@ public class LoginGUI extends JFrame {
             "Nhập mật khẩu....", 
             matKhauField
         ));
-        // matKhauField.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 40));
         
 
         //icon an hien mat khau
@@ -137,10 +136,10 @@ public class LoginGUI extends JFrame {
         iconOpenEye.setFocusable(false); //ngan icon nhan focus
         iconCloseEye.setFocusable(false);
         
-        matKhauPanel.add(matKhauField,JLayeredPane.DEFAULT_LAYER);
-        matKhauPanel.add(iconOpenEye,JLayeredPane.PALETTE_LAYER);
-        matKhauPanel.add(iconCloseEye,JLayeredPane.PALETTE_LAYER);
-        panel.add(matKhauPanel);
+        matKhauPane.add(matKhauField,JLayeredPane.DEFAULT_LAYER);
+        matKhauPane.add(iconOpenEye,JLayeredPane.PALETTE_LAYER);
+        matKhauPane.add(iconCloseEye,JLayeredPane.PALETTE_LAYER);
+        panel.add(matKhauPane);
 
         setupPasswordToggle(matKhauField, iconOpenEye, iconCloseEye);
 
@@ -154,7 +153,7 @@ public class LoginGUI extends JFrame {
 
 
     }
-    private void setupPasswordToggle(JPasswordField pf, JButton showBtn, JButton hideBtn) {
+    public static  void setupPasswordToggle(JPasswordField pf, JButton showBtn, JButton hideBtn) {
         hideBtn.setVisible(true);
         hideBtn.addMouseListener(new MouseAdapter() {
             @Override
@@ -191,10 +190,19 @@ public class LoginGUI extends JFrame {
         dangKyLabel2.setForeground(MainColor);
         dangKyLabel2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        //them controller click dang ki ngay
+        LoginBUS actionDangKy = new LoginBUS(this);
+        dangKyLabel2.addMouseListener(actionDangKy);
+
         dangKyPanel.add(dangKyLabel1);
         dangKyPanel.add(dangKyLabel2);
         panel.add(dangKyPanel);
     }
+
+
+    //getter and setter
+    public JButton getDangNhapButton() {return dangNhapButton;}
+    public JLabel getDangKyLabel2(){return dangKyLabel2;}  
 }
     
     // private class TaoTaiKhoan extends JDialog {
@@ -368,8 +376,4 @@ public class LoginGUI extends JFrame {
     // }
 
 
-    // public JButton getDangNhapButton() {return dangNhapButton;}
-    // public JLabel getDangKyLabel2(){return dangKyLabel2;}   
-    // public void HienThiDangKy() {
-    //         new TaoTaiKhoan();
-    // }
+    
