@@ -3,17 +3,17 @@ package org.projects.GUI.DiaLog;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.FocusListener;
-import java.util.Currency;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.projects.DAO.UserDao;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.FocusListenerUtils;
@@ -153,7 +153,24 @@ public class SignUpDialog extends JDialog{
         dangKyButton.setBounds(100, 400, 310, 45);
         this.add(dangKyButton);
 
-        
+        //them su kien click vao dki +connect + save db
+        dangKyButton.addActionListener(e -> {
+            String sdt = sdtField.getText();
+            String tendangnhap = tenDangNhapField.getText();
+            String matkhau = String.valueOf(matKhauField.getPassword());
+            String nhaplaimatkhau = String.valueOf(nhapLaiMatKhauField.getPassword());
+
+            if(!matkhau.equals(nhaplaimatkhau)) {
+                JOptionPane.showMessageDialog(this, "mật khẩu không khớp","thông báo",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            UserDao user = new UserDao();
+            boolean check = user.DangKy(tendangnhap,matkhau,sdt);
+            if(check) {
+                JOptionPane.showMessageDialog(this,"Đăng kí thành công","thông báo",JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            }else JOptionPane.showMessageDialog(this,"Đăng kí không thành công", "thông báo",JOptionPane.ERROR_MESSAGE);
+        });
         
     }
 
