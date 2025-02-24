@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+## file cau hinh db
+/src/main/resources/config.properties

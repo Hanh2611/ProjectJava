@@ -12,8 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import org.projects.GUI.LoginGUI;
-
 public class handleComponents {
     public static final Font DEFAULT_FONT = new Font("JetBrains Mono", Font.PLAIN, 18);
     public static final Font PLACEHOLDER_FONT = new Font("JetBrains Mono", Font.PLAIN, 13);
