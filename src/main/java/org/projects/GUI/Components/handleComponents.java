@@ -15,7 +15,8 @@ import javax.swing.JTextField;
 import org.projects.GUI.LoginGUI;
 
 public class handleComponents {
-    public static final Font DEFAULT_FONT = new Font("JetBrains Mono", Font.PLAIN, 13);
+    public static final Font DEFAULT_FONT = new Font("JetBrains Mono", Font.PLAIN, 18);
+    public static final Font PLACEHOLDER_FONT = new Font("JetBrains Mono", Font.PLAIN, 13);
     public static final Font TITLE_FONT = new Font("JetBrains Mono", Font.PLAIN, 20);
     public static final Font HEADER_FONT = new Font("JetBrains Mono", Font.PLAIN, 30);
 
@@ -45,7 +46,7 @@ public class handleComponents {
     //XU LY JTEXTFIELD
      public static JTextField createTextField(String placeholder, int x, int y, int width, int height) {
         JTextField tf = new JTextField(placeholder);
-        tf.setFont(DEFAULT_FONT);
+        tf.setFont(PLACEHOLDER_FONT);
         tf.setForeground(Color.GRAY);
         tf.setBounds(x, y, width, height);
         return tf;
@@ -54,7 +55,7 @@ public class handleComponents {
     //XU LY JPASSWORDFIELD
     public static JPasswordField createPasswordField(String placeholder, int x, int y, int width, int height) {
         JPasswordField pf = new JPasswordField(placeholder);
-        pf.setFont(DEFAULT_FONT);
+        pf.setFont(PLACEHOLDER_FONT);
         pf.setEchoChar((char) 0);
         pf.setForeground(Color.GRAY);
         pf.setBounds(x, y, width, height);
