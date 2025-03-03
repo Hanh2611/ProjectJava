@@ -122,12 +122,12 @@ public class LoginGUI extends JFrame {
         JButton iconOpenEye = handleComponents.createButtonIcon(
             "src/main/java/org/projects/assets/icon/hide.png", 20, 20);
         iconOpenEye.setBounds(270,5, 30,30);
-        iconOpenEye.setVisible(false); //hien ban dau
+        iconOpenEye.setVisible(false);
 
         JButton iconCloseEye = handleComponents.createButtonIcon(
             "src/main/java/org/projects/assets/icon/view.png", 20, 20);
         iconCloseEye.setBounds(270, 5, 30, 30);
-        iconCloseEye.setVisible(true); //an ban dau
+        iconCloseEye.setVisible(true);
 
         iconOpenEye.setFocusable(false); //ngan icon nhan focus
         iconCloseEye.setFocusable(false);
@@ -186,9 +186,11 @@ public class LoginGUI extends JFrame {
         dangKyLabel2.setForeground(MainColor);
         dangKyLabel2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        //them controller click dang ki ngay
-        LoginBUS actionDangKy = new LoginBUS(this);
-        dangKyLabel2.addMouseListener(actionDangKy);
+        //them controller click dang ki,dang nhap
+        LoginBUS action = new LoginBUS(this);
+        dangKyLabel2.addMouseListener(action);
+        dangNhapButton.addMouseListener(action);
+
 
         dangKyPanel.add(dangKyLabel1);
         dangKyPanel.add(dangKyLabel2);

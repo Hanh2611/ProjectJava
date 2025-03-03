@@ -160,8 +160,29 @@ public class SignUpDialog extends JDialog{
             String matkhau = String.valueOf(matKhauField.getPassword());
             String nhaplaimatkhau = String.valueOf(nhapLaiMatKhauField.getPassword());
 
-            if(!matkhau.equals(nhaplaimatkhau)) {
-                JOptionPane.showMessageDialog(this, "mật khẩu không khớp","thông báo",JOptionPane.ERROR_MESSAGE);
+
+            if(sdt.equals("nhập số điện thoại....")) {
+                JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống","thông báo",JOptionPane.ERROR_MESSAGE);
+                sdtField.requestFocusInWindow();
+                return;
+            }
+            else if(tendangnhap.equals("nhập tên đăng nhập....")) {
+                JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống","thông báo",JOptionPane.ERROR_MESSAGE);
+                tenDangNhapField.requestFocusInWindow();
+                return;
+            }
+            else if(matkhau.equals("nhập mật khẩu....")) {
+                JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống","thông báo",JOptionPane.ERROR_MESSAGE);
+                matKhauField.requestFocusInWindow();
+                return;
+            }
+            else if(nhaplaimatkhau.equals("nhập lại mật khẩu....")) {
+                JOptionPane.showMessageDialog(null, "Nhập lại mật khẩu không được để trống","thông báo",JOptionPane.ERROR_MESSAGE);
+                nhapLaiMatKhauField.requestFocusInWindow();
+                return;
+            }
+            else if(!matkhau.equals(nhaplaimatkhau)) {
+                JOptionPane.showMessageDialog(null, "mật khẩu không khớp","thông báo",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             UserDao user = new UserDao();
