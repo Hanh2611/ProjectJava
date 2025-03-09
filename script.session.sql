@@ -1,0 +1,3 @@
+use quanlysieuthimini;
+
+show databases;

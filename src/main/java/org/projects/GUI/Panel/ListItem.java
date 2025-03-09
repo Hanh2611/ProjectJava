@@ -1,8 +1,10 @@
 package org.projects.GUI.Panel;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +78,7 @@ public class ListItem extends JPanel{
         for(MenuItemComponents it : list) this.add(it);
 
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
     }
 
     public void showPanel(String name) {
