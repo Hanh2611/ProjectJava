@@ -24,6 +24,7 @@ import org.projects.GUI.Panel.WestTaskBar;
 import org.projects.GUI.utils.UIUtils;
 
 public class MainGUI extends JFrame {
+    
     private JPanel title;
     private JPanel MenuTask;
     private JPanel contentItem;
@@ -35,7 +36,7 @@ public class MainGUI extends JFrame {
     private CardLayout card;
     
     public MainGUI() {
-        this.setTitle("MAIN GUI");
+        // this.setTitle("MAIN GUI");
         this.setSize(1400,1000);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

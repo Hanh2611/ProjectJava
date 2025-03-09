@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
 
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.Components.handleComponents;
