@@ -1,10 +1,8 @@
 package org.projects.GUI.Panel;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +11,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 
-import org.projects.Main;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.Components.MenuItemComponents;
@@ -33,29 +30,29 @@ public class ListItem extends JPanel{
     private void init() {
         //khoi tao cac ListItem
         String listItemTaskbar[][] = {
-            {"src/main/java/org/projects/assets/icon/homepage.png","Trang chủ","TrangChu"},
-            {"src/main/java/org/projects/assets/icon/product.png","Sản phẩm","SanPham"},
-            {"src/main/java/org/projects/assets/icon/category.png","Kho hàng","KhoHang"},
-            {"src/main/java/org/projects/assets/icon/contact-form.png","Phiếu nhập","PhieuNhap"},
-            {"src/main/java/org/projects/assets/icon/export.png","Phiếu xuất","PhieuXuat"},
-            {"src/main/java/org/projects/assets/icon/customer.png","Khách hàng","KhachHang"},
-            {"src/main/java/org/projects/assets/icon/employee.png","Nhân viên","NhanVien"},
-            {"src/main/java/org/projects/assets/icon/roles.png","Phân quyền","PhanQuyen"},
-            {"src/main/java/org/projects/assets/icon/statistics.png","Thống kê","ThongKe"},
-            {"src/main/java/org/projects/assets/icon/supplier.png","Nhà cung cấp","NhaCungCap"},
-            {"src/main/java/org/projects/assets/icon/logout.png","Đăng xuất","DangXuat"},
+                {"icon/homepage.svg", "Trang chủ", "TrangChu"},
+                {"icon/dairy-products.svg", "Sản phẩm", "SanPham"},
+                {"icon/categories.svg", "Danh mục sản phẩm", "DanhMucSanPham"},
+                {"icon/contact-form.svg", "Phiếu nhập", "PhieuNhap"},
+                {"icon/bill.svg", "Hóa đơn", "HoaDon"},
+                {"icon/customer.svg", "Khách hàng", "KhachHang"},
+                {"icon/cashier.svg", "Nhân viên", "NhanVien"},
+                {"icon/roles.svg", "Phân quyền", "PhanQuyen"},
+                {"icon/supplier.svg", "Nhà cung cấp", "NhaCungCap"},
+                {"icon/analysis.svg", "Thống kê", "ThongKe"},
+                {"icon/logout.svg", "Đăng xuất", "DangXuat"}
         };
 
         //them ten panel vao map de truy xuat den -> hien thi panel tuong ung
         mapItem.put("TrangChu", new TrangChu());
         mapItem.put("SanPham", new SanPham());
-        mapItem.put("KhoHang", new KhoHang());
+        mapItem.put("DanhMucSanPham", new DanhMucSanPham());
         mapItem.put("PhieuNhap", new PhieuNhap());
-        mapItem.put("PhieuXuat", new PhieuXuat());
+        mapItem.put("HoaDon", new HoaDon());
         mapItem.put("KhachHang", new KhachHang());
         mapItem.put("NhanVien", new NhanVien());
-        mapItem.put("PhanQuyen", new PhanQuyen());
         mapItem.put("NhaCungCap", new NhaCungCap());
+        mapItem.put("PhanQuyen", new PhanQuyen());
 
 
         for(String[] it : listItemTaskbar) {

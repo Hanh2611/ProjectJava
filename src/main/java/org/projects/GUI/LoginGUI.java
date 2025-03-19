@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class LoginGUI extends JFrame {
     private JButton dangNhapButton;
@@ -47,9 +48,7 @@ public class LoginGUI extends JFrame {
         panel.setBounds(0, 0, 350, 600);
 
         // Icon
-        ImageIcon iconMiniMarket = new ImageIcon(
-            new ImageIcon("src/main/java/org/projects/assets/icon/supermarket.png")
-            .getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+        FlatSVGIcon iconMiniMarket = new FlatSVGIcon("icon/supermarket.svg", 200, 200);
         JLabel miniMarket = new JLabel(iconMiniMarket);
         miniMarket.setBounds(70, 120, 200, 200);
         panel.add(miniMarket);
@@ -119,13 +118,11 @@ public class LoginGUI extends JFrame {
         
 
         //icon an hien mat khau
-        JButton iconOpenEye = handleComponents.createButtonIcon(
-            "src/main/java/org/projects/assets/icon/hide.png", 20, 20);
+        JButton iconOpenEye = handleComponents.createButtonIcon("icon/eye.svg", 20, 20);
         iconOpenEye.setBounds(270,5, 30,30);
         iconOpenEye.setVisible(false);
 
-        JButton iconCloseEye = handleComponents.createButtonIcon(
-            "src/main/java/org/projects/assets/icon/view.png", 20, 20);
+        JButton iconCloseEye = handleComponents.createButtonIcon("icon/closed-eyes.svg", 20, 20);
         iconCloseEye.setBounds(270, 5, 30, 30);
         iconCloseEye.setVisible(true);
 

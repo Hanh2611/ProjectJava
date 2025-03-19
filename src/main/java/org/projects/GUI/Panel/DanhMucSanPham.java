@@ -5,9 +5,9 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class PhieuXuat extends JPanel{
-    public PhieuXuat() {
+public class DanhMucSanPham extends JPanel{
+    public DanhMucSanPham() {
         this.setBackground(Color.BLUE);
-        this.add(new JLabel("PhieuXuat"));
+        this.add(new JLabel("Danh muc san pham"));
     }
 }
