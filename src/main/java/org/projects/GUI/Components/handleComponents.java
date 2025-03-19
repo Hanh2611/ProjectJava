@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.net.URL;
+
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,19 +22,20 @@ public class handleComponents {
     public static final Font HEADER_FONT = new Font("JetBrains Mono", Font.PLAIN, 30);
 
     //XU LI BUTTON ICON
-    public static JButton createButtonIcon(String iconPath,int width,int height) {
-        ImageIcon iconButton = new ImageIcon(new ImageIcon(iconPath).getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH));
+    public static JButton createButtonIcon(String iconPath, int width, int height) {
+        FlatSVGIcon iconButton = new FlatSVGIcon(iconPath, width, height);
         JButton button = new JButton(iconButton);
-        button.setBorder(BorderFactory.createEmptyBorder());  // Xóa viền của JButton
-        button.setOpaque(false);  // tắt nền
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setOpaque(false);
         button.setContentAreaFilled(false);
-        button.setBorderPainted(false);  // tắt viền
+        button.setBorderPainted(false);
         button.setBackground(null);
-        button.setFocusPainted(false); // xoa vien khi click
+        button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
     }
-    
+
+
     //XU LY LABEL
     public static JLabel createLabel(String label,int x,int y,int width,int height) {
         JLabel lb = new JLabel(label);

@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.Components.handleComponents;
@@ -29,7 +30,8 @@ public class HeaderInfoUser extends JPanel {
     private void init() {
         this.setLayout(null);
         //icon user
-        ImageIcon icon = new ImageIcon(new ImageIcon("src/main/java/org/projects/assets/icon/user.png").getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH));
+        FlatSVGIcon icon = new FlatSVGIcon("icon/user.svg", 70, 70);
+
         iconUser = new JLabel(icon);
         iconUser.setBounds(10,15,70,70);
         this.setBackground(BACKGROUND_USER);

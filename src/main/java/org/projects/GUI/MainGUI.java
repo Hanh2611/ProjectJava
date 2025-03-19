@@ -10,6 +10,8 @@ import java.awt.Menu;
 import java.awt.Taskbar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,19 +57,19 @@ public class MainGUI extends JFrame {
         MainBUS action = new MainBUS(this);
         
         //minus,cancel icon
-        minusIcon = handleComponents.createButtonIcon("src/main/java/org/projects/assets/icon/minus.png", 20, 20);
+        minusIcon = handleComponents.createButtonIcon("icon/minus-sign.svg", 20, 20);
         minusIcon.setBounds(1320,5,30,30);
         minusIcon.setForeground(Color.WHITE);
         minusIcon.addMouseListener(action);
         title.add(minusIcon);
-        cancelIcon = handleComponents.createButtonIcon("src/main/java/org/projects/assets/icon/close.png", 20, 20);
+        cancelIcon = handleComponents.createButtonIcon("icon/close.svg", 20, 20);
         cancelIcon.setBounds(1360, 5, 30, 30);
         minusIcon.setForeground(Color.WHITE);
         cancelIcon.addMouseListener(action);
         title.add(cancelIcon);
 
         //icon mini market
-        ImageIcon iconSuperMarket = new ImageIcon(new ImageIcon("src/main/java/org/projects/assets/icon/supermarket (2).png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        FlatSVGIcon iconSuperMarket = new FlatSVGIcon("icon/marketplace.svg", 20, 20);
         IconSuperMarketLabel = new JLabel(iconSuperMarket);
         IconSuperMarketLabel.setBounds(20,5,30,30);
         title.add(IconSuperMarketLabel);

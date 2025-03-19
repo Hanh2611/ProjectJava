@@ -5,9 +5,9 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class KhoHang extends JPanel{
-    public KhoHang() {
+public class HoaDon extends JPanel{
+    public HoaDon() {
         this.setBackground(Color.BLUE);
-        this.add(new JLabel("KhoHang"));
+        this.add(new JLabel("HoaDon"));
     }
 }
