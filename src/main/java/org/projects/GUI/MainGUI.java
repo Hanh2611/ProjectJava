@@ -10,6 +10,8 @@ import java.awt.Menu;
 import java.awt.Taskbar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLOutput;
+
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 
@@ -22,6 +24,7 @@ import javax.swing.JPanel;
 
 import org.projects.BUS.MainBUS;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Panel.WestTaskBar;
 import org.projects.GUI.utils.UIUtils;
 
@@ -47,7 +50,7 @@ public class MainGUI extends JFrame {
         this.setVisible(true);
     }
     private void init() {
-        this.setLayout(new BorderLayout(0,0));
+        this.setLayout(new BorderLayout(5,5));
         title = new JPanel();
         title.setPreferredSize(new Dimension(100,40));
         title.setLayout(null);
@@ -84,7 +87,7 @@ public class MainGUI extends JFrame {
         card = new CardLayout();
         contentPanel = new JPanel(card);
         MenuTask = new WestTaskBar(this);
-        MenuTask.setPreferredSize(new Dimension(300,1200));
+        MenuTask.setPreferredSize(new Dimension(300,1000));
 
 
         this.add(title,BorderLayout.NORTH);
