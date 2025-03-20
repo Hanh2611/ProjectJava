@@ -5,28 +5,36 @@ USE quanlysieuthimini;
 
 -- Bảng quyền
 create table quyen (
-    ma_quyen int NOT NULL, 
-    ten_quyen varchar(50) NOT NULL
+    ma_quyen int primary key auto_increment,
+    ten_quyen varchar(50) not null
+);
+
+-- Bảng nhóm quyền
+create table nhom_quyen (
+    ma_nhom_quyen int primary key auto_increment,
+    ten_nhom_quyen varchar(50) not null
 );
 
 -- Bảng cấp quyền
 create table cap_quyen (
     ma_nhom_quyen int,
-    ma_quyen int
+    ma_quyen int,
+    hanh_dong ENUM('them','sua','xoa','xem') not null,
+    unique key (ma_nhom_quyen, ma_quyen),
+    foreign key (ma_nhom_quyen) references nhom_quyen(ma_nhom_quyen),
+    foreign key (ma_quyen) references quyen(ma_quyen)
 );
--- Bảng nhóm quyền
-create table nhom_quyen (
-    ma_nhom_quyen int NOT NULL,
-    ten_nhom_quyen varchar(50) NOT NULL
-);
+
 -- Bảng tài khoản
 create table tai_khoan (
-    ten_dang_nhap varchar(50) NOT NULL,
-    ma_nguoi_dung int NOT NULL,
-    mat_khau varchar(50) NOT NULL,
-    quyen_nguoi_dung ENUM('admin','nhan_vien','khach_hang','quan_kho') NOT NULL,
-    trang_thai ENUM('hoat_dong','da_khoa') NOT NULL
+    ma_nguoi_dung int primary key auto_increment,
+    ten_dang_nhap varchar(50) not null unique,
+    mat_khau varchar(50) not null,
+    quyen_nguoi_dung int not null,
+    trang_thai ENUM('hoat_dong','da_khoa') default 'hoat_dong',
+    foreign key (quyen_nguoi_dung) references nhom_quyen(ma_nhom_quyen)
 );
+
 -- Bảng nhân viên
 create table nhan_vien (
     ma_nhan_vien int NOT NULL,
