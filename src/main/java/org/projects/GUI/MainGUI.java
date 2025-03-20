@@ -1,13 +1,6 @@
 package org.projects.GUI;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Menu;
-import java.awt.Taskbar;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -39,7 +32,13 @@ public class MainGUI extends JFrame {
     
     public MainGUI() {
         // this.setTitle("MAIN GUI");
-        this.setSize(1400,1000);
+//        this.setSize(1400,1000);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        int frameWidth = (int) (width * 0.75);
+        int frameHeight = (int) (height * 0.9);
+        this.setSize(frameWidth, frameHeight);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
