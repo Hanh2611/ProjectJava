@@ -96,7 +96,7 @@ public class MainGUI extends JFrame {
 
     public void addPanelContent(JPanel panel) {
         String namePanel = panel.getClass().getSimpleName();
-        contentPanel.add(panel);
+        contentPanel.add(panel,namePanel);
         card.show(contentPanel, namePanel);
         UIUtils.refreshComponent(contentPanel);
     }

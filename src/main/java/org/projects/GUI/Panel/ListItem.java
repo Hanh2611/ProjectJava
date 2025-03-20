@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.Components.MenuItemComponents;
+import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
 
 public class ListItem extends JPanel{
     private List<MenuItemComponents> list;
