@@ -18,13 +18,7 @@ public class LoginGUI extends JFrame {
 
     public LoginGUI() {
         this.setTitle("Mini Market");
-//        this.setSize(800,600);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
-        int frameWidth = (int) (width * 0.4);
-        int frameHeight = (int) (height * 0.55);
-        this.setSize(frameWidth, frameHeight);
+        this.setSize(800,600);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
         this.setVisible(true);

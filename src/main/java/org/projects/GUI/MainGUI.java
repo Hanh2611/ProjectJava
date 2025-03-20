@@ -31,14 +31,8 @@ public class MainGUI extends JFrame {
     private CardLayout card;
     
     public MainGUI() {
-        // this.setTitle("MAIN GUI");
-//        this.setSize(1400,1000);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
-        int frameWidth = (int) (width * 0.75);
-        int frameHeight = (int) (height * 0.9);
-        this.setSize(frameWidth, frameHeight);
+         this.setTitle("MAIN GUI");
+        this.setSize(1400,1000);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
