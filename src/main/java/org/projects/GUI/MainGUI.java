@@ -1,6 +1,13 @@
 package org.projects.GUI;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Menu;
+import java.awt.Taskbar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -31,8 +38,8 @@ public class MainGUI extends JFrame {
     private CardLayout card;
     
     public MainGUI() {
-         this.setTitle("MAIN GUI");
-        this.setSize(1400,1000);
+        // this.setTitle("MAIN GUI");
+        this.setSize(1200,800);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
@@ -51,12 +58,12 @@ public class MainGUI extends JFrame {
         
         //minus,cancel icon
         minusIcon = handleComponents.createButtonIcon("icon/minus-sign.svg", 20, 20);
-        minusIcon.setBounds(1320,5,30,30);
+        minusIcon.setBounds(1120,7,30,30);
         minusIcon.setForeground(Color.WHITE);
         minusIcon.addMouseListener(action);
         title.add(minusIcon);
         cancelIcon = handleComponents.createButtonIcon("icon/close.svg", 20, 20);
-        cancelIcon.setBounds(1360, 5, 30, 30);
+        cancelIcon.setBounds(1160, 7, 30, 30);
         minusIcon.setForeground(Color.WHITE);
         cancelIcon.addMouseListener(action);
         title.add(cancelIcon);
@@ -70,14 +77,14 @@ public class MainGUI extends JFrame {
         textTitle = new JLabel("Siêu thị Mini");
         textTitle.setForeground(Color.BLACK);
         textTitle.setFont(new Font("JetBrains Mono",Font.PLAIN,13));
-        textTitle.setBounds(60,5,200,30);
+        textTitle.setBounds(55,5,200,30);
         title.add(textTitle);
 
         //menu taskbar west
         card = new CardLayout();
         contentPanel = new JPanel(card);
         MenuTask = new WestTaskBar(this);
-        MenuTask.setPreferredSize(new Dimension(300,1200));
+        MenuTask.setPreferredSize(new Dimension(250,800));
 
 
         this.add(title,BorderLayout.NORTH);
@@ -89,7 +96,7 @@ public class MainGUI extends JFrame {
 
     public void addPanelContent(JPanel panel) {
         String namePanel = panel.getClass().getSimpleName();
-        contentPanel.add(panel, namePanel);
+        contentPanel.add(panel);
         card.show(contentPanel, namePanel);
         UIUtils.refreshComponent(contentPanel);
     }

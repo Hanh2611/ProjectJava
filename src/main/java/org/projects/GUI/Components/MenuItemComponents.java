@@ -26,12 +26,12 @@ public class MenuItemComponents extends JPanel{
     private JLabel iconLabel;
     private JLabel nameLabel;
     public MenuItemComponents(String iconn,String name,String panel,MainGUI mainGui) {
-        this.setPreferredSize(new Dimension(250,40));
+        this.setPreferredSize(new Dimension(250,30));
         this.setBorder(new BevelBorder(BevelBorder.RAISED));
         this.setLayout(new FlowLayout(0,20,15));
         this.setOpaque(true);
 
-        FlatSVGIcon iconPath = new FlatSVGIcon(iconn, 40, 40);
+        FlatSVGIcon iconPath = new FlatSVGIcon(iconn, 30, 30);
         iconLabel = new JLabel(iconPath,JLabel.CENTER);
         this.add(iconLabel);
 
