@@ -54,6 +54,7 @@ public class ListItem extends JPanel{
         mapItem.put("NhanVien", new NhanVien());
         mapItem.put("NhaCungCap", new NhaCungCap());
         mapItem.put("PhanQuyen", new PhanQuyen());
+        mapItem.put("ThongKe", new ThongKe());
 
 
         for(String[] it : listItemTaskbar) {
