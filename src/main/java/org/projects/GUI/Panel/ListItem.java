@@ -15,6 +15,8 @@ import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.Components.MenuItemComponents;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
+import org.projects.GUI.Panel.ThongkePack.ThongKe;
+
 
 public class ListItem extends JPanel{
     private List<MenuItemComponents> list;
@@ -54,6 +56,7 @@ public class ListItem extends JPanel{
         mapItem.put("NhanVien", new NhanVien());
         mapItem.put("NhaCungCap", new NhaCungCap());
         mapItem.put("PhanQuyen", new PhanQuyen());
+        mapItem.put("ThongKe", new ThongKe());
 
 
         for(String[] it : listItemTaskbar) {
