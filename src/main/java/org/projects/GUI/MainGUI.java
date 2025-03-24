@@ -39,15 +39,16 @@ public class MainGUI extends JFrame {
     
     public MainGUI() {
         // this.setTitle("MAIN GUI");
-        this.setSize(1200,800);
+        this.setSize(1210,820);
         this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(Color.decode("#CAECF7"));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
         this.init();
         this.setVisible(true);
     }
     private void init() {
-        this.setLayout(new BorderLayout(0,0));
+        this.setLayout(new BorderLayout(10,0));
         title = new JPanel();
         title.setPreferredSize(new Dimension(100,40));
         title.setLayout(null);
@@ -55,7 +56,7 @@ public class MainGUI extends JFrame {
 
         //action MainBUS
         MainBUS action = new MainBUS(this);
-        
+
         //minus,cancel icon
         minusIcon = handleComponents.createButtonIcon("icon/minus-sign.svg", 20, 20);
         minusIcon.setBounds(1120,7,30,30);

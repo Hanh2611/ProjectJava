@@ -17,7 +17,8 @@ public class DanhMucSanPham extends JPanel{
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
         this.setPreferredSize(new Dimension(1100, 1000));
-        this.setLayout(new FlowLayout(0, 0, 0));
+        this.setLayout(new FlowLayout(0, 0, 10));
+        this.setBackground(Color.decode("#CAECF7"));
         this.add(new headerBar(listItemHeader));
     }
 }
