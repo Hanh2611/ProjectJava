@@ -2,12 +2,18 @@ package org.projects.GUI.Components.header;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.MainGUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class headerFunction extends JPanel {
+    private MainGUI mg;
+    private generalFunction gl;
     public headerFunction(Dimension parentSize, String listItemHeader[][]) {
+        this.mg = mg;
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
@@ -22,17 +28,17 @@ public class headerFunction extends JPanel {
         c.weighty = 0.5;
         c.anchor = GridBagConstraints.CENTER;
         for (String [] i : listItemHeader) {
-            JPanel button = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
-            FlatSVGIcon iconPath = new FlatSVGIcon(i[0], 40, 40);
-            JLabel label = new JLabel(iconPath, JLabel.CENTER);
-            button.setPreferredSize(new Dimension(60, 60));
-            button.setOpaque(true);
-            button.setBackground(Color.WHITE);
-            button.add(label);
-            JLabel directionLabel = new JLabel(i[1], JLabel.CENTER);
-            button.add(directionLabel);
-            button.add(new JLabel(new ImageIcon((new ImageIcon(i[0])).getImage().getScaledInstance(50, 50, 4))));
-            this.add(button, c);
+            gl = new generalFunction(i[0],i[1],i[2],mg);
+            gl.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                   generalFunction btn = (generalFunction) e.getSource();
+                   if(btn.getNameFunction().equals(i[2])) {
+                       System.out.println("nut duoc nhan la: " + i[1]);
+                   }
+                }
+            });
+            this.add(gl, c);
             c.gridx++;
         }
     }
