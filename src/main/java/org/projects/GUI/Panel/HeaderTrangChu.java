@@ -3,15 +3,18 @@ package org.projects.GUI.Panel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.LoginGUI;
+import org.projects.GUI.TrangChuDemo;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.security.PrivateKey;
 
 public class HeaderTrangChu extends JPanel{
     private JPanel left,right;
     private JLabel icon,title,close;
     private JButton dangnhap;
+    private TrangChuDemo tt;
     public HeaderTrangChu() {
         this.setLayout(new GridLayout(1,2));
         this.setBackground(LoginGUI.MainColor);
@@ -59,7 +62,7 @@ public class HeaderTrangChu extends JPanel{
                 JOptionPane.showMessageDialog(null,"Cảm ơn bạn đã sử dụng dịch vụ","Thông báo",JOptionPane.INFORMATION_MESSAGE);
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        new LoginGUI().setVisible(true);
+                        new LoginGUI();
                     }
                 });
             }

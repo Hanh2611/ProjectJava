@@ -21,11 +21,10 @@ import org.projects.GUI.MainGUI;
 public class MenuItemComponents extends JPanel{
     private String iconn;
     private String name;
-    private String panel;
     private JLabel namePanel;
     private JLabel iconLabel;
     private JLabel nameLabel;
-    public MenuItemComponents(String iconn,String name,String panel,MainGUI mainGui) {
+    public MenuItemComponents(String iconn,String name,String namePanel,MainGUI mainGui) {
         this.setPreferredSize(new Dimension(250,30));
 //        this.setBorder(new BevelBorder(BevelBorder.RAISED));
         this.setLayout(new FlowLayout(0,20,15));
@@ -40,6 +39,26 @@ public class MenuItemComponents extends JPanel{
         nameLabel.setForeground(Color.BLACK);
         nameLabel.setFont(new Font("JetBrains Mono",Font.BOLD,16));
         this.add(nameLabel);
-    }   
+    }
 
+    public JLabel getIconLabel() {
+        return iconLabel;
+    }
+
+    public String getIconn() {
+        return iconn;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public JLabel getNamePanel() {
+        return namePanel;
+    }
+
+    public JLabel getNameLabel() {
+        return nameLabel;
+    }
 }
