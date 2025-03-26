@@ -1,4 +1,4 @@
-package org.projects.GUI.Panel;
+package org.projects.GUI.Panel.PhanQuyenPack;
 
 import java.awt.Color;
 

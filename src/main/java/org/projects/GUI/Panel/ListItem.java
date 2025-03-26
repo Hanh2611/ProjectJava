@@ -1,6 +1,6 @@
 package org.projects.GUI.Panel;
 
-import java.awt.Cursor;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -14,6 +14,9 @@ import javax.swing.JPanel;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.Components.MenuItemComponents;
+import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
+import org.projects.GUI.Panel.ThongkePack.ThongKe;
+
 
 public class ListItem extends JPanel{
     private List<MenuItemComponents> list;
@@ -53,6 +56,7 @@ public class ListItem extends JPanel{
         mapItem.put("NhanVien", new NhanVien());
         mapItem.put("NhaCungCap", new NhaCungCap());
         mapItem.put("PhanQuyen", new PhanQuyen());
+        mapItem.put("ThongKe", new ThongKe());
 
 
         for(String[] it : listItemTaskbar) {
@@ -63,6 +67,7 @@ public class ListItem extends JPanel{
             c.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    clickChangeColor(e);
                     if(namePanel.equals("DangXuat")) {
                         mainGui.dispose();
                         new LoginGUI();
@@ -82,6 +87,18 @@ public class ListItem extends JPanel{
         JPanel panel = mapItem.get(name);
         if(panel != null) {
             mainGui.addPanelContent(panel);
+        }
+    }
+
+    public void clickChangeColor(MouseEvent e) {
+        for(MenuItemComponents it : list) {
+            if(e.getSource() == it) {
+                it.getNameLabel().setForeground(Color.WHITE);
+                it.setBackground(Color.GRAY);
+            } else {
+                it.getNameLabel().setForeground(Color.BLACK);
+                it.setBackground(Color.WHITE);
+            }
         }
     }
 

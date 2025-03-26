@@ -2,6 +2,8 @@ package org.projects;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import org.projects.GUI.LoginGUI;
+import org.projects.GUI.TrangChuDemo;
+
 import javax.swing.SwingUtilities;
 
 public class Main {
@@ -10,7 +12,7 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new LoginGUI();
+                new TrangChuDemo();
             }
         });
     }
