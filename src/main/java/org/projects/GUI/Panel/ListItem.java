@@ -1,6 +1,6 @@
 package org.projects.GUI.Panel;
 
-import java.awt.Cursor;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -67,6 +67,7 @@ public class ListItem extends JPanel{
             c.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    clickChangeColor(e);
                     if(namePanel.equals("DangXuat")) {
                         mainGui.dispose();
                         new LoginGUI();
@@ -86,6 +87,18 @@ public class ListItem extends JPanel{
         JPanel panel = mapItem.get(name);
         if(panel != null) {
             mainGui.addPanelContent(panel);
+        }
+    }
+
+    public void clickChangeColor(MouseEvent e) {
+        for(MenuItemComponents it : list) {
+            if(e.getSource() == it) {
+                it.getNameLabel().setForeground(Color.WHITE);
+                it.setBackground(Color.GRAY);
+            } else {
+                it.getNameLabel().setForeground(Color.BLACK);
+                it.setBackground(Color.WHITE);
+            }
         }
     }
 
