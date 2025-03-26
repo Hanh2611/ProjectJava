@@ -38,6 +38,26 @@ public class MenuItemComponents extends JPanel{
         nameLabel.setForeground(Color.BLACK);
         nameLabel.setFont(new Font("JetBrains Mono",Font.BOLD,16));
         this.add(nameLabel);
-    }   
+    }
 
+    public JLabel getIconLabel() {
+        return iconLabel;
+    }
+
+    public String getIconn() {
+        return iconn;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public JLabel getNamePanel() {
+        return namePanel;
+    }
+
+    public JLabel getNameLabel() {
+        return nameLabel;
+    }
 }
