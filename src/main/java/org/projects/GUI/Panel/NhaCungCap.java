@@ -20,5 +20,10 @@ public class NhaCungCap extends JPanel{
         this.setLayout(new FlowLayout(0, 0, 10));
         this.setBackground(Color.decode("#CAECF7"));
         this.add(new headerBar(listItemHeader));
+        this.init();
+    }
+
+    private void init() {
+        
     }
 }
