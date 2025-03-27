@@ -4,8 +4,7 @@ import org.projects.GUI.Components.header.headerBar;
 
 import java.awt.*;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class DanhMucSanPham extends JPanel{
     public DanhMucSanPham() {

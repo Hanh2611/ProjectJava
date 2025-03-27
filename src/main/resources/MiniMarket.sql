@@ -50,31 +50,27 @@ create table khach_hang (
     so_dien_thoai varchar(15) NOT NULL,
     dia_chi varchar(50) NOT NULL
 );
--- Bảng sản phẩm
-create table san_pham (
-    ma_san_pham int NOT NULL,
-    ten_san_pham varchar(50) NOT NULL,
-    ma_danh_muc int
-
-);
 -- Bảng danh mục sản phẩm
 create table danh_muc_san_pham (
-    ma_danh_muc int NOT NULL,
-    ten_danh_muc varchar(50)
+   ma_danh_muc INT PRIMARY KEY AUTO_INCREMENT,
+   ten_danh_muc VARCHAR(50)
+);
+-- Bảng sản phẩm
+create table san_pham (
+    ma_san_pham INT PRIMARY KEY AUTO_INCREMENT,
+    ten_san_pham VARCHAR(255) NOT NULL,
+    phan_loai INT,
+    don_vi VARCHAR(50),
+    gia_ban DOUBLE DEFAULT 0,
+    so_luong_ton DOUBLE DEFAULT 0,
+    quy_cach ENUM('Thùng', 'Chai', 'Túi', 'KG', 'Hộp', 'G'),
+    img VARCHAR(255),
+    FOREIGN KEY (phan_loai) references danh_muc_san_pham(ma_danh_muc)
 );
 -- Bảng loại đóng gói
 create table loai_dong_goi (
     ma_dong_goi int NOT NULL,
     ten_dong_goi varchar(50) NOT NULL
-);
--- Bảng phân loại sản phẩm (chi tiết sản phẩm)
-create table phan_loai_san_pham (
-    ma_phan_loai int NOT NULL,
-    ma_san_pham int,
-    ma_dong_goi int,
-    quy_cach ENUM('300ml','500ml','1kg','5kg') NOT NULL,
-    so_luong_ton int NOT NULL
-
 );
 -- Bảng hóa đơn
 create table hoa_don (
