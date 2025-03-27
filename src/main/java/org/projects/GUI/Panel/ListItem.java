@@ -35,12 +35,12 @@ public class ListItem extends JPanel{
         String listItemTaskbar[][] = {
                 {"icon/homepage.svg", "Trang chủ", "TrangChu"},
                 {"icon/dairy-products.svg", "Sản phẩm", "SanPham"},
-                {"icon/categories.svg", "Danh mục sản phẩm", "DanhMucSanPham"},
                 {"icon/contact-form.svg", "Phiếu nhập", "PhieuNhap"},
                 {"icon/bill.svg", "Hóa đơn", "HoaDon"},
                 {"icon/customer.svg", "Khách hàng", "KhachHang"},
                 {"icon/cashier.svg", "Nhân viên", "NhanVien"},
                 {"icon/roles.svg", "Phân quyền", "PhanQuyen"},
+                {"icon/verified-account.svg", "Tài khoản", "TaiKhoan"},
                 {"icon/supplier.svg", "Nhà cung cấp", "NhaCungCap"},
                 {"icon/analysis.svg", "Thống kê", "ThongKe"},
                 {"icon/logout.svg", "Đăng xuất", "DangXuat"}
@@ -49,7 +49,7 @@ public class ListItem extends JPanel{
         //them ten panel vao map de truy xuat den -> hien thi panel tuong ung
         mapItem.put("TrangChu", new TrangChu());
         mapItem.put("SanPham", new SanPham());
-        mapItem.put("DanhMucSanPham", new DanhMucSanPham());
+        mapItem.put("TaiKhoan", new TaiKhoan());
         mapItem.put("PhieuNhap", new PhieuNhap());
         mapItem.put("HoaDon", new HoaDon());
         mapItem.put("KhachHang", new KhachHang());
