@@ -1,6 +1,7 @@
 package org.projects.GUI.Panel;
 
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.Components.layoutCompoment;
 
 import java.awt.*;
 
@@ -15,9 +16,6 @@ public class DanhMucSanPham extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        this.setPreferredSize(new Dimension(1100, 1000));
-        this.setLayout(new FlowLayout(0, 0, 10));
-        this.setBackground(Color.decode("#CAECF7"));
-        this.add(new headerBar(listItemHeader));
+        layoutCompoment.addHeader(this, listItemHeader);
     }
 }

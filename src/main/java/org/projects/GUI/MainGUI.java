@@ -48,7 +48,7 @@ public class MainGUI extends JFrame {
         this.setVisible(true);
     }
     private void init() {
-        this.setLayout(new BorderLayout(10,0));
+        this.setLayout(new BorderLayout(0,0));
         title = new JPanel();
         title.setPreferredSize(new Dimension(100,40));
         title.setLayout(null);

@@ -7,7 +7,7 @@ import java.awt.*;
 public class headerBar extends javax.swing.JPanel {
     public headerBar(String listItemHeader[][]) {
 //        this.setBorder(new RoundedBorder(8));
-        this.setPreferredSize(new Dimension(950,100));
+        this.setPreferredSize(new Dimension(940,100));
         this.setLayout(new FlowLayout(FlowLayout.LEFT,5, 0));
         this.setOpaque(true);
         this.setBackground(Color.WHITE);
