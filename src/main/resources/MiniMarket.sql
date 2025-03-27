@@ -116,4 +116,3 @@ create table nha_cung_cap (
     email varchar(50) NOT NULL,
     dia_chi_nha_cung_cap varchar(50) NOT NULL
 )
-
