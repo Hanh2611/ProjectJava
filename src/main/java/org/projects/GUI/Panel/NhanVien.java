@@ -12,13 +12,15 @@ import java.awt.*;
 public class NhanVien extends JPanel {
     private JTable table;
     private JPanel topPanel;
+
     public NhanVien() {
         init();
         setupLayout();
+        setupDetailBox();
     }
 
     private void init(){
-        String [] col = {"Mã NV", "Tên nhân viên", "Địa chỉ", "SĐT", "Ngày tham gia"};
+        String [] col = {"Mã NV", "Tên nhân viên", "Email", "SĐT", "Chức vụ"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0){
             // không cho chính sửa trực tiếp trong bảng
             @Override
@@ -28,13 +30,13 @@ public class NhanVien extends JPanel {
         };
         //test
         for(int i = 1; i <= 30; i++) {
-            tableModel.addRow(new Object[]{
-                    i,
-                    "Nhân viên " + i,
-                    "Địa chỉ chi tiết số " + i + ", Quận 1, TP.HCM",
-                    "0123-456-789",
-                    "2023-04-2" + (i % 10)
-            });
+//            tableModel.addRow(new Object[]{
+//                    i,
+//                    "Nhân viên " + i,
+//                    "Địa chỉ chi tiết số " + i + ", Quận 1, TP.HCM",
+//                    "0123-456-789",
+//                    "2023-04-2" + (i % 10)
+//            });
         }
 
         table = new JTable(tableModel);
@@ -85,8 +87,18 @@ public class NhanVien extends JPanel {
         topPanel.add(new headerBar(listItemHeader));
     }
 
+    public CompoundBorder setupBorder(){
+        return BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10, 10, 10, 10),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(Color.WHITE, 2),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                )
+        );
+    }
+
     private void setupLayout() {
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(0 , 10));
         setBackground(new Color(240, 240, 240));
         topPanel = new JPanel();
         setupHeader();
@@ -95,15 +107,8 @@ public class NhanVien extends JPanel {
         // Scroll
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBackground(Color.WHITE);
-
-        CompoundBorder border = BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(10, 10, 10, 10),
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.WHITE, 2),
-                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
-                )
-        );
-        scrollPane.setBorder(border);
+        CompoundBorder compoundBorderScroll = setupBorder();
+        scrollPane.setBorder(compoundBorderScroll);
 
         // Panel trung tâm
         JPanel centerPanel = new JPanel(new GridBagLayout());
@@ -116,4 +121,39 @@ public class NhanVien extends JPanel {
         centerPanel.add(scrollPane, gbc);
         add(centerPanel, BorderLayout.CENTER);
     }
+    
+    public void setupDetailBox(){
+        // Ý tưởng
+        // Chia thành 3 ngăn với tỉ lể 0,5 top bot
+        // Ở top chia thành 2 ngăn với bên trái chứa hình ảnh nhân viên , ở bên phải là chi tiết nhân viên
+        // Ở bot là thành phần thông kê phạt, nghỉ làm , lương ...
+        JLayeredPane detailBoxPanel = new JLayeredPane();
+        detailBoxPanel.setLayout(new BorderLayout());
+        detailBoxPanel.setBackground(Color.RED);
+        detailBoxPanel.setPreferredSize(new Dimension(600 , 700));
+        JPanel topLayout = new JPanel();
+        JPanel botLayout = new JPanel();
+        topLayout.setBackground(Color.BLUE);
+        botLayout.setBackground(Color.YELLOW);
+        // xây dựng top layout
+        topLayout.setLayout(new GridLayout(1 , 1));
+        topLayout.setPreferredSize(new Dimension(600 , 350));
+        JPanel topImage = new JPanel();
+        JPanel topInformation = new JPanel();
+        topImage.setBackground(Color.PINK);
+        topInformation.setBackground(Color.RED);
+        topImage.setOpaque(true);
+        topInformation.setOpaque(true);
+        topLayout.add(topImage);
+        topLayout.add(topInformation);
+
+
+        topLayout.setOpaque(true);
+        botLayout.setOpaque(true);
+        detailBoxPanel.add(topLayout, BorderLayout.NORTH);
+        detailBoxPanel.add(botLayout, BorderLayout.CENTER);
+        detailBoxPanel.setOpaque(true);
+        add(detailBoxPanel, BorderLayout.CENTER);
+    }
+
 }

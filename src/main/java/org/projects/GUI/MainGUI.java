@@ -114,5 +114,4 @@ public class MainGUI extends JFrame {
     public JButton getCancelIcon() {
         return cancelIcon;
     }
-    
 }
