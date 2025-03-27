@@ -2,6 +2,7 @@ package org.projects.GUI.Panel;
 
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.Components.layoutCompoment;
 import org.projects.entity.NhaCungCapEntity;
 
 import java.awt.*;
@@ -30,13 +31,9 @@ public class NhaCungCap extends JPanel{
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
         nccEntity = new ArrayList<>();
-        this.setLayout(new FlowLayout(0,0,10));
-        this.setPreferredSize(new Dimension(1100,1000));
-        this.setBackground(Color.decode("#CAECF7"));
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
-        this.add(new headerBar(listItemHeader));
-
+        layoutCompoment.addHeader(this, listItemHeader);
         this.init();
         reloadDAO();
     }
@@ -51,8 +48,13 @@ public class NhaCungCap extends JPanel{
         };
         nameTableModel.setColumnIdentifiers(new String[]{"Mã nhà cung cấp","tên nhà cung cấp","số điện thoại","email","địa chỉ"});
         nccTabel = new JTable();
-//        nccTabel.setColumnSelectionAllowed(true);
-//        nccTabel.setFillsViewportHeight(true);
+        nccTabel.setForeground(Color.MAGENTA);
+        nccTabel.setShowGrid(true);
+        nccTabel.setGridColor(new Color(220, 220, 220));
+        nccTabel.setSelectionBackground(new Color(204, 229, 255));
+        nccTabel.setRowHeight(40);
+        nccTabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        nccTabel.setAutoCreateRowSorter(true);
         nccTabel.setModel(nameTableModel);
         listRenderTable = new DefaultTableCellRenderer();
         listRenderTable.setHorizontalAlignment(JLabel.CENTER);
@@ -62,7 +64,6 @@ public class NhaCungCap extends JPanel{
         scrollData = new JScrollPane(nccTabel);
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
-//        this.add(scrollData);
     }
     public void loadList(List<NhaCungCapEntity> list) {
         nameTableModel.setRowCount(0);
