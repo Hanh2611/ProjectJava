@@ -26,6 +26,7 @@ public class NhanVien extends JPanel {
                 return false;
             }
         };
+
         //test
         for(int i = 1; i <= 30; i++) {
             tableModel.addRow(new Object[]{
