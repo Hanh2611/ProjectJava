@@ -1,15 +1,11 @@
 package org.projects.GUI.Panel;
 
-import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
 
-import java.awt.*;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class DanhMucSanPham extends JPanel{
-    public DanhMucSanPham() {
+public class TaiKhoan extends JPanel{
+    public TaiKhoan() {
         String listItemHeader[][] = {
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
