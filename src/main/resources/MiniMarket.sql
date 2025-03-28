@@ -1,12 +1,11 @@
 CREATE DATABASE quanlysieuthimini;
-
 SHOW DATABASES;
 USE quanlysieuthimini;
 
 -- Bảng quyền
-create table quyen (
-    ma_quyen int primary key auto_increment,
-    ten_quyen varchar(50) not null
+create table danh_muc_quan_ly (
+    ma_danh_muc_quan_ly int primary key auto_increment,
+    ten_danh_muc_quan_ly varchar(50) not null
 );
 
 -- Bảng nhóm quyền
@@ -18,11 +17,11 @@ create table nhom_quyen (
 -- Bảng cấp quyền
 create table cap_quyen (
     ma_nhom_quyen int,
-    ma_quyen int,
+    ma_danh_muc_quan_ly int,
     hanh_dong ENUM('them','sua','xoa','xem') not null,
-    unique key (ma_nhom_quyen, ma_quyen),
+#     unique key (ma_nhom_quyen, ma_danh_muc_quan_ly),
     foreign key (ma_nhom_quyen) references nhom_quyen(ma_nhom_quyen),
-    foreign key (ma_quyen) references quyen(ma_quyen)
+    foreign key (ma_danh_muc_quan_ly) references danh_muc_quan_ly(ma_danh_muc_quan_ly)
 );
 
 -- Bảng tài khoản
@@ -55,7 +54,6 @@ create table san_pham (
     ma_san_pham int NOT NULL,
     ten_san_pham varchar(50) NOT NULL,
     ma_danh_muc int
-
 );
 -- Bảng danh mục sản phẩm
 create table danh_muc_san_pham (
@@ -103,7 +101,7 @@ create table phieu_nhap (
 -- Bảng chi tiết phiếu nhập
 create table chi_tiet_phieu_nhap (
     ma_phieu_nhap int,
-    ma_phan_loai int,
+    ma_san_pham int,
     so_luong int NOT NULL,
     gia_nhap double NOT NULL,
     thanh_tien double NOT NULL
