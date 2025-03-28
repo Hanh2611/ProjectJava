@@ -23,7 +23,6 @@ create table cap_quyen (
     foreign key (ma_nhom_quyen) references nhom_quyen(ma_nhom_quyen),
     foreign key (ma_danh_muc_quan_ly) references danh_muc_quan_ly(ma_danh_muc_quan_ly)
 );
-
 -- Bảng tài khoản
 create table tai_khoan (
     ma_nguoi_dung int primary key auto_increment,
@@ -42,6 +41,7 @@ create table nhan_vien (
     so_dien_thoai varchar(15) NOT NULL,
     chuc_vu varchar(50) NOT NULL
 );
+ALTER TABLE nhan_vien ADD PRIMARY KEY (ma_nhan_vien);
 -- Bảng khách hàng
 create table khach_hang (
     ma_khach_hang int NOT NULL,
@@ -55,6 +55,7 @@ create table san_pham (
     ten_san_pham varchar(50) NOT NULL,
     ma_danh_muc int
 );
+alter table san_pham add primary key (ma_san_pham)
 -- Bảng danh mục sản phẩm
 create table danh_muc_san_pham (
     ma_danh_muc int NOT NULL,
@@ -98,6 +99,12 @@ create table phieu_nhap (
     ngay_nhap TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     tong_gia_tri_nhap double
 );
+ALTER TABLE phieu_nhap
+    ADD CONSTRAINT fk_phieunhap_nhanvien
+        FOREIGN KEY (ma_nhan_vien) REFERENCES nhan_vien(ma_nhan_vien),
+    ADD CONSTRAINT fk_phieunhap_nhacungcap
+        FOREIGN KEY (ma_nha_cung_cap) REFERENCES nha_cung_cap(ma_nha_cung_cap);
+alter table phieu_nhap add primary key (ma_phieu_nhap)
 -- Bảng chi tiết phiếu nhập
 create table chi_tiet_phieu_nhap (
     ma_phieu_nhap int,
@@ -106,6 +113,10 @@ create table chi_tiet_phieu_nhap (
     gia_nhap double NOT NULL,
     thanh_tien double NOT NULL
 );
+alter table chi_tiet_phieu_nhap
+    add constraint pk_chi_tiet_phieu_nhap primary key (ma_phieu_nhap, ma_phan_loai),
+    add constraint fk_chitietphieunhap_phieunhap foreign key (ma_phieu_nhap) references phieu_nhap(ma_phieu_nhap),
+    add constraint fk_chitietphieunhap_sanpham foreign key (ma_phan_loai) references san_pham(ma_san_pham);
 -- Bảng nhà cung cấp
 create table nha_cung_cap (
     ma_nha_cung_cap int NOT NULL,
@@ -114,3 +125,5 @@ create table nha_cung_cap (
     email varchar(50) NOT NULL,
     dia_chi_nha_cung_cap varchar(50) NOT NULL
 )
+alter table nha_cung_cap
+    add primary key (ma_nha_cung_cap)
