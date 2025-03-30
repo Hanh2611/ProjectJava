@@ -48,7 +48,7 @@ public class NhaCungCap extends JPanel{
         };
         nameTableModel.setColumnIdentifiers(new String[]{"Mã nhà cung cấp","tên nhà cung cấp","số điện thoại","email","địa chỉ"});
         nccTabel = new JTable();
-        nccTabel.setForeground(Color.MAGENTA);
+        nccTabel.setForeground(Color.decode("#7ed6df"));
         nccTabel.setShowGrid(true);
         nccTabel.setGridColor(new Color(220, 220, 220));
         nccTabel.setSelectionBackground(new Color(204, 229, 255));
