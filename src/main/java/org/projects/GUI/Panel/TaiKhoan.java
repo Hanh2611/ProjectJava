@@ -13,6 +13,6 @@ public class TaiKhoan extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        layoutCompoment.addHeader(this, listItemHeader);
+//        layoutCompoment.addHeader(this, listItemHeader);
     }
 }

@@ -110,7 +110,7 @@ create table chi_tiet_phieu_nhap (
 );
 -- Bảng nhà cung cấp
 create table nha_cung_cap (
-    ma_nha_cung_cap int NOT NULL,
+    ma_nha_cung_cap int auto_increment primary key,
     ten_nha_cung_cap varchar(50) NOT NULL,
     so_dien_thoai varchar(15) NOT NULL,
     email varchar(50) NOT NULL,
