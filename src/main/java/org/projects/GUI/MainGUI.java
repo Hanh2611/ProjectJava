@@ -13,12 +13,7 @@ import java.awt.event.MouseEvent;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.projects.BUS.MainBUS;
 import org.projects.GUI.Components.handleComponents;
@@ -114,5 +109,14 @@ public class MainGUI extends JFrame {
     public JButton getCancelIcon() {
         return cancelIcon;
     }
-    
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                    new MainGUI();
+            }
+        });
+    }
 }

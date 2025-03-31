@@ -1,13 +1,17 @@
 package org.projects.GUI.Panel;
 
+import org.projects.BUS.NhaCungCapBUS;
 import org.projects.DAO.NhaCungCapDAO;
+import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
 import org.projects.entity.NhaCungCapEntity;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,17 +24,21 @@ public class NhaCungCap extends JPanel{
     private DefaultTableModel nameTableModel;
     private DefaultTableCellRenderer listRenderTable;
     private JScrollPane scrollData;
-    private List<NhaCungCapEntity> nccEntity;
+    private List<NhaCungCapEntity> listnccEntity;
+    private headerBar header;
+    private NhaCungCapBUS nccBus;
+    private NhaCungCapEntity nccEntity;
+    private generalFunction generalFunc;
 
     public NhaCungCap() {
         String listItemHeader[][] = {
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
                 {"icon/trash.svg", "Xóa", "delete"},
-                {"icon/details.svg", "Chi tiết", "detail"},
-                {"icon/excel.svg", "Xuất excel", "export"}
+                {"icon/details.svg", "Chi tiết", "detail"}
         };
-        nccEntity = new ArrayList<>();
+        header = new headerBar(listItemHeader);
+        listnccEntity = new ArrayList<>();
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
         layoutCompoment.addHeader(this, listItemHeader);
@@ -64,6 +72,15 @@ public class NhaCungCap extends JPanel{
         scrollData = new JScrollPane(nccTabel);
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
+
+        //them action
+        nccBus = new NhaCungCapBUS(this);
+        HashMap<String,generalFunction> panelFunction = this.getHeader().getHeaderFunc().getHm();
+        System.out.println(panelFunction);
+        for(Map.Entry<String,generalFunction> entry : panelFunction.entrySet()) {
+            entry.getValue().addMouseListener(nccBus);
+            System.out.println("su kien co hoat dong");
+        }
     }
     public void loadList(List<NhaCungCapEntity> list) {
         nameTableModel.setRowCount(0);
@@ -83,5 +100,9 @@ public class NhaCungCap extends JPanel{
     public void reloadDAO() {
         List<NhaCungCapEntity> lst = new NhaCungCapDAO().showlist();
         loadList(lst);
+    }
+    //getter
+    public headerBar getHeader() {
+        return header;
     }
 }

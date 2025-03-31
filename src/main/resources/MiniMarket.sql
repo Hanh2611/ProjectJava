@@ -40,7 +40,7 @@ create table nhan_vien (
     ma_nhan_vien int NOT NULL,
     ten_nhan_vien varchar(50) NOT NULL,
     email varchar(50) NOT NULL,
-    so_dien_thoai varchar(15) NOT NULL,
+    `` so_dien_thoaivarchar(15) NOT NULL,
     chuc_vu varchar(50) NOT NULL
 );
 -- Bảng khách hàng
@@ -110,7 +110,7 @@ create table chi_tiet_phieu_nhap (
 );
 -- Bảng nhà cung cấp
 create table nha_cung_cap (
-    ma_nha_cung_cap int NOT NULL,
+    ma_nha_cung_cap int auto_increment primary key,
     ten_nha_cung_cap varchar(50) NOT NULL,
     so_dien_thoai varchar(15) NOT NULL,
     email varchar(50) NOT NULL,
