@@ -4,6 +4,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -28,11 +29,9 @@ public class generalFunction extends JPanel {
         nameIconLabel = new JLabel(nameIcon,JLabel.CENTER);
         this.add(nameIconLabel);
 
-        this.addMouseListener(new MouseAdapter() {
-           public void mouseClicked(MouseEvent e) {
-               System.out.println("panel duoc click la: " + nameFunction);
-           }
-        });
+        this.setOpaque(true);
+        this.setFocusable(true);
+
     }
     //getter setter
     public String getIconPathFunciton() {

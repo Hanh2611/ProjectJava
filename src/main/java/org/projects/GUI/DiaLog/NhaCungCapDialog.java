@@ -26,6 +26,8 @@ public class NhaCungCapDialog extends JDialog {
         this.ncc = ncc;
         this.type = type;
         this.setTitle(this.setType());
+        this.setSize(600,400);
+        this.setLocationRelativeTo(null);
         this.setLayout(new GridLayout(6,2));
         this.init();
         this.setVisible(true);
@@ -77,4 +79,5 @@ public class NhaCungCapDialog extends JDialog {
         }
         return null;
     }
+
 }

@@ -6,9 +6,11 @@ import org.projects.GUI.MainGUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.Map;
 
 public class headerFunction extends JPanel {
     private generalFunction gl;
