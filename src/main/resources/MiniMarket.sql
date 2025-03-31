@@ -38,7 +38,7 @@ create table nhan_vien (
     ma_nhan_vien int NOT NULL,
     ten_nhan_vien varchar(50) NOT NULL,
     email varchar(50) NOT NULL,
-    `` so_dien_thoaivarchar(15) NOT NULL,
+    so_dien_thoai varchar(15) NOT NULL,
     chuc_vu varchar(50) NOT NULL
 );
 ALTER TABLE nhan_vien ADD PRIMARY KEY (ma_nhan_vien);

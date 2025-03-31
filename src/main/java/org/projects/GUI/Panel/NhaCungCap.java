@@ -5,6 +5,7 @@ import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class NhaCungCap extends JPanel{
     private JScrollPane scrollData;
     private List<NhaCungCapEntity> listnccEntity;
     private headerBar header;
-    private NhaCungCapBUS nccBus;
+    private NhaCungCapBUS nccBus = new NhaCungCapBUS(this);
     private NhaCungCapEntity nccEntity;
     private generalFunction generalFunc;
 
@@ -74,13 +75,12 @@ public class NhaCungCap extends JPanel{
         this.add(centerPanel);
 
         //them action
-        nccBus = new NhaCungCapBUS(this);
         HashMap<String,generalFunction> panelFunction = this.getHeader().getHeaderFunc().getHm();
-        System.out.println(panelFunction);
         for(Map.Entry<String,generalFunction> entry : panelFunction.entrySet()) {
-            entry.getValue().addMouseListener(nccBus);
-            System.out.println("su kien co hoat dong");
+           entry.getValue().addMouseListener(nccBus);
         }
+
+        UIUtils.refreshComponent(this);
     }
     public void loadList(List<NhaCungCapEntity> list) {
         nameTableModel.setRowCount(0);
