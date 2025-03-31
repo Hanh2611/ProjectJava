@@ -4,6 +4,8 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class generalFunction extends JPanel {
     private String iconPathFunciton;
@@ -12,20 +14,25 @@ public class generalFunction extends JPanel {
     private JLabel iconPathFunctionLabel;
     private JLabel nameIconLabel;
 
-    public generalFunction(String iconPathFunciton, String nameIcon, String nameFunction,Frame parent) {
+    public generalFunction(String iconPathFunciton, String nameIcon, String nameFunction) {
         this.setLayout(new FlowLayout(FlowLayout.CENTER,5,0));
         this.iconPathFunciton = iconPathFunciton;
         this.nameIcon = nameIcon;
         this.nameFunction = nameFunction;
         FlatSVGIcon icon = new FlatSVGIcon(iconPathFunciton, 40, 40);
         this.setPreferredSize(new Dimension(60,60));
-        this.setOpaque(true);
         this.setBackground(Color.WHITE);
         iconPathFunctionLabel = new JLabel(icon,JLabel.CENTER);
         this.add(iconPathFunctionLabel);
 
         nameIconLabel = new JLabel(nameIcon,JLabel.CENTER);
         this.add(nameIconLabel);
+
+        this.addMouseListener(new MouseAdapter() {
+           public void mouseClicked(MouseEvent e) {
+               System.out.println("panel duoc click la: " + nameFunction);
+           }
+        });
     }
     //getter setter
     public String getIconPathFunciton() {
