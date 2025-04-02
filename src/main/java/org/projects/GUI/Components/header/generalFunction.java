@@ -29,8 +29,7 @@ public class generalFunction extends JPanel {
         nameIconLabel = new JLabel(nameIcon,JLabel.CENTER);
         this.add(nameIconLabel);
 
-        this.setOpaque(true);
-        this.setFocusable(true);
+        this.setOpaque(false);
 
     }
     //getter setter

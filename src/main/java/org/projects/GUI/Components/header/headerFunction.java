@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class headerFunction extends JPanel {
-    private generalFunction gl;
     private HashMap<String,generalFunction> hm = new HashMap<>();
     public headerFunction(Dimension parentSize, String listItemHeader[][]) {
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
@@ -30,8 +29,8 @@ public class headerFunction extends JPanel {
         c.weighty = 0.5;
         c.anchor = GridBagConstraints.CENTER;
         for (String [] i : listItemHeader) {
-            gl = new generalFunction(i[0],i[1],i[2]);
-            hm.put(i[2],gl);
+          generalFunction  gl = new generalFunction(i[0],i[1],i[2]);
+//            hm.put(i[2],gl);
             this.add(gl, c);
             c.gridx++;
         }
@@ -39,9 +38,5 @@ public class headerFunction extends JPanel {
     //getter
     public HashMap<String,generalFunction> getHm() {
         return hm;
-    }
-
-    public generalFunction getGl() {
-        return gl;
     }
 }
