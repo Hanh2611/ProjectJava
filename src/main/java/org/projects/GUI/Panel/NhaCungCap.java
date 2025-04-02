@@ -63,7 +63,6 @@ public class NhaCungCap extends JPanel{
         nccTabel.setSelectionBackground(new Color(204, 229, 255));
         nccTabel.setRowHeight(40);
         nccTabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        nccTabel.setAutoCreateRowSorter(true);
         nccTabel.setModel(nameTableModel);
         listRenderTable = new DefaultTableCellRenderer();
         listRenderTable.setHorizontalAlignment(JLabel.CENTER);
@@ -79,7 +78,6 @@ public class NhaCungCap extends JPanel{
         for(Map.Entry<String,generalFunction> entry : panelFunction.entrySet()) {
            entry.getValue().addMouseListener(nccBus);
         }
-
         UIUtils.refreshComponent(this);
     }
     public void loadList(List<NhaCungCapEntity> list) {
