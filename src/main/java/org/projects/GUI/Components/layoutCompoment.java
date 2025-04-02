@@ -21,4 +21,7 @@ public class layoutCompoment {
         );
         panel.setBorder(border);
     }
+    public static void setupMainPanel(JPanel panel) {
+        panel.setPreferredSize(new Dimension(940, 650));
+    }
 }
