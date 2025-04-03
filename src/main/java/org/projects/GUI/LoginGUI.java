@@ -1,7 +1,6 @@
 package org.projects.GUI;
 
-import org.projects.Main;
-import org.projects.BUS.LoginBUS;
+import org.projects.Action.LoginAction;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.FocusListenerUtils;
 
@@ -184,7 +183,7 @@ public class LoginGUI extends JFrame {
         dangKyLabel2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         //them controller click dang ki,dang nhap
-        LoginBUS action = new LoginBUS(this);
+        LoginAction action = new LoginAction(this);
         dangKyLabel2.addMouseListener(action);
         dangNhapButton.addMouseListener(action);
 
