@@ -1,13 +1,14 @@
 package org.projects.GUI.Components.header;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
 import org.projects.GUI.MainGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static org.projects.BUS.LoginBUS.mainGUI;
 
 public class headerFunction extends JPanel {
     private MainGUI mg;
@@ -32,10 +33,7 @@ public class headerFunction extends JPanel {
             gl.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                   generalFunction btn = (generalFunction) e.getSource();
-                   if(btn.getNameFunction().equals(i[2])) {
-                       System.out.println("nut duoc nhan la: " + i[1]);
-                   }
+                    new addPhanQuyen(mainGUI);
                 }
             });
             this.add(gl, c);

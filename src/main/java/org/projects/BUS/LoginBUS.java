@@ -7,11 +7,11 @@ import org.projects.GUI.DiaLog.SignUpDialog;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class LoginBUS implements MouseListener {
     private LoginGUI loginGUI;
+    public static MainGUI mainGUI;
     public LoginBUS(LoginGUI loginGUI) {
         this.loginGUI = loginGUI;
     }
@@ -27,7 +27,7 @@ public class LoginBUS implements MouseListener {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        new MainGUI();
+                        mainGUI = new MainGUI();
                         loginGUI.setVisible(false);
                     }
                 });
