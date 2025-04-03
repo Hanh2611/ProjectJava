@@ -29,7 +29,7 @@ public class headerFunction extends JPanel {
         c.weighty = 0.5;
         c.anchor = GridBagConstraints.CENTER;
         for (String [] i : listItemHeader) {
-            gl = new generalFunction(i[0],i[1],i[2],mg);
+            gl = new generalFunction(i[0],i[1],i[2]);
             gl.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {

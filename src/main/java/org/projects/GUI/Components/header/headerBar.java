@@ -17,7 +17,7 @@ public class headerBar extends javax.swing.JPanel {
     }
     public void init(String listItemHeader[][],String[] listAction) {
         this.add(new headerSearch(new Dimension(950, 100)));
-        headerFunc = new headerFunction(new Dimension(950,100),listItemHeader,listAction);
+        headerFunc = new headerFunction(new Dimension(950,100),listItemHeader);
         this.add(headerFunc);
 //        this.add(new headerFunction(new Dimension(950, 100), listItemHeader));
     }

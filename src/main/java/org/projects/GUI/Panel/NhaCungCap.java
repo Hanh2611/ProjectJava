@@ -72,10 +72,10 @@ public class NhaCungCap extends JPanel{
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 
-        for(String name : header.getHeaderFunc().getHm().keySet()) {
-            header.getHeaderFunc().getHm().get(name).addActionListener(nccBus);
-        }
-        UIUtils.refreshComponent(this);
+//        for(String name : header.getHeaderFunc().getHm().keySet()) {
+//            header.getHeaderFunc().getHm().get(name).addActionListener(nccBus);
+//        }
+//        UIUtils.refreshComponent(this);
     }
     public void loadList(List<NhaCungCapEntity> list) {
         nameTableModel.setRowCount(0);

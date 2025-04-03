@@ -20,20 +20,20 @@ public class NhaCungCapBUS implements ActionListener, MouseListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        generalFunction c = (generalFunction) e.getSource();
-        System.out.println(c);
-        if(ncc != null) {
-            for(String name : ncc.getHeader().getHeaderFunc().getHm().keySet()) {
-                generalFunction gf = ncc.getHeader().getHeaderFunc().getHm().get(name);
-                if(c.equals(gf)) {
-                    if(name == null && name.trim().isEmpty()) return;
-                    System.out.println("ten cua nut la : " + name);
-                    if("add".equals(name)) {
-                        new NhaCungCapDialog(name,ncc);
-                    }
-                }
-            }
-        }
+//        generalFunction c = (generalFunction) e.getSource();
+//        System.out.println(c);
+//        if(ncc != null) {
+//            for(String name : ncc.getHeader().getHeaderFunc().getHm().keySet()) {
+//                generalFunction gf = ncc.getHeader().getHeaderFunc().getHm().get(name);
+//                if(c.equals(gf)) {
+//                    if(name == null && name.trim().isEmpty()) return;
+//                    System.out.println("ten cua nut la : " + name);
+//                    if("add".equals(name)) {
+//                        new NhaCungCapDialog(name,ncc);
+//                    }
+//                }
+//            }
+//        }
     }
 
 
