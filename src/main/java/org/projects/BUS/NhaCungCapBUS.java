@@ -13,17 +13,25 @@ import java.util.Map;
 
 public class NhaCungCapBUS implements ActionListener, MouseListener {
     private NhaCungCap ncc;
-    private generalFunction generalFunc;
-    public NhaCungCapBUS(NhaCungCap ncc) {
+    private NhaCungCapDialog nccDialog;
+    public NhaCungCapBUS(NhaCungCap ncc,NhaCungCapDialog nccDialog) {
         this.ncc = ncc;
+        this.nccDialog = nccDialog;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         generalFunction c = (generalFunction) e.getSource();
-        for(Map.Entry<String, generalFunction> hm : ncc.getHeader().getHeaderFunc().getHm().entrySet()) {
-            if(c.equals(hm.getValue())) {
-                System.out.println("Mouse Clicked" + hm.getKey());
-                new NhaCungCapDialog(hm.getKey(),ncc);
+        System.out.println(c);
+        if(ncc != null) {
+            for(String name : ncc.getHeader().getHeaderFunc().getHm().keySet()) {
+                generalFunction gf = ncc.getHeader().getHeaderFunc().getHm().get(name);
+                if(c.equals(gf)) {
+                    if(name == null && name.trim().isEmpty()) return;
+                    System.out.println("ten cua nut la : " + name);
+                    if("add".equals(name)) {
+                        new NhaCungCapDialog(name,ncc);
+                    }
+                }
             }
         }
     }
