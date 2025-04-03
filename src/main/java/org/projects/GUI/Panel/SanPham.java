@@ -1,10 +1,10 @@
 package org.projects.GUI.Panel;
 
-import org.projects.entity.Enum.QuyCach;
+import org.projects.DAO.SanPhamDao;
 import org.projects.entity.SanPhamEntity;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -15,7 +15,7 @@ public class SanPham extends JPanel{
 
     private JTable table;
     private JPanel header;
-    private ArrayList<SanPhamEntity> listSanPham;
+    private List<SanPhamEntity> listSanPham;
 
     public SanPham() {
         initComponent();
@@ -39,9 +39,8 @@ public class SanPham extends JPanel{
 
         String[] columns = {"Id", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Số lượng tồn", "Quy cách", "Đơn vị"};
         int[] columnWidthPercentage = {5, 10, 35, 10, 10, 10, 10, 10};
-        ArrayList<SanPhamEntity> list = new ArrayList<>();
-        list.add(new SanPhamEntity(1, "Trà xanh C2 hương chanh 360ml", "Nước giải khát", "360ml", 8000.0, 100.0, QuyCach.CHAI, "traxanhc2hngchanh360ml.jpg"));
-        list.add(new SanPhamEntity(2, "Trà xanh C2 hương chanh 500ml",  "Nước giải khát", "500ml", 10000, 100, QuyCach.CHAI, "traxanhc2hngchanh500ml.jpg"));
+        SanPhamDao sanPhamDao = new SanPhamDao();
+        List<SanPhamEntity> list = sanPhamDao.showlist();
 
         DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -81,7 +80,7 @@ public class SanPham extends JPanel{
         }
         table.setRowHeight(60);
         table.setDefaultEditor(Object.class, null);
-        table.setPreferredScrollableViewportSize(new Dimension(950, 630));
+        table.setPreferredScrollableViewportSize(new Dimension(950, 650));
         table.setFillsViewportHeight(true);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         int totalWidth = table.getPreferredSize().width;

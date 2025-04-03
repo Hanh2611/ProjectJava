@@ -1,6 +1,5 @@
 package org.projects.entity;
 
-import org.projects.entity.Enum.QuyCach;
 
 public class SanPhamEntity {
     private int id;
@@ -9,10 +8,10 @@ public class SanPhamEntity {
     private String donVi;
     private double giaBan;
     private double soLuongTon;
-    private QuyCach quyCach;
+    private String quyCach;
     private String hinhAnh;
 
-    public SanPhamEntity(int id, String tenSanPham, String phanLoai, String donVi, double giaBan, double soLuongTon, QuyCach quyCach, String hinhAnh) {
+    public SanPhamEntity(int id, String tenSanPham, String phanLoai, String donVi, double giaBan, double soLuongTon, String quyCach, String hinhAnh) {
         this.id = id;
         this.tenSanPham = tenSanPham;
         this.phanLoai = phanLoai;
@@ -67,11 +66,11 @@ public class SanPhamEntity {
         this.soLuongTon = soLuongTon;
     }
 
-    public QuyCach getQuyCach() {
+    public String getQuyCach() {
         return quyCach;
     }
 
-    public void setQuyCach(QuyCach quyCach) {
+    public void setQuyCach(String quyCach) {
         this.quyCach = quyCach;
     }
 
