@@ -1,11 +1,11 @@
-package org.projects.Action;
+package org.projects.BUS;
 
 import org.projects.DAO.PhanQuyenDAO;
 import org.projects.entity.NhomQuyen;
 import java.util.*;
 
-public class PhanQuyenAction {
-    public PhanQuyenAction() {
+public class PhanQuyenBUS {
+    public PhanQuyenBUS() {
     }
     public List<NhomQuyen> getNhomQuyen() {
         return new PhanQuyenDAO().showlist();

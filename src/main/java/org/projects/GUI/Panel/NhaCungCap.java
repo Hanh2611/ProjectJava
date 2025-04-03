@@ -20,7 +20,7 @@ public class NhaCungCap extends JPanel{
     private DefaultTableCellRenderer listRenderTable;
     private JScrollPane scrollData;
     private headerBar header;
-    private NhaCungCapAction nccBus = new NhaCungCapAction(this,null);
+    private NhaCungCapAction nccAction = new NhaCungCapAction(this,null);
 
     public NhaCungCap() {
         String[][] listItemHeader = {
@@ -65,7 +65,7 @@ public class NhaCungCap extends JPanel{
         this.add(centerPanel);
 
         for(String name : header.getHeaderFunc().getHm().keySet()) {
-            header.getHeaderFunc().getHm().get(name).addActionListener(nccBus);
+            header.getHeaderFunc().getHm().get(name).addActionListener(nccAction);
         }
         UIUtils.refreshComponent(this);
     }
