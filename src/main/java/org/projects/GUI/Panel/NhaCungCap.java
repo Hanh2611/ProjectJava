@@ -37,7 +37,7 @@ public class NhaCungCap extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
+        header = new headerBar(listItemHeader);
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
