@@ -47,7 +47,7 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
 
     @Override
     public int sua(NhaCungCapEntity fix) {
-        String query = "update nha_cung_cap set ten_nha_cung_cap = ? so_dien_thoai = ? email = ? dia_chi_nha_cung_cap = ? where ma_nha_cung_cap= ?";
+        String query = "update nha_cung_cap set ten_nha_cung_cap = ?,so_dien_thoai = ?,email = ?,dia_chi_nha_cung_cap = ? where ma_nha_cung_cap= ?";
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement ps = c.prepareStatement(query);)  {
             ps.setString(1,fix.getTenNCC());

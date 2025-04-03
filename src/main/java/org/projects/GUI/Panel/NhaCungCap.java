@@ -4,7 +4,9 @@ import org.projects.BUS.NhaCungCapBUS;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.Components.header.headerFunction;
 import org.projects.GUI.Components.layoutCompoment;
+import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
@@ -25,11 +27,8 @@ public class NhaCungCap extends JPanel{
     private DefaultTableModel nameTableModel;
     private DefaultTableCellRenderer listRenderTable;
     private JScrollPane scrollData;
-    private List<NhaCungCapEntity> listnccEntity;
     private headerBar header;
-    private NhaCungCapBUS nccBus = new NhaCungCapBUS(this);
-    private NhaCungCapEntity nccEntity;
-    private generalFunction generalFunc;
+    private NhaCungCapBUS nccBus = new NhaCungCapBUS(this,null);
 
     public NhaCungCap() {
         String listItemHeader[][] = {
@@ -38,11 +37,11 @@ public class NhaCungCap extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader);
-        listnccEntity = new ArrayList<>();
+        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
+        this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
-        layoutCompoment.addHeader(this, listItemHeader);
+//        layoutCompoment.addHeader(this, listItemHeader);
         this.init();
         reloadDAO();
     }
@@ -63,7 +62,6 @@ public class NhaCungCap extends JPanel{
         nccTabel.setSelectionBackground(new Color(204, 229, 255));
         nccTabel.setRowHeight(40);
         nccTabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        nccTabel.setAutoCreateRowSorter(true);
         nccTabel.setModel(nameTableModel);
         listRenderTable = new DefaultTableCellRenderer();
         listRenderTable.setHorizontalAlignment(JLabel.CENTER);
@@ -74,12 +72,9 @@ public class NhaCungCap extends JPanel{
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 
-        //them action
-        HashMap<String,generalFunction> panelFunction = this.getHeader().getHeaderFunc().getHm();
-        for(Map.Entry<String,generalFunction> entry : panelFunction.entrySet()) {
-           entry.getValue().addMouseListener(nccBus);
+        for(String name : header.getHeaderFunc().getHm().keySet()) {
+            header.getHeaderFunc().getHm().get(name).addActionListener(nccBus);
         }
-
         UIUtils.refreshComponent(this);
     }
     public void loadList(List<NhaCungCapEntity> list) {
