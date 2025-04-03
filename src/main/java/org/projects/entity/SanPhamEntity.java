@@ -4,14 +4,17 @@ package org.projects.entity;
 public class SanPhamEntity {
     private int id;
     private String tenSanPham;
-    private String phanLoai;
+    private DanhMucSanPhamEntity phanLoai;
     private String donVi;
     private double giaBan;
     private double soLuongTon;
     private String quyCach;
     private String hinhAnh;
 
-    public SanPhamEntity(int id, String tenSanPham, String phanLoai, String donVi, double giaBan, double soLuongTon, String quyCach, String hinhAnh) {
+    public SanPhamEntity() {
+    }
+
+    public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, String quyCach, String hinhAnh) {
         this.id = id;
         this.tenSanPham = tenSanPham;
         this.phanLoai = phanLoai;
@@ -34,11 +37,11 @@ public class SanPhamEntity {
         this.tenSanPham = tenSanPham;
     }
 
-    public String getPhanLoai() {
+    public DanhMucSanPhamEntity getPhanLoai() {
         return phanLoai;
     }
 
-    public void setPhanLoai(String phanLoai) {
+    public void setPhanLoai(DanhMucSanPhamEntity phanLoai) {
         this.phanLoai = phanLoai;
     }
 

@@ -1,10 +1,10 @@
 package org.projects.entity;
 
-public class DanhMucSanPham {
+public class DanhMucSanPhamEntity {
     private int id;
     private String tenDanhMuc;
 
-    public DanhMucSanPham(int id, String tenDanhMuc) {
+    public DanhMucSanPhamEntity(int id, String tenDanhMuc) {
         this.id = id;
         this.tenDanhMuc = tenDanhMuc;
     }

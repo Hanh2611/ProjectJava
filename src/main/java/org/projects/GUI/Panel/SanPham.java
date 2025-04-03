@@ -1,6 +1,8 @@
 package org.projects.GUI.Panel;
 
+import org.projects.BUS.SanPhamBus;
 import org.projects.DAO.SanPhamDao;
+import org.projects.GUI.DiaLog.AddSanPhamDialog;
 import org.projects.entity.SanPhamEntity;
 
 import java.awt.*;
@@ -28,19 +30,39 @@ public class SanPham extends JPanel{
         this.header = new JPanel();
         this.header.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-        JButton btnAdd = new JButton("Thêm");
-        JButton btnUpdate = new JButton("Sửa");
-        JButton btnDelete = new JButton("Xóa");
-        JButton btnDetail = new JButton("Chi tiết");
-        header.add(btnAdd);
-        header.add(btnUpdate);
-        header.add(btnDelete);
-        header.add(btnDetail);
+        String[] quyen = new String[]{"Thêm", "Sửa", "Xóa", "Chi tiết"};
+        for (String s : quyen) {
+            JButton btn = new JButton(s);
+            btn.setPreferredSize(new Dimension(50, 30));
+            btn.setBackground(Color.WHITE);
+            btn.setForeground(Color.BLACK);
+            btn.setFont(new Font("Arial", Font.BOLD, 12));
+            btn.setBorder(BorderFactory.createEmptyBorder());
+            btn.setFocusPainted(false);
+            btn.setBorderPainted(false);
+            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn.addActionListener(e -> {
+                switch (s) {
+                    case "Thêm":
+                        SanPhamEntity sp = new SanPhamEntity();
+                        new AddSanPhamDialog(s, sp);
+                        break;
+                    case "Sửa":
+                        break;
+                    case "Xóa":
+                        break;
+                    case "Chi tiết":
+                        break;
+                }
+            });
+            header.add(btn);
+        }
+        this.add(header);
 
         String[] columns = {"Id", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Số lượng tồn", "Quy cách", "Đơn vị"};
         int[] columnWidthPercentage = {5, 10, 35, 10, 10, 10, 10, 10};
-        SanPhamDao sanPhamDao = new SanPhamDao();
-        List<SanPhamEntity> list = sanPhamDao.showlist();
+        SanPhamBus sanPhamBus = new SanPhamBus();
+        List<SanPhamEntity> list = sanPhamBus.getAllSanPham();
 
         DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -61,7 +83,7 @@ public class SanPham extends JPanel{
                     sanPhamEntity.getId(),
                     imageIcon,
                     sanPhamEntity.getTenSanPham(),
-                    sanPhamEntity.getPhanLoai(),
+                    sanPhamEntity.getPhanLoai().getTenDanhMuc(),
                     sanPhamEntity.getGiaBan(),
                     sanPhamEntity.getSoLuongTon(),
                     sanPhamEntity.getQuyCach(),
@@ -80,7 +102,7 @@ public class SanPham extends JPanel{
         }
         table.setRowHeight(60);
         table.setDefaultEditor(Object.class, null);
-        table.setPreferredScrollableViewportSize(new Dimension(950, 650));
+        table.setPreferredScrollableViewportSize(new Dimension(960, 650));
         table.setFillsViewportHeight(true);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         int totalWidth = table.getPreferredSize().width;
@@ -88,6 +110,5 @@ public class SanPham extends JPanel{
             TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(totalWidth * columnWidthPercentage[i] / 100);
         }
-        this.add(header);
         this.add(new JScrollPane(table));
     }}

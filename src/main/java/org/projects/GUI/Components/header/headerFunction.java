@@ -6,14 +6,16 @@ import org.projects.GUI.MainGUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class headerFunction extends JPanel {
-    private MainGUI mg;
     private generalFunction gl;
+    private HashMap<String,generalFunction> hm = new HashMap<>();
     public headerFunction(Dimension parentSize, String listItemHeader[][]) {
-        this.mg = mg;
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
@@ -28,18 +30,18 @@ public class headerFunction extends JPanel {
         c.weighty = 0.5;
         c.anchor = GridBagConstraints.CENTER;
         for (String [] i : listItemHeader) {
-            gl = new generalFunction(i[0],i[1],i[2],mg);
-            gl.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                   generalFunction btn = (generalFunction) e.getSource();
-                   if(btn.getNameFunction().equals(i[2])) {
-                       System.out.println("nut duoc nhan la: " + i[1]);
-                   }
-                }
-            });
+            gl = new generalFunction(i[0],i[1],i[2]);
+            hm.put(i[2],gl);
             this.add(gl, c);
             c.gridx++;
         }
+    }
+    //getter
+    public HashMap<String,generalFunction> getHm() {
+        return hm;
+    }
+
+    public generalFunction getGl() {
+        return gl;
     }
 }

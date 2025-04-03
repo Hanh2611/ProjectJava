@@ -1,13 +1,18 @@
 package org.projects.GUI.Panel;
 
+import org.projects.BUS.NhaCungCapBUS;
 import org.projects.DAO.NhaCungCapDAO;
+import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,17 +25,21 @@ public class NhaCungCap extends JPanel{
     private DefaultTableModel nameTableModel;
     private DefaultTableCellRenderer listRenderTable;
     private JScrollPane scrollData;
-    private List<NhaCungCapEntity> nccEntity;
+    private List<NhaCungCapEntity> listnccEntity;
+    private headerBar header;
+    private NhaCungCapBUS nccBus = new NhaCungCapBUS(this);
+    private NhaCungCapEntity nccEntity;
+    private generalFunction generalFunc;
 
     public NhaCungCap() {
         String listItemHeader[][] = {
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
                 {"icon/trash.svg", "Xóa", "delete"},
-                {"icon/details.svg", "Chi tiết", "detail"},
-                {"icon/excel.svg", "Xuất excel", "export"}
+                {"icon/details.svg", "Chi tiết", "detail"}
         };
-        nccEntity = new ArrayList<>();
+        header = new headerBar(listItemHeader);
+        listnccEntity = new ArrayList<>();
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
         layoutCompoment.addHeader(this, listItemHeader);
@@ -48,7 +57,7 @@ public class NhaCungCap extends JPanel{
         };
         nameTableModel.setColumnIdentifiers(new String[]{"Mã nhà cung cấp","tên nhà cung cấp","số điện thoại","email","địa chỉ"});
         nccTabel = new JTable();
-        nccTabel.setForeground(Color.MAGENTA);
+        nccTabel.setForeground(Color.decode("#7ed6df"));
         nccTabel.setShowGrid(true);
         nccTabel.setGridColor(new Color(220, 220, 220));
         nccTabel.setSelectionBackground(new Color(204, 229, 255));
@@ -64,6 +73,14 @@ public class NhaCungCap extends JPanel{
         scrollData = new JScrollPane(nccTabel);
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
+
+        //them action
+        HashMap<String,generalFunction> panelFunction = this.getHeader().getHeaderFunc().getHm();
+        for(Map.Entry<String,generalFunction> entry : panelFunction.entrySet()) {
+           entry.getValue().addMouseListener(nccBus);
+        }
+
+        UIUtils.refreshComponent(this);
     }
     public void loadList(List<NhaCungCapEntity> list) {
         nameTableModel.setRowCount(0);
@@ -83,5 +100,9 @@ public class NhaCungCap extends JPanel{
     public void reloadDAO() {
         List<NhaCungCapEntity> lst = new NhaCungCapDAO().showlist();
         loadList(lst);
+    }
+    //getter
+    public headerBar getHeader() {
+        return header;
     }
 }

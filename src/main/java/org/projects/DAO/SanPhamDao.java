@@ -1,6 +1,7 @@
 package org.projects.DAO;
 
 import org.projects.config.DatabasesConfig;
+import org.projects.entity.DanhMucSanPhamEntity;
 import org.projects.entity.SanPhamEntity;
 
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public class SanPhamDao implements ChucNangDAO<SanPhamEntity> {
             while (rs.next()) {
                 SanPhamEntity sp = new SanPhamEntity(rs.getInt("ma_san_pham"),
                                                      rs.getString("ten_san_pham"),
-                                                     rs.getString("ten_danh_muc"),
+                                                     new DanhMucSanPhamEntity(rs.getInt("ma_danh_muc"), rs.getString("ten_danh_muc")),
                                                      rs.getString("don_vi"),
                                                      rs.getDouble("gia_ban"),
                                                      rs.getDouble("so_luong_ton"),

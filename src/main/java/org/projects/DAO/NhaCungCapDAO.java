@@ -30,17 +30,48 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
 
     @Override
     public int them(NhaCungCapEntity add) {
-        return 0;
+        String query = "insert into nha_cung_cap(ten_nha_cung_cap,so_dien_thoai,email,dia_chi_nha_cung_cap) values(?,?,?,?);";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement ps = c.prepareStatement(query);)
+            {
+            ps.setString(1,add.getTenNCC());
+            ps.setString(2,add.getSoDienThoaiNCC());
+            ps.setString(3,add.getEmailNCC());
+            ps.setString(4,add.getDiaCHiNCC());
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
     public int sua(NhaCungCapEntity fix) {
-        return 0;
+        String query = "update nha_cung_cap set ten_nha_cung_cap = ? so_dien_thoai = ? email = ? dia_chi_nha_cung_cap = ? where ma_nha_cung_cap= ?";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement ps = c.prepareStatement(query);)  {
+            ps.setString(1,fix.getTenNCC());
+            ps.setString(2,fix.getSoDienThoaiNCC());
+            ps.setString(3,fix.getEmailNCC());
+            ps.setString(4,fix.getDiaCHiNCC());
+            return ps.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
     public int xoa(NhaCungCapEntity delete) {
-        return 0;
+        String query = "delete from nha_cung_cap where ma_nha_cung_cap= ?";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement ps = c.prepareStatement(query);) {
+            ps.setString(1,delete.getTenNCC());
+            return ps.executeUpdate();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override

@@ -1,14 +1,11 @@
 package org.projects.GUI.Panel;
 
-import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
 
-import java.awt.*;
+import javax.swing.JPanel;
 
-import javax.swing.*;
-
-public class DanhMucSanPham extends JPanel{
-    public DanhMucSanPham() {
+public class TaiKhoan extends JPanel{
+    public TaiKhoan() {
         String listItemHeader[][] = {
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
@@ -16,6 +13,6 @@ public class DanhMucSanPham extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        layoutCompoment.addHeader(this, listItemHeader);
+//        layoutCompoment.addHeader(this, listItemHeader);
     }
 }
