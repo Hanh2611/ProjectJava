@@ -6,6 +6,7 @@ import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.header.headerFunction;
 import org.projects.GUI.Components.layoutCompoment;
+import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
@@ -27,8 +28,7 @@ public class NhaCungCap extends JPanel{
     private DefaultTableCellRenderer listRenderTable;
     private JScrollPane scrollData;
     private headerBar header;
-    private NhaCungCapBUS nccBus;
-    private HashMap<String,generalFunction> nccMap;
+    private NhaCungCapBUS nccBus = new NhaCungCapBUS(this,null);
 
     public NhaCungCap() {
         String listItemHeader[][] = {
@@ -37,12 +37,12 @@ public class NhaCungCap extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader);
+        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
+        this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
-        layoutCompoment.addHeader(this, listItemHeader);
+//        layoutCompoment.addHeader(this, listItemHeader);
         this.init();
-        nccBus = new NhaCungCapBUS(this);
         reloadDAO();
     }
 
@@ -72,9 +72,8 @@ public class NhaCungCap extends JPanel{
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 
-        for(String tb : this.getHeader().getHeaderFunc().getHm().keySet()) {
-            System.out.println("nut duoc click la: " + tb);
-            this.getHeader().getHeaderFunc().getHm().get(tb).addMouseListener(nccBus);
+        for(String name : header.getHeaderFunc().getHm().keySet()) {
+            header.getHeaderFunc().getHm().get(name).addActionListener(nccBus);
         }
         UIUtils.refreshComponent(this);
     }
