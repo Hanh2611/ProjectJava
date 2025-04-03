@@ -1,20 +1,15 @@
-package org.projects.BUS;
+package org.projects.Action;
 
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.Panel.NhaCungCap;
-import org.projects.entity.NhaCungCapEntity;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Map;
 
-public class NhaCungCapBUS implements ActionListener, MouseListener {
+public class NhaCungCapAction implements ActionListener, MouseListener {
     private NhaCungCap ncc;
     private NhaCungCapDialog nccDialog;
-    public NhaCungCapBUS(NhaCungCap ncc,NhaCungCapDialog nccDialog) {
+    public NhaCungCapAction(NhaCungCap ncc, NhaCungCapDialog nccDialog) {
         this.ncc = ncc;
         this.nccDialog = nccDialog;
     }

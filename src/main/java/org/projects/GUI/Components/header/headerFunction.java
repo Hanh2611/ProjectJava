@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class headerFunction extends JToolBar {
     private HashMap<String,generalFunction> hm = new HashMap<>();
-    public headerFunction(Dimension parentSize, String listItemHeader[][],String[] listAction) {
+    public headerFunction(Dimension parentSize, String[][] listItemHeader, String[] listAction) {
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
         this.setFloatable(false);
 //        this.setLayout(new GridBagLayout());
@@ -22,7 +22,7 @@ public class headerFunction extends JToolBar {
         init(listItemHeader,listAction);
         this.setVisible(true);
     }
-    public void init(String listItemHeader[][],String[] listAction) {
+    public void init(String[][] listItemHeader, String[] listAction) {
 //        GridBagConstraints c = new GridBagConstraints();
 //        c.gridx = 0;
 //        c.gridy = 0;

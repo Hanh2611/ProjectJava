@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AddSanPhamDialog extends JDialog {
-    private SanPhamEntity sanPham;
+    private SanPham sanPham;
     private String actionType; // them , xoa, sua , chi tiet
     private JLabel maSP;
     private JLabel tenSP;
@@ -25,7 +25,7 @@ public class AddSanPhamDialog extends JDialog {
     private JTextField moTaField;
     private JButton chucnangBTN;
     private JButton thoatBTN;
-    public AddSanPhamDialog(String actionType, SanPhamEntity sanPham) {
+    public AddSanPhamDialog(String actionType, SanPham sanPham) {
         this.sanPham = sanPham;
         this.actionType = actionType;
         this.init();

@@ -1,4 +1,4 @@
-package org.projects.BUS;
+package org.projects.Action;
 
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
@@ -10,9 +10,9 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class LoginBUS implements MouseListener {
+public class LoginAction implements MouseListener {
     private LoginGUI loginGUI;
-    public LoginBUS(LoginGUI loginGUI) {
+    public LoginAction(LoginGUI loginGUI) {
         this.loginGUI = loginGUI;
     }
 

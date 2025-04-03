@@ -1,4 +1,4 @@
-package org.projects.BUS;
+package org.projects.Action;
 
 import java.awt.Frame;
 import java.awt.event.MouseEvent;
@@ -8,9 +8,9 @@ import javax.swing.event.MouseInputListener;
 
 import org.projects.GUI.MainGUI;
 
-public class MainBUS implements MouseInputListener {
+public class MainAction implements MouseInputListener {
     private MainGUI mainFrame;
-    public MainBUS(MainGUI mainFrame) {
+    public MainAction(MainGUI mainFrame) {
         this.mainFrame = mainFrame; 
     }
     @Override

@@ -5,22 +5,16 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Menu;
-import java.awt.Taskbar;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.projects.BUS.MainBUS;
+import org.projects.Action.MainAction;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Panel.WestTaskBar;
 import org.projects.GUI.utils.UIUtils;
@@ -55,7 +49,7 @@ public class MainGUI extends JFrame {
         title.setBackground(LoginGUI.MainColor);
 
         //action MainBUS
-        MainBUS action = new MainBUS(this);
+        MainAction action = new MainAction(this);
 
         //minus,cancel icon
         minusIcon = handleComponents.createButtonIcon("icon/minus-sign.svg", 20, 20);
