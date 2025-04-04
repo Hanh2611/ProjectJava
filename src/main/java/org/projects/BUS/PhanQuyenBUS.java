@@ -13,4 +13,5 @@ public class PhanQuyenBUS {
         return new NhomQuyenDAO().showlist();
     }
     public List<DanhMucQuanLy> getDanhMucQuanLy() {return new DanhMucQuanLyDAO().showlist();}
+
 }
