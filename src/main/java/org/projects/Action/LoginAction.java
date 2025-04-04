@@ -7,11 +7,11 @@ import org.projects.GUI.DiaLog.SignUpDialog;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class LoginAction implements MouseListener {
     private LoginGUI loginGUI;
+    public static MainGUI mainGUI;
     public LoginAction(LoginGUI loginGUI) {
         this.loginGUI = loginGUI;
     }
@@ -23,20 +23,20 @@ public class LoginAction implements MouseListener {
         }
 
         if(e.getSource().equals(loginGUI.getDangNhapButton())) {
-                JOptionPane.showMessageDialog(loginGUI, "Đăng nhập thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        new MainGUI();
-                        loginGUI.setVisible(false);
-                    }
-                });
+            JOptionPane.showMessageDialog(loginGUI, "Đăng nhập thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    mainGUI = new MainGUI();
+                    loginGUI.setVisible(false);
+                }
+            });
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-            
+
     }
 
     @Override

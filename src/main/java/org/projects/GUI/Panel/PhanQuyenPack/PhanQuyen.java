@@ -1,6 +1,6 @@
 package org.projects.GUI.Panel.PhanQuyenPack;
 
-import org.projects.Action.PhanQuyenAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.Components.layoutCompoment;
 import org.projects.entity.NhomQuyen;
 import java.awt.*;
@@ -59,7 +59,7 @@ public class PhanQuyen extends JPanel{
         contentPanel.add(scrollPane, BorderLayout.CENTER);
     }
     public void loadData(DefaultTableModel tableModel) {
-        List<NhomQuyen> list = new PhanQuyenAction().getNhomQuyen();
+        List<NhomQuyen> list = new PhanQuyenBUS().getNhomQuyen();
         for (NhomQuyen nhomQuyen : list) {
             tableModel.addRow(new Object[]{nhomQuyen.getMaNhomQuyen(), nhomQuyen.getTenNomQuyen()});
         }
