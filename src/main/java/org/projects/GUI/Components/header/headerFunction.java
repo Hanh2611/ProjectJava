@@ -46,6 +46,10 @@ public class headerFunction extends JPanel {
                     break;
                 case "detail":
                     hm.put("detail",new generalFunction("icon/details.svg","Chi tiết","detail"));
+                    break;
+                default:
+                    hm.put("excel",new generalFunction("icon/details.svg","Chi tiết","detail"));
+                    break;
             }
         }
     }

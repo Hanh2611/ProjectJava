@@ -23,7 +23,7 @@ public class PhanQuyen extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        headerBar header = new headerBar(listItemHeader, new String[]{"add","update","delete","detail"});
+        headerBar header = new headerBar(listItemHeader, new String[]{"add","update","delete","detail","execel"});
         this.add(header);
         init();
         initTable();
