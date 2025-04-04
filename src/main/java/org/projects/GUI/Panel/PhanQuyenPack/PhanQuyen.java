@@ -1,6 +1,7 @@
 package org.projects.GUI.Panel.PhanQuyenPack;
 
 import org.projects.BUS.PhanQuyenBUS;
+import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
 import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
 import org.projects.entity.NhomQuyen;
@@ -10,8 +11,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
-import static org.projects.BUS.LoginBUS.mainGUI;
 
 public class PhanQuyen extends JPanel{
     private JTable mainTable;
@@ -24,7 +23,8 @@ public class PhanQuyen extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        layoutCompoment.addHeader(this, listItemHeader);
+        headerBar header = new headerBar(listItemHeader, new String[]{"add","update","delete","detail"});
+        this.add(header);
         init();
         initTable();
     }
@@ -32,7 +32,6 @@ public class PhanQuyen extends JPanel{
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         layoutCompoment.setupMainPanel(contentPanel);
-        new addPhanQuyen(mainGUI);
         this.add(contentPanel);
     }
     public void initTable() {

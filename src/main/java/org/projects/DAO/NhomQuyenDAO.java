@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
-public class NhomQuyenDAO implements chucNangDAO<NhomQuyen> {
+public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     @Override
     public List<NhomQuyen> showlist() {
         String query = "select * from nhom_quyen";

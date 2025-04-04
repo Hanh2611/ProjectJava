@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DanhMucQuanLyDAO implements chucNangDAO<DanhMucQuanLy> {
+public class DanhMucQuanLyDAO implements ChucNangDAO<DanhMucQuanLy> {
 
     @Override
     public List<DanhMucQuanLy> showlist() {
