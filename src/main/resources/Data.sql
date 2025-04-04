@@ -62,6 +62,6 @@ INSERT INTO tai_khoan (ma_nguoi_dung, ten_dang_nhap, mat_khau, quyen_nguoi_dung,
                                                                                                  (2, 'nv_banhang1', 'pass123', 2, 'hoat_dong'),
                                                                                                  (3, 'nv_banhang2', 'pass456', 2, 'hoat_dong'),
                                                                                                  (4, 'nv_kho1', 'kho123', 3, 'hoat_dong'),
-                                                                                                 (5, 'ke_toan1', 'ke_toan456', 4, 'hoat_dong'),
+select * from nhan_vien                                                                                               (5, 'ke_toan1', 'ke_toan456', 4, 'hoat_dong'),
                                                                                                  (6, 'khach_hang1', 'khach123', 5, 'hoat_dong'),
                                                                                                  (7, 'khach_hang2', 'khach456', 5, 'da_khoa');

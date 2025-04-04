@@ -1,18 +1,17 @@
 package org.projects.GUI.Panel.PhanQuyenPack;
 
 import org.projects.BUS.PhanQuyenBUS;
-import org.projects.DAO.PhanQuyenDAO;
-import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
+import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
 import org.projects.entity.NhomQuyen;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import static org.projects.BUS.LoginBUS.mainGUI;
 
 public class PhanQuyen extends JPanel{
     private JTable mainTable;
@@ -33,6 +32,7 @@ public class PhanQuyen extends JPanel{
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         layoutCompoment.setupMainPanel(contentPanel);
+        new addPhanQuyen(mainGUI);
         this.add(contentPanel);
     }
     public void initTable() {
