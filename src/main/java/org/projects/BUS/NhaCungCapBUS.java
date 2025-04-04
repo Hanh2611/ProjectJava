@@ -1,63 +1,18 @@
 package org.projects.BUS;
 
-import org.projects.GUI.Components.header.generalFunction;
-import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.entity.NhaCungCapEntity;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class NhaCungCapBUS implements ActionListener, MouseListener {
+public class NhaCungCapBUS {
     private NhaCungCap ncc;
-    private NhaCungCapDialog nccDialog;
-    public NhaCungCapBUS(NhaCungCap ncc,NhaCungCapDialog nccDialog) {
-        this.ncc = ncc;
-        this.nccDialog = nccDialog;
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-//        generalFunction c = (generalFunction) e.getSource();
-//        System.out.println(c);
+    private static List<NhaCungCapEntity> listncc = new ArrayList<>();
+
+//    public int them(NhaCungCap ncc) {
 //        if(ncc != null) {
-//            for(String name : ncc.getHeader().getHeaderFunc().getHm().keySet()) {
-//                generalFunction gf = ncc.getHeader().getHeaderFunc().getHm().get(name);
-//                if(c.equals(gf)) {
-//                    if(name == null && name.trim().isEmpty()) return;
-//                    System.out.println("ten cua nut la : " + name);
-//                    if("add".equals(name)) {
-//                        new NhaCungCapDialog(name,ncc);
-//                    }
-//                }
-//            }
+//
 //        }
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+//    }
 }

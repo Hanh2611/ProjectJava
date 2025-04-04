@@ -2,7 +2,7 @@ package org.projects.DAO;
 
 import java.util.List;
 
-public interface chucNangDAO<T> {
+public interface ChucNangDAO<T> {
     List<T> showlist();
     int them(T add);
     int sua(T fix);

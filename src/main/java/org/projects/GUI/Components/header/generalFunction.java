@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class generalFunction extends JButton {
+public class generalFunction extends JPanel {
     private String iconPathFunciton;
     private String nameIcon;
     private String nameFunction;
@@ -20,7 +20,6 @@ public class generalFunction extends JButton {
         this.iconPathFunciton = iconPathFunciton;
         this.nameIcon = nameIcon;
         this.nameFunction = nameFunction;
-        this.setFocusPainted(false);
         FlatSVGIcon icon = new FlatSVGIcon(iconPathFunciton, 40, 40);
         this.setPreferredSize(new Dimension(60,60));
         this.setBackground(Color.WHITE);

@@ -1,23 +1,15 @@
 package org.projects.GUI.Panel;
 
-import org.projects.BUS.NhaCungCapBUS;
+import org.projects.Action.NhaCungCapAction;
 import org.projects.DAO.NhaCungCapDAO;
-import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Components.header.headerBar;
-import org.projects.GUI.Components.header.headerFunction;
-import org.projects.GUI.Components.layoutCompoment;
-import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,16 +20,16 @@ public class NhaCungCap extends JPanel{
     private DefaultTableCellRenderer listRenderTable;
     private JScrollPane scrollData;
     private headerBar header;
-    private NhaCungCapBUS nccBus = new NhaCungCapBUS(this,null);
+    private NhaCungCapAction nccAction = new NhaCungCapAction(this,null);
 
     public NhaCungCap() {
-        String listItemHeader[][] = {
+        String[][] listItemHeader = {
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader);
+        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
@@ -72,10 +64,10 @@ public class NhaCungCap extends JPanel{
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 
-//        for(String name : header.getHeaderFunc().getHm().keySet()) {
-//            header.getHeaderFunc().getHm().get(name).addActionListener(nccBus);
-//        }
-//        UIUtils.refreshComponent(this);
+        for(String name : header.getHeaderFunc().getHm().keySet()) {
+            header.getHeaderFunc().getHm().get(name).addMouseListener(nccAction);
+        }
+        UIUtils.refreshComponent(this);
     }
     public void loadList(List<NhaCungCapEntity> list) {
         nameTableModel.setRowCount(0);

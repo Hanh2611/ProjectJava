@@ -1,6 +1,5 @@
 package org.projects.DAO;
 
-import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.config.DatabasesConfig;
 import org.projects.entity.NhaCungCapEntity;
 
@@ -10,7 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NhaCungCapDAO implements chucNangDAO<NhaCungCapEntity> {
+public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
 
     @Override
     public List<NhaCungCapEntity> showlist() {
