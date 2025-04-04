@@ -1,8 +1,10 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.NhaCungCapAction;
+import org.projects.BUS.NhaCungCapBUS;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.Components.layoutCompoment;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
@@ -21,6 +23,8 @@ public class NhaCungCap extends JPanel{
     private JScrollPane scrollData;
     private headerBar header;
     private NhaCungCapAction nccAction = new NhaCungCapAction(this,null);
+    private NhaCungCapBUS nccBUS = new NhaCungCapBUS(this);
+    private NhaCungCapEntity nhaCungCapEntity;
 
     public NhaCungCap() {
         String[][] listItemHeader = {
@@ -33,7 +37,7 @@ public class NhaCungCap extends JPanel{
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
-//        layoutCompoment.addHeader(this, listItemHeader);
+//        layoutCompoment.addHeader(this, listItemHeader,new String[]{"add","update","delete","detail"});
         this.init();
         reloadDAO();
     }
@@ -48,9 +52,6 @@ public class NhaCungCap extends JPanel{
         };
         nameTableModel.setColumnIdentifiers(new String[]{"Mã nhà cung cấp","tên nhà cung cấp","số điện thoại","email","địa chỉ"});
         nccTabel = new JTable();
-        nccTabel.setForeground(Color.decode("#7ed6df"));
-        nccTabel.setShowGrid(true);
-        nccTabel.setGridColor(new Color(220, 220, 220));
         nccTabel.setSelectionBackground(new Color(204, 229, 255));
         nccTabel.setRowHeight(40);
         nccTabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -88,8 +89,21 @@ public class NhaCungCap extends JPanel{
         List<NhaCungCapEntity> lst = new NhaCungCapDAO().showlist();
         loadList(lst);
     }
+    public NhaCungCapEntity getRow() {
+        int row = nccTabel.getSelectedRow();
+        if(row == -1) return null;
+        int ma = (int) nccTabel.getValueAt(row,0);
+        String ten = nccTabel.getValueAt(row,1).toString();
+        String sdt = nccTabel.getValueAt(row,2).toString();
+        String email = nccTabel.getValueAt(row,3).toString();
+        String diaChi = nccTabel.getValueAt(row,4).toString();
+
+        return new NhaCungCapEntity(ma,ten,sdt,email,diaChi);
+    }
     //getter
     public headerBar getHeader() {
         return header;
     }
+
+
 }

@@ -83,7 +83,7 @@ public class NhanVien extends JPanel {
                 {"icon/details.svg", "Chi tiết", "ChiTiet"},
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
-        addHeader(this , listItemHeader);
+//        addHeader(this , listItemHeader);
     }
     private void setupLayout() {
         setBackground(new Color(240, 240, 240));
