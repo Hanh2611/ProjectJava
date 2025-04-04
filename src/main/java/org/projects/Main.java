@@ -1,10 +1,9 @@
 package org.projects;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import org.projects.GUI.LoginGUI;
 import org.projects.GUI.TrangChuDemo;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
