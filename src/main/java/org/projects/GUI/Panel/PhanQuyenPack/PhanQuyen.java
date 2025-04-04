@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import static org.projects.Action.LoginAction.mainGUI;
+
 public class PhanQuyen extends JPanel{
     private JTable mainTable;
     private JPanel contentPanel;
@@ -32,6 +34,7 @@ public class PhanQuyen extends JPanel{
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         layoutCompoment.setupMainPanel(contentPanel);
+        new addPhanQuyen(mainGUI);
         this.add(contentPanel);
     }
     public void initTable() {
