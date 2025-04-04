@@ -15,6 +15,16 @@ public class NhaCungCapAction implements ActionListener, MouseListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
+
+    }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
         generalFunction c = (generalFunction) e.getSource();
         System.out.println(c);
         if(ncc != null) {
@@ -29,16 +39,6 @@ public class NhaCungCapAction implements ActionListener, MouseListener {
                 }
             }
         }
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-
     }
 
     @Override

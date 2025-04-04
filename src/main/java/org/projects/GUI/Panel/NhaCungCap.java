@@ -65,7 +65,7 @@ public class NhaCungCap extends JPanel{
         this.add(centerPanel);
 
         for(String name : header.getHeaderFunc().getHm().keySet()) {
-            header.getHeaderFunc().getHm().get(name).addActionListener(nccAction);
+            header.getHeaderFunc().getHm().get(name).addMouseListener(nccAction);
         }
         UIUtils.refreshComponent(this);
     }

@@ -1,4 +1,4 @@
-package org.projects.BUS;
+package org.projects.Action;
 
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
@@ -9,10 +9,10 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
-public class LoginBUS implements MouseListener {
+public class LoginAction implements MouseListener {
     private LoginGUI loginGUI;
     public static MainGUI mainGUI;
-    public LoginBUS(LoginGUI loginGUI) {
+    public LoginAction(LoginGUI loginGUI) {
         this.loginGUI = loginGUI;
     }
 
@@ -23,20 +23,20 @@ public class LoginBUS implements MouseListener {
         }
 
         if(e.getSource().equals(loginGUI.getDangNhapButton())) {
-                JOptionPane.showMessageDialog(loginGUI, "Đăng nhập thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainGUI = new MainGUI();
-                        loginGUI.setVisible(false);
-                    }
-                });
+            JOptionPane.showMessageDialog(loginGUI, "Đăng nhập thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    mainGUI = new MainGUI();
+                    loginGUI.setVisible(false);
+                }
+            });
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-            
+
     }
 
     @Override

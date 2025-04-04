@@ -90,7 +90,7 @@ public class SanPham extends JPanel{
         }
         this.add(new JScrollPane(table));
         for(String name : header.getHeaderFunc().getHm().keySet()) {
-            header.getHeaderFunc().getHm().get(name).addActionListener(new SanPhamAction(this, null));
+            header.getHeaderFunc().getHm().get(name).addMouseListener(new SanPhamAction(this, null));
         }
     }
 
