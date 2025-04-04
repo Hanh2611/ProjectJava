@@ -54,6 +54,7 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
             ps.setString(2,fix.getSoDienThoaiNCC());
             ps.setString(3,fix.getEmailNCC());
             ps.setString(4,fix.getDiaCHiNCC());
+            ps.setInt(5,fix.getMaNCC());
             return ps.executeUpdate();
         } catch(Exception e) {
             e.printStackTrace();
@@ -66,7 +67,7 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
         String query = "delete from nha_cung_cap where ma_nha_cung_cap= ?";
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement ps = c.prepareStatement(query);) {
-            ps.setString(1,delete.getTenNCC());
+            ps.setInt(1,delete.getMaNCC());
             return ps.executeUpdate();
         }catch (Exception e) {
             e.printStackTrace();
