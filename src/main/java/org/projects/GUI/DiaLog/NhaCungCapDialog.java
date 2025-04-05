@@ -1,72 +1,90 @@
 package org.projects.GUI.DiaLog;
 
+import org.projects.Action.NhaCungCapAction;
+import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.entity.NhaCungCapEntity;
+import org.projects.GUI.Components.*;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class NhaCungCapDialog extends JDialog {
     private NhaCungCap ncc;
-//    private NhaCungCapEntity nccEntity;
-    private String type; // them , xoa, sua , chi tiet
-    private JLabel maNCC;
-    private JLabel tenNCC;
-    private JLabel sodienthoaiNCC;
-    private JLabel emailNCC;
-    private JLabel diachiNCC;
-    private JTextField maNCCField;
-    private JTextField tenNCCField;
-    private JTextField sodienthoaiNCCField;
-    private JTextField emailNCCField;
-    private JTextField diachiNCCField;
+    private NhaCungCapEntity nccEntity;
+    private String nccType; // them , xoa, sua , chi tiet
+    private labelText tenNCC;
+    private labelText sodienthoaiNCC;
+    private labelText emailNCC;
+    private labelText diachiNCC;
     private JButton chucnangBTN;
     private JButton thoatBTN;
-    public NhaCungCapDialog(String type,NhaCungCap ncc) {
+    private NhaCungCapAction nccAction;
+
+    private JPanel centerPanel,bottomPanel;
+    public NhaCungCapDialog(String nccType,NhaCungCap ncc) {
         this.ncc = ncc;
-        this.type = type;
+        this.nccType = nccType;
+        nccAction = new NhaCungCapAction(ncc, this);
         this.setTitle(this.setType());
         this.setSize(600,400);
         this.setLocationRelativeTo(null);
-        this.setLayout(new GridLayout(6,2));
+        this.setLayout(new BorderLayout());
+        bottomPanel = new JPanel(new FlowLayout(0,5,5));
         this.init();
+        getEdit(this.getNccType());
         this.setVisible(true);
     }
     public void init() {
-        maNCC = new JLabel("mã nhà cung cấp: ");
-        maNCCField = new JTextField(10);
-        this.add(maNCC);
-        this.add(maNCCField);
+        centerPanel = new JPanel(new GridLayout(4,1));
+        tenNCC = new labelText("tên nhà cung cấp ",30,5);
+        sodienthoaiNCC = new labelText("số điện thoại ",30,5);
+        emailNCC = new labelText("email",30,5);
+        diachiNCC = new labelText("địa chỉ ",30,5);
+        centerPanel.add(tenNCC);
+        centerPanel.add(sodienthoaiNCC);
+        centerPanel.add(emailNCC);
+        centerPanel.add(diachiNCC);
 
-        tenNCC = new JLabel("tên nhà cung cấp: ");
-        tenNCCField = new JTextField(10);
-        this.add(tenNCC);
-        this.add(tenNCCField);
+        chucnangBTN = typeButton(getNccType());
+        chucnangBTN.setForeground(Color.BLACK);
+        chucnangBTN.setBackground(Color.decode("#7ed6df"));
+        thoatBTN = new JButton("Thoát");
+        thoatBTN.setForeground(Color.BLACK);
+        thoatBTN.setBackground(Color.decode("#ff7979"));
+        bottomPanel.add(chucnangBTN);
+        bottomPanel.add(thoatBTN);
 
-        sodienthoaiNCC = new JLabel("số điện thoại: ");
-        sodienthoaiNCCField = new JTextField(10);
-        this.add(sodienthoaiNCC);
-        this.add(sodienthoaiNCCField);
+        this.add(centerPanel,BorderLayout.CENTER);
+        this.add(bottomPanel,BorderLayout.SOUTH);
 
-        emailNCC = new JLabel("email: ");
-        emailNCCField = new JTextField(10);
-        this.add(emailNCC);
-        this.add(emailNCCField);
+        //add action
+        chucnangBTN.addActionListener(nccAction);
+        chucnangBTN.addMouseListener(nccAction);
+        thoatBTN.addActionListener(nccAction);
+        thoatBTN.addMouseListener(nccAction);
+    }
 
-        diachiNCC = new JLabel("diachi: ");
-        diachiNCCField = new JTextField(10);
-        this.add(diachiNCC);
-        this.add(diachiNCCField);
-
-        chucnangBTN = new JButton("Chucnang");
-        this.add(chucnangBTN);
-        thoatBTN = new JButton("Thoat");
-        this.add(thoatBTN);
-
+    public JButton typeButton(String nccType) {
+        String namebtn= "";
+        switch (nccType) {
+            case "add":
+                namebtn = "Thêm";
+                break;
+            case "update":
+                namebtn = "Cập nhật";
+                break;
+            case "delete","detail":
+                namebtn = "----";
+                break;
+            default:
+                break;
+        }
+        return new JButton(namebtn);
     }
     public String setType() {
-        if(type != null) {
-            switch (type.toLowerCase()) {
+        if(nccType != null) {
+            switch (nccType.toLowerCase()) {
                 case "add":
                     return "Thêm nhà cung cấp";
                 case "update":
@@ -79,5 +97,70 @@ public class NhaCungCapDialog extends JDialog {
         }
         return null;
     }
+    public void getEdit(String nccType) {
+        switch (nccType) {
+            case "update":
+                this.getEdit(true);
+                break;
+            case "detail":
+                this.getEdit(false);
+                break;
+            default:
+                break;
+        }
+    }
 
+    public void getEdit(boolean edit) {
+        nccEntity = ncc.getRow();
+        if(nccEntity != null) {
+            tenNCC.getTextField().setText(nccEntity.getTenNCC());
+            sodienthoaiNCC.getTextField().setText(nccEntity.getSoDienThoaiNCC());
+            emailNCC.getTextField().setText(nccEntity.getEmailNCC());
+            diachiNCC.getTextField().setText(nccEntity.getDiaCHiNCC());
+
+
+            tenNCC.getTextField().setEnabled(edit);
+            sodienthoaiNCC.getTextField().setEnabled(edit);
+            emailNCC.getTextField().setEnabled(edit);
+            diachiNCC.getTextField().setEnabled(edit);
+        }
+    }
+    public String getNccType() {
+        return nccType;
+    }
+
+    public JButton getChucnangBTN() {
+        return chucnangBTN;
+    }
+    public JButton getThoatBTN() {
+        return thoatBTN;
+    }
+
+    public NhaCungCap getNcc() {
+        return ncc;
+    }
+
+    public labelText getTenNCC() {
+        return tenNCC;
+    }
+
+    public labelText getSodienthoaiNCC() {
+        return sodienthoaiNCC;
+    }
+
+    public labelText getEmailNCC() {
+        return emailNCC;
+    }
+
+    public labelText getDiachiNCC() {
+        return diachiNCC;
+    }
+
+    public JPanel getCenterPanel() {
+        return centerPanel;
+    }
+
+    public JPanel getBottomPanel() {
+        return bottomPanel;
+    }
 }

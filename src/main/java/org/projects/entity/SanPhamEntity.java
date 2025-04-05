@@ -1,34 +1,32 @@
 package org.projects.entity;
 
-public class SanPham {
+
+public class SanPhamEntity {
     private int id;
     private String tenSanPham;
-    private String loaiSanPham;
-    private double soLuongTon;
-    private double giaBan;
+    private DanhMucSanPhamEntity phanLoai;
     private String donVi;
+    private double giaBan;
+    private double soLuongTon;
     private String quyCach;
     private String hinhAnh;
 
-    public SanPham() {}
+    public SanPhamEntity() {
+    }
 
-    public SanPham(int id, String tenSanPham, String loaiSanPham, double soLuongTon, double giaBan, String donVi, String quyCach, String hinhAnh) {
+    public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, String quyCach, String hinhAnh) {
         this.id = id;
         this.tenSanPham = tenSanPham;
-        this.loaiSanPham = loaiSanPham;
-        this.soLuongTon = soLuongTon;
-        this.giaBan = giaBan;
+        this.phanLoai = phanLoai;
         this.donVi = donVi;
+        this.giaBan = giaBan;
+        this.soLuongTon = soLuongTon;
         this.quyCach = quyCach;
         this.hinhAnh = hinhAnh;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTenSanPham() {
@@ -39,20 +37,20 @@ public class SanPham {
         this.tenSanPham = tenSanPham;
     }
 
-    public String getLoaiSanPham() {
-        return loaiSanPham;
+    public DanhMucSanPhamEntity getPhanLoai() {
+        return phanLoai;
     }
 
-    public void setLoaiSanPham(String loaiSanPham) {
-        this.loaiSanPham = loaiSanPham;
+    public void setPhanLoai(DanhMucSanPhamEntity phanLoai) {
+        this.phanLoai = phanLoai;
     }
 
-    public double getSoLuongTon() {
-        return soLuongTon;
+    public String getDonVi() {
+        return donVi;
     }
 
-    public void setSoLuongTon(double soLuongTon) {
-        this.soLuongTon = soLuongTon;
+    public void setDonVi(String donVi) {
+        this.donVi = donVi;
     }
 
     public double getGiaBan() {
@@ -63,12 +61,12 @@ public class SanPham {
         this.giaBan = giaBan;
     }
 
-    public String getDonVi() {
-        return donVi;
+    public double getSoLuongTon() {
+        return soLuongTon;
     }
 
-    public void setDonVi(String donVi) {
-        this.donVi = donVi;
+    public void setSoLuongTon(double soLuongTon) {
+        this.soLuongTon = soLuongTon;
     }
 
     public String getQuyCach() {

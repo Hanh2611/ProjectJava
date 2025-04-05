@@ -1,6 +1,5 @@
 package org.projects.DAO;
 
-import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.config.DatabasesConfig;
 import org.projects.entity.NhaCungCapEntity;
 
@@ -10,7 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NhaCungCapDAO implements chucNangDAO<NhaCungCapEntity> {
+public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
 
     @Override
     public List<NhaCungCapEntity> showlist() {
@@ -48,13 +47,14 @@ public class NhaCungCapDAO implements chucNangDAO<NhaCungCapEntity> {
 
     @Override
     public int sua(NhaCungCapEntity fix) {
-        String query = "update nha_cung_cap set ten_nha_cung_cap = ? so_dien_thoai = ? email = ? dia_chi_nha_cung_cap = ? where ma_nha_cung_cap= ?";
+        String query = "update nha_cung_cap set ten_nha_cung_cap = ?,so_dien_thoai = ?,email = ?,dia_chi_nha_cung_cap = ? where ma_nha_cung_cap= ?";
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement ps = c.prepareStatement(query);)  {
             ps.setString(1,fix.getTenNCC());
             ps.setString(2,fix.getSoDienThoaiNCC());
             ps.setString(3,fix.getEmailNCC());
             ps.setString(4,fix.getDiaCHiNCC());
+            ps.setInt(5,fix.getMaNCC());
             return ps.executeUpdate();
         } catch(Exception e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class NhaCungCapDAO implements chucNangDAO<NhaCungCapEntity> {
         String query = "delete from nha_cung_cap where ma_nha_cung_cap= ?";
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement ps = c.prepareStatement(query);) {
-            ps.setString(1,delete.getTenNCC());
+            ps.setInt(1,delete.getMaNCC());
             return ps.executeUpdate();
         }catch (Exception e) {
             e.printStackTrace();

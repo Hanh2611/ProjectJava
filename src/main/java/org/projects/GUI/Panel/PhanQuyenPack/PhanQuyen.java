@@ -1,15 +1,11 @@
 package org.projects.GUI.Panel.PhanQuyenPack;
 
 import org.projects.BUS.PhanQuyenBUS;
-import org.projects.DAO.PhanQuyenDAO;
-import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
 import org.projects.entity.NhomQuyen;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -25,7 +21,7 @@ public class PhanQuyen extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        layoutCompoment.addHeader(this, listItemHeader);
+//        layoutCompoment.addHeader(this, listItemHeader);
         init();
         initTable();
     }

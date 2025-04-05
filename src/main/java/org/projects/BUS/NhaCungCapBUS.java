@@ -1,55 +1,52 @@
 package org.projects.BUS;
 
-import org.projects.GUI.Components.header.generalFunction;
-import org.projects.GUI.DiaLog.NhaCungCapDialog;
+import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.entity.NhaCungCapEntity;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class NhaCungCapBUS implements ActionListener, MouseListener {
-    private NhaCungCap ncc;
-    private generalFunction generalFunc;
+public class NhaCungCapBUS {
+    private static NhaCungCap ncc;
+    private static NhaCungCapDAO nccDao = new NhaCungCapDAO();
+    private static List<NhaCungCapEntity> listncc = new ArrayList<>();
+
     public NhaCungCapBUS(NhaCungCap ncc) {
         this.ncc = ncc;
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        generalFunction c = (generalFunction) e.getSource();
-        for(Map.Entry<String, generalFunction> hm : ncc.getHeader().getHeaderFunc().getHm().entrySet()) {
-            if(c.equals(hm.getValue())) {
-                System.out.println("Mouse Clicked" + hm.getKey());
-                new NhaCungCapDialog(hm.getKey(),ncc);
+    public static List<NhaCungCapEntity> getList() {
+        listncc = nccDao.showlist();
+        return listncc;
+    }
+
+    public static boolean them(NhaCungCapEntity nccEntity) {
+        if(ncc != null) {
+            if(nccDao.them(nccEntity) > 0) {
+                ncc.reloadDAO();
+                return true;
             }
         }
+        return false;
     }
 
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
+    public static boolean sua(NhaCungCapEntity nccEntity) {
+        if(ncc != null) {
+            if(nccDao.sua(nccEntity) > 0) {
+                ncc.reloadDAO();
+                return true;
+            }
+        }
+        return false;
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
+    public static boolean xoa(NhaCungCapEntity nccEntity) {
+        if(ncc != null) {
+            if(nccDao.xoa(nccEntity) > 0) {
+                ncc.reloadDAO();
+                return true;
+            }
+        }
+        return false;
     }
 }

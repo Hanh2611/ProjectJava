@@ -7,11 +7,11 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 
 public class layoutCompoment {
-    public static void addHeader(JPanel panel, String listItemHeader[][]) {
+    public static void addHeader(JPanel panel, String listItemHeader[][],String[] listAction) {
         panel.setPreferredSize(new Dimension(1100, 1000));
         panel.setLayout(new FlowLayout(0, 0, 10));
         panel.setBackground(Color.decode("#CAECF7"));
-        panel.add(new headerBar(listItemHeader));
+        panel.add(new headerBar(listItemHeader, listAction));
         CompoundBorder border = BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(0, 10, 10, 10),
                 BorderFactory.createCompoundBorder(

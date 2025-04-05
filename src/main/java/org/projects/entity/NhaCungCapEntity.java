@@ -14,6 +14,13 @@ public class NhaCungCapEntity {
         this.diaChiNCC = diaChiNCC;
     }
 
+    public NhaCungCapEntity(String tenNCC,String soDienThoaiNCC,String emailNCC,String diaChiNCC) {
+        this.tenNCC = tenNCC;
+        this.soDienThoaiNCC = soDienThoaiNCC;
+        this.emailNCC = emailNCC;
+        this.diaChiNCC = diaChiNCC;
+    }
+
     public int getMaNCC() {
         return maNCC;
     }
@@ -32,5 +39,25 @@ public class NhaCungCapEntity {
 
     public String getDiaCHiNCC() {
         return diaChiNCC;
+    }
+
+    public void setMaNCC(int maNCC) {
+        this.maNCC = maNCC;
+    }
+
+    public void setTenNCC(String tenNCC) {
+        this.tenNCC = tenNCC;
+    }
+
+    public void setSoDienThoaiNCC(String soDienThoaiNCC) {
+        this.soDienThoaiNCC = soDienThoaiNCC;
+    }
+
+    public void setEmailNCC(String emailNCC) {
+        this.emailNCC = emailNCC;
+    }
+
+    public void setDiaChiNCC(String diaChiNCC) {
+        this.diaChiNCC = diaChiNCC;
     }
 }

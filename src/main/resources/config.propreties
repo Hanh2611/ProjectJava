@@ -1,4 +1,0 @@
-# config.example.properties
-db.url=jdbc:mysql://localhost:3306/quanlysieuthimini?useSSL=false&serverTimezone=UTC
-db.user=root
-db.password=admin
