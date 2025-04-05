@@ -1,6 +1,7 @@
 package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.GUI.Components.handleComponents;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -8,18 +9,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static org.projects.GUI.Components.layoutCompoment.addHeader;
 
 public class NhanVien extends JPanel {
     private JTable table;
     AddNhanVienConsole addNhanVienConsole;
+    DeleteNhanVienConsole deleteNhanVienConsole;
     public NhanVien() {
         init();
         setupHeader();
         setupLayout();
         testButton();
         addNhanVienConsole = new AddNhanVienConsole();
+        deleteNhanVienConsole = new DeleteNhanVienConsole();
     }
 
     private void init(){
@@ -257,7 +262,7 @@ public class NhanVien extends JPanel {
 
     public void testButton(){
         JButton btnDetail = new JButton("Chi tiết");
-        btnDetail.addActionListener(e -> ShowAddNhanVienConsole());
+        btnDetail.addActionListener(e -> ShowDeleteNhanVienConsole());
         add(btnDetail , BorderLayout.NORTH);
     }
 
@@ -273,12 +278,43 @@ public class NhanVien extends JPanel {
         titleLabel.setForeground(new Color(255, 255, 255));
         titleLabel.setBackground(new Color(0, 102, 204));
         titleLabel.setOpaque(true);
+        JButton cancelButton = add_cancelIcon(dialog);
+        titleLabel.add(cancelButton);
         dialog.getContentPane().add(titleLabel, BorderLayout.NORTH);
         dialog.getContentPane().add(detailPanel);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
+
+    private JButton add_minusIcon(){
+        JButton minusIcon;
+        minusIcon = handleComponents.createButtonIcon("icon/minus-sign.svg", 15, 20);
+        minusIcon.setBounds(470,0,30,30);
+        minusIcon.setForeground(Color.WHITE);
+        minusIcon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        return minusIcon;
+    }
+
+    private JButton add_cancelIcon(JDialog dialog){
+        JButton cancelIcon;
+        cancelIcon = handleComponents.createButtonIcon("icon/close.svg", 20, 20);
+        cancelIcon.setBounds(670,0,30,30);
+        cancelIcon.setForeground(Color.WHITE);
+        cancelIcon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.setVisible(false);
+            }
+        });
+        return cancelIcon;
+    }
+
 
     public void ShowAddNhanVienConsole(){
         JDialog dialog = new JDialog();
@@ -301,6 +337,28 @@ public class NhanVien extends JPanel {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
+
+    public void ShowDeleteNhanVienConsole(){
+        JDialog dialog = new JDialog();
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setUndecorated(true);
+        dialog.setSize(new Dimension(700, 400));
+        dialog.setMinimumSize(new Dimension(700, 400));
+        JPanel detailPanel = deleteNhanVienConsole;
+        FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
+        dialog.setIconImage(svgIcon.getImage());
+        JLabel titleLabel = new JLabel("Xóa nhân viên" , SwingConstants.CENTER);
+        titleLabel.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
+        titleLabel.setForeground(Color.white);
+        titleLabel.setBackground(new Color(0, 102, 204));
+        titleLabel.setOpaque(true);
+        dialog.getContentPane().add(titleLabel, BorderLayout.NORTH);
+        dialog.getContentPane().add(detailPanel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
+
     // test log
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

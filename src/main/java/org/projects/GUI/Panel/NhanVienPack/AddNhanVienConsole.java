@@ -1,4 +1,8 @@
 package org.projects.GUI.Panel.NhanVienPack;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.MainBUS;
+import org.projects.GUI.Components.handleComponents;
+
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
@@ -131,12 +135,38 @@ public class AddNhanVienConsole extends JPanel {
         mainImg.setPreferredSize(new Dimension(500,200));
         mainImg.setMinimumSize(new Dimension(500,200));
         mainImg.setMaximumSize(new Dimension(500,200));
-        JButton ADD = new JButton("ADD IMAGE");
-        ADD.setBackground(new Color(135,206,250));
-        SwingUtilities.invokeLater(ADD::requestFocusInWindow);
-        mainImg.add(ADD);
+        JButton button_add_image = new JButton("ADD IMAGE");
+        button_add_image.setBackground(new Color(135,206,250));
+        button_add_image.setPreferredSize(new Dimension(10 , 30));
+        button_add_image.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
+        mainImg.setLayout(new BorderLayout(5, 5));
+        String changeImage = "icon/user.svg";
+        JPanel parentImg = getJPanel(changeImage);
+        FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
+        JLabel label = new JLabel(addIcon);
+        button_add_image.add(label);
+        mainImg.add(button_add_image, BorderLayout.NORTH);
+        mainImg.add(parentImg, BorderLayout.CENTER);
+        mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }
+
+
+    private static JPanel getJPanel(String image) {
+        FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);
+        JLabel img = new RoundedImageLabel(addIcon_user , 100 , 100);
+        img.setHorizontalAlignment(SwingConstants.CENTER);
+        img.setOpaque(true);
+        JPanel parentImg = new JPanel();
+        parentImg.setOpaque(true);
+        parentImg.setPreferredSize(new Dimension(500 , 150));
+        parentImg.setMinimumSize(new Dimension(500 , 150));
+        parentImg.setMaximumSize(new Dimension(500 , 150));
+        parentImg.add(img);
+        return parentImg;
+    }
+
     private void addPlaceholderStyle(JTextComponent textComp, String placeholder) {
         textComp.setText(placeholder);
         textComp.setForeground(Color.BLACK);
