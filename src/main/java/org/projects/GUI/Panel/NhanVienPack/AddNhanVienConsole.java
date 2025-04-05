@@ -1,11 +1,14 @@
 package org.projects.GUI.Panel.NhanVienPack;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 //import org.projects.BUS.MainBUS;
+import org.projects.Action.NhanVienAction;
+import org.projects.BUS.NhanVienBus;
 import org.projects.GUI.Components.handleComponents;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.SimpleDateFormat;
@@ -14,10 +17,11 @@ import java.util.Date;
 
 import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
 
-//import static org.projects.GUI.Panel.NhanVienPack.NhanVien.main;
-
 public class AddNhanVienConsole extends JPanel {
     JRadioButton radioButton;
+    static String changeImage;
+    static JPanel parentImg;
+    private static JPanel mainImg;
     public AddNhanVienConsole() {
         initComponents();
     }
@@ -131,19 +135,17 @@ public class AddNhanVienConsole extends JPanel {
         return mainInfo;
     }
     public JPanel mainIMG(){
-        JPanel mainImg = new JPanel();
+        mainImg = new JPanel();
         mainImg.setOpaque(true);
         mainImg.setPreferredSize(new Dimension(500,200));
         mainImg.setMinimumSize(new Dimension(500,200));
         mainImg.setMaximumSize(new Dimension(500,200));
-        JButton button_add_image = new JButton("ADD IMAGE");
-        button_add_image.setBackground(new Color(135,206,250));
-        button_add_image.setPreferredSize(new Dimension(10 , 30));
-        button_add_image.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        String changeImage = "icon/user.svg";
-        JPanel parentImg = getJPanel(changeImage);
+        changeImage = "src/main/resources/Img/user.jpg";
+        parentImg = new JPanel();
+        parentImg = getJPanel(changeImage);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
@@ -153,9 +155,43 @@ public class AddNhanVienConsole extends JPanel {
         return mainImg;
     }
 
-    private static JPanel getJPanel(String image) {
-        FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);
-        JLabel img = new RoundedImageLabel(addIcon_user , 100 , 100);
+    private static JButton getJButton() {
+        JButton button_add_image = new JButton("ADD IMAGE");
+        button_add_image.addActionListener(e -> {
+                JComponent source = (JComponent) e.getSource();
+                String actionCommand = e.getActionCommand();
+
+                if("ADD IMAGE".equals(actionCommand)) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
+
+                    int result = fileChooser.showOpenDialog(null);
+                    if(result == JFileChooser.APPROVE_OPTION) {
+                        java.io.File selectedFile = fileChooser.getSelectedFile();
+                        System.out.println("File được chọn: " + selectedFile.getAbsolutePath());
+                        changeImage = selectedFile.getAbsolutePath();
+                        JPanel newParentImg = getJPanel(changeImage);
+                        mainImg.remove(parentImg);
+                        mainImg.add(newParentImg, BorderLayout.CENTER);
+                        parentImg = newParentImg;
+                        mainImg.revalidate();
+                        mainImg.repaint();
+                    }
+                }
+        });
+        button_add_image.setBackground(new Color(135,206,250));
+        button_add_image.setPreferredSize(new Dimension(10 , 30));
+        button_add_image.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        return button_add_image;
+    }
+
+    private static JPanel getJPanel(String path) {
+//        FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);
+        ImageIcon addIcon_user = new ImageIcon(path);
+        Image scale = addIcon_user.getImage().getScaledInstance(200 , 200 , Image.SCALE_SMOOTH);
+//        JLabel img = new RoundedImageLabel(addIcon_user , 100 , 100);
+        JLabel img = new JLabel(new ImageIcon(scale));
         img.setHorizontalAlignment(SwingConstants.CENTER);
         img.setOpaque(true);
         JPanel parentImg = new JPanel();

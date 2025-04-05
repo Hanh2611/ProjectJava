@@ -4,6 +4,7 @@ import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowChiTietNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowDeleteNhanVienConsole;
+import org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.entity.NhanVienEntity;
 
@@ -19,20 +20,16 @@ public class NhanVienAction implements ActionListener  , MouseListener {
     private ShowDeleteNhanVienConsole delete_console;
     private ShowAddNhanVienConsole add_console;
     private ShowChiTietNhanVienConsole detail_console;
+    private AddNhanVienConsole add_img;
     public NhanVienAction(NhanVien nv) {
         this.nv = nv;
     }
-
+    public NhanVienAction(){}
     @Override
     public void actionPerformed(ActionEvent e) {
         JComponent source = (JComponent) e.getSource();
         String nameButton = e.getActionCommand();
-        if(nv != null){
-            if(delete_console == null || add_console == null || detail_console == null || !(source instanceof JButton) ){
-                return;
-            }
 
-        }
     }
 
     @Override

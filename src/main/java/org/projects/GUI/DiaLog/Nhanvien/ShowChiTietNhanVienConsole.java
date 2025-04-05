@@ -1,6 +1,7 @@
 package org.projects.GUI.DiaLog.Nhanvien;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Panel.NhanVienPack.ChiTietAdminConsole;
 import org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
@@ -11,10 +12,13 @@ import java.awt.*;
 
 public class ShowChiTietNhanVienConsole extends JDialog {
     NhanVien nhanVien;
+    mainTransition transition = new mainTransition();
     public ShowChiTietNhanVienConsole(NhanVienEntity entity, boolean modal) {
         nhanVien = new NhanVien();
         init(modal);
         infomation(entity);
+        if(!modal) transition.showZoomIn(this , 700 , 400);
+        else transition.showZoomIn(this , 600 , 650);
     }
     public void infomation(NhanVienEntity entity) {
 
@@ -38,7 +42,5 @@ public class ShowChiTietNhanVienConsole extends JDialog {
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel);
         this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
     }
 }

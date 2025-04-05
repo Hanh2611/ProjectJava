@@ -1,21 +1,26 @@
 package org.projects.GUI.DiaLog.Nhanvien;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Panel.NhanVienPack.DeleteNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ShowDeleteNhanVienConsole extends JDialog {
     NhanVien nhanVien;
     DeleteNhanVienConsole del;
+    mainTransition transition = new mainTransition();
     public ShowDeleteNhanVienConsole(NhanVienEntity entity) {
         nhanVien = new NhanVien();
         del = new DeleteNhanVienConsole();
         initComponents();
         processDelete(entity);
+        transition.showZoomIn(this,700 , 400);
     }
     void processDelete(NhanVienEntity entity){
 
@@ -36,7 +41,7 @@ public class ShowDeleteNhanVienConsole extends JDialog {
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel);
         this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+//        this.setLocationRelativeTo(null);
+//        this.setVisible(true);
     }
 }
