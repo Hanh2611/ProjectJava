@@ -12,7 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static org.projects.GUI.Panel.NhanVienPack.NhanVien.getRadioSex;
+import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
+
 //import static org.projects.GUI.Panel.NhanVienPack.NhanVien.main;
 
 public class AddNhanVienConsole extends JPanel {
@@ -151,7 +152,6 @@ public class AddNhanVienConsole extends JPanel {
         mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }
-
 
     private static JPanel getJPanel(String image) {
         FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);

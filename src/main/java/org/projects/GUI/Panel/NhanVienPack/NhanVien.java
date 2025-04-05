@@ -1,8 +1,14 @@
 package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.Action.NhanVienAction;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
+import org.projects.GUI.DiaLog.Nhanvien.ShowChiTietNhanVienConsole;
+import org.projects.GUI.DiaLog.Nhanvien.ShowDeleteNhanVienConsole;
+import org.projects.entity.NhaCungCapEntity;
+import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -18,15 +24,11 @@ import static org.projects.GUI.Components.layoutCompoment.addHeader;
 public class NhanVien extends JPanel {
     private JTable table;
     private headerBar header;
-    AddNhanVienConsole addNhanVienConsole;
-    DeleteNhanVienConsole deleteNhanVienConsole;
+    private NhanVienAction nhanVienAction = new NhanVienAction(this);
     public NhanVien() {
         init();
         setupHeader();
         setupLayout();
-        testButton();
-        addNhanVienConsole = new AddNhanVienConsole();
-        deleteNhanVienConsole = new DeleteNhanVienConsole();
     }
 
     private void init(){
@@ -91,7 +93,11 @@ public class NhanVien extends JPanel {
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
-        addHeader(this , listItemHeader , quyen);
+        addHeader(this, listItemHeader, quyen);
+        header = (headerBar) this.getComponent(0);
+        for(String key : header.getHeaderFunc().getHm().keySet()){
+            header.getHeaderFunc().getHm().get(key).addMouseListener(nhanVienAction);
+        }
     }
     private void setupLayout() {
         setBackground(new Color(240, 240, 240));
@@ -118,8 +124,7 @@ public class NhanVien extends JPanel {
         centerPanel.add(scrollPane , gbc);
         add(centerPanel);
     }
-    // khi có quyền admin thì sẽ log ra lương , ngày làm việc , thưởng , ...
-    public JPanel setupDetailBox_ADMIN(){
+   /* public JPanel setupDetailBox_ADMIN(){
         JPanel detailBoxPanel = new JPanel();
         detailBoxPanel.setLayout(new BorderLayout());
         detailBoxPanel.setBackground(Color.RED);
@@ -148,9 +153,9 @@ public class NhanVien extends JPanel {
         detailBoxPanel.setOpaque(true);
 
         return detailBoxPanel;
-    }
-    // Quyền bình thường chỉ xem được các thông tin của nhân viên , bị ẩn đi các mục quan trọng
-    public JPanel setupDetailBox_USER() {
+    }*/
+
+    /*public JPanel setupDetailBox_USER() {
         JPanel detailBoxPanel = new JPanel(new GridBagLayout());
         detailBoxPanel.setOpaque(true);
         detailBoxPanel.setBackground(new Color(240, 240, 240));
@@ -261,18 +266,14 @@ public class NhanVien extends JPanel {
         genderPanel.add(radioNu);
         return genderPanel;
     }
+*/
 
-
-    public void testButton(){
-        JButton btnDetail = new JButton("Chi tiết");
-        btnDetail.addActionListener(e -> ShowDeleteNhanVienConsole());
-        add(btnDetail , BorderLayout.NORTH);
-    }
-
-    public void ShowDetailBox_ADMIN(){
+    /*public void ShowDetailBox(boolean trinh){
         JDialog dialog = new JDialog();
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        JPanel detailPanel = setupDetailBox_USER();
+        JPanel detailPanel;
+        if(!trinh) detailPanel = setupDetailBox_USER();
+        else detailPanel = setupDetailBox_ADMIN();
         dialog.setUndecorated(true);
         FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
         dialog.setIconImage(svgIcon.getImage());
@@ -288,9 +289,9 @@ public class NhanVien extends JPanel {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-    }
+    }*/
 
-    private JButton add_minusIcon(){
+    public JButton add_minusIcon(){
         JButton minusIcon;
         minusIcon = handleComponents.createButtonIcon("icon/minus-sign.svg", 15, 20);
         minusIcon.setBounds(470,0,30,30);
@@ -304,7 +305,7 @@ public class NhanVien extends JPanel {
         return minusIcon;
     }
 
-    private JButton add_cancelIcon(JDialog dialog){
+    public static JButton add_cancelIcon(JDialog dialog){
         JButton cancelIcon;
         cancelIcon = handleComponents.createButtonIcon("icon/close.svg", 20, 20);
         cancelIcon.setBounds(670,0,30,30);
@@ -318,8 +319,7 @@ public class NhanVien extends JPanel {
         return cancelIcon;
     }
 
-
-    public void ShowAddNhanVienConsole(){
+    /*public void ShowAddNhanVienConsole(){
         JDialog dialog = new JDialog();
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setUndecorated(true);
@@ -339,9 +339,9 @@ public class NhanVien extends JPanel {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-    }
+    }*/
 
-    public void ShowDeleteNhanVienConsole(){
+    /*public void ShowDeleteNhanVienConsole(){
         JDialog dialog = new JDialog();
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setUndecorated(true);
@@ -360,22 +360,22 @@ public class NhanVien extends JPanel {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+    }*/
+
+    public headerBar getHeader() {
+        return header;
     }
 
-    //test log
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Test NhanVien");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1200, 800);
+    public NhanVienEntity getRow() {
+        int row = table.getSelectedRow();
+        if(row == -1) return null;
+        String ma = table.getValueAt(row,0).toString();
+        String ten = table.getValueAt(row,1).toString();
+        String sdt = table.getValueAt(row,2).toString();
+        String email = table.getValueAt(row,3).toString();
+        String diaChi = table.getValueAt(row,4).toString();
 
-            // Tạo đối tượng panel NhanVien
-            NhanVien nhanVienPanel = new NhanVien();
-            frame.add(nhanVienPanel, BorderLayout.CENTER);
-
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
+        return new NhanVienEntity(ma,ten,sdt,email,diaChi);
     }
 }
 
