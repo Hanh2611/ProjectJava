@@ -2,6 +2,7 @@ package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.Components.header.headerBar;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -16,6 +17,7 @@ import static org.projects.GUI.Components.layoutCompoment.addHeader;
 
 public class NhanVien extends JPanel {
     private JTable table;
+    private headerBar header;
     AddNhanVienConsole addNhanVienConsole;
     DeleteNhanVienConsole deleteNhanVienConsole;
     public NhanVien() {
@@ -88,7 +90,8 @@ public class NhanVien extends JPanel {
                 {"icon/details.svg", "Chi tiết", "ChiTiet"},
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
-//        addHeader(this , listItemHeader);
+        String[] quyen = new String[]{"add", "update", "delete", "detail"};
+        addHeader(this , listItemHeader , quyen);
     }
     private void setupLayout() {
         setBackground(new Color(240, 240, 240));
@@ -359,7 +362,7 @@ public class NhanVien extends JPanel {
         dialog.setVisible(true);
     }
 
-    // test log
+    //test log
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Test NhanVien");

@@ -1,6 +1,6 @@
 package org.projects.GUI.Panel.NhanVienPack;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import org.projects.BUS.MainBUS;
+//import org.projects.BUS.MainBUS;
 import org.projects.GUI.Components.handleComponents;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static org.projects.GUI.Panel.NhanVienPack.NhanVien.getRadioSex;
-import static org.projects.GUI.Panel.NhanVienPack.NhanVien.main;
+//import static org.projects.GUI.Panel.NhanVienPack.NhanVien.main;
 
 public class AddNhanVienConsole extends JPanel {
     JRadioButton radioButton;
