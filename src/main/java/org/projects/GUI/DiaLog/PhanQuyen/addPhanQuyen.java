@@ -4,6 +4,7 @@ import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.DanhMucQuanLyDAO;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.LoginGUI;
+import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
 import org.projects.GUI.utils.FocusListenerUtils;
 import org.projects.entity.DanhMucQuanLy;
 
@@ -17,8 +18,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+
+import static org.projects.Action.LoginAction.mainGUI;
 
 public class addPhanQuyen extends JDialog {
     private JPanel titleBar, contentPanel, inputPanel;
@@ -26,6 +30,7 @@ public class addPhanQuyen extends JDialog {
     private JLabel nameLabel;
     private JTable mainTable;
     private JButton addButton;
+    private List<DanhMucQuanLy> listDanhMuc;
 
     public addPhanQuyen(JFrame parent) {
         super(parent, "ADD PHAN QUYEN", true);
@@ -41,6 +46,7 @@ public class addPhanQuyen extends JDialog {
         setVisible(true);
     }
     public void init() {
+        listDanhMuc = new PhanQuyenBUS().getDanhMucQuanLy();
         inputPanel = new JPanel();
         inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
         inputPanel.setPreferredSize(new Dimension(800, 50));
@@ -57,6 +63,11 @@ public class addPhanQuyen extends JDialog {
         initTableManagement();
         addButton = new JButton("Thêm nhóm quyền");
         addButton.setPreferredSize(new Dimension(200, 40));
+        addButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                pushData();
+            }
+        });
         this.add(contentPanel);
         this.add(addButton);
     }
@@ -65,7 +76,7 @@ public class addPhanQuyen extends JDialog {
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setPreferredSize(new Dimension(900, 560));
-        String[] col = {"", "Thêm", "Sửa", "Xoá", "Xem chi tiết", "Xuất Excel"};
+        String[] col = {"", "Tạo mới", "Sửa", "Xoá", "Xem chi tiết", "Xuất Excel"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -109,9 +120,33 @@ public class addPhanQuyen extends JDialog {
     }
 
     public void loadData(DefaultTableModel tableModel) {
-        List<DanhMucQuanLy> list = new PhanQuyenBUS().getDanhMucQuanLy();
-        for (DanhMucQuanLy dm : list) {
+        for (DanhMucQuanLy dm : listDanhMuc) {
             tableModel.addRow(new Object[] {dm.getTen_danh_muc_quan_ly(), Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE});
         }
+    }
+
+    public void pushData() {
+        String nameNhomQuyen  = textField.getText();
+        if (nameNhomQuyen.equals("") || nameNhomQuyen == null || nameNhomQuyen.equals("Nhập tên nhóm quyền.....")) {
+            JOptionPane.showMessageDialog(mainGUI, "Vui lòng nhập tên nhóm quyền!");
+            textField.requestFocusInWindow();
+            return;
+        }
+//        String[] danhMuc = {"nhan_vien", "khach_hang", "san_pham", "don_hang", "thong_ke", "nha_cung_cap", "hoa_don", "tai_khoan", "phieu_nhap"};
+        int row = mainTable.getRowCount();
+        int col = mainTable.getColumnCount();
+        HashMap<String, List<Boolean>> danhMucData = new HashMap<>();
+        for (int i = 0; i < row; i++) {
+            List<Boolean> rowData = new ArrayList<>();
+            for (int j = 1; j < col; j++) {
+                boolean isChecked = (Boolean) mainTable.getValueAt(i, j);
+                rowData.add(isChecked);
+            }
+            danhMucData.put(listDanhMuc.get(i).getTen_danh_muc_quan_ly(), rowData);
+        }
+        int maNhomQuyen = PhanQuyenBUS.addNhomQuyen(nameNhomQuyen);
+        PhanQuyenBUS.addCapQuyen(danhMucData, maNhomQuyen);
+        JOptionPane.showMessageDialog(mainGUI, "Thêm nhóm quyền thành công!");
+        dispose();
     }
 }

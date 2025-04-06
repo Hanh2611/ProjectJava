@@ -3,9 +3,7 @@ package org.projects.DAO;
 import org.projects.config.DatabasesConfig;
 import org.projects.entity.NhomQuyen;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.*;
 
 public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
@@ -28,8 +26,25 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     }
 
     @Override
-    public int them(NhomQuyen add) {
-        return 0;
+    public int them(NhomQuyen nhomQuyen) {
+        int result = 0, maNhomQuyen = -1;
+        String tenNhomQuyen = nhomQuyen.getTenNomQuyen();
+        String query = "insert into nhom_quyen(ten_nhom_quyen) values (?)";
+        try(Connection connection = DatabasesConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);) {
+            statement.setString(1, tenNhomQuyen);
+            result = statement.executeUpdate();
+            if (result > 0) {
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        maNhomQuyen = generatedKeys.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return maNhomQuyen;
     }
 
     @Override
@@ -38,8 +53,17 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     }
 
     @Override
-    public int xoa(NhomQuyen delete) {
-        return 0;
+    public int xoa(NhomQuyen nhomQuyen) {
+        int result = 0;
+        String query = "delete from nhom_quyen where ma_nhom_quyen = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, nhomQuyen.getMaNhomQuyen());
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     @Override
