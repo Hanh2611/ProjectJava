@@ -5,9 +5,10 @@ import org.projects.GUI.Components.header.headerBar;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
+import java.util.List;
 
 public class layoutCompoment {
-    public static void addHeader(JPanel panel, String listItemHeader[][],String[] listAction) {
+    public static void addHeader(JPanel panel, String listItemHeader[][],List<String> listAction) {
         panel.setPreferredSize(new Dimension(1100, 1000));
         panel.setLayout(new FlowLayout(0, 0, 10));
         panel.setBackground(Color.decode("#CAECF7"));

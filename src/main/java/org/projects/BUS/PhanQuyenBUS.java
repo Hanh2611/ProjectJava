@@ -75,4 +75,10 @@ public class PhanQuyenBUS {
     public static int getMaDanhMuc(String nameDanhMuc) {
         return DanhMucQuanLyDAO.getMaDanhMuc(nameDanhMuc);
     }
+
+    public static List<String> getListAction("") {
+        List<String> result = new ArrayList<>();
+
+        return result;
+    }
 }
