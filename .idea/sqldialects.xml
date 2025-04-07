@@ -3,7 +3,6 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/java/org/projects/DAO/DanhMucSanPhamDAO.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/projects/DAO/SanPhamDao.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/Data.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/MiniMarket.sql" dialect="MySQL" />
   </component>
 </project>

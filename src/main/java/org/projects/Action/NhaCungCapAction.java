@@ -174,7 +174,7 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
     public void itemStateChanged(ItemEvent e) {
         String keyword = e.getItem().toString();
         String textfield = ncc.getHeader().getSearch().getSearchField().getText();
-        ncc.loadList(ncc.getNccBUS().search(keyword,textfield));
+        ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
     }
 
 
@@ -192,6 +192,6 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
     public void changedUpdate(DocumentEvent e) {
         String keyword = ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
         String textfield = e.getDocument().toString();
-        ncc.loadList(ncc.getNccBUS().search(keyword,textfield));
+        ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
     }
 }
