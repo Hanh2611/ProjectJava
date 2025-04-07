@@ -8,19 +8,18 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
-import java.util.List;
 
 public class headerFunction extends JPanel {
     private generalFunction gl;
     private HashMap<String,generalFunction> hm = new HashMap<>();
-    public headerFunction(Dimension parentSize, String listItemHeader[][],List<String> listAction) {
+    public headerFunction(Dimension parentSize, String listItemHeader[][],String[] listAction) {
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
         init(listItemHeader,listAction);
         this.setVisible(true);
     }
-    public void init(String listItemHeader[][],List<String> listAction) {
+    public void init(String listItemHeader[][],String[] listAction) {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -33,19 +32,19 @@ public class headerFunction extends JPanel {
             c.gridx++;
         }
     }
-    public void createHashMap(List<String> listAction) {
+    public void createHashMap(String[] listAction) {
         for(String ac : listAction) {
             switch (ac) {
-                case "them":
+                case "add":
                     hm.put("add", new generalFunction("icon/add.svg","Thêm","add"));
                     break;
-                case "sua":
+                case "update":
                     hm.put("update",new generalFunction("icon/content-writing.svg","Sửa","update"));
                     break;
-                case "xoa":
+                case "delete":
                     hm.put("delete",new generalFunction("icon/trash.svg","Xóa","delete"));
                     break;
-                case "xem":
+                case "detail":
                     hm.put("detail",new generalFunction("icon/details.svg","Chi tiết","detail"));
                     break;
                 default:
