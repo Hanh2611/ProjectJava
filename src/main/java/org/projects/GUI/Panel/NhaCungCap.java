@@ -73,7 +73,7 @@ public class NhaCungCap extends JPanel{
 
         //su kien tim kiem
         header.getSearch().getSearchComboBox().addItemListener(nccAction);
-        header.getSearch().getSearchField().addKeyListener(nccAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(nccAction);
         header.getSearch().getSearchButton().addActionListener(nccAction);
 
         UIUtils.refreshComponent(this);
@@ -108,10 +108,18 @@ public class NhaCungCap extends JPanel{
 
         return new NhaCungCapEntity(ma,ten,sdt,email,diaChi);
     }
+
+    public void searchfunction(String keyword,String textfield) {
+        keyword = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        textfield = this.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---") && !textfield.trim().isEmpty()) {
+            List<NhaCungCapEntity> lst = NhaCungCapBUS.search(keyword,textfield);
+            loadList(lst);
+        } else reloadDAO();
+    }
     //getter
     public headerBar getHeader() {
         return header;
     }
-
-
+    public NhaCungCapBUS getNccBUS() {return nccBUS;}
 }

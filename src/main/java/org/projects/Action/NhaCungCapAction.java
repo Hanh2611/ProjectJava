@@ -7,10 +7,12 @@ import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.entity.NhaCungCapEntity;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 
-public class NhaCungCapAction implements ActionListener, MouseListener,ItemListener,KeyListener {
+public class NhaCungCapAction implements ActionListener, MouseListener,ItemListener, DocumentListener {
     private NhaCungCap ncc;
     private NhaCungCapDialog nccDialog;
     private NhaCungCapEntity nccEntity;
@@ -77,6 +79,14 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                 } else if ("Thoát".equals(namebtn)) {
                     nccDialog.dispose();
                 }
+            }
+
+            //nut reset
+            JButton refresh = ncc.getHeader().getSearch().getSearchButton();
+            if(c instanceof JButton && c.equals(refresh)) {
+                ncc.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
+                ncc.getHeader().getSearch().getSearchField().setText("");
+                this.ncc.searchfunction(ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),ncc.getHeader().getSearch().getSearchField().getText());
             }
         }
 
@@ -162,21 +172,26 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
 
     @Override
     public void itemStateChanged(ItemEvent e) {
+        String keyword = e.getItem().toString();
+        String textfield = ncc.getHeader().getSearch().getSearchField().getText();
+        ncc.loadList(ncc.getNccBUS().search(keyword,textfield));
+    }
+
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
 
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void removeUpdate(DocumentEvent e) {
 
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
+    public void changedUpdate(DocumentEvent e) {
+        String keyword = ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = e.getDocument().toString();
+        ncc.loadList(ncc.getNccBUS().search(keyword,textfield));
     }
 }

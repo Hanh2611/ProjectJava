@@ -22,7 +22,7 @@ public class headerSearch extends javax.swing.JPanel {
     public void init(String[] listcombobox) {
         searchField = handleComponents.createTextField("Nhập tên đăng nhập.....", 60, 190, 310, 40);
         searchField.addFocusListener(FocusListenerUtils.createPlaceholderTextField("Nhập tên đăng nhập.....", searchField));
-        searchButton = new JButton("Tìm kiếm");
+        searchButton = handleComponents.createButtonIcon("icon/refresh.svg",40,40);
         searchComboBox = new JComboBox<>(listcombobox);
 
         GridBagConstraints c = new GridBagConstraints();
@@ -40,7 +40,7 @@ public class headerSearch extends javax.swing.JPanel {
         c.gridwidth = 5;
         c.fill = GridBagConstraints.HORIZONTAL;
         this.add(searchField, c);
-        c.insets = new Insets(10, 0, 10, 5);
+        c.insets = new Insets(10, 5, 10, 5);
         c.gridx = 6;
         c.weightx = 0.0;
         c.gridwidth = 1;

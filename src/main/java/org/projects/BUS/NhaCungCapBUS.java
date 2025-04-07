@@ -50,9 +50,41 @@ public class NhaCungCapBUS {
         return false;
     }
 
-    public List<NhaCungCapEntity> search(String keyword,String textField) {
+    public static List<NhaCungCapEntity> search(String keyword,String textField) {
         getList();
         List<NhaCungCapEntity> newlist = new ArrayList<>();
+        textField = textField.toLowerCase();
+        switch (keyword) {
+            case "---":
+                newlist.addAll(listncc);
+                break;
+            case "mã":
+                for(NhaCungCapEntity nccEntity : listncc) {
+                    if(String.valueOf(nccEntity.getMaNCC()).contains(textField)) {
+                        newlist.add(nccEntity);
+                    }
+                }
+                break;
+            case "tên":
+                for(NhaCungCapEntity nccEntity : listncc) {
+                    if(String.valueOf(nccEntity.getTenNCC()).toLowerCase().contains(textField)) {
+                        newlist.add(nccEntity);
+                    }
+                }
+                break;
+            case "địa chỉ":
+                for(NhaCungCapEntity nccEntity : listncc) {
+                    if(String.valueOf(nccEntity.getTenNCC()).contains(textField)) {
+                        newlist.add(nccEntity);
+                    }
+                }
+                break;
+            default:
+                System.out.println("khong tim thay" + keyword + "va" + textField);
+                break;
+        }
+        System.out.println("danh sach ban dau: " + listncc.size());
+        System.out.println("danh sach sau khi tim kiem theo " + keyword + " va " + textField + ": " + newlist.size());
         return newlist;
     }
 }
