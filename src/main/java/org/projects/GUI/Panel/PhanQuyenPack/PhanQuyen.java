@@ -38,7 +38,7 @@ public class PhanQuyen extends JPanel{
         contentPanel.setLayout(new BorderLayout());
         layoutCompoment.setupMainPanel(contentPanel);
         this.setOpaque(true);
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.decode("#CAECF7"));
         this.add(contentPanel);
     }
     public void initTable() {
