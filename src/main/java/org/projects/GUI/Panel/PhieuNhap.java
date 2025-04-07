@@ -29,8 +29,9 @@ public class PhieuNhap extends JPanel{
         };
         header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
         this.add(header);
-
-
+        init();
+    }
+    private void init() {
         JPanel right = createTablePanel();
         themPN = new ThemPN(this);
         ChiTietPN = new ChiTietPN(this);

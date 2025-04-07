@@ -2,6 +2,7 @@ package org.projects.GUI.DiaLog.PhieuNhap;
 
 
 import org.projects.GUI.DiaLog.PhieuNhap.Components.NumberOnlyFilter;
+import org.projects.GUI.DiaLog.PhieuNhap.Components.OnlyDigitFilter;
 import org.projects.GUI.Panel.PhieuNhap;
 
 import javax.swing.*;
@@ -12,18 +13,19 @@ import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.text.DecimalFormat;
 
 public class ThemPN extends JPanel {
-    JTextField timKiem,hienthi_masp,hienthi_tensp,nhapsoluong,nhapgiaban,
-            txtQuyCach,txtDonViTinh,nhapMaPN,nhapNVNhap;
-    JLabel masp,tensp,soluong,giaban,lblQuyCach,lblDonViTinh,maPN,nvNhap,
-            ncc,lblTongTien,txtTongTien;
-    JPanel panelLeft,panelright;
-    JButton themSP,btnNhapHang,btnHuyBo;
-    JTable tableSanPham,danhSachSanPhamNhap;
+    JTextField timKiem, hienthi_masp, hienthi_tensp, nhapsoluong, nhapgiaban,
+            txtQuyCach, txtDonViTinh, nhapMaPN, nhapNVNhap;
+    JLabel masp, tensp, soluong, giaban, lblQuyCach, lblDonViTinh, maPN, nvNhap,
+            ncc, lblTongTien, txtTongTien;
+    JPanel panelLeft, panelright;
+    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP;
+    JTable tableSanPham, danhSachSanPhamNhap;
     JTableHeader header, headerdanhSachSanPhamNhap;
-    JComboBox <String> nhapNCC;
-    JScrollPane scrollPane,scrollPaneNhap;
+    JComboBox<String> nhapNCC;
+    JScrollPane scrollPane, scrollPaneNhap;
     private PhieuNhap phieuNhap;
 
     public ThemPN(PhieuNhap phieuNhap) {
@@ -34,7 +36,8 @@ public class ThemPN extends JPanel {
         init();
 
     }
-    public void init(){
+
+    public void init() {
 
         // Ô tìm kiếm sản phẩm
         timKiem = new JTextField("Tìm kiếm mã sản phẩm, tên sản phẩm");
@@ -94,8 +97,8 @@ public class ThemPN extends JPanel {
         tableSanPham.setIntercellSpacing(new Dimension(0, 0));
 
         header = tableSanPham.getTableHeader();
-        header.setBackground(new Color(245,244,245,255));
-        header.setForeground(new Color(105,105,105,255));
+        header.setBackground(new Color(245, 244, 245, 255));
+        header.setForeground(new Color(105, 105, 105, 255));
         header.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
         header.setPreferredSize(new Dimension(header.getWidth(), 35));
 
@@ -110,47 +113,57 @@ public class ThemPN extends JPanel {
         scrollPane.setBounds(10, 50, 430, 300);
         panelLeft.add(scrollPane);
 
-
         themSP = new JButton("Thêm Sản Phẩm");
+        ImageIcon icon = createIconFromSVG("/icon/add.svg"); // Đảm bảo rằng đường dẫn đúng và có file SVG
+        themSP.setIcon(icon);
         themSP.setBounds(10, 355, 250, 30);
-        themSP.setBackground(new Color(89,168,105,255));
+        themSP.setBackground(new Color(89, 168, 105, 255));
         themSP.setForeground(Color.WHITE);
         themSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
         themSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+
+        btnHuyBoSP = new JButton("Bỏ sản phẩm");
+        btnHuyBoSP.setBounds(270, 355, 250, 30);
+        btnHuyBoSP.setBackground(Color.RED);
+        btnHuyBoSP.setForeground(Color.WHITE);
+        btnHuyBoSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnHuyBoSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+
+        panelLeft.add(btnHuyBoSP);
         panelLeft.add(themSP);
 
 
         masp = new JLabel("Mã Sản phẩm");
-        masp.setBounds(450, 20, 100,25);
+        masp.setBounds(450, 20, 100, 25);
         hienthi_masp = new JTextField();
-        hienthi_masp.setBounds(450, 50,265,30);
+        hienthi_masp.setBounds(450, 50, 265, 30);
         hienthi_masp.setEditable(false);
         panelLeft.add(masp);
         panelLeft.add(hienthi_masp);
 
         tensp = new JLabel("Tên sản phẩm");
-        tensp.setBounds(450,80,100,25);
+        tensp.setBounds(450, 80, 100, 25);
         hienthi_tensp = new JTextField();
-        hienthi_tensp.setBounds(450,110,265,30);
+        hienthi_tensp.setBounds(450, 110, 265, 30);
         hienthi_tensp.setEditable(false);
         panelLeft.add(tensp);
         panelLeft.add(hienthi_tensp);
 
         soluong = new JLabel("Số lượng nhập");
-        soluong.setBounds(450, 150,100, 30);
+        soluong.setBounds(450, 150, 100, 30);
         nhapsoluong = new JTextField();
-        nhapsoluong.setBounds(450,180,115,30);
+        nhapsoluong.setBounds(450, 180, 115, 30);
         panelLeft.add(soluong);
         panelLeft.add(nhapsoluong);
 
         giaban = new JLabel("Giá nhập");
-        giaban.setBounds(580,150,100,30);
+        giaban.setBounds(580, 150, 100, 30);
         nhapgiaban = new JTextField();
-        nhapgiaban.setBounds(580,180,135,30);
+        nhapgiaban.setBounds(580, 180, 135, 30);
         panelLeft.add(giaban);
         panelLeft.add(nhapgiaban);
 
-        ((AbstractDocument) nhapsoluong.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) nhapsoluong.getDocument()).setDocumentFilter(new OnlyDigitFilter());
         ((AbstractDocument) nhapgiaban.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         lblQuyCach = new JLabel("Quy cách");
         lblQuyCach.setBounds(450, 215, 100, 30);
@@ -167,7 +180,7 @@ public class ThemPN extends JPanel {
         panelLeft.add(txtDonViTinh);
 
         panelright = new JPanel();
-        panelright.setBounds(735,5,210,655);
+        panelright.setBounds(735, 5, 210, 655);
         panelright.setBackground(Color.WHITE);
         panelright.setLayout(null);
         add(panelright);
@@ -205,7 +218,7 @@ public class ThemPN extends JPanel {
         panelright.add(lblTongTien);
 
 // Hiển thị số tiền bằng JLabel (nền trắng, bo góc, căn phải)
-        txtTongTien = new JLabel("0 VND", SwingConstants.RIGHT);
+        txtTongTien = new JLabel("0 ₫", SwingConstants.RIGHT);
         txtTongTien.setBounds(10, 510, 180, 40);
         txtTongTien.setOpaque(true);
         txtTongTien.setBackground(new Color(240, 240, 240)); // Màu nền nhẹ
@@ -219,30 +232,18 @@ public class ThemPN extends JPanel {
         btnNhapHang = new JButton("Nhập hàng");
         btnNhapHang.setBounds(100, 560, 100, 35);
         btnNhapHang.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
-        btnNhapHang.setBackground(new Color(47,111,157,255)); // Xanh dương đậm
+        btnNhapHang.setBackground(Color.BLUE); // Xanh dương đậm
         btnNhapHang.setForeground(Color.WHITE);
         btnNhapHang.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         btnHuyBo = new JButton("Hủy bỏ");
-        btnHuyBo.setBounds(10,560,90,35);
-        btnHuyBo.setBackground(new Color(179,76,70,255));
+        btnHuyBo.setBounds(10, 560, 90, 35);
+        btnHuyBo.setBackground(Color.RED);
         btnHuyBo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnHuyBo.setForeground(Color.WHITE);
         btnHuyBo.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
-        btnHuyBo.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(
-                    null,
-                    "Bạn có chắc muốn hủy bỏ?",
-                    "Xác nhận hủy",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE
-            );
 
-            if (confirm == JOptionPane.YES_OPTION) {
-                phieuNhap.showTrangChinh(); // Gọi hàm trong MainFrame
-            }
-        });
         panelright.add(btnHuyBo);
         panelright.add(btnNhapHang);
         // Thêm vào sau khi tạo bảng sản phẩm
@@ -281,8 +282,8 @@ public class ThemPN extends JPanel {
             danhSachSanPhamNhap.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
         headerdanhSachSanPhamNhap = danhSachSanPhamNhap.getTableHeader();
-        headerdanhSachSanPhamNhap.setForeground(new Color(105,105,105,255));
-        headerdanhSachSanPhamNhap.setBackground(new Color(245,244,245,255));
+        headerdanhSachSanPhamNhap.setForeground(new Color(105, 105, 105, 255));
+        headerdanhSachSanPhamNhap.setBackground(new Color(245, 244, 245, 255));
         headerdanhSachSanPhamNhap.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
         headerdanhSachSanPhamNhap.setPreferredSize(new Dimension(headerdanhSachSanPhamNhap.getWidth(), 35));
 // 🆕 Thêm sự kiện cho nút "Thêm Sản Phẩm"
@@ -295,7 +296,7 @@ public class ThemPN extends JPanel {
             String donViTinh = txtDonViTinh.getText();
 
             // Kiểm tra nếu các ô không được để trống
-            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty() || giaNhap.isEmpty()) {
+            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty() || giaNhap.isEmpty() || quyCach.isEmpty() || donViTinh.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -312,17 +313,81 @@ public class ThemPN extends JPanel {
             txtDonViTinh.setText("");
         });
 
+        btnHuyBoSP.addActionListener( e ->{
+            int selectRow = danhSachSanPhamNhap.getSelectedRow();
+            if(selectRow == -1){
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Vui lòng chọn sản phẩm cần hủy bỏ!",
+                        "Thông báo",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+            else{
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Bạn có chắc muốn hủy bỏ sản phẩm đã thêm?",
+                        "Xác nhận hủy bỏ",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if(confirm == JOptionPane.YES_OPTION){
+                    modelDanhSachNhap.removeRow(selectRow);
+                    updateTotal(modelDanhSachNhap, txtTongTien);
+
+                }
+            }
+        });
+        btnHuyBo.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(
+                    null,
+                    "Bạn có chắc muốn hủy bỏ?",
+                    "Xác nhận hủy",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                phieuNhap.showTrangChinh(); // Gọi hàm trong MainFrame
+                modelDanhSachNhap.setRowCount(0);
+                updateTotal(modelDanhSachNhap, txtTongTien);
+            }
+        });
+
         panelright.add(nhapNCC);
     }
+
     private void updateTotal(DefaultTableModel model, JLabel txtTongTien) {
         long total = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            int soLuong = Integer.parseInt(model.getValueAt(i, 2).toString());
-            String giaNhapStr = model.getValueAt(i, 3).toString().replaceAll("[^0-9]", ""); // Loại bỏ ký tự không phải số
-            long giaNhap = giaNhapStr.isEmpty() ? 0 : Long.parseLong(giaNhapStr);
+            int soLuong = 0;
+            long giaNhap = 0;
+
+            try {
+                soLuong = Integer.parseInt(model.getValueAt(i, 2).toString().replaceAll("[^0-9]", ""));
+                String giaNhapStr = model.getValueAt(i, 3).toString().replaceAll("[^0-9]", ""); // Xóa ký tự không phải số
+                giaNhap = giaNhapStr.isEmpty() ? 0 : Long.parseLong(giaNhapStr);
+            } catch (Exception e) {
+                // Nếu có lỗi parse, bỏ qua dòng đó
+                continue;
+            }
+
             total += soLuong * giaNhap;
         }
-        txtTongTien.setText(String.format("%,d VNĐ", total)); // Hiển thị đúng định dạng
+
+        // Format: dấu chấm ngăn cách + thêm " ₫"
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formatted = formatter.format(total).replace(",", ".") + " ₫";
+        txtTongTien.setText(formatted);
     }
 
+    private ImageIcon createIconFromSVG(String svgFilePath) {
+        // Tạo icon từ file SVG
+        ImageIcon icon = new ImageIcon(getClass().getResource(svgFilePath));
+        if (icon != null) {
+            return icon;  // Trả về icon hợp lệ
+        } else {
+            System.out.println("Không thể tạo icon từ file SVG.");
+            return null;  // Nếu không thành công thì trả về null
+        }
+    }
 }

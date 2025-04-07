@@ -1,12 +1,10 @@
 package org.projects.GUI.DiaLog.PhieuNhap.Components;
 
-
 import javax.swing.text.*;
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.text.DecimalFormat;
 
 public class NumberOnlyFilter extends DocumentFilter {
-    private final NumberFormat format = NumberFormat.getNumberInstance(Locale.US);
+    private final DecimalFormat format = new DecimalFormat("#,###");
 
     @Override
     public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
@@ -18,18 +16,21 @@ public class NumberOnlyFilter extends DocumentFilter {
 
     @Override
     public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-        if (text.matches("\\d*")) { // Cho phép xóa số
+        if (text.matches("\\d*")) {
             super.replace(fb, offset, length, text, attrs);
             formatCurrency(fb);
         }
     }
 
     private void formatCurrency(FilterBypass fb) throws BadLocationException {
-        String text = fb.getDocument().getText(0, fb.getDocument().getLength()).replaceAll("[^0-9]", "");
-        if (!text.isEmpty()) {
-            long value = Long.parseLong(text);
-            fb.remove(0, fb.getDocument().getLength());
-            fb.insertString(0, format.format(value), null);
+        Document doc = fb.getDocument();
+        String rawText = doc.getText(0, doc.getLength()).replaceAll("[^\\d]", "");
+
+        if (!rawText.isEmpty()) {
+            long value = Long.parseLong(rawText);
+            String formatted = format.format(value).replace(",", ".") + " ₫"; // Đổi dấu ',' thành '.' và thêm đơn vị
+            fb.remove(0, doc.getLength());
+            fb.insertString(0, formatted, null);
         }
     }
 }
