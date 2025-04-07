@@ -37,6 +37,8 @@ public class PhanQuyen extends JPanel{
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         layoutCompoment.setupMainPanel(contentPanel);
+        this.setOpaque(true);
+        this.setBackground(Color.WHITE);
         this.add(contentPanel);
     }
     public void initTable() {
@@ -61,7 +63,7 @@ public class PhanQuyen extends JPanel{
         mainTable.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 14));
         mainTable.setRowHeight(40);
         mainTable.getTableHeader().setReorderingAllowed(false);
-        mainTable.setShowGrid(true);
+        mainTable.setShowGrid(false);
         mainTable.setGridColor(Color.decode("#CAECF7"));
         JScrollPane scrollPane = new JScrollPane(mainTable);
         contentPanel.add(scrollPane, BorderLayout.CENTER);

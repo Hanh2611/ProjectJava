@@ -23,6 +23,7 @@ public class PhanQuyenBUS {
         int maNhomQuyen = new NhomQuyenDAO().them(q);
         return maNhomQuyen;
     }
+
     public static void addCapQuyen(HashMap<String, List<Boolean>> danhMucData, int maNhomQuyen) {
         String[] hanhDong = {"them", "sua", "xoa", "xem", "excel"};
         for (String key : danhMucData.keySet()) {
@@ -40,15 +41,29 @@ public class PhanQuyenBUS {
             }
         }
     }
-    public static void deleteNhomQuyen(int maNhomQuyen) {
+
+    public static void deleteCapQuyen(int maNhomQuyen) {
         CapQuyen capQuyen = new CapQuyen();
+        capQuyen.setMa_nhom_quyen(maNhomQuyen);
+        new CapQuyenDAO().xoa(capQuyen);
+    }
+
+    public static void deleteNhomQuyen(int maNhomQuyen) {
         NhomQuyen nhomQuyen = new NhomQuyen();
         QuyenNguoiDung quyenNguoiDung = new QuyenNguoiDung();
         quyenNguoiDung.setMa_nhom_quyen(maNhomQuyen);
-        capQuyen.setMa_nhom_quyen(maNhomQuyen);
         nhomQuyen.setMaNhomQuyen(maNhomQuyen);
         new QuyenNguoiDungDAO().xoa(quyenNguoiDung);
-        new CapQuyenDAO().xoa(capQuyen);
+        deleteCapQuyen(maNhomQuyen);
         new NhomQuyenDAO().xoa(nhomQuyen);
+    }
+
+    public static void updateNhomQuyen(HashMap<String, List<Boolean>> danhMucData, int maNhomQuyen) {
+        deleteCapQuyen(maNhomQuyen);
+        addCapQuyen(danhMucData, maNhomQuyen);
+    }
+
+    public static boolean checkCapQuyen(CapQuyen capQuyen) {
+        return new CapQuyenDAO().check(capQuyen);
     }
 }

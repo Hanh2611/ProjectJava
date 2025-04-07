@@ -6,6 +6,7 @@ import org.projects.entity.CapQuyen;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -55,5 +56,19 @@ public class CapQuyenDAO implements ChucNangDAO<CapQuyen> {
     @Override
     public int chitiet(CapQuyen detail) {
         return 0;
+    }
+
+    public boolean check(CapQuyen capQuyen) {
+        String query1 = "select * from cap_quyen where ma_nhom_quyen=? and ma_danh_muc_quan_ly=? and hanh_dong = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query1);) {
+            statement.setInt(1, capQuyen.getMa_nhom_quyen());
+            statement.setInt(2, capQuyen.getMa_danh_muc_quan_ly());
+            statement.setString(3, capQuyen.getHanh_dong());
+            ResultSet rs = statement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

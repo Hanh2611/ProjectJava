@@ -5,6 +5,8 @@ import org.projects.DAO.CapQuyenDAO;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
+import org.projects.GUI.DiaLog.PhanQuyen.performPhanQuyen;
+import org.projects.GUI.DiaLog.PhanQuyen.updatePhanQuyen;
 import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
 
@@ -58,6 +60,17 @@ public class PhanQuyenAction implements ActionListener, MouseListener {
                         JOptionPane.showMessageDialog(mainGUI, "Xóa nhóm quyền thành công!");
                         phanQuyen.getTableModel().setRowCount(0);
                         phanQuyen.loadData();
+                    } else if ("update".equals(name)) {
+                        new updatePhanQuyen(mainGUI);
+                    } else {
+                        int row = mainTable.getSelectedRow();
+                        if (row == -1) {
+                            JOptionPane.showMessageDialog(mainGUI, "Chưa có nhóm quyền được chọn!");
+                            return;
+                        }
+                        int maNhomQuyen = (int) mainTable.getValueAt(row, 0);
+                        String nameNhomQuyen = (String) mainTable.getValueAt(row, 1);
+                        new performPhanQuyen(mainGUI, maNhomQuyen, nameNhomQuyen);
                     }
                 }
             }

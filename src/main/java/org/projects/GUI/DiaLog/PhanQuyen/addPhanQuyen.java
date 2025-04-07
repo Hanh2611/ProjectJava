@@ -40,7 +40,7 @@ public class addPhanQuyen extends JDialog {
         setLocationRelativeTo(parent);
         setUndecorated(true);
         titleBar = new JPanel();
-        objectFactory.titleBar(titleBar, this);
+        objectFactory.titleBar(titleBar, this, "Thêm nhóm quyền");
         this.add(titleBar);
         init();
         setVisible(true);

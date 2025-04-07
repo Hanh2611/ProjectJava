@@ -9,9 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class objectFactory {
-    public static void titleBar(JPanel titleBar, JDialog dialog) {
+    public static void titleBar(JPanel titleBar, JDialog dialog, String title) {
         JButton exitButton = handleComponents.createButtonIcon("icon/close.svg", 30, 30);
-        JLabel titleText = new JLabel("Thêm nhóm quyền", JLabel.LEFT);
+        JLabel titleText = new JLabel(title, JLabel.LEFT);
         titleText.setFont(new Font("JetBrains Mono",Font.PLAIN,13));
         titleBar.add(titleText);
         titleText.setBounds(10, 0, 200, 40);
