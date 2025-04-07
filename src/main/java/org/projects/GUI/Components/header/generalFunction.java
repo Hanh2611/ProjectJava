@@ -16,7 +16,7 @@ public class generalFunction extends JPanel {
     private JLabel nameIconLabel;
 
     public generalFunction(String iconPathFunciton, String nameIcon, String nameFunction) {
-        this.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        this.setLayout(new FlowLayout(FlowLayout.CENTER,5,0));
         this.iconPathFunciton = iconPathFunciton;
         this.nameIcon = nameIcon;
         this.nameFunction = nameFunction;
