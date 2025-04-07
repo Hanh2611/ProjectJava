@@ -53,7 +53,7 @@ public class DanhMucSanPhamDAO implements ChucNangDAO<DanhMucSanPhamEntity>{
     }
 
     @Override
-    public int chitiet(DanhMucSanPhamEntity detail) {
-        return 0;
+    public DanhMucSanPhamEntity search(int id) {
+        return null;
     }
 }
