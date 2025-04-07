@@ -81,4 +81,9 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
         return null;
     }
 
+    public List<Integer> getNhomQuyenOfUser(int maNguoiDung) {
+        List<Integer> result = new ArrayList<>();
+        String query = "select * from quyen_nguoi_dung where ma_nguoi_dung = ?";
+        return result;
+    }
 }

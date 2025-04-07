@@ -13,6 +13,8 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 public class LoginGUI extends JFrame {
     private JButton dangNhapButton;
     private JLabel dangKyLabel2;
+    private JTextField tenDangNhapField;
+    private JPasswordField matKhauField;
     public static final Color MainColor = Color.decode("#3498db");
 
     public LoginGUI() {
@@ -91,7 +93,7 @@ public class LoginGUI extends JFrame {
         panel.add(matKhauLabel);
          
         //field ten dang nhap
-        JTextField tenDangNhapField = handleComponents.createTextField(
+        tenDangNhapField = handleComponents.createTextField(
             "nhập tên đăng nhập.....", 
             60, 190, 310, 40
         );
@@ -106,7 +108,7 @@ public class LoginGUI extends JFrame {
         matKhauPane.setBounds(60,280,310,40);
         
         //field mat khau
-        JPasswordField matKhauField = handleComponents.createPasswordField(
+        matKhauField = handleComponents.createPasswordField(
             "Nhập mật khẩu....", 
             0, 0, 310, 40
         );
@@ -196,5 +198,13 @@ public class LoginGUI extends JFrame {
 
     //getter and setter
     public JButton getDangNhapButton() {return dangNhapButton;}
-    public JLabel getDangKyLabel2(){return dangKyLabel2;}  
+    public JLabel getDangKyLabel2(){return dangKyLabel2;}
+
+    public JTextField getTenDangNhapField() {
+        return tenDangNhapField;
+    }
+
+    public JPasswordField getMatKhauField() {
+        return matKhauField;
+    }
 }
