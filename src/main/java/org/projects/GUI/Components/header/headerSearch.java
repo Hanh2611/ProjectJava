@@ -11,19 +11,19 @@ public class headerSearch extends javax.swing.JPanel {
     private JButton searchButton;
     private JComboBox<String> searchComboBox;
 
-    public headerSearch(Dimension parentSize) {
+    public headerSearch(Dimension parentSize,String[] listcombobox) {
         this.setPreferredSize(new Dimension((int) (540), parentSize.height));
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.white);
-        init();
+        init(listcombobox);
         this.setVisible(true);
     }
 
-    public void init() {
+    public void init(String[] listcombobox) {
         searchField = handleComponents.createTextField("Nhập tên đăng nhập.....", 60, 190, 310, 40);
         searchField.addFocusListener(FocusListenerUtils.createPlaceholderTextField("Nhập tên đăng nhập.....", searchField));
-        searchButton = new JButton("Tìm kiếm");
-        searchComboBox = new JComboBox<>();
+        searchButton = handleComponents.createButtonIcon("icon/refresh.svg",40,40);
+        searchComboBox = new JComboBox<>(listcombobox);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
@@ -40,11 +40,29 @@ public class headerSearch extends javax.swing.JPanel {
         c.gridwidth = 5;
         c.fill = GridBagConstraints.HORIZONTAL;
         this.add(searchField, c);
-        c.insets = new Insets(10, 0, 10, 5);
+        c.insets = new Insets(10, 5, 10, 5);
         c.gridx = 6;
         c.weightx = 0.0;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.NONE;
         this.add(searchButton, c);
     }
+    //getter
+    public JTextField getSearchField() {
+        return searchField;
+    }
+    public JButton getSearchButton() {
+        return searchButton;
+    }
+    public JComboBox<String> getSearchComboBox() {
+        return searchComboBox;
+    }
+    //setter
+    public void setSearchField(JTextField searchField) {
+        this.searchField = searchField;
+    }
+    public void setSearchComboBox(JComboBox<String> searchComboBox) {
+        this.searchComboBox = searchComboBox;
+    }
+
 }

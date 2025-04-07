@@ -10,6 +10,9 @@ create table danh_muc_quan_ly
     ten_danh_muc_quan_ly varchar(50) not null
 );
 
+ALTER TABLE nhom_quyen MODIFY ma_nhom_quyen INT AUTO_INCREMENT;
+
+
 -- Bảng nhóm quyền
 create table nhom_quyen
 (
@@ -26,6 +29,9 @@ create table cap_quyen
     foreign key (ma_nhom_quyen) references nhom_quyen (ma_nhom_quyen),
     foreign key (ma_danh_muc_quan_ly) references danh_muc_quan_ly (ma_danh_muc_quan_ly)
 );
+ALTER TABLE cap_quyen MODIFY COLUMN hanh_dong ENUM ('them','sua','xoa','xem', 'excel') not null;
+
+
 
 CREATE TABLE nguoi_dung
 (
@@ -147,3 +153,16 @@ create table chi_tiet_phieu_nhap
     foreign key (ma_phieu_nhap) references phieu_nhap (ma_phieu_nhap),
     foreign key (ma_san_pham) references san_pham (ma_san_pham)
 );
+create table quyen_nguoi_dung (
+    ma_nguoi_dung int,
+    ma_nhom_quyen int,
+    primary key (ma_nguoi_dung, ma_nhom_quyen)
+)
+
+alter table quyen_nguoi_dung
+add constraint foreign key (ma_nguoi_dung) references tai_khoan(ma_nguoi_dung),
+add constraint foreign key (ma_nhom_quyen) references nhom_quyen(ma_nhom_quyen);
+
+select * from quyen_nguoi_dung
+select * from nhom_quyen
+select * from cap_quyen

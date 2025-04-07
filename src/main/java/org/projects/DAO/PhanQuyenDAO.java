@@ -43,7 +43,7 @@ public class PhanQuyenDAO implements ChucNangDAO<NhomQuyen> {
     }
 
     @Override
-    public int chitiet(NhomQuyen detail) {
-        return 0;
+    public NhomQuyen search(int id) {
+        return null;
     }
 }

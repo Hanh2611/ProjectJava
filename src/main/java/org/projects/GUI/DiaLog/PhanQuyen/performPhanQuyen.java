@@ -19,17 +19,16 @@ import java.util.List;
 
 import static org.projects.Action.LoginAction.mainGUI;
 
-public class updatePhanQuyen extends JDialog {
+public class performPhanQuyen extends JDialog {
     private JPanel titleBar, contentPanel, inputPanel;
     private JTextField textField;
     private JLabel nameLabel;
     private JTable mainTable;
-    private JButton updateButton;
     private List<DanhMucQuanLy> listDanhMuc;
     private String nameNhomQuyen;
     private int maNhomQuyen;
 
-    public updatePhanQuyen(JFrame parent, int maNhomQuyen, String nameNhomQuyen) {
+    public performPhanQuyen(JFrame parent, int maNhomQuyen, String nameNhomQuyen) {
         super(parent, "ADD PHAN QUYEN", true);
         this.nameNhomQuyen = nameNhomQuyen;
         this.maNhomQuyen = maNhomQuyen;
@@ -39,7 +38,7 @@ public class updatePhanQuyen extends JDialog {
         setLocationRelativeTo(parent);
         setUndecorated(true);
         titleBar = new JPanel();
-        objectFactory.titleBar(titleBar, this, "Cập nhật nhóm quyền");
+        objectFactory.titleBar(titleBar, this, "Chi tiết nhóm quyền");
         this.add(titleBar);
         init();
         setVisible(true);
@@ -53,21 +52,14 @@ public class updatePhanQuyen extends JDialog {
         nameLabel.setFont(new Font("JetBrains Mono",Font.BOLD,14));
         this.add(nameLabel);
         textField = new JTextField(nameNhomQuyen);
+        textField.setEditable(false);
         textField.setPreferredSize(new Dimension(500, 30));
         inputPanel.add(nameLabel);
         inputPanel.add(textField);
         this.add(inputPanel);
-        updateButton = new JButton("Cập nhật nhóm quyền");
-        updateButton.setPreferredSize(new Dimension(200, 40));
-        updateButton.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                pushData();
-            }
-        });
         //tạo bảng
         initTableManagement();
         this.add(contentPanel);
-        this.add(updateButton);
     }
 
     public void initTableManagement() {
@@ -84,7 +76,7 @@ public class updatePhanQuyen extends JDialog {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column != 0;
+                return false;
             }
         };
         loadData(tableModel);
@@ -126,31 +118,5 @@ public class updatePhanQuyen extends JDialog {
                     PhanQuyenBUS.checkCapQuyen(new CapQuyen(maNhomQuyen, dm.getMa_danh_muc_quan_ly(), hanhDong[3])),
                     PhanQuyenBUS.checkCapQuyen(new CapQuyen(maNhomQuyen, dm.getMa_danh_muc_quan_ly(), hanhDong[4]))});
         }
-    }
-
-    public void pushData() {
-        String nameNhomQuyenAfter  = textField.getText();
-        if (nameNhomQuyenAfter.equals("") || nameNhomQuyenAfter == null || nameNhomQuyenAfter.equals("Nhập tên nhóm quyền.....")) {
-            JOptionPane.showMessageDialog(mainGUI, "Vui lòng nhập tên nhóm quyền!");
-            textField.requestFocusInWindow();
-            return;
-        }
-        if(!(nameNhomQuyenAfter.equals(nameNhomQuyen))) {
-            PhanQuyenBUS.updateNameNhomQuyen(maNhomQuyen, nameNhomQuyenAfter);
-        }
-        int row = mainTable.getRowCount();
-        int col = mainTable.getColumnCount();
-        HashMap<String, List<Boolean>> danhMucData = new HashMap<>();
-        for (int i = 0; i < row; i++) {
-            List<Boolean> rowData = new ArrayList<>();
-            for (int j = 1; j < col; j++) {
-                boolean isChecked = (Boolean) mainTable.getValueAt(i, j);
-                rowData.add(isChecked);
-            }
-            danhMucData.put(listDanhMuc.get(i).getTen_danh_muc_quan_ly(), rowData);
-        }
-        PhanQuyenBUS.updateNhomQuyen(danhMucData, maNhomQuyen);
-        JOptionPane.showMessageDialog(mainGUI, "Cập nhật nhóm quyền thành công!");
-        dispose();
     }
 }

@@ -7,5 +7,5 @@ public interface ChucNangDAO<T> {
     int them(T add);
     int sua(T fix);
     int xoa(T delete);
-    int chitiet(T detail);
+    T search(int id);
 }
