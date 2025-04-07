@@ -8,6 +8,6 @@ import java.util.List;
 
 public class Session {
     public static TaiKhoan curUser;
-    public static HashMap<Integer, List<Boolean>> quyenTaiKhoan;
+    public static List<List<Boolean>> quyenTaiKhoan;
     public static List<Integer> maDanhMucQuyen;
 }
