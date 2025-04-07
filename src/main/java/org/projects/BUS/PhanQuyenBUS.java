@@ -4,10 +4,7 @@ import org.projects.DAO.CapQuyenDAO;
 import org.projects.DAO.DanhMucQuanLyDAO;
 import org.projects.DAO.NhomQuyenDAO;
 import org.projects.DAO.QuyenNguoiDungDAO;
-import org.projects.entity.CapQuyen;
-import org.projects.entity.DanhMucQuanLy;
-import org.projects.entity.NhomQuyen;
-import org.projects.entity.QuyenNguoiDung;
+import org.projects.entity.*;
 
 import java.util.*;
 
@@ -69,5 +66,13 @@ public class PhanQuyenBUS {
 
     public static void updateNameNhomQuyen(int maNhomQuyen, String nameNhomQuyen) {
         new NhomQuyenDAO().sua(new NhomQuyen(maNhomQuyen, nameNhomQuyen));
+    }
+
+    public static List<Integer> getQuyenDanhMuc(TaiKhoan user) {
+        return new DanhMucQuanLyDAO().getDanhMucQuanLyByMaNguoiDung(user.getMaNguoiDung());
+    }
+
+    public static int getMaDanhMuc(String nameDanhMuc) {
+        return DanhMucQuanLyDAO.getMaDanhMuc(nameDanhMuc);
     }
 }

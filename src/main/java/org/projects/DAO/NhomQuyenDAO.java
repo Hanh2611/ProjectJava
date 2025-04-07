@@ -80,4 +80,10 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     public int chitiet(NhomQuyen detail) {
         return 0;
     }
+
+    public List<Integer> getNhomQuyenOfUser(int maNguoiDung) {
+        List<Integer> result = new ArrayList<>();
+        String query = "select * from quyen_nguoi_dung where ma_nguoi_dung = ?";
+        return result;
+    }
 }

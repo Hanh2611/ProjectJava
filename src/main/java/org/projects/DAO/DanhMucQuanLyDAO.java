@@ -66,4 +66,29 @@ public class DanhMucQuanLyDAO implements ChucNangDAO<DanhMucQuanLy> {
         }
         return result;
     }
+
+    public List<Integer> getDanhMucQuanLyByMaNguoiDung(int maNguoiDung) {
+        List<Integer> result = new ArrayList<>();
+        String query = "SELECT * " +
+                "FROM danh_muc_quan_ly " +
+                "WHERE EXISTS ( " +
+                "    SELECT * " +
+                "    FROM quyen_nguoi_dung " +
+                "    JOIN cap_quyen ON cap_quyen.ma_nhom_quyen = quyen_nguoi_dung.ma_nhom_quyen " +
+                "    WHERE danh_muc_quan_ly.ma_danh_muc_quan_ly = cap_quyen.ma_danh_muc_quan_ly " +
+                "    AND quyen_nguoi_dung.ma_nguoi_dung = ? " +
+                ")";
+        try (Connection conection = DatabasesConfig.getConnection();
+        PreparedStatement statement = conection.prepareStatement(query);) {
+            statement.setInt(1, maNguoiDung);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getInt("ma_danh_muc_quan_ly"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result;
+    }
 }

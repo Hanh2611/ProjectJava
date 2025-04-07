@@ -69,17 +69,17 @@ VALUES (1, 'Quản trị viên'),
        (4, 'Khách hàng');
 
 INSERT INTO danh_muc_quan_ly (ma_danh_muc_quan_ly, ten_danh_muc_quan_ly)
-VALUES (1, 'Quản lý nhân viên'),
-       (2, 'Quản lý khách hàng'),
-       (3, 'Quản lý sản phẩm'),
-       (4, 'Quản lý đơn hàng'),
-       (5, 'Thống kê báo cáo');
+VALUES (1, 'NhanVien'),
+       (2, 'KhachHang'),
+       (3, 'SanPham'),
+       (4, 'HoaDon'),
+       (5, 'ThongKe');
 
 INSERT INTO danh_muc_quan_ly (ma_danh_muc_quan_ly, ten_danh_muc_quan_ly)
-VALUES (6, 'Quản lý nhà cung cấp'),
-       (7, 'Quản lý hóa đơn'),
-       (8, 'Quản lý tài khoản'),
-       (9, 'Quản lý phiếu nhập');
+VALUES (6, 'NhaCungCap'),
+       (7, 'TaiKhoan'),
+       (8, 'PhanQuyen'),
+       (9, 'PhieuNhap');
 
 INSERT INTO cap_quyen (ma_nhom_quyen, ma_danh_muc_quan_ly, hanh_dong)
 VALUES
