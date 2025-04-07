@@ -32,8 +32,8 @@ public class LoginDAO implements ChucNangDAO<TaiKhoan> {
     }
 
     @Override
-    public int chitiet(TaiKhoan detail) {
-        return 0;
+    public TaiKhoan search(int id) {
+        return null;
     }
 
     public TaiKhoan verifyLogin(TaiKhoan taiKhoan) {

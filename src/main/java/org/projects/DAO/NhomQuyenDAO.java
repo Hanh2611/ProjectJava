@@ -77,8 +77,8 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     }
 
     @Override
-    public int chitiet(NhomQuyen detail) {
-        return 0;
+    public NhomQuyen search(int id) {
+        return null;
     }
 
     public List<Integer> getNhomQuyenOfUser(int maNguoiDung) {
