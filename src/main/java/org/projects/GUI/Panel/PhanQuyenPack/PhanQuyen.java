@@ -29,6 +29,7 @@ public class PhanQuyen extends JPanel{
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
         header = new headerBar(listItemHeader, new String[]{"add","update","delete","detail","execel"});
+        this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         this.add(header);
         init();
         initTable();
