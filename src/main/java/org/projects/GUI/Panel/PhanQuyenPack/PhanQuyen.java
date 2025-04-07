@@ -68,6 +68,9 @@ public class PhanQuyen extends JPanel{
         mainTable.setGridColor(Color.decode("#CAECF7"));
         JScrollPane scrollPane = new JScrollPane(mainTable);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
+        mainTable.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder());
         for(String name : header.getHeaderFunc().getHm().keySet()) {
             header.getHeaderFunc().getHm().get(name).addMouseListener(new PhanQuyenAction(this, mainTable));
         }

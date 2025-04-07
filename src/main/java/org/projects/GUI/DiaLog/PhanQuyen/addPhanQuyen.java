@@ -34,7 +34,7 @@ public class addPhanQuyen extends JDialog {
 
     public addPhanQuyen(JFrame parent) {
         super(parent, "ADD PHAN QUYEN", true);
-        this.setBackground(Color.decode("#FFFFFF"));
+        this.getContentPane().setBackground(Color.WHITE);
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         setSize(900, 700);
         setLocationRelativeTo(parent);
@@ -48,6 +48,8 @@ public class addPhanQuyen extends JDialog {
     public void init() {
         listDanhMuc = new PhanQuyenBUS().getDanhMucQuanLy();
         inputPanel = new JPanel();
+        inputPanel.setBackground(Color.WHITE);
+        inputPanel.setOpaque(true);
         inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
         inputPanel.setPreferredSize(new Dimension(800, 50));
         nameLabel = new JLabel("Tên nhóm quyền: ");
@@ -109,14 +111,23 @@ public class addPhanQuyen extends JDialog {
         mainTable.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 14));
         mainTable.setRowHeight(40);
         mainTable.getTableHeader().setReorderingAllowed(false);
-        mainTable.setShowGrid(true);
-        mainTable.setGridColor(Color.decode("#CAECF7"));
+        mainTable.setOpaque(false);
+        mainTable.setBackground(Color.WHITE);
         mainTable.setShowGrid(false);
         mainTable.setSelectionBackground(mainTable.getBackground());
         mainTable.setSelectionForeground(mainTable.getForeground());
         mainTable.setFocusable(false);
         JScrollPane scrollPane = new JScrollPane(mainTable);
+        scrollPane.getViewport().setOpaque(true);
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.setOpaque(true);
+        scrollPane.setBackground(Color.WHITE);
+        mainTable.setBackground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.WHITE);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
+        mainTable.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder());
     }
 
     public void loadData(DefaultTableModel tableModel) {

@@ -66,4 +66,8 @@ public class PhanQuyenBUS {
     public static boolean checkCapQuyen(CapQuyen capQuyen) {
         return new CapQuyenDAO().check(capQuyen);
     }
+
+    public static void updateNameNhomQuyen(int maNhomQuyen, String nameNhomQuyen) {
+        new NhomQuyenDAO().sua(new NhomQuyen(maNhomQuyen, nameNhomQuyen));
+    }
 }

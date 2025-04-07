@@ -3,6 +3,7 @@ package org.projects.GUI.DiaLog.PhanQuyen;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.FocusListenerUtils;
+import org.projects.entity.CapQuyen;
 import org.projects.entity.DanhMucQuanLy;
 
 import javax.swing.*;
@@ -23,10 +24,15 @@ public class updatePhanQuyen extends JDialog {
     private JTextField textField;
     private JLabel nameLabel;
     private JTable mainTable;
-    private JButton addButton;
+    private JButton updateButton;
     private List<DanhMucQuanLy> listDanhMuc;
-    public updatePhanQuyen(JFrame parent) {
+    private String nameNhomQuyen;
+    private int maNhomQuyen;
+
+    public updatePhanQuyen(JFrame parent, int maNhomQuyen, String nameNhomQuyen) {
         super(parent, "ADD PHAN QUYEN", true);
+        this.nameNhomQuyen = nameNhomQuyen;
+        this.maNhomQuyen = maNhomQuyen;
         this.setBackground(Color.decode("#FFFFFF"));
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         setSize(900, 700);
@@ -38,7 +44,6 @@ public class updatePhanQuyen extends JDialog {
         init();
         setVisible(true);
     }
-
     public void init() {
         listDanhMuc = new PhanQuyenBUS().getDanhMucQuanLy();
         inputPanel = new JPanel();
@@ -47,23 +52,22 @@ public class updatePhanQuyen extends JDialog {
         nameLabel = new JLabel("Tên nhóm quyền: ");
         nameLabel.setFont(new Font("JetBrains Mono",Font.BOLD,14));
         this.add(nameLabel);
-        textField = handleComponents.createTextField("Nhập tên nhóm quyền.....", 60, 190, 500, 50);
+        textField = new JTextField(nameNhomQuyen);
         textField.setPreferredSize(new Dimension(500, 30));
-        textField.addFocusListener(FocusListenerUtils.createPlaceholderTextField("Nhập tên nhóm quyền.....", textField));
         inputPanel.add(nameLabel);
         inputPanel.add(textField);
         this.add(inputPanel);
-        //tạo bảng
-        initTableManagement();
-        addButton = new JButton("Cập nhật nhóm quyền");
-        addButton.setPreferredSize(new Dimension(200, 40));
-        addButton.addMouseListener(new MouseAdapter() {
+        updateButton = new JButton("Cập nhật nhóm quyền");
+        updateButton.setPreferredSize(new Dimension(200, 40));
+        updateButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 pushData();
             }
         });
+        //tạo bảng
+        initTableManagement();
         this.add(contentPanel);
-        this.add(addButton);
+        this.add(updateButton);
     }
 
     public void initTableManagement() {
@@ -114,17 +118,25 @@ public class updatePhanQuyen extends JDialog {
     }
 
     public void loadData(DefaultTableModel tableModel) {
+        String[] hanhDong = {"them", "sua", "xoa", "xem", "excel"};
         for (DanhMucQuanLy dm : listDanhMuc) {
-            tableModel.addRow(new Object[] {dm.getTen_danh_muc_quan_ly(), Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE});
+            tableModel.addRow(new Object[] {dm.getTen_danh_muc_quan_ly(), PhanQuyenBUS.checkCapQuyen(new CapQuyen(maNhomQuyen, dm.getMa_danh_muc_quan_ly(), hanhDong[0])),
+                    PhanQuyenBUS.checkCapQuyen(new CapQuyen(maNhomQuyen, dm.getMa_danh_muc_quan_ly(), hanhDong[1])),
+                    PhanQuyenBUS.checkCapQuyen(new CapQuyen(maNhomQuyen, dm.getMa_danh_muc_quan_ly(), hanhDong[2])),
+                    PhanQuyenBUS.checkCapQuyen(new CapQuyen(maNhomQuyen, dm.getMa_danh_muc_quan_ly(), hanhDong[3])),
+                    PhanQuyenBUS.checkCapQuyen(new CapQuyen(maNhomQuyen, dm.getMa_danh_muc_quan_ly(), hanhDong[4]))});
         }
     }
 
     public void pushData() {
-        String nameNhomQuyen  = textField.getText();
-        if (nameNhomQuyen.equals("") || nameNhomQuyen == null || nameNhomQuyen.equals("Nhập tên nhóm quyền.....")) {
+        String nameNhomQuyenAfter  = textField.getText();
+        if (nameNhomQuyenAfter.equals("") || nameNhomQuyenAfter == null || nameNhomQuyenAfter.equals("Nhập tên nhóm quyền.....")) {
             JOptionPane.showMessageDialog(mainGUI, "Vui lòng nhập tên nhóm quyền!");
             textField.requestFocusInWindow();
             return;
+        }
+        if(!(nameNhomQuyenAfter.equals(nameNhomQuyen))) {
+            PhanQuyenBUS.updateNameNhomQuyen(maNhomQuyen, nameNhomQuyenAfter);
         }
         int row = mainTable.getRowCount();
         int col = mainTable.getColumnCount();
@@ -137,11 +149,7 @@ public class updatePhanQuyen extends JDialog {
             }
             danhMucData.put(listDanhMuc.get(i).getTen_danh_muc_quan_ly(), rowData);
         }
-        int chossedRow = mainTable.getSelectedRow();
-        if (chossedRow == -1) {
-            JOptionPane.showMessageDialog(mainGUI, "Chưa có nhóm quyền được chọn!");
-            return;
-        }
+        PhanQuyenBUS.updateNhomQuyen(danhMucData, maNhomQuyen);
         JOptionPane.showMessageDialog(mainGUI, "Cập nhật nhóm quyền thành công!");
         dispose();
     }

@@ -48,8 +48,18 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     }
 
     @Override
-    public int sua(NhomQuyen fix) {
-        return 0;
+    public int sua(NhomQuyen nhomQuyen) {
+        int result = 0;
+        String query = "update nhom_quyen set ten_nhom_quyen = ? where ma_nhom_quyen = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, nhomQuyen.getTenNomQuyen());
+            statement.setInt(2, nhomQuyen.getMaNhomQuyen());
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     @Override
