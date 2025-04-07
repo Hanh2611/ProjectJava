@@ -75,6 +75,12 @@ VALUES (1, 'Quản lý nhân viên'),
        (4, 'Quản lý đơn hàng'),
        (5, 'Thống kê báo cáo');
 
+INSERT INTO danh_muc_quan_ly (ma_danh_muc_quan_ly, ten_danh_muc_quan_ly)
+VALUES (6, 'Quản lý nhà cung cấp'),
+       (7, 'Quản lý hóa đơn'),
+       (8, 'Quản lý tài khoản'),
+       (9, 'Quản lý phiếu nhập');
+
 INSERT INTO cap_quyen (ma_nhom_quyen, ma_danh_muc_quan_ly, hanh_dong)
 VALUES
 -- Quản trị viên có toàn quyền
@@ -210,3 +216,14 @@ VALUES (1, 101, 10, 500000, 5000000),
        (3, 103, 7, 642857, 4500000),
        (4, 104, 12, 500000, 6000000),
        (5, 105, 4, 625000, 2500000);
+insert into quyen_nguoi_dung(ma_nguoi_dung, ma_nhom_quyen)
+value (1, 2),
+      (2, 4),
+      (3, 1),
+    (4, 3),
+    (5, 5),
+    (6, 1),
+    (7, 12),
+    (8, 15),
+    (9, 1),
+    (10, 3)
