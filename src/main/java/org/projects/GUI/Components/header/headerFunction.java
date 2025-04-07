@@ -11,15 +11,15 @@ import java.util.HashMap;
 
 public class headerFunction extends JPanel {
     private generalFunction gl;
-    private HashMap<String,generalFunction> hm = new HashMap<>();
-    public headerFunction(Dimension parentSize, String listItemHeader[][],String[] listAction) {
+    private final HashMap<String,generalFunction> hm = new HashMap<>();
+    public headerFunction(Dimension parentSize, String[][] listItemHeader, String[] listAction) {
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
         init(listItemHeader,listAction);
         this.setVisible(true);
     }
-    public void init(String listItemHeader[][],String[] listAction) {
+    public void init(String[][] listItemHeader, String[] listAction) {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

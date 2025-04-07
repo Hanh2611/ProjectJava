@@ -25,16 +25,16 @@ create table cap_quyen
 
 CREATE TABLE nguoi_dung
 (
-    ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY,
-    loai_nguoi_dung ENUM ('nhan_vien_kho', 'khach_hang', 'nhan_vien_ban_hang') NOT NULL,
-    ten_nguoi_dung  VARCHAR(50)                                                NOT NULL
+    ma_nguoi_dung   INT                                                                 NOT NULL PRIMARY KEY,
+    loai_nguoi_dung ENUM ('nhan_vien_kho', 'khach_hang', 'nhan_vien_ban_hang', 'admin') NOT NULL,
+    ten_nguoi_dung  VARCHAR(50)                                                         NOT NULL
 );
 
 -- Bảng tài khoản
 create table tai_khoan
 (
     ten_dang_nhap    varchar(50) not null primary key,
-    ma_nguoi_dung    int         not null,
+    ma_nguoi_dung    int         not null unique,
     mat_khau         varchar(50) not null,
     quyen_nguoi_dung int         not null,
     trang_thai       ENUM ('hoat_dong','da_khoa') default 'hoat_dong'
@@ -184,7 +184,3 @@ alter table phieu_nhap
 alter table chi_tiet_phieu_nhap
     add constraint foreign key (ma_phieu_nhap) references phieu_nhap (ma_phieu_nhap),
     add constraint foreign key (ma_san_pham) references san_pham (ma_san_pham);
-
-select * from quyen_nguoi_dung
-select * from nhom_quyen
-select * from cap_quyen

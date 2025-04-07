@@ -51,7 +51,7 @@ public class ListItem extends JPanel{
 
         //them ten panel vao map de truy xuat den -> hien thi panel tuong ung
         mapItem.put("TrangChu", new TrangChu());
-//        mapItem.put("SanPham", new SanPham());
+        mapItem.put("SanPham", new SanPham());
         mapItem.put("TaiKhoan", new TaiKhoan());
         mapItem.put("PhieuNhap", new PhieuNhap());
         mapItem.put("HoaDon", new HoaDon());

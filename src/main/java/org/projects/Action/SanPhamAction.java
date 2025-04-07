@@ -2,7 +2,6 @@ package org.projects.Action;
 
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.AddSanPhamDialog;
-import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.Panel.SanPham;
 
 import java.awt.event.ActionEvent;

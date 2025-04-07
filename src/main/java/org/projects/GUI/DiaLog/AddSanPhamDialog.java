@@ -1,7 +1,6 @@
 package org.projects.GUI.DiaLog;
 
 import org.projects.GUI.Panel.SanPham;
-import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
 import java.awt.*;
