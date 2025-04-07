@@ -1,25 +1,21 @@
 package org.projects.GUI.Components.header;
 
-import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
-import org.projects.GUI.MainGUI;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class headerFunction extends JPanel {
     private generalFunction gl;
     private HashMap<String,generalFunction> hm = new HashMap<>();
-    public headerFunction(Dimension parentSize, String listItemHeader[][],String[] listAction) {
+    public headerFunction(Dimension parentSize, String[][] listItemHeader, ArrayList<String> listAction) {
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
         init(listItemHeader,listAction);
         this.setVisible(true);
     }
-    public void init(String listItemHeader[][],String[] listAction) {
+    public void init(String[][] listItemHeader, ArrayList<String> listAction) {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -32,7 +28,7 @@ public class headerFunction extends JPanel {
             c.gridx++;
         }
     }
-    public void createHashMap(String[] listAction) {
+    public void createHashMap(ArrayList<String> listAction) {
         for(String ac : listAction) {
             switch (ac) {
                 case "add":
@@ -46,6 +42,10 @@ public class headerFunction extends JPanel {
                     break;
                 case "detail":
                     hm.put("detail",new generalFunction("icon/details.svg","Chi tiết","detail"));
+                    break;
+                default:
+                    hm.put("excel",new generalFunction("icon/details.svg","Chi tiết","detail"));
+                    break;
             }
         }
     }
