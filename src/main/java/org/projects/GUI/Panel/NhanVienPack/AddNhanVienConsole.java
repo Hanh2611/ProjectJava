@@ -22,7 +22,9 @@ public class AddNhanVienConsole extends JPanel {
     static String changeImage;
     static JPanel parentImg;
     private static JPanel mainImg;
-    public AddNhanVienConsole() {
+    private JButton reset , save , cancel;
+    private NhanVienAction action;
+    public AddNhanVienConsole(){
         initComponents();
     }
     public void initComponents() {
@@ -56,7 +58,7 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setOpaque(true);
         String[] list = {"Nhập mã số nhân viên" , "Nhập họ và tên" , "Nhập số điện thoại" , "Nhập địa chỉ" , "Nhập Email" , "Lương (đ/h)" , "Buổi làm (từ .. đến ..)"};
         String[] items = {"-- Chọn vai trò --" , "Tiếp thị" , "Quản lí" , "Thu ngân" , "Giao dịch" , "Nhân viên quán"};
-
+        ArrayList<JTextField> listAdd = new ArrayList<>();
         JComboBox<String> comboBox = new JComboBox<>(items);
         for(String s : list){
             JTextField jTextField = new JTextField(s);
@@ -68,6 +70,7 @@ public class AddNhanVienConsole extends JPanel {
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220,220,220)));
             mainInfo.add(jTextField);
             mainInfo.add(Box.createVerticalStrut(5));
+            listAdd.add(jTextField);
         }
         comboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -113,12 +116,17 @@ public class AddNhanVienConsole extends JPanel {
         combobox_sex.setMaximumSize(new Dimension(500 , 40));
         mainInfo.add(combobox_sex);
         mainInfo.add(Box.createVerticalStrut(30));
-        JButton reset = new JButton("Làm mới");
+        reset = new JButton("Làm mới");
         reset.setBackground(new Color(0,191,255));
-        JButton save = new JButton("Lưu");
+        save = new JButton("Lưu");
         save.setBackground(new Color(50,205,50));
-        JButton cancel = new JButton("Hủy");
+        cancel = new JButton("Hủy");
         cancel.setBackground(new Color(250,128,114));
+        // action thêm
+        reset.addActionListener(action);
+        save.addActionListener(action);
+        cancel.addActionListener(action);
+
         JPanel buttonPanel = new JPanel(new GridLayout(1 , 3 , 50 , 20));
         ArrayList<JButton> buttons = new ArrayList<>();
         buttonPanel.setMaximumSize(new Dimension(500 , 40));
@@ -143,7 +151,7 @@ public class AddNhanVienConsole extends JPanel {
         JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        changeImage = "src/main/resources/Img/user.jpg";
+        changeImage = "D:\\Java\\ProjectJava\\src\\main\\resources\\Img\\user.jpg";
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
@@ -225,4 +233,16 @@ public class AddNhanVienConsole extends JPanel {
             }
         });
     }
+    public JButton getSaveButton() {
+        return save;
+    }
+
+    public JButton getCancelButton() {
+        return cancel;
+    }
+
+    public JButton getResetButton() {
+        return reset;
+    }
+
 }

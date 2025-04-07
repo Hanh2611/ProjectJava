@@ -1,9 +1,11 @@
 package org.projects.entity;
 
 public class NhanVienEntity {
-    private String maNhanVien , tenNhanVien, emailNhanVien , diaChiNhanVien , sdtNhanVien , ngaySinhNhanVien ,buoiLamNhanVien;
+    private String  tenNhanVien, emailNhanVien , diaChiNhanVien , sdtNhanVien , ngaySinhNhanVien ,buoiLamNhanVien;
     private double luongNhanVienTheoGio , luongNhanVienTheoTong;
-    public NhanVienEntity(String ma , String ten , String email , String diaChi , String sdt , String ngaySinh , String buoiLam , double _luongNhanVienTheoGio){
+    private int maNhanVien;
+    private String chucvu;
+    public NhanVienEntity(int ma , String ten , String email , String diaChi , String sdt , String ngaySinh , String buoiLam , double _luongNhanVienTheoGio){
         maNhanVien = ma;
         tenNhanVien = ten;
         emailNhanVien = email;
@@ -14,19 +16,19 @@ public class NhanVienEntity {
         luongNhanVienTheoGio = _luongNhanVienTheoGio;
     }
 
-    public NhanVienEntity(String ma , String ten , String email , String diaChi , String sdt){
+    public NhanVienEntity(int ma , String ten , String email , String sdt , String chucvu){
         maNhanVien = ma;
         tenNhanVien = ten;
         emailNhanVien = email;
-        diaChiNhanVien = diaChi;
         sdtNhanVien = sdt;
+        this.chucvu = chucvu;
     }
 
-    public String getMaNhanVien() {
+    public int getMaNhanVien() {
         return maNhanVien;
     }
 
-    public void setMaNhanVien(String maNhanVien) {
+    public void setMaNhanVien(int maNhanVien) {
         this.maNhanVien = maNhanVien;
     }
 
@@ -92,5 +94,13 @@ public class NhanVienEntity {
 
     public void setLuongNhanVienTheoTong(double luongNhanVienTheoTong) {
         this.luongNhanVienTheoTong = luongNhanVienTheoTong;
+    }
+
+    public void setChucvu(String chucvu) {
+        this.chucvu = chucvu;
+    }
+
+    public String getChucvu() {
+        return chucvu;
     }
 }

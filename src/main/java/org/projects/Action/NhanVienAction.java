@@ -5,6 +5,7 @@ import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowChiTietNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowDeleteNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole;
+import org.projects.GUI.Panel.NhanVienPack.DeleteNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.entity.NhanVienEntity;
 
@@ -17,10 +18,9 @@ import java.awt.event.MouseListener;
 
 public class NhanVienAction implements ActionListener  , MouseListener {
     private NhanVien nv;
-    private ShowDeleteNhanVienConsole delete_console;
-    private ShowAddNhanVienConsole add_console;
-    private ShowChiTietNhanVienConsole detail_console;
-    private AddNhanVienConsole add_img;
+    private ShowAddNhanVienConsole show_add_nv;
+    private ShowDeleteNhanVienConsole show_del_nv;
+    private ShowChiTietNhanVienConsole show_detail_nv;
     public NhanVienAction(NhanVien nv) {
         this.nv = nv;
     }
@@ -29,7 +29,25 @@ public class NhanVienAction implements ActionListener  , MouseListener {
     public void actionPerformed(ActionEvent e) {
         JComponent source = (JComponent) e.getSource();
         String nameButton = e.getActionCommand();
-
+        if(show_add_nv != null) {
+            if (source.equals(show_add_nv.add.getSaveButton())) {
+                System.out.println("save");
+            } else if (source.equals(show_add_nv.add.getCancelButton())) {
+                System.out.println("cancel");
+                show_add_nv.close();
+            } else if (source.equals(show_add_nv.add.getResetButton())) {
+                System.out.println("reset");
+            }
+        }
+        if(show_del_nv != null) {
+            if (source.equals(show_del_nv.del.getCancelButton())) {
+                System.out.println("del cancel");
+                show_del_nv.close();
+            }else if(source.equals(show_del_nv.del.getOkButton())){
+                System.out.println("del ok");
+                show_del_nv.close();
+            }
+        }
     }
 
     @Override
@@ -47,7 +65,10 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                     if (name == null && name.trim().isEmpty()) return;
                     System.out.println("ten cua nut la : " + name);
                     if("add".equals(name)){
-                        add_console = new ShowAddNhanVienConsole();
+                        show_add_nv = new ShowAddNhanVienConsole();
+                        show_add_nv.add.getResetButton().addActionListener(this);
+                        show_add_nv.add.getSaveButton().addActionListener(this);
+                        show_add_nv.add.getCancelButton().addActionListener(this);
                     }else{
                         NhanVienEntity clickOnRowTable = nv.getRow();
                         if(clickOnRowTable == null){
@@ -57,10 +78,12 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                         if("update".equals(name)){
                             // chưa làm
                         }else if("detail".equals(name)){
-                            detail_console = new ShowChiTietNhanVienConsole(clickOnRowTable,false);
+                            show_detail_nv = new ShowChiTietNhanVienConsole(clickOnRowTable,false);
                         }
                         else if("delete".equals(name)){
-                            delete_console = new ShowDeleteNhanVienConsole(clickOnRowTable);
+                            show_del_nv = new ShowDeleteNhanVienConsole(clickOnRowTable);
+                            show_del_nv.del.getOkButton().addActionListener(this);
+                            show_del_nv.del.getCancelButton().addActionListener(this);
                         }
                     }
                 }

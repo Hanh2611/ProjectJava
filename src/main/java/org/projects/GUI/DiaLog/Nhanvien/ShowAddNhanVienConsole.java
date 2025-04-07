@@ -10,8 +10,8 @@ import java.awt.*;
 
 public class ShowAddNhanVienConsole extends JDialog {
     NhanVien nhanVien;
-    AddNhanVienConsole add;
-    mainTransition transition = new mainTransition();
+    public AddNhanVienConsole add;
+    public mainTransition transition = new mainTransition();
     public ShowAddNhanVienConsole() {
         nhanVien = new NhanVien();
         add = new AddNhanVienConsole();
@@ -25,7 +25,8 @@ public class ShowAddNhanVienConsole extends JDialog {
         JPanel detailPanel = add;
         FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
         this.setIconImage(svgIcon.getImage());
-
+        this.setSize(new Dimension(500, 700));
+        this.setMinimumSize(new Dimension(500, 700));
         JLabel titleLabel = new JLabel("Thêm nhân viên", SwingConstants.CENTER);
         titleLabel.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
         titleLabel.setForeground(Color.white);
@@ -38,5 +39,7 @@ public class ShowAddNhanVienConsole extends JDialog {
 
         this.pack();
     }
-
+    public void close(){
+        transition.closeWithZoomOut(this);
+    }
 }

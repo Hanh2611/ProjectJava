@@ -13,8 +13,8 @@ import java.awt.event.ActionListener;
 
 public class ShowDeleteNhanVienConsole extends JDialog {
     NhanVien nhanVien;
-    DeleteNhanVienConsole del;
-    mainTransition transition = new mainTransition();
+    public DeleteNhanVienConsole del;
+    public mainTransition transition = new mainTransition();
     public ShowDeleteNhanVienConsole(NhanVienEntity entity) {
         nhanVien = new NhanVien();
         del = new DeleteNhanVienConsole();
@@ -22,6 +22,7 @@ public class ShowDeleteNhanVienConsole extends JDialog {
         processDelete(entity);
         transition.showZoomIn(this,700 , 400);
     }
+    public ShowDeleteNhanVienConsole(){}
     void processDelete(NhanVienEntity entity){
 
     }
@@ -43,5 +44,8 @@ public class ShowDeleteNhanVienConsole extends JDialog {
         this.pack();
 //        this.setLocationRelativeTo(null);
 //        this.setVisible(true);
+    }
+    public void close(){
+        transition.closeWithZoomOut(this);
     }
 }

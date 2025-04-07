@@ -2,11 +2,14 @@ package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.NhanVienAction;
+import org.projects.DAO.NhaCungCapDAO;
+import org.projects.DAO.NhanVienDao;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowChiTietNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowDeleteNhanVienConsole;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
 
@@ -18,12 +21,14 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import static org.projects.GUI.Components.layoutCompoment.addHeader;
 
 public class NhanVien extends JPanel {
     private JTable table;
     private headerBar header;
+    private DefaultTableModel tableModel;
     private NhanVienAction nhanVienAction = new NhanVienAction(this);
     public NhanVien() {
         init();
@@ -33,26 +38,39 @@ public class NhanVien extends JPanel {
 
     private void init(){
         String [] col = {"Mã NV", "Tên nhân viên", "Email", "SĐT", "Chức vụ"};
-        DefaultTableModel tableModel = new DefaultTableModel(col, 0){
+        tableModel = new DefaultTableModel(col, 0){
             // không cho chính sửa trực tiếp trong bảng
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        //test
-        for(int i = 1; i <= 30; i++) {
-            tableModel.addRow(new Object[]{
-                    i,
-                    "Nhân viên " + i,
-                    "Địa chỉ chi tiết số " + i + ", Quận 1, TP.HCM",
-                    "0123-456-789",
-                    "2023-04-2" + (i % 10)
-            });
-        }
-
+        reloadDAO();
         table = new JTable(tableModel);
         CustomTable();
+    }
+
+    public void loadList(List<NhanVienEntity> list) {
+        tableModel.setRowCount(0);
+        if(list != null) {
+            for(NhanVienEntity nv : list) {
+                tableModel.addRow(new Object[]{
+                        nv.getMaNhanVien(),
+                        nv.getTenNhanVien(),
+                        nv.getEmailNhanVien(),
+                        nv.getSdtNhanVien(),
+                        nv.getChucvu(),
+                });
+            }
+        }
+    }
+
+    public void reloadDAO() {
+        List<NhanVienEntity> showlist = new NhanVienDao().showlist();
+        //NhanVienEntity nv = new NhanVienEntity(1 , "bao" , "asd@gmail.com" , "0123123123" , "quanly");
+//        showlist.add(nv);
+        System.out.println("Số lượng nhân viên: " + showlist.size());
+        loadList(showlist);
     }
 
     private void CustomTable(){
@@ -124,172 +142,6 @@ public class NhanVien extends JPanel {
         centerPanel.add(scrollPane , gbc);
         add(centerPanel);
     }
-   /* public JPanel setupDetailBox_ADMIN(){
-        JPanel detailBoxPanel = new JPanel();
-        detailBoxPanel.setLayout(new BorderLayout());
-        detailBoxPanel.setBackground(Color.RED);
-        detailBoxPanel.setPreferredSize(new Dimension(600 , 650));
-        JPanel topLayout = new JPanel();
-        JPanel botLayout = new JPanel();
-        topLayout.setBackground(Color.BLUE);
-        botLayout.setBackground(Color.YELLOW);
-        // xây dựng top layout
-        topLayout.setLayout(new GridLayout(1 , 2));
-        topLayout.setPreferredSize(new Dimension(600 , 325));
-        JPanel topImage = new JPanel();
-        JPanel topInformation = new JPanel();
-        topImage.setBackground(Color.PINK);
-        topInformation.setBackground(Color.RED);
-        topImage.setOpaque(true);
-        topInformation.setOpaque(true);
-        topLayout.add(topImage);
-        topLayout.add(topInformation);
-        topLayout.setOpaque(true);
-
-
-        botLayout.setOpaque(true);
-        detailBoxPanel.add(topLayout, BorderLayout.NORTH);
-        detailBoxPanel.add(botLayout, BorderLayout.CENTER);
-        detailBoxPanel.setOpaque(true);
-
-        return detailBoxPanel;
-    }*/
-
-    /*public JPanel setupDetailBox_USER() {
-        JPanel detailBoxPanel = new JPanel(new GridBagLayout());
-        detailBoxPanel.setOpaque(true);
-        detailBoxPanel.setBackground(new Color(240, 240, 240));
-        detailBoxPanel.setPreferredSize(new Dimension(700, 400));
-        detailBoxPanel.setMaximumSize(new Dimension(700, 400));
-        detailBoxPanel.setMinimumSize(new Dimension(700, 400));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        // Panel bên trái chứa ảnh
-        JPanel left = new JPanel(new BorderLayout());
-        left.setOpaque(true);
-        left.setBackground(new Color(240, 240, 240));
-        left.setPreferredSize(new Dimension(250, 400));
-        left.setMinimumSize(new Dimension(250, 400));
-        left.setMaximumSize(new Dimension(250, 400));
-
-        // Load ảnh và resize (nên đảm bảo ảnh có kích thước phù hợp)
-        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Java\\ProjectJava\\src\\main\\resources\\Img\\avatar-anh-meo-cute-5.jpg")
-                .getImage().getScaledInstance(250, 400, Image.SCALE_SMOOTH));
-        JLabel imgLabel = new RoundedImageLabel(icon, 20, 20);
-        imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        left.add(imgLabel, BorderLayout.CENTER);
-
-        gbc.gridx = 0;
-        gbc.weightx = 0.4;
-        gbc.weighty = 1;
-        detailBoxPanel.add(left, gbc);
-
-        // Panel bên phải chứa thông tin chi tiết
-        JPanel right = new JPanel(new BorderLayout());
-        right.setOpaque(true);
-        right.setBackground(new Color(240, 240, 240));
-        right.setPreferredSize(new Dimension(420, 400));
-        right.setMaximumSize(new Dimension(420, 400));
-        right.setMinimumSize(new Dimension(420, 400));
-
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setOpaque(true);
-        infoPanel.setBackground(new Color(240, 240, 240));
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Danh sách các thông tin
-        String[] info = {"Mã nhân viên", "Họ và tên", "Ngày sinh", "Tuổi", "Chức vụ", "Số điện thoại", "Email"};
-        FlatSVGIcon iconIdNV = new FlatSVGIcon("icon/idNV.svg", 20, 20) ;
-        FlatSVGIcon iconNameNV = new FlatSVGIcon("icon/nameNV.svg", 20, 20) ;
-        FlatSVGIcon iconBrithdayNV = new FlatSVGIcon("icon/brithday.svg", 20, 20);
-        FlatSVGIcon iconEmailNV = new FlatSVGIcon("icon/email.svg", 20, 20) ;
-        FlatSVGIcon iconPhoneNV = new FlatSVGIcon("icon/phone.svg", 20, 20) ;
-        FlatSVGIcon iconphucvuNV = new FlatSVGIcon("icon/phucvu.svg", 20, 20) ;
-        FlatSVGIcon iconageNV = new FlatSVGIcon("icon/age.svg", 20, 20) ;
-        FlatSVGIcon[] iconList = {iconIdNV, iconNameNV , iconBrithdayNV, iconageNV , iconphucvuNV , iconPhoneNV,iconEmailNV};
-        int index = 0;
-        for (String labelText : info) {
-            JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT , 5 , 0));
-            pan.setBackground(new Color(240, 240, 240));
-            JLabel iconLabel = new JLabel(iconList[index]);
-            pan.add(iconLabel);
-            JTextField field = new JTextField(labelText);
-            field.setFont(new Font("JetBrains Mono", Font.ITALIC, 15));
-            field.setHorizontalAlignment(SwingConstants.LEFT);
-            field.setBackground(new Color(240, 240, 240));
-            field.setEditable(false);
-            field.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220,220,220)));
-            field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-            pan.add(field);
-            infoPanel.add(pan);
-            infoPanel.add(Box.createVerticalStrut(10));
-            index++;
-            index %= iconList.length;
-        }
-
-        JPanel genderPanel = getRadioSex(false , true);
-        infoPanel.add(genderPanel);
-
-        right.add(infoPanel, BorderLayout.CENTER);
-
-        gbc.gridx = 1;
-        gbc.weightx = 0.6;
-        detailBoxPanel.add(right, gbc);
-
-        return detailBoxPanel;
-    }
-
-    public static JPanel getRadioSex(boolean edit, boolean data) {
-        JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        genderPanel.setOpaque(true);
-        genderPanel.setBackground(new Color(240, 240, 240));
-
-        JRadioButton radioNam = new JRadioButton("Nam", data);
-        data = !data;
-        JRadioButton radioNu = new JRadioButton("Nữ", data);
-        radioNam.setFont(new Font("JetBrains Mono", Font.BOLD, 14));
-        radioNu.setFont(new Font("JetBrains Mono", Font.BOLD, 14));
-        if(!edit) {
-            radioNam.setEnabled(false);
-            radioNu.setEnabled(false);
-        }
-
-        ButtonGroup genderGroup = new ButtonGroup();
-        genderGroup.add(radioNam);
-        genderGroup.add(radioNu);
-
-        genderPanel.add(radioNam);
-        genderPanel.add(radioNu);
-        return genderPanel;
-    }
-*/
-
-    /*public void ShowDetailBox(boolean trinh){
-        JDialog dialog = new JDialog();
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        JPanel detailPanel;
-        if(!trinh) detailPanel = setupDetailBox_USER();
-        else detailPanel = setupDetailBox_ADMIN();
-        dialog.setUndecorated(true);
-        FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
-        dialog.setIconImage(svgIcon.getImage());
-        JLabel titleLabel = new JLabel("Chi tiết nhân viên" , SwingConstants.CENTER);
-        titleLabel.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
-        titleLabel.setForeground(new Color(255, 255, 255));
-        titleLabel.setBackground(new Color(0, 102, 204));
-        titleLabel.setOpaque(true);
-        JButton cancelButton = add_cancelIcon(dialog);
-        titleLabel.add(cancelButton);
-        dialog.getContentPane().add(titleLabel, BorderLayout.NORTH);
-        dialog.getContentPane().add(detailPanel);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-    }*/
 
     public JButton add_minusIcon(){
         JButton minusIcon;
@@ -319,48 +171,6 @@ public class NhanVien extends JPanel {
         return cancelIcon;
     }
 
-    /*public void ShowAddNhanVienConsole(){
-        JDialog dialog = new JDialog();
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setUndecorated(true);
-        dialog.setSize(new Dimension(500, 700));
-        dialog.setMaximumSize(new Dimension(500, 700));
-        dialog.setMinimumSize(new Dimension(500, 700));
-        JPanel detailPanel = addNhanVienConsole;
-        FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
-        dialog.setIconImage(svgIcon.getImage());
-        JLabel titleLabel = new JLabel("Thêm nhân viên" , SwingConstants.CENTER);
-        titleLabel.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
-        titleLabel.setForeground(Color.white);
-        titleLabel.setBackground(new Color(0, 102, 204));
-        titleLabel.setOpaque(true);
-        dialog.getContentPane().add(titleLabel, BorderLayout.NORTH);
-        dialog.getContentPane().add(detailPanel);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-    }*/
-
-    /*public void ShowDeleteNhanVienConsole(){
-        JDialog dialog = new JDialog();
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setUndecorated(true);
-        dialog.setSize(new Dimension(700, 400));
-        dialog.setMinimumSize(new Dimension(700, 400));
-        JPanel detailPanel = deleteNhanVienConsole;
-        FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
-        dialog.setIconImage(svgIcon.getImage());
-        JLabel titleLabel = new JLabel("Xóa nhân viên" , SwingConstants.CENTER);
-        titleLabel.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
-        titleLabel.setForeground(Color.white);
-        titleLabel.setBackground(new Color(0, 102, 204));
-        titleLabel.setOpaque(true);
-        dialog.getContentPane().add(titleLabel, BorderLayout.NORTH);
-        dialog.getContentPane().add(detailPanel);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-    }*/
 
     public headerBar getHeader() {
         return header;
@@ -369,13 +179,12 @@ public class NhanVien extends JPanel {
     public NhanVienEntity getRow() {
         int row = table.getSelectedRow();
         if(row == -1) return null;
-        String ma = table.getValueAt(row,0).toString();
+        int ma = (int)table.getValueAt(row,0);
         String ten = table.getValueAt(row,1).toString();
-        String sdt = table.getValueAt(row,2).toString();
-        String email = table.getValueAt(row,3).toString();
-        String diaChi = table.getValueAt(row,4).toString();
-
-        return new NhanVienEntity(ma,ten,sdt,email,diaChi);
+        String email = table.getValueAt(row,2).toString();
+        String sdt = table.getValueAt(row,3).toString();
+        String chucVu = table.getValueAt(row,4).toString();
+        return new NhanVienEntity(ma,ten,sdt,email,chucVu);
     }
 }
 
