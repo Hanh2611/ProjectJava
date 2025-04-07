@@ -10,6 +10,8 @@ import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
@@ -34,7 +36,7 @@ public class NhaCungCap extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"},new String[]{"---","mã","tên","địa chỉ"});
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
