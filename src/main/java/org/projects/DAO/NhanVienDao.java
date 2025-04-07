@@ -16,13 +16,17 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
     @Override
     public List<NhanVienEntity> showlist() {
         List<NhanVienEntity> list = new ArrayList<>();
-        String query = "select * from nhan_vien;";
+        String query = "SELECT ma_nhan_vien, ten_nhan_vien, email, so_dien_thoai, chuc_vu FROM nhan_vien;";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);
             ResultSet rs = ps.executeQuery()) {
             while(rs.next()) {
-                NhanVienEntity nve = new NhanVienEntity(rs.getInt("ma_nhan_vien"),rs.getString("ten_nhan_vien"),
-                        rs.getString("email"),rs.getString("so_dien_thoai"),rs.getString("chuc_vu"));
+                NhanVienEntity nve = new NhanVienEntity(
+                        rs.getInt("ma_nhan_vien"),
+                        rs.getString("ten_nhan_vien"),
+                        rs.getString("email"),
+                        rs.getString("so_dien_thoai"),
+                        rs.getString("chuc_vu"));
                 list.add(nve);
             }
         }catch(Exception e){

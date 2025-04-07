@@ -37,6 +37,7 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                 show_add_nv.close();
             } else if (source.equals(show_add_nv.add.getResetButton())) {
                 System.out.println("reset");
+                show_add_nv.add.resetForm();
             }
         }
         if(show_del_nv != null) {

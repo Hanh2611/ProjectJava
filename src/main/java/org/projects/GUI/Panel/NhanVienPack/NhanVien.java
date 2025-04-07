@@ -4,6 +4,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.NhanVienAction;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.NhanVienDao;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
@@ -29,6 +30,7 @@ public class NhanVien extends JPanel {
     private JTable table;
     private headerBar header;
     private DefaultTableModel tableModel;
+    private static mainTransition transition = new mainTransition();
     private NhanVienAction nhanVienAction = new NhanVienAction(this);
     public NhanVien() {
         init();
@@ -76,9 +78,9 @@ public class NhanVien extends JPanel {
     private void CustomTable(){
         table.getColumnModel().getColumn(0).setPreferredWidth(120);
         table.getColumnModel().getColumn(1).setPreferredWidth(300);
-        table.getColumnModel().getColumn(2).setPreferredWidth(500);
+        table.getColumnModel().getColumn(2).setPreferredWidth(400);
         table.getColumnModel().getColumn(3).setPreferredWidth(220);
-        table.getColumnModel().getColumn(4).setPreferredWidth(220);
+        table.getColumnModel().getColumn(4).setPreferredWidth(300);
 
         JTableHeader header = table.getTableHeader();
         header.setBackground(new Color(0, 102, 204));
@@ -165,7 +167,7 @@ public class NhanVien extends JPanel {
         cancelIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialog.setVisible(false);
+                transition.closeWithZoomOut(dialog);
             }
         });
         return cancelIcon;
@@ -184,7 +186,7 @@ public class NhanVien extends JPanel {
         String email = table.getValueAt(row,2).toString();
         String sdt = table.getValueAt(row,3).toString();
         String chucVu = table.getValueAt(row,4).toString();
-        return new NhanVienEntity(ma,ten,sdt,email,chucVu);
+        return new NhanVienEntity(ma,ten,email,sdt,chucVu);
     }
 }
 
