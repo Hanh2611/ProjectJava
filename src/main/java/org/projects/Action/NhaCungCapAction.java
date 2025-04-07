@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class NhaCungCapAction implements ActionListener, MouseListener {
+public class NhaCungCapAction implements ActionListener, MouseListener,ItemListener,KeyListener {
     private NhaCungCap ncc;
     private NhaCungCapDialog nccDialog;
     private NhaCungCapEntity nccEntity;
@@ -143,9 +143,6 @@ public class NhaCungCapAction implements ActionListener, MouseListener {
                     }
                 }
             }
-
-
-
         }
 
         @Override
@@ -162,4 +159,24 @@ public class NhaCungCapAction implements ActionListener, MouseListener {
                 }
             }
         }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+}

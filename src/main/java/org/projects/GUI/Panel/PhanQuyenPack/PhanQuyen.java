@@ -2,7 +2,7 @@ package org.projects.GUI.Panel.PhanQuyenPack;
 
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.Components.layoutCompoment;
-import org.projects.entity.NhomQuyen;
+import org.projects.entity.NhomQuyenEntity;
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
@@ -59,8 +59,8 @@ public class PhanQuyen extends JPanel{
         contentPanel.add(scrollPane, BorderLayout.CENTER);
     }
     public void loadData(DefaultTableModel tableModel) {
-        List<NhomQuyen> list = new PhanQuyenBUS().getNhomQuyen();
-        for (NhomQuyen nhomQuyen : list) {
+        List<NhomQuyenEntity> list = new PhanQuyenBUS().getNhomQuyen();
+        for (NhomQuyenEntity nhomQuyen : list) {
             tableModel.addRow(new Object[]{nhomQuyen.getMaNhomQuyen(), nhomQuyen.getTenNomQuyen()});
         }
     }

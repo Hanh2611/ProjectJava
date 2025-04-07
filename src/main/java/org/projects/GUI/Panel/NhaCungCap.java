@@ -4,6 +4,7 @@ import org.projects.Action.NhaCungCapAction;
 import org.projects.BUS.NhaCungCapBUS;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.Components.header.headerSearch;
 import org.projects.GUI.Components.layoutCompoment;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
@@ -33,7 +34,7 @@ public class NhaCungCap extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
+        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"},new String[]{"---","mã","tên","địa chỉ"});
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
@@ -65,9 +66,16 @@ public class NhaCungCap extends JPanel{
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 
+        //su kien cac nut
         for(String name : header.getHeaderFunc().getHm().keySet()) {
             header.getHeaderFunc().getHm().get(name).addMouseListener(nccAction);
         }
+
+        //su kien tim kiem
+        header.getSearch().getSearchComboBox().addItemListener(nccAction);
+        header.getSearch().getSearchField().addKeyListener(nccAction);
+        header.getSearch().getSearchButton().addActionListener(nccAction);
+
         UIUtils.refreshComponent(this);
     }
     public void loadList(List<NhaCungCapEntity> list) {

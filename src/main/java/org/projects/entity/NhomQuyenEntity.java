@@ -1,10 +1,10 @@
 package org.projects.entity;
 
-public class NhomQuyen {
+public class NhomQuyenEntity {
     int maNhomQuyen;
     String tenNomQuyen;
-    public NhomQuyen() {}
-    public NhomQuyen(int maNhomQuyen, String tenNomQuyen) {
+    public NhomQuyenEntity() {}
+    public NhomQuyenEntity(int maNhomQuyen, String tenNomQuyen) {
         this.maNhomQuyen = maNhomQuyen;
         this.tenNomQuyen = tenNomQuyen;
     }

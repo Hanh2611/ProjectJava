@@ -49,4 +49,10 @@ public class NhaCungCapBUS {
         }
         return false;
     }
+
+    public List<NhaCungCapEntity> search(String keyword,String textField) {
+        getList();
+        List<NhaCungCapEntity> newlist = new ArrayList<>();
+        return newlist;
+    }
 }

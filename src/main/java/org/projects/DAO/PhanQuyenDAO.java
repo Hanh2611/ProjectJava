@@ -1,24 +1,24 @@
 package org.projects.DAO;
 
 import org.projects.config.DatabasesConfig;
-import org.projects.entity.NhomQuyen;
+import org.projects.entity.NhomQuyenEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
-public class PhanQuyenDAO implements ChucNangDAO<NhomQuyen> {
+public class PhanQuyenDAO implements ChucNangDAO<NhomQuyenEntity> {
     @Override
-    public List<NhomQuyen> showlist() {
+    public List<NhomQuyenEntity> showlist() {
         String query = "select * from nhom_quyen";
-        List<NhomQuyen> listNhomQuyen = new ArrayList<>();
+        List<NhomQuyenEntity> listNhomQuyen = new ArrayList<>();
 
         try (Connection connection = DatabasesConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                NhomQuyen nhomQuyen = new NhomQuyen(resultSet.getInt("ma_nhom_quyen"), resultSet.getString("ten_nhom_quyen"));
+                NhomQuyenEntity nhomQuyen = new NhomQuyenEntity(resultSet.getInt("ma_nhom_quyen"), resultSet.getString("ten_nhom_quyen"));
                 listNhomQuyen.add(nhomQuyen);
             }
         } catch (Exception e) {
@@ -28,22 +28,22 @@ public class PhanQuyenDAO implements ChucNangDAO<NhomQuyen> {
     }
 
     @Override
-    public int them(NhomQuyen add) {
+    public int them(NhomQuyenEntity add) {
         return 0;
     }
 
     @Override
-    public int sua(NhomQuyen fix) {
+    public int sua(NhomQuyenEntity fix) {
         return 0;
     }
 
     @Override
-    public int xoa(NhomQuyen delete) {
+    public int xoa(NhomQuyenEntity delete) {
         return 0;
     }
 
     @Override
-    public int chitiet(NhomQuyen detail) {
-        return 0;
+    public NhomQuyenEntity search(int id) {
+        return null;
     }
 }

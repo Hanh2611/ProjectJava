@@ -56,7 +56,8 @@ public class SanPhamDao implements ChucNangDAO<SanPhamEntity> {
     }
 
     @Override
-    public int chitiet(SanPhamEntity detail) {
-        return 0;
+    public SanPhamEntity search(int id) {
+        return null;
     }
+
 }
