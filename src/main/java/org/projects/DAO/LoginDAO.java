@@ -32,9 +32,10 @@ public class LoginDAO implements ChucNangDAO<TaiKhoan> {
     }
 
     @Override
-    public int chitiet(TaiKhoan detail) {
-        return 0;
+    public TaiKhoan search(int id) {
+        return null;
     }
+
 
     public TaiKhoan verifyLogin(TaiKhoan taiKhoan) {
         String query = "select * from tai_khoan where ten_dang_nhap = ? and mat_khau = ?";

@@ -5,9 +5,7 @@ import org.projects.entity.QuyenNguoiDung;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class QuyenNguoiDungDAO implements ChucNangDAO<QuyenNguoiDung>{
@@ -42,8 +40,8 @@ public class QuyenNguoiDungDAO implements ChucNangDAO<QuyenNguoiDung>{
     }
 
     @Override
-    public int chitiet(QuyenNguoiDung detail) {
-        return 0;
+    public QuyenNguoiDung search(int id) {
+        return null;
     }
 
 

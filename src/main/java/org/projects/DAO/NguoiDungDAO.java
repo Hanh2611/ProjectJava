@@ -27,7 +27,8 @@ public class NguoiDungDAO implements ChucNangDAO<NguoiDung> {
     }
 
     @Override
-    public int chitiet(NguoiDung detail) {
-        return 0;
+    public NguoiDung search(int id) {
+        return null;
     }
+
 }
