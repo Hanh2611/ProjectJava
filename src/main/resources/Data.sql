@@ -122,18 +122,18 @@ VALUES
 (5, 4, 'xem');
 
 -- Dữ liệu mẫu cho bảng 'tai_khoan'
-INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai)
-VALUES ('nguyenan', 1, 'password123', 1, 'hoat_dong'),
-       ('tranbinh', 2, 'password456', 2, 'da_khoa'),
-       ('levan', 3, 'password789', 1, 'hoat_dong'),
-       ('phamduong', 4, 'password000', 3, 'hoat_dong'),
-       ('hoangem', 5, 'password999', 2, 'hoat_dong');
-INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai)
-VALUES ('mattheao', 6, 'password111', 1, 'hoat_dong'),
-       ('vietanh', 7, 'password222', 3, 'hoat_dong'),
-       ('duonghoang', 8, 'password333', 2, 'da_khoa'),
-       ('lanhha', 9, 'password444', 1, 'hoat_dong'),
-       ('hoangnam', 10, 'password555', 2, 'hoat_dong');
+INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, trang_thai)
+VALUES ('nguyenan', 1, 'password123', 'hoat_dong'),
+       ('tranbinh', 2, 'password456', 'da_khoa'),
+       ('levan', 3, 'password789', 'hoat_dong'),
+       ('phamduong', 4, 'password000', 'hoat_dong'),
+       ('hoangem', 5, 'password999', 'hoat_dong');
+INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, trang_thai)
+VALUES ('mattheao', 6, 'password111',  'hoat_dong'),
+       ('vietanh', 7, 'password222', 'hoat_dong'),
+       ('duonghoang', 8, 'password333', 'da_khoa'),
+       ('lanhha', 9, 'password444',  'hoat_dong'),
+       ('hoangnam', 10, 'password555', 'hoat_dong');
 
 -- Thêm nhân viên
 INSERT INTO nguoi_dung (ma_nguoi_dung, loai_nguoi_dung)
