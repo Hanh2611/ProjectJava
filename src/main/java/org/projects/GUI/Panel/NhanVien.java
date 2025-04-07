@@ -85,7 +85,7 @@ public class NhanVien extends JPanel {
         topPanel.setPreferredSize(new Dimension(1100, 100));
         topPanel.setLayout(new FlowLayout(0, 0, 10));
         topPanel.setBackground(Color.decode("#CAECF7"));
-        topPanel.add(new headerBar(listItemHeader, new String[]{"add","update","delete","detail"}));
+        topPanel.add(new headerBar(listItemHeader, new String[]{"add","update","delete","detail"},new String[]{"--"}));
     }
 
     public CompoundBorder setupBorder(){

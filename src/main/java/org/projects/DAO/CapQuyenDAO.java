@@ -54,9 +54,10 @@ public class CapQuyenDAO implements ChucNangDAO<CapQuyen> {
     }
 
     @Override
-    public int chitiet(CapQuyen detail) {
-        return 0;
+    public CapQuyen search(int id) {
+        return null;
     }
+
 
     public boolean check(CapQuyen capQuyen) {
         String query1 = "select * from cap_quyen where ma_nhom_quyen=? and ma_danh_muc_quan_ly=? and hanh_dong = ?";

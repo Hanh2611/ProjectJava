@@ -76,7 +76,21 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
     }
 
     @Override
-    public int chitiet(NhaCungCapEntity detail) {
-        return 0;
+    public NhaCungCapEntity search(int id) {
+        String query = "select * from nha_cung_cap where ma_nha_cung_cap= ?";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement ps = c.prepareStatement(query);) {
+            ps.setInt(1,id);
+            try(ResultSet rs = ps.executeQuery()) {
+                if(rs.next()) {
+                    return new NhaCungCapEntity(rs.getInt("ma_nha_cung_cap"),rs.getString("ten_nha_cung_cap"),rs.getString("so_dien_thoai"),rs.getString("email"),rs.getString("dia_chi_nha_cung_cap"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
+
 }

@@ -32,8 +32,8 @@ public class SanPham extends JPanel{
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
         this.table = new JTable();
-        this.header = new headerBar(listItemHeader, quyen);
-        this.add(header);
+//        this.header = new headerBar(listItemHeader, quyen);
+//        this.add(header);
 
         String[] columns = {"Id", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Số lượng tồn", "Quy cách", "Đơn vị"};
         int[] columnWidthPercentage = {5, 10, 35, 10, 10, 10, 10, 10};
@@ -89,9 +89,9 @@ public class SanPham extends JPanel{
             column.setPreferredWidth(totalWidth * columnWidthPercentage[i] / 100);
         }
         this.add(new JScrollPane(table));
-        for(String name : header.getHeaderFunc().getHm().keySet()) {
-            header.getHeaderFunc().getHm().get(name).addMouseListener(new SanPhamAction(this, null));
-        }
+//        for(String name : header.getHeaderFunc().getHm().keySet()) {
+//            header.getHeaderFunc().getHm().get(name).addMouseListener(new SanPhamAction(this, null));
+//        }
     }
 
     public JTable getTable() {

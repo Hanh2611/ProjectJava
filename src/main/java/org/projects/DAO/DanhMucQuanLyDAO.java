@@ -46,8 +46,8 @@ public class DanhMucQuanLyDAO implements ChucNangDAO<DanhMucQuanLy> {
     }
 
     @Override
-    public int chitiet(DanhMucQuanLy detail) {
-        return 0;
+    public DanhMucQuanLy search(int id) {
+        return null;
     }
 
     public static int getMaDanhMuc(String tenDanhMuc) {
