@@ -7,6 +7,8 @@ import org.projects.GUI.Components.layoutCompoment;
 import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
 import org.projects.entity.NhomQuyen;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -28,7 +30,7 @@ public class PhanQuyen extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        header = new headerBar(listItemHeader, new String[]{"add","update","delete","detail","execel"},new String[]{"--"});
+        header = new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"});
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         this.add(header);
         init();
