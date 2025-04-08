@@ -19,13 +19,9 @@ public class ShowDeleteNhanVienConsole extends JDialog {
         nhanVien = new NhanVien();
         del = new DeleteNhanVienConsole();
         initComponents();
-        processDelete(entity);
         transition.showZoomIn(this,700 , 400);
     }
     public ShowDeleteNhanVienConsole(){}
-    void processDelete(NhanVienEntity entity){
-
-    }
     void initComponents() {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setUndecorated(true);

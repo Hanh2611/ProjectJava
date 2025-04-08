@@ -5,17 +5,7 @@ public class NhanVienEntity {
     private double luongNhanVienTheoGio , luongNhanVienTheoTong;
     private int maNhanVien;
     private String chucvu;
-    public NhanVienEntity(int ma , String ten , String email , String diaChi , String sdt , String ngaySinh , String buoiLam , double _luongNhanVienTheoGio){
-        maNhanVien = ma;
-        tenNhanVien = ten;
-        emailNhanVien = email;
-        diaChiNhanVien = diaChi;
-        sdtNhanVien = sdt;
-        buoiLamNhanVien = buoiLam;
-        ngaySinhNhanVien = ngaySinh;
-        luongNhanVienTheoGio = _luongNhanVienTheoGio;
-    }
-
+    public NhanVienEntity() {}
     public NhanVienEntity(int ma , String ten , String email , String sdt , String chucvu){
         maNhanVien = ma;
         tenNhanVien = ten;

@@ -13,22 +13,19 @@ import java.awt.*;
 public class ShowChiTietNhanVienConsole extends JDialog {
     NhanVien nhanVien;
     mainTransition transition = new mainTransition();
-    public ShowChiTietNhanVienConsole(NhanVienEntity entity, boolean modal) {
+    public ChiTietUserConsole chiTietUserConsole;
+    public ShowChiTietNhanVienConsole(){
         nhanVien = new NhanVien();
-        init(modal);
-        infomation(entity);
-        if(!modal) transition.showZoomIn(this , 700 , 400);
-        else transition.showZoomIn(this , 600 , 650);
+        chiTietUserConsole = new ChiTietUserConsole();
     }
-    public void infomation(NhanVienEntity entity) {
+    public void Show() {
+        init();
+        transition.showZoomIn(this , 700 , 400);
+    }
 
-    }
-    public void init(boolean modal) {
+    public void init() {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        JPanel detailPanel;
-        if(!modal){
-            detailPanel = new ChiTietUserConsole();
-        }else detailPanel = new ChiTietAdminConsole();
+        JPanel detailPanel = chiTietUserConsole.setupDetailBox_USER();
         this.setUndecorated(true);
         FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
         this.setIconImage(svgIcon.getImage());

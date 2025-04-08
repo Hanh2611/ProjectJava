@@ -1,24 +1,32 @@
 package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class ChiTietUserConsole extends JPanel {
+public class ChiTietUserConsole extends JPanel { ;
+    private String ma, ten , email , sdt , chucvu;
     public ChiTietUserConsole() {
-        setupDetailBox_USER();
+//        setupDetailBox_USER();
     }
-    // Quyền bình thường chỉ xem được các thông tin của nhân viên , bị ẩn đi các mục quan trọng
-    public void setupDetailBox_USER() {
+    public void setInfo(NhanVienEntity info) {
+        setMa(Integer.toString(info.getMaNhanVien()));
+        setTen(info.getTenNhanVien());
+        setEmail(info.getEmailNhanVien());
+        setSdt(info.getSdtNhanVien());
+        setChucvu(info.getChucvu());
+    }
+    public JPanel setupDetailBox_USER() {
         this.setLayout(new GridBagLayout());
         this.setOpaque(true);
         this.setBackground(new Color(240, 240, 240));
         this.setPreferredSize(new Dimension(700, 400));
         this.setMaximumSize(new Dimension(700, 400));
         this.setMinimumSize(new Dimension(700, 400));
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -42,7 +50,6 @@ public class ChiTietUserConsole extends JPanel {
         gbc.weighty = 1;
         this.add(left, gbc);
 
-        // Panel bên phải chứa thông tin chi tiết
         JPanel right = new JPanel(new BorderLayout());
         right.setOpaque(true);
         right.setBackground(new Color(240, 240, 240));
@@ -56,8 +63,7 @@ public class ChiTietUserConsole extends JPanel {
         infoPanel.setBackground(new Color(240, 240, 240));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Danh sách các thông tin
-        String[] info = {"Mã nhân viên", "Họ và tên", "Lương(theo giờ)", "Chức vụ", "Số điện thoại", "Email"};
+        String[] info = {"Mã nhân viên: ", "Họ và tên: ","Email: ", "Số điện thoại: ", "Chức vụ: "};
         FlatSVGIcon iconIdNV = new FlatSVGIcon("icon/idNV.svg", 20, 20) ;
         FlatSVGIcon iconNameNV = new FlatSVGIcon("icon/nameNV.svg", 20, 20) ;
         FlatSVGIcon iconBrithDay = new FlatSVGIcon("icon/brithday.svg", 20, 20);
@@ -65,14 +71,15 @@ public class ChiTietUserConsole extends JPanel {
         FlatSVGIcon iconPhoneNV = new FlatSVGIcon("icon/phone.svg", 20, 20) ;
         FlatSVGIcon iconphucvuNV = new FlatSVGIcon("icon/phucvu.svg", 20, 20) ;
         FlatSVGIcon iconSalaryNV = new FlatSVGIcon("icon/money-dollars-svgrepo-com.svg", 20, 20) ;
-        FlatSVGIcon[] iconList = {iconIdNV, iconNameNV , iconSalaryNV, iconphucvuNV , iconPhoneNV,iconEmailNV};
+        FlatSVGIcon[] iconList = {iconIdNV, iconNameNV,iconEmailNV,iconPhoneNV,iconphucvuNV};
         int index = 0;
+        String[] values = { getMa(), getTen(), getEmail(), getSdt(), getChucvu() };
         for (String labelText : info) {
             JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT , 5 , 0));
             pan.setBackground(new Color(240, 240, 240));
             JLabel iconLabel = new JLabel(iconList[index]);
             pan.add(iconLabel);
-            JTextField field = new JTextField(labelText);
+            JTextField field = new JTextField(labelText + values[index]);
             field.setFont(new Font("JetBrains Mono", Font.ITALIC, 15));
             field.setHorizontalAlignment(SwingConstants.LEFT);
             field.setBackground(new Color(240, 240, 240));
@@ -94,7 +101,7 @@ public class ChiTietUserConsole extends JPanel {
         gbc.gridx = 1;
         gbc.weightx = 0.6;
         this.add(right, gbc);
-
+        return this;
     }
 
     public static JPanel getRadioSex(boolean edit, boolean data) {
@@ -119,5 +126,45 @@ public class ChiTietUserConsole extends JPanel {
         genderPanel.add(radioNam);
         genderPanel.add(radioNu);
         return genderPanel;
+    }
+
+    public String getMa() {
+        return ma;
+    }
+
+    public void setMa(String ma) {
+        this.ma = ma;
+    }
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSdt() {
+        return sdt;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public String getChucvu() {
+        return chucvu;
+    }
+
+    public void setChucvu(String chucvu) {
+        this.chucvu = chucvu;
     }
 }

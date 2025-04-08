@@ -22,9 +22,10 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.projects.GUI.Components.layoutCompoment.addHeader;
 
 public class NhanVien extends JPanel {
     private JTable table;
@@ -69,8 +70,6 @@ public class NhanVien extends JPanel {
 
     public void reloadDAO() {
         List<NhanVienEntity> showlist = new NhanVienDao().showlist();
-        //NhanVienEntity nv = new NhanVienEntity(1 , "bao" , "asd@gmail.com" , "0123123123" , "quanly");
-//        showlist.add(nv);
         System.out.println("Số lượng nhân viên: " + showlist.size());
         loadList(showlist);
     }
@@ -113,7 +112,8 @@ public class NhanVien extends JPanel {
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
-        addHeader(this, listItemHeader, quyen);
+//        addHeader(this, listItemHeader, quyen);
+        add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(nhanVienAction);
