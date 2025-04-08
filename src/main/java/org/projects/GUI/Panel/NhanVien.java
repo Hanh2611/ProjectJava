@@ -9,7 +9,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class NhanVien extends JPanel {
     private JTable table;
@@ -87,7 +87,7 @@ public class NhanVien extends JPanel {
         topPanel.setPreferredSize(new Dimension(1100, 100));
         topPanel.setLayout(new FlowLayout(0, 0, 10));
         topPanel.setBackground(Color.decode("#CAECF7"));
-        topPanel.add(new headerBar(listItemHeader, new ArrayList<String>(List.of(new String[]{"add","update","delete","detail"})),new String[]{"--"}));
+        topPanel.add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
     }
 
     public CompoundBorder setupBorder(){

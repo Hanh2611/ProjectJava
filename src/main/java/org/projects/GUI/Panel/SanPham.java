@@ -2,6 +2,7 @@ package org.projects.GUI.Panel;
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.SanPhamEntity;
 
 import java.awt.*;
@@ -31,6 +32,7 @@ public class SanPham extends JPanel{
         centerPanel.add(new JScrollPane(table));
         this.add(header);
         this.add(centerPanel);
+        reloadDAO();
     }
 
     private void initComponent() {
@@ -40,7 +42,7 @@ public class SanPham extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        ArrayList<String> listAction = new ArrayList<>(List.of(new String[]{"add", "update", "delete", "detail"}));
+        ArrayList<String> listAction = new ArrayList<>(List.of(new String[]{"them", "sua", "xoa", "chi tiet"}));
         String[] listCbBox = new String[]{"---", "Tên"};
         this.table = new JTable();
         this.header = new headerBar(listItemHeader, listAction, listCbBox);
@@ -84,7 +86,16 @@ public class SanPham extends JPanel{
             TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(totalWidth * columnWidthPercentage[i] / 100);
         }
-        reloadDAO();
+        for(String name : header.getHeaderFunc().getHm().keySet()) {
+            header.getHeaderFunc().getHm().get(name).addMouseListener(nccAction);
+        }
+
+        //su kien tim kiem
+        header.getSearch().getSearchComboBox().addItemListener(nccAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(nccAction);
+        header.getSearch().getSearchButton().addActionListener(nccAction);
+
+        UIUtils.refreshComponent(this);
     }
 
     private void loadList(List<SanPhamEntity> list) {

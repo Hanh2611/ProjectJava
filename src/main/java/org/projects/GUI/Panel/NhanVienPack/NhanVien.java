@@ -9,7 +9,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-import static org.projects.GUI.Components.layoutCompoment.addHeader;
+//import static org.projects.GUI.Components.layoutCompoment.addHeader;
 
 public class NhanVien extends JPanel {
     private JTable table;

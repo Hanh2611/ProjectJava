@@ -2,20 +2,20 @@ package org.projects.GUI.Components.header;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 public class headerFunction extends JPanel {
     private generalFunction gl;
-    private final HashMap<String,generalFunction> hm = new HashMap<>();
-    public headerFunction(Dimension parentSize, String[][] listItemHeader, ArrayList<String> listAction) {
+    private HashMap<String,generalFunction> hm = new HashMap<>();
+    public headerFunction(Dimension parentSize, String[][] listItemHeader, List<String> listAction) {
         this.setPreferredSize(new Dimension((int) (390), parentSize.height));
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
         init(listItemHeader,listAction);
         this.setVisible(true);
     }
-    public void init(String[][] listItemHeader, ArrayList<String> listAction) {
+    public void init(String[][] listItemHeader, List<String> listAction) {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -28,19 +28,19 @@ public class headerFunction extends JPanel {
             c.gridx++;
         }
     }
-    public void createHashMap(ArrayList<String> listAction) {
+    public void createHashMap(List<String> listAction) {
         for(String ac : listAction) {
             switch (ac) {
-                case "add":
+                case "them":
                     hm.put("add", new generalFunction("icon/add.svg","Thêm","add"));
                     break;
-                case "update":
+                case "sua":
                     hm.put("update",new generalFunction("icon/content-writing.svg","Sửa","update"));
                     break;
-                case "delete":
+                case "xoa":
                     hm.put("delete",new generalFunction("icon/trash.svg","Xóa","delete"));
                     break;
-                case "detail":
+                case "xem":
                     hm.put("detail",new generalFunction("icon/details.svg","Chi tiết","detail"));
                     break;
                 default:
