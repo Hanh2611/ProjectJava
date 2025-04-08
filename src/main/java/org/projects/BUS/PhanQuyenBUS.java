@@ -4,6 +4,7 @@ import org.projects.DAO.CapQuyenDAO;
 import org.projects.DAO.DanhMucQuanLyDAO;
 import org.projects.DAO.NhomQuyenDAO;
 import org.projects.DAO.QuyenNguoiDungDAO;
+import org.projects.GUI.utils.Session;
 import org.projects.entity.*;
 
 import java.util.*;
@@ -76,9 +77,11 @@ public class PhanQuyenBUS {
         return DanhMucQuanLyDAO.getMaDanhMuc(nameDanhMuc);
     }
 
-    public static List<String> getListAction() {
-        List<String> result = new ArrayList<>();
-
-        return result;
+    public static void getListAction() {
+        Session.quyenTaiKhoan = new ArrayList<>();
+        List<DanhMucQuanLy> danhMuc = new DanhMucQuanLyDAO().showlist();
+        for (DanhMucQuanLy dm : danhMuc) {
+            Session.quyenTaiKhoan.add(new DanhMucQuanLyDAO().quyenHanhDong(dm.getMa_danh_muc_quan_ly()));
+        }
     }
 }
