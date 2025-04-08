@@ -2,10 +2,12 @@ package org.projects.GUI.Panel;
 
 import org.projects.Action.NhaCungCapAction;
 import org.projects.BUS.NhaCungCapBUS;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.header.headerSearch;
 import org.projects.GUI.Components.layoutCompoment;
+import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 
@@ -36,7 +38,7 @@ public class NhaCungCap extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhaCungCap") - 1),new String[]{"---","mã","tên","địa chỉ"});
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
