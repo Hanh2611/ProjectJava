@@ -43,6 +43,4 @@ public class QuyenNguoiDungDAO implements ChucNangDAO<QuyenNguoiDung>{
     public QuyenNguoiDung search(int id) {
         return null;
     }
-
-
 }

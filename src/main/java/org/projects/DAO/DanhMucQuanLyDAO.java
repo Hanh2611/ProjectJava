@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DanhMucQuanLyDAO implements ChucNangDAO<DanhMucQuanLy> {
@@ -84,6 +85,24 @@ public class DanhMucQuanLyDAO implements ChucNangDAO<DanhMucQuanLy> {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 result.add(resultSet.getInt("ma_danh_muc_quan_ly"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result;
+    }
+
+    public List<String> quyenHanhDong(int maDanhMuc) {
+        List<String> result = new ArrayList<>();
+        String[] hanhDong = {"them", "sua", "xoa", "xem", "excel"};
+        String query = "select * from cap_quyen where ma_danh_muc_quan_ly = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);) {
+            statement.setInt(1, maDanhMuc);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getString("hanh_dong"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
