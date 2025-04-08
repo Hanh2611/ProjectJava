@@ -5,6 +5,7 @@ import org.projects.GUI.Components.header.headerBar;
 import org.projects.entity.SanPhamEntity;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +40,7 @@ public class SanPham extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        String[] listAction = new String[]{"add", "update", "delete", "detail"};
+        ArrayList<String> listAction = new ArrayList<>(List.of(new String[]{"add", "update", "delete", "detail"}));
         String[] listCbBox = new String[]{"---", "Tên"};
         this.table = new JTable();
         this.header = new headerBar(listItemHeader, listAction, listCbBox);

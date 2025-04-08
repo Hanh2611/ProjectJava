@@ -66,7 +66,7 @@ public class ListItem extends JPanel{
             String name = it[1];
             String namePanel = it[2];
             int id = PhanQuyenBUS.getMaDanhMuc(it[2]);
-            if (!Session.maDanhMucQuyen.contains(id) && it[2] != "TrangChu" && it[2] != "DangXuat") {
+            if (Session.maDanhMucQuyen == null || (!Session.maDanhMucQuyen.contains(id) && it[2] != "TrangChu" && it[2] != "DangXuat")) {
                 continue;
             }
             MenuItemComponents c = new MenuItemComponents(iconPath, name, namePanel, mainGui);

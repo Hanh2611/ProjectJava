@@ -5,13 +5,14 @@ import org.projects.GUI.Components.header.headerBar;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class layoutCompoment {
-    public static void addHeader(JPanel panel, String listItemHeader[][],String[] listAction) {
+    public static void addHeader(JPanel panel, String[][] listItemHeader, ArrayList<String> listAction) {
         panel.setPreferredSize(new Dimension(1100, 1000));
         panel.setLayout(new FlowLayout(0, 0, 10));
         panel.setBackground(Color.decode("#CAECF7"));
-        panel.add(new headerBar(listItemHeader, listAction, listAction));
+        panel.add(new headerBar(listItemHeader, listAction, null));
         CompoundBorder border = BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(0, 10, 10, 10),
                 BorderFactory.createCompoundBorder(
