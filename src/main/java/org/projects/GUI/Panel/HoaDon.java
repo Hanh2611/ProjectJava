@@ -2,6 +2,8 @@ package org.projects.GUI.Panel;
 
 import org.projects.Action.HoaDonAction;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.DiaLog.HoaDon.ChiTietHD;
+import org.projects.GUI.DiaLog.HoaDon.ThemHD;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -11,7 +13,7 @@ import java.awt.*;
 
 public class HoaDon extends JPanel{
     private headerBar header;
-    private JPanel contentPanel,main;
+    private JPanel contentPanel,main,themHD,chiTietHD;
     private DefaultTableModel tableModel;
     private CardLayout cardLayout;
     private JTable table;
@@ -24,7 +26,7 @@ public class HoaDon extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
+        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"},new String[]{});
         this.add(header);
         init();
     }
@@ -34,9 +36,13 @@ public class HoaDon extends JPanel{
         cardLayout = new CardLayout();
         contentPanel.setLayout(cardLayout);
         contentPanel.setPreferredSize(new Dimension(    940, 650));
-        contentPanel.add(main, "trangchinh");
         add(contentPanel);
         cardLayout.show(contentPanel, "trangchinh");
+        themHD = new ThemHD();
+        chiTietHD = new ChiTietHD();
+        contentPanel.add(main, "trangchinh");
+        contentPanel.add(themHD, "addHD");
+        contentPanel.add(chiTietHD, "addHD");
         actionHandler = new HoaDonAction(this);
         for (String name : header.getHeaderFunc().getHm().keySet()) {
             header.getHeaderFunc().getHm().get(name).addMouseListener(actionHandler);
@@ -96,13 +102,13 @@ private void customizeTable() {
     header.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
     header.setPreferredSize(new Dimension(header.getWidth(), 35));
     }
-    private void showChiTietHD(){
-
+    public void showChiTietHD(){
+        cardLayout.show(contentPanel, "chiTietHD");
     }
-    private void showThemHD(){
-
+    public void showThemHD(){
+        cardLayout.show(contentPanel, "themHD");
     }
-    private void showSuaHD(){
+    public void showSuaHD(){
 
     }
 }

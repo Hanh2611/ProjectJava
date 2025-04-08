@@ -1,6 +1,6 @@
 package org.projects.GUI.DiaLog.HoaDon;
 
-import java.awt.*;
+import javax.swing.*;
 
-public class ThemHD extends Panel {
+public class ThemHD extends JPanel {
 }

@@ -157,12 +157,12 @@ create table quyen_nguoi_dung (
     ma_nguoi_dung int,
     ma_nhom_quyen int,
     primary key (ma_nguoi_dung, ma_nhom_quyen)
-)
+);
 
 alter table quyen_nguoi_dung
 add constraint foreign key (ma_nguoi_dung) references tai_khoan(ma_nguoi_dung),
 add constraint foreign key (ma_nhom_quyen) references nhom_quyen(ma_nhom_quyen);
 
-select * from quyen_nguoi_dung
-select * from nhom_quyen
-select * from cap_quyen
+select * from quyen_nguoi_dung;
+select * from nhom_quyen;
+select * from cap_quyen;

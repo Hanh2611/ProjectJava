@@ -27,7 +27,7 @@ public class PhieuNhap extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"});
+        header = new headerBar(listItemHeader,new String[]{"add","update","delete","detail"},new String[]{});
         this.add(header);
         init();
     }

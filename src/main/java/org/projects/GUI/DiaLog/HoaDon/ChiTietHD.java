@@ -1,6 +1,6 @@
 package org.projects.GUI.DiaLog.HoaDon;
 
-import java.awt.*;
+import javax.swing.*;
 
-public class ChiTietHD extends Panel {
+public class ChiTietHD extends JPanel {
 }

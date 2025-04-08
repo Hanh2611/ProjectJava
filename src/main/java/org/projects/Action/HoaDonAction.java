@@ -19,7 +19,7 @@ public class HoaDonAction extends MouseAdapter {
         String action = func.getNameFunction();
         switch (action) {
             case "add":
-                JOptionPane.showMessageDialog(null, "Thêm hóa đơn");
+                hoaDon.showThemHD();
                 break;
             case "update":
                 JOptionPane.showMessageDialog(null, "Cập nhật hóa đơn");
