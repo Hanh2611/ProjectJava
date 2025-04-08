@@ -2,6 +2,7 @@ package org.projects.BUS;
 
 import org.projects.DAO.SanPhamDao;
 import org.projects.GUI.Panel.SanPham;
+import org.projects.entity.DanhMucSanPhamEntity;
 import org.projects.entity.SanPhamEntity;
 
 import java.util.ArrayList;

@@ -87,13 +87,13 @@ public class SanPham extends JPanel{
             column.setPreferredWidth(totalWidth * columnWidthPercentage[i] / 100);
         }
         for(String name : header.getHeaderFunc().getHm().keySet()) {
-            header.getHeaderFunc().getHm().get(name).addMouseListener(nccAction);
+            header.getHeaderFunc().getHm().get(name).addMouseListener(sanPhamAction);
         }
 
         //su kien tim kiem
-        header.getSearch().getSearchComboBox().addItemListener(nccAction);
-        header.getSearch().getSearchField().getDocument().addDocumentListener(nccAction);
-        header.getSearch().getSearchButton().addActionListener(nccAction);
+        header.getSearch().getSearchComboBox().addItemListener(sanPhamAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(sanPhamAction);
+        header.getSearch().getSearchButton().addActionListener(sanPhamAction);
 
         UIUtils.refreshComponent(this);
     }

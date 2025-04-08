@@ -1,77 +1,105 @@
 package org.projects.GUI.DiaLog;
 
+import org.projects.Action.SanPhamAction;
+import org.projects.BUS.DanhMucSanPhamBus;
+import org.projects.BUS.SanPhamBus;
+import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
+import org.projects.entity.DanhMucSanPhamEntity;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.List;
 
 public class AddSanPhamDialog extends JDialog {
     private SanPham sanPham;
-    private String actionType; // them , xoa, sua , chi tiet
-    private JLabel maSP;
-    private JLabel tenSP;
-    private JLabel giaSP;
-    private JLabel maNCC;
-    private JLabel maLoaiSP;
-    private JLabel maNSX;
-    private JLabel moTa;
-    private JTextField maSPField;
-    private JTextField tenSPField;
-    private JTextField giaSPField;
-    private JTextField maNCCField;
-    private JTextField maLoaiSPField;
-    private JTextField maNSXField;
-    private JTextField moTaField;
+    private JLabel imgPreview;
+    private labelText tenSanPhamField;
+    private labelText donViField;
+    private labelText giaBanField;
+    private labelText quyCachField;
+    private JLabel hinhAnh;
+    private JLabel phanLoai;
+    private JComboBox<String> phanLoaiField;
+    private JFileChooser fileChooser;
     private JButton chucnangBTN;
     private JButton thoatBTN;
-    public AddSanPhamDialog(String actionType, SanPham sanPham) {
+    private SanPhamAction sanPhamAction;
+
+    public AddSanPhamDialog(SanPham sanPham) {
         this.sanPham = sanPham;
-        this.actionType = actionType;
-        this.init();
-        this.setTitle(this.getActionType());
-        this.setSize(1230, 820);
+        sanPhamAction = new SanPhamAction(sanPham, this);
+        this.setTitle("Thêm sản phẩm");
+        this.setSize(600, 400);
         this.setLocationRelativeTo(null);
-        this.setLayout(new GridLayout(7, 2));
+        this.init();
         this.setVisible(true);
     }
+
     public void init() {
-        maSP = new JLabel("Mã sản phẩm: ");
-        maSPField = new JTextField(10);
-        this.add(maSP);
-        this.add(maSPField);
-        tenSP = new JLabel("Tên sản phẩm: ");
-        tenSPField = new JTextField(10);
-        this.add(tenSP);
-        this.add(tenSPField);
-        giaSP = new JLabel("Giá sản phẩm: ");
-        giaSPField = new JTextField(10);
-        this.add(giaSP);
-        this.add(giaSPField);
-        maNCC = new JLabel("Mã nhà cung cấp: ");
-        maNCCField = new JTextField(10);
-        this.add(maNCC);
-        this.add(maNCCField);
-        maLoaiSP = new JLabel("Mã loại sản phẩm: ");
-        maLoaiSPField = new JTextField(10);
-        this.add(maLoaiSP);
-        this.add(maLoaiSPField);
-        maNSX = new JLabel("Mã nhà sản xuất: ");
-        maNSXField = new JTextField(10);
-        this.add(maNSX);
-        this.add(maNSXField);
-        moTa = new JLabel("Mô tả: ");
-        moTaField = new JTextField(10);
-        this.add(moTa);
-        this.add(moTaField);
-        chucnangBTN = new JButton("Chức năng");
-        chucnangBTN.setBackground(Color.WHITE);
+        setLayout(new BorderLayout());
+        tenSanPhamField = new labelText("Tên sản phẩm", 30, 10);
+        donViField = new labelText("Đơn vị", 30, 10);
+        giaBanField = new labelText("Giá bán", 30, 10);
+        quyCachField = new labelText("Quy cách", 30, 10);
 
+        JPanel firstPanel = new JPanel(new GridLayout(3, 1, 0, 0));
+        firstPanel.add(tenSanPhamField);
+        firstPanel.add(giaBanField);
+        firstPanel.add(donViField);
+
+        JPanel secondPanel = new JPanel(new GridLayout(3, 1, 0,0));
+        DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
+        List<String> listDanhMuc = danhMucSanPhamBus.getAllDanhMucSanPham()
+                .stream()
+                .map(DanhMucSanPhamEntity::getTenDanhMuc)
+                .toList();
+        phanLoai = new JLabel("Phân loại");
+        phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
+        phanLoaiField.setSelectedIndex(0);
+        phanLoaiField.setPreferredSize(new Dimension(50, 20));
+        hinhAnh = new JLabel("Hình ảnh");
+        secondPanel.add(quyCachField);
+        secondPanel.add(phanLoai);
+        secondPanel.add(phanLoaiField);
+
+        JButton uploadButton = new JButton("Tải ảnh");
+        uploadButton.addActionListener(e -> uploadImage());
+
+        JPanel imagePanel = new JPanel(new BorderLayout());
+        imgPreview = new JLabel("Ảnh xem trước", SwingConstants.CENTER);
+        imgPreview.setPreferredSize(new Dimension(50, 50));
+        imgPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        imagePanel.add(imgPreview, BorderLayout.CENTER);
+        imagePanel.add(uploadButton, BorderLayout.SOUTH);
+
+        JPanel mainPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setPreferredSize(new Dimension(600, 300));
+        mainPanel.add(firstPanel);
+        mainPanel.add(secondPanel);
+        mainPanel.add(imagePanel);
+
+        add(mainPanel, BorderLayout.CENTER);
+
+        JButton confirmButton = new JButton("Xác nhận");
+        confirmButton.addActionListener(e -> {
+            dispose();
+        });
+        add(confirmButton, BorderLayout.SOUTH);
+        pack();
     }
 
-    public void setActionType(String actionType) {
-        this.actionType = actionType;
-    }
-    public String getActionType() {
-        return actionType;
+    private void uploadImage() {
+        fileChooser = new JFileChooser();
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            ImageIcon icon = new ImageIcon(selectedFile.getAbsolutePath());
+            Image scaled = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            imgPreview.setIcon(new ImageIcon(scaled));
+            imgPreview.setText(null);
+        }
     }
 }
