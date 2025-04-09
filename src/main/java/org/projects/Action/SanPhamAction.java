@@ -1,11 +1,9 @@
 package org.projects.Action;
 
-import org.projects.BUS.NhaCungCapBUS;
+import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.generalFunction;
-import org.projects.GUI.DiaLog.AddSanPhamDialog;
-import org.projects.GUI.DiaLog.NhaCungCapDialog;
+import org.projects.GUI.DiaLog.SanPham.AddSanPhamDialog;
 import org.projects.GUI.Panel.SanPham;
-import org.projects.entity.NhaCungCapEntity;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -16,10 +14,12 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
     private SanPham sanPham;
     private AddSanPhamDialog addSanPhamDialog;
+    private SanPhamBus sanPhamBus;
 
     public SanPhamAction(SanPham sanPham, AddSanPhamDialog addSanPhamDialog) {
         this.sanPham = sanPham;
         this.addSanPhamDialog = addSanPhamDialog;
+        this.sanPhamBus = new SanPhamBus(sanPham);
     }
 
     @Override
@@ -28,17 +28,37 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
         String namebtn = e.getActionCommand();
         if(sanPham != null) {
             if(addSanPhamDialog != null && c instanceof JButton){
-                if("Thêm".equals(namebtn)){
-//                    String ten = addSanPhamDialog.getTenSanPhamField().getText
-//                    String phanloai = addSanPhamDialog.getPhanLoai().getTextField().getText().trim();
-//                    String donvi = addSanPhamDialog.getDonVi().getTextField().getText().trim();
-//                    String gia = addSanPhamDialog.getGiaBan().getTextField().getText().trim();
-//                    String quycach = addSanPhamDialog.getQuyCach().getTextField().getText().trim();
-//                    String img = addSanPhamDialog.getImg().getTextField().getText().trim();
-//                    if(ten.isEmpty() || phanloai.isEmpty() || gia.isEmpty() || soluong.isEmpty() || quycach.isEmpty() || donvi.isEmpty()){
-//                        JOptionPane.showMessageDialog(null, "Vui lòng nhâp đầy đủ các giá trị", "thông báo", JOptionPane.ERROR_MESSAGE);
+                if("Thêm".equals(namebtn)) {
+                    String ten = addSanPhamDialog.getTenSanPhamField().getTextField().getText().trim();
+                    String phanloai = addSanPhamDialog.getPhanLoaiField().getSelectedItem().toString();
+                    String gia = addSanPhamDialog.getGiaBanField().getTextField().getText().trim();
+                    String donvi = addSanPhamDialog.getDonViField().getTextField().getText().trim();
+                    String quycach = addSanPhamDialog.getQuyCachField().getSelectedItem().toString();
+                    String hinhAnh = addSanPhamDialog.getFileChooser().getSelectedFile().getAbsolutePath();
+                    System.out.println("ten: " + ten);
+                    System.out.println("phanloai: " + phanloai);
+                    System.out.println("gia: " + gia);
+                    System.out.println("quycach: " + quycach);
+                    System.out.println("donvi: " + donvi);
+                    System.out.println("hinhAnh: " + hinhAnh);
+                    if(ten.equals("") || gia.equals("") || quycach.equals("") || donvi.equals("") || hinhAnh.equals("")
+                    ){
+                        JOptionPane.showMessageDialog(null, "Vui lòng nhâp đầy đủ các giá trị", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        sanPhamBus.addSanPham();
+                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
+                        sanPham.loadList(sanPhamBus.getAllSanPham());
+                        addSanPhamDialog.dispose();
+                    }
                 }
             }
+        }
+        JButton refresh = sanPham.getHeader().getSearch().getSearchButton();
+        if(c instanceof JButton && c.equals(refresh)) {
+            String keyword = sanPham.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+            String textField = sanPham.getHeader().getSearch().getSearchField().getText();
+            sanPham.getHeader().getSearch().getSearchField().setText("");
+            sanPham.searchFunction(keyword, textField);
         }
     }
 
@@ -100,9 +120,12 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-//        String keyword = e.getItem().toString();
-//        String textfield = sanPham.getHeader().getSearch().getSearchField().getText();
-//        sanPham.loadList(NhaCungCapBUS.search(keyword,textfield));
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            JComboBox<?> comboBox = (JComboBox<?>) e.getSource();
+            String selectedItem = (String) comboBox.getSelectedItem();
+            String textField = sanPham.getHeader().getSearch().getSearchField().getText();
+            sanPham.loadList(sanPhamBus.searchSanPham(selectedItem, textField));
+        }
     }
 
     @Override
@@ -117,8 +140,10 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-//        String keyword = ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
-//        String textfield = e.getDocument().toString();
-//        ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
+        if (e.getDocument() == sanPham.getHeader().getSearch().getSearchField().getDocument()) {
+            String text = sanPham.getHeader().getSearch().getSearchField().getText();
+            String selectedItem = (String) sanPham.getHeader().getSearch().getSearchComboBox().getSelectedItem();
+            sanPham.loadList(sanPhamBus.searchSanPham(selectedItem, text));
+        }
     }
 }

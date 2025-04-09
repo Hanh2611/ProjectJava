@@ -2,7 +2,6 @@ package org.projects.BUS;
 
 import org.projects.DAO.SanPhamDao;
 import org.projects.GUI.Panel.SanPham;
-import org.projects.entity.DanhMucSanPhamEntity;
 import org.projects.entity.SanPhamEntity;
 
 import java.util.ArrayList;
@@ -30,8 +29,13 @@ public class SanPhamBus {
         List<SanPhamEntity> listSanPham = new ArrayList<>();
         if (keyword.equals("---")) {
             listSanPham = sanPhamDao.showlist();
-        } else {
-            listSanPham = sanPhamDao.findBy(keyword, value);
+        }
+        if (keyword.equals("Tên")) {
+            for (SanPhamEntity sanPhamEntity : sanPhamDao.showlist()) {
+                if (sanPhamEntity.getTenSanPham().toLowerCase().contains(value.toLowerCase())) {
+                    listSanPham.add(sanPhamEntity);
+                }
+            }
         }
         return listSanPham;
     }

@@ -1,16 +1,18 @@
-package org.projects.GUI.DiaLog;
+package org.projects.GUI.DiaLog.SanPham;
 
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
-import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
 import org.projects.entity.DanhMucSanPhamEntity;
+import org.projects.entity.Enum.QuyCach;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddSanPhamDialog extends JDialog {
     private SanPham sanPham;
@@ -18,8 +20,9 @@ public class AddSanPhamDialog extends JDialog {
     private labelText tenSanPhamField;
     private labelText donViField;
     private labelText giaBanField;
-    private labelText quyCachField;
     private JLabel hinhAnh;
+    private JLabel quyCach;
+    private JComboBox<String> quyCachField;
     private JLabel phanLoai;
     private JComboBox<String> phanLoaiField;
     private JFileChooser fileChooser;
@@ -42,24 +45,32 @@ public class AddSanPhamDialog extends JDialog {
         tenSanPhamField = new labelText("Tên sản phẩm", 30, 10);
         donViField = new labelText("Đơn vị", 30, 10);
         giaBanField = new labelText("Giá bán", 30, 10);
-        quyCachField = new labelText("Quy cách", 30, 10);
 
         JPanel firstPanel = new JPanel(new GridLayout(3, 1, 0, 0));
         firstPanel.add(tenSanPhamField);
         firstPanel.add(giaBanField);
         firstPanel.add(donViField);
 
-        JPanel secondPanel = new JPanel(new GridLayout(3, 1, 0,0));
+        JPanel secondPanel = new JPanel(new GridLayout(4, 1, 0,0));
         DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
+        List<String> listQuyCach = Arrays.stream(QuyCach.values())
+                .map(QuyCach::getValue)
+                .toList();
         List<String> listDanhMuc = danhMucSanPhamBus.getAllDanhMucSanPham()
                 .stream()
                 .map(DanhMucSanPhamEntity::getTenDanhMuc)
                 .toList();
+        quyCach = new JLabel("Quy cách");
+        quyCachField = new JComboBox<>(listQuyCach.toArray(new String[0]));
+        quyCachField.setSelectedIndex(0);
+        quyCachField.setPreferredSize(new Dimension(50, 15));
+
         phanLoai = new JLabel("Phân loại");
         phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
         phanLoaiField.setSelectedIndex(0);
-        phanLoaiField.setPreferredSize(new Dimension(50, 20));
-        hinhAnh = new JLabel("Hình ảnh");
+        phanLoaiField.setPreferredSize(new Dimension(50, 15));
+
+        secondPanel.add(quyCach);
         secondPanel.add(quyCachField);
         secondPanel.add(phanLoai);
         secondPanel.add(phanLoaiField);
@@ -83,10 +94,8 @@ public class AddSanPhamDialog extends JDialog {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        JButton confirmButton = new JButton("Xác nhận");
-        confirmButton.addActionListener(e -> {
-            dispose();
-        });
+        JButton confirmButton = new JButton("Thêm");
+        confirmButton.addActionListener(sanPhamAction);
         add(confirmButton, BorderLayout.SOUTH);
         pack();
     }
@@ -97,9 +106,113 @@ public class AddSanPhamDialog extends JDialog {
         if (option == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             ImageIcon icon = new ImageIcon(selectedFile.getAbsolutePath());
-            Image scaled = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            Image scaled = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
             imgPreview.setIcon(new ImageIcon(scaled));
             imgPreview.setText(null);
         }
+    }
+
+    public JLabel getImgPreview() {
+        return imgPreview;
+    }
+
+    public void setImgPreview(JLabel imgPreview) {
+        this.imgPreview = imgPreview;
+    }
+
+    public labelText getTenSanPhamField() {
+        return tenSanPhamField;
+    }
+
+    public void setTenSanPhamField(labelText tenSanPhamField) {
+        this.tenSanPhamField = tenSanPhamField;
+    }
+
+    public labelText getDonViField() {
+        return donViField;
+    }
+
+    public void setDonViField(labelText donViField) {
+        this.donViField = donViField;
+    }
+
+    public labelText getGiaBanField() {
+        return giaBanField;
+    }
+
+    public void setGiaBanField(labelText giaBanField) {
+        this.giaBanField = giaBanField;
+    }
+
+    public JLabel getQuyCach() {
+        return quyCach;
+    }
+
+    public void setQuyCach(JLabel quyCach) {
+        this.quyCach = quyCach;
+    }
+
+    public JComboBox<String> getQuyCachField() {
+        return quyCachField;
+    }
+
+    public void setQuyCachField(JComboBox<String> quyCachField) {
+        this.quyCachField = quyCachField;
+    }
+
+    public JLabel getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(JLabel hinhAnh) {
+        this.hinhAnh = hinhAnh;
+    }
+
+    public JLabel getPhanLoai() {
+        return phanLoai;
+    }
+
+    public void setPhanLoai(JLabel phanLoai) {
+        this.phanLoai = phanLoai;
+    }
+
+    public JComboBox<String> getPhanLoaiField() {
+        return phanLoaiField;
+    }
+
+    public void setPhanLoaiField(JComboBox<String> phanLoaiField) {
+        this.phanLoaiField = phanLoaiField;
+    }
+
+    public JFileChooser getFileChooser() {
+        return fileChooser;
+    }
+
+    public void setFileChooser(JFileChooser fileChooser) {
+        this.fileChooser = fileChooser;
+    }
+
+    public JButton getChucnangBTN() {
+        return chucnangBTN;
+    }
+
+    public void setChucnangBTN(JButton chucnangBTN) {
+        this.chucnangBTN = chucnangBTN;
+    }
+
+    public JButton getThoatBTN() {
+        return thoatBTN;
+    }
+
+    public void setThoatBTN(JButton thoatBTN) {
+        this.thoatBTN = thoatBTN;
+    }
+
+    public SanPhamAction getSanPhamAction() {
+        return sanPhamAction;
+    }
+
+    public void setSanPhamAction(SanPhamAction sanPhamAction) {
+        this.sanPhamAction = sanPhamAction;
     }
 }

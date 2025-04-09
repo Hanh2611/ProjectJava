@@ -47,8 +47,8 @@ public class SanPham extends JPanel{
         this.table = new JTable();
         this.header = new headerBar(listItemHeader, listAction, listCbBox);
 
-        String[] columns = {"Id", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Số lượng tồn", "Quy cách", "Đơn vị"};
-        int[] columnWidthPercentage = {5, 7, 38, 10, 10, 10, 10, 10};
+        String[] columns = {"Id", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Số lượng tồn", "Quy cách", "Đơn vị", "Trạng thái"};
+        int[] columnWidthPercentage = {3, 7, 38, 10, 10, 7, 7, 7, 10};
 
         model = new DefaultTableModel() {
             @Override
@@ -86,6 +86,7 @@ public class SanPham extends JPanel{
             TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(totalWidth * columnWidthPercentage[i] / 100);
         }
+
         for(String name : header.getHeaderFunc().getHm().keySet()) {
             header.getHeaderFunc().getHm().get(name).addMouseListener(sanPhamAction);
         }
@@ -98,7 +99,7 @@ public class SanPham extends JPanel{
         UIUtils.refreshComponent(this);
     }
 
-    private void loadList(List<SanPhamEntity> list) {
+    public void loadList(List<SanPhamEntity> list) {
         model.setRowCount(0);
         if (list != null) {
             for (SanPhamEntity sanPhamEntity : list) {
@@ -112,8 +113,9 @@ public class SanPham extends JPanel{
                     sanPhamEntity.getPhanLoai().getTenDanhMuc(),
                     sanPhamEntity.getGiaBan(),
                     sanPhamEntity.getSoLuongTon(),
-                    sanPhamEntity.getQuyCach(),
+                    sanPhamEntity.getQuyCach().getValue(),
                     sanPhamEntity.getDonVi(),
+                    sanPhamEntity.isTrangThai() ? "Đang kinh doanh" : "Ngừng kinh doanh",
                 });
             }
         }
@@ -131,11 +133,9 @@ public class SanPham extends JPanel{
         return sanPhamBus.getSanPhamById(id);
     };
 
-    private void searchfunction(String keyword, String textfield) {
-        keyword = Objects.requireNonNull(this.getHeader().getSearch().getSearchComboBox().getSelectedItem()).toString();
-        textfield = this.getHeader().getSearch().getSearchField().getText();
-        if(!keyword.equals("---") && !textfield.trim().isEmpty()) {
-            List<SanPhamEntity> list = sanPhamBus.searchSanPham(keyword, textfield);
+    public void searchFunction(String keyword, String textField) {
+        if(!keyword.equals("---") && !textField.trim().isEmpty()) {
+            List<SanPhamEntity> list = sanPhamBus.searchSanPham(keyword, textField);
             loadList(list);
         } else {
             reloadDAO();
