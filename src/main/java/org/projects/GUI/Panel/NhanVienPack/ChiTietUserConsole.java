@@ -38,11 +38,12 @@ public class ChiTietUserConsole extends JPanel { ;
         left.setPreferredSize(new Dimension(250, 400));
         left.setMinimumSize(new Dimension(250, 400));
         left.setMaximumSize(new Dimension(250, 400));
-        // Load ảnh và resize (nên đảm bảo ảnh có kích thước phù hợp)
-        String changeImg = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
-        ImageIcon icon = new ImageIcon(new ImageIcon(changeImg).getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH));
-        JLabel imgLabel = new RoundedImageLabel(icon, 20, 20);
+//       String changeImg = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
+//       ImageIcon icon = new ImageIcon(new ImageIcon(changeImg).getImage().getScaledInstance( 250, 300, Image.SCALE_SMOOTH));
+        JLabel imgLabel = new JLabel();
+        FlatSVGIcon flatSVGIcon = new FlatSVGIcon("icon/user.svg" , 250 , 250);
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        imgLabel.setIcon(flatSVGIcon);
         left.add(imgLabel, BorderLayout.CENTER);
 
         gbc.gridx = 0;

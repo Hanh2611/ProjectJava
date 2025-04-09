@@ -23,6 +23,7 @@ public class KhachHangAction implements ActionListener  , MouseListener {
     private ShowDeltailKhachHang showDeltailKhachHang;
     private ShowDelKhachHang showDelKhachHang;
     KhachHangBUS bus;
+    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     public KhachHangAction(KhachHang kh) {
         this.kh = kh;
         bus = new KhachHangBUS(kh);
@@ -36,34 +37,34 @@ public class KhachHangAction implements ActionListener  , MouseListener {
             if (source.equals(showAddKhachHang.add.getSaveButton())) {
                 System.out.println("save");
                 showAddKhachHang.add.insertData();
-                if(showAddKhachHang.add.getMa().equals("Nhập mã số sinh viên")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                if(showAddKhachHang.add.getMa().equals("Nhập mã khách hàng")) {
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập mã khách hàng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
                 }else if(!showAddKhachHang.add.getMa().matches("\\d+")){
                     JOptionPane.showMessageDialog(null,"Mã nhân viên chỉ nhận giá trị số nguyên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
                 }
                 else if(showAddKhachHang.add.getTen().equals("Nhập họ và tên")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập tên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(1).requestFocusInWindow();
                 }else if(showAddKhachHang.add.getSdt().equals("Nhập số điện thoại")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(2).requestFocusInWindow();
                 }else if(!showAddKhachHang.add.getSdt().matches("0\\d{9}")){
                     JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(2).requestFocusInWindow();
                 }else if(showAddKhachHang.add.getDiachi().equals("Nhập địa chỉ")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập địa chỉ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(3).requestFocusInWindow();
                 }else {
                     KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showAddKhachHang.add.getMa()), showAddKhachHang.add.getTen()
                             , showAddKhachHang.add.getSdt(), showAddKhachHang.add.getDiachi());
                     if (bus.them(khe)) {
-                        JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
                         kh.loadList(bus.getList());
                         showAddKhachHang.close();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm nhân viên thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Thêm khách hàng thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             } else if (source.equals(showAddKhachHang.add.getCancelButton())) {
@@ -97,16 +98,16 @@ public class KhachHangAction implements ActionListener  , MouseListener {
 //                System.out.println("fix ok update");
                 showFixKhachHang.fix.insertData();
                 if(showFixKhachHang.fix.getTen().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập tên khách hàng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showFixKhachHang.fix.listAdd.get(1).requestFocusInWindow();
                 }else if(showFixKhachHang.fix.getStd().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showFixKhachHang.fix.listAdd.get(2).requestFocusInWindow();
                 }else if(!showFixKhachHang.fix.getStd().matches("0\\d{9}")){
                     JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showFixKhachHang.fix.listAdd.get(2).requestFocusInWindow();
                 }else if(showFixKhachHang.fix.getDiachi().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập địa chỉ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showFixKhachHang.fix.listAdd.get(3).requestFocusInWindow();
                 }else{
                     KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showFixKhachHang.fix.getMa()), showFixKhachHang.fix.getTen()

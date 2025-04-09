@@ -25,6 +25,7 @@ public class NhanVienAction implements ActionListener  , MouseListener {
     private ShowChiTietNhanVienConsole show_detail_nv;
     private ShowFixNhanVienConsole show_fix_nv;
     NhanVienBus bus;
+    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$";
     public NhanVienAction(NhanVien nv) {
         this.nv = nv;
         bus = new NhanVienBus(nv);
@@ -38,21 +39,24 @@ public class NhanVienAction implements ActionListener  , MouseListener {
             if (source.equals(show_add_nv.add.getSaveButton())) {
                 System.out.println("save");
                 show_add_nv.add.insertData();
-                if(show_add_nv.add.getMa().equals("Nhập mã số sinh viên")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                if(show_add_nv.add.getMa().equals("Nhập mã nhân viên")) {
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp mã nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.listAdd.get(0).requestFocusInWindow();
                 }else if(!show_add_nv.add.getMa().matches("\\d+")){
                     JOptionPane.showMessageDialog(null,"Mã nhân viên chỉ nhận giá trị số nguyên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.listAdd.get(0).requestFocusInWindow();
                 }
                 else if(show_add_nv.add.getTen().equals("Nhập họ và tên")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp họ tên nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.listAdd.get(1).requestFocusInWindow();
                 }else if(show_add_nv.add.getEmail().equals("Nhập Email")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhập email" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    show_add_nv.add.listAdd.get(2).requestFocusInWindow();
+                }else if(!show_add_nv.add.getEmail().matches(emailRegex)) {
+                    JOptionPane.showMessageDialog(null,"Email không đúng định dạng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.listAdd.get(2).requestFocusInWindow();
                 }else if(show_add_nv.add.getSdt().equals("Nhập số điện thoại")) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.listAdd.get(3).requestFocusInWindow();
                 }else if(!show_add_nv.add.getSdt().matches("0\\d{9}")){
                     JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
@@ -102,13 +106,13 @@ public class NhanVienAction implements ActionListener  , MouseListener {
 //                System.out.println("fix ok update");
                 show_fix_nv.fix.insertData();
                 if(show_fix_nv.fix.getTen().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp tên nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_fix_nv.fix.listAdd.get(1).requestFocusInWindow();
                 }else if(show_fix_nv.fix.getEmail().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp email" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_fix_nv.fix.listAdd.get(2).requestFocusInWindow();
                 }else if(show_fix_nv.fix.getStd().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Thiếu xót trong nhập giá trị" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_fix_nv.fix.listAdd.get(3).requestFocusInWindow();
                 }else if(!show_fix_nv.fix.getStd().matches("0\\d{9}")){
                     JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);

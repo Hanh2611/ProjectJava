@@ -20,7 +20,7 @@ public class ShowDeltailKhachHang extends JDialog {
     }
     public void Show() {
         init();
-        transition.showZoomIn(this , 700 , 400);
+        transition.showZoomIn(this , 700 , 800);
     }
 
     public void init() {

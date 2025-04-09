@@ -67,7 +67,7 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập mã số nhân viên", "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại"};
+        String[] list = {"Nhập mã nhân viên", "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại"};
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
         listAdd = new ArrayList<>();
         comboBox = new JComboBox<>(items);

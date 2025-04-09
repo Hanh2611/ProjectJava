@@ -21,7 +21,7 @@ public class DelKhachHangConsole extends JPanel {
         FlatSVGIcon svgIcon = new FlatSVGIcon("icon/red-trash-can-icon.svg", 100, 100);
         JLabel label = new JLabel(svgIcon);
         label.setBounds(300 , 70 , 100, 100);
-        JTextField textPane = new JTextField("Bạn có muốn xóa nhân viên này không ?");
+        JTextField textPane = new JTextField("Bạn có muốn xóa khách hàng này không ?");
         textPane.setEditable(false);
         textPane.setBounds(130 , 200 , 700, 30);
         textPane.setFont(new Font("JETBRAINS MONO", Font.BOLD, 20));
