@@ -84,6 +84,30 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     public List<Integer> getNhomQuyenOfUser(int maNguoiDung) {
         List<Integer> result = new ArrayList<>();
         String query = "select * from quyen_nguoi_dung where ma_nguoi_dung = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, maNguoiDung);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getInt("ma_nhom_quyen"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return result;
+        }
         return result;
+    }
+
+    public boolean checkExist(String nameNhomQuyen) {
+        String query = "select * from nhom_quyen where ten_nhom_quyen = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, nameNhomQuyen);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
