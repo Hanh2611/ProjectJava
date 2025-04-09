@@ -24,8 +24,8 @@ import org.projects.GUI.utils.Session;
 
 public class ListItem extends JPanel{
     private List<MenuItemComponents> list;
-    private HashMap<String,JPanel> mapItem;
-    private MainGUI mainGui;
+    private static HashMap<String,JPanel> mapItem;
+    private static MainGUI mainGui;
     public ListItem(MainGUI mainGui) {
         this.mainGui = mainGui;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -90,7 +90,7 @@ public class ListItem extends JPanel{
         
     }
 
-    public void showPanel(String name) {
+    public static void showPanel(String name) {
         JPanel panel = mapItem.get(name);
         if(panel != null) {
             mainGui.addPanelContent(panel);
@@ -111,5 +111,9 @@ public class ListItem extends JPanel{
 
     public List<MenuItemComponents> getList() {
         return list;
+    }
+
+    public static HashMap<String,JPanel> getMapItem() {
+        return mapItem;
     }
 }

@@ -5,6 +5,7 @@ import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
 import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
+import org.projects.GUI.utils.Session;
 import org.projects.entity.NhomQuyen;
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,15 +23,16 @@ public class PhanQuyen extends JPanel{
     private JPanel contentPanel;
     private headerBar header;
     private DefaultTableModel tableModel;
+    private String[][] listItemHeader;
     public PhanQuyen() {
-        String listItemHeader[][] = {
+        listItemHeader = new String[][]{
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        header = new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"--"});
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         this.add(header);
         init();
@@ -87,7 +89,14 @@ public class PhanQuyen extends JPanel{
     public headerBar getHeader() {
         return header;
     }
+    public void setHeader(headerBar header) {
+        this.header = header;
+    }
     public DefaultTableModel getTableModel() {
         return tableModel;
+    }
+
+    public String[][] getListItemHeader() {
+        return listItemHeader;
     }
 }
