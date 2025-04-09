@@ -15,6 +15,7 @@ import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.Components.MenuItemComponents;
+import org.projects.GUI.Panel.KhachHangPack.KhachHang;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
 import org.projects.GUI.Panel.ThongkePack.ThongKe;

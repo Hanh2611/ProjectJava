@@ -1,10 +1,13 @@
-package org.projects.GUI.Panel.NhanVienPack;
+package org.projects.GUI.Panel.KhachHangPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 //import org.projects.BUS.MainBUS;
+import org.projects.Action.KhachHangAction;
 import org.projects.Action.NhanVienAction;
 import org.projects.BUS.NhanVienBus;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.entity.KhachHangEntity;
+import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -17,28 +20,37 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import static org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole.addPlaceholderStyle;
 import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
 
-public class AddNhanVienConsole extends JPanel {
-    JRadioButton radioButton;
+public class FixKhachHang extends JPanel {
     static String changeImage;
     static JPanel parentImg;
     private static JPanel mainImg;
-    private JButton reset, save, cancel;
-    private NhanVienAction action;
-    private boolean isResettingComboBox = false;
+    private JButton update, cancel;
+    private KhachHangAction action;
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
     public ArrayList<JTextField> listAdd;
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
-    private String ma;
-    private String ten , email , sdt , chuc_vu;
-    public AddNhanVienConsole() {
-        initComponents();
+    private String ma , ten , diachi , std;
+    public FixKhachHang() {
+//        initComponents();
     }
-
-    public void initComponents() {
+    public void insertData(){
+        setMa(listAdd.get(0).getText().trim());
+        setTen(listAdd.get(1).getText().trim());
+        setStd(listAdd.get(2).getText().trim());
+        setDiachi(listAdd.get(3).getText().trim());
+    }
+    public void setInfo(KhachHangEntity info) {
+        setMa(Integer.toString(info.getMa()));
+        setTen(info.getTen());
+        setStd(info.getSdt());
+        setDiachi(info.getDiaChi());
+    }
+    public JPanel initComponents() {
         this.setLayout(new GridBagLayout());
         this.setPreferredSize(new Dimension(500, 700));
         this.setMaximumSize(new Dimension(500, 700));
@@ -59,6 +71,7 @@ public class AddNhanVienConsole extends JPanel {
         c.weightx = 1;
         c.weighty = 0.6;
         this.add(info, c);
+        return this;
     }
 
     public JPanel mainINFO() {
@@ -67,89 +80,55 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập mã nhân viên", "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại"};
-        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
+        String[] list = {getMa() , getTen() , getStd() , getDiachi()};
+//        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
+        String [] str = {"Mã số: ", "Tên: ", "Sdt: ", "Địa chỉ: "};
         listAdd = new ArrayList<>();
-        comboBox = new JComboBox<>(items);
-        for (String s : list) {
-            JTextField jTextField = new JTextField(s);
-            addPlaceholderStyle(jTextField, s);
-            jTextField.setName(s);
-            jTextField.setBackground(new Color(240, 240, 240));
-            jTextField.setForeground(new Color(192, 192, 192));
-            jTextField.setFont(new Font("JETBRAINS MONO", Font.ITALIC, 14));
-            jTextField.setMaximumSize(new Dimension(500, 40));
-            jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
-            mainInfo.add(jTextField);
+//        comboBox = new JComboBox<>(items);
+        for (int index = 0; index < list.length; index++) {
+            String s = list[index];
+            JPanel p = new JPanel(new BorderLayout(5, 5));
+            p.setBackground(new Color(240, 240, 240));
+
+            JTextField jTextFieldLabel = new JTextField(str[index]);
+            jTextFieldLabel.setEditable(false);
+            jTextFieldLabel.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+            jTextFieldLabel.setPreferredSize(new Dimension(80, 40));
+            jTextFieldLabel.setBackground(new Color(240, 240, 240));
+            jTextFieldLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+            JTextField jTextFieldValue = new JTextField(s);
+            if(index == 0){
+                jTextFieldValue.setEditable(false);
+            }
+            //jTextFieldValue.setHorizontalAlignment(JTextField.CENTER);
+            jTextFieldValue.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+            jTextFieldValue.setPreferredSize(new Dimension(220, 40));
+            jTextFieldValue.setBackground(new Color(240, 240, 240));
+            jTextFieldValue.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+
+            p.add(jTextFieldLabel, BorderLayout.WEST);
+            p.add(jTextFieldValue, BorderLayout.CENTER);
+
+            mainInfo.add(p);
             mainInfo.add(Box.createVerticalStrut(5));
-            listAdd.add(jTextField);
+            listAdd.add(jTextFieldValue);
         }
 
-        comboBox.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (index == 0) {
-                    c.setEnabled(false);
-                    c.setForeground(Color.GRAY);
-                }
-                return c;
-            }
-        });
-        comboBox.addActionListener(e -> {
-            if (isResettingComboBox) {
-                return;
-            }
-            if (comboBox.getSelectedIndex() == 0) {
-                JOptionPane.showMessageDialog(this, "Bạn không thể chọn mục này, vui lòng chọn lại");
-                comboBox.setSelectedIndex(0);
-            }
-        });
-        comboBox.setMaximumSize(new Dimension(500, 40));
-        comboBox.setBackground(new Color(240, 240, 240));
-        comboBox.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
-        mainInfo.add(comboBox);
-        mainInfo.add(Box.createVerticalStrut(5));
-        genderPanel = getRadioSex(true, true);
-        genderPanel.setMaximumSize(new Dimension(500, 40));
-        mainInfo.add(genderPanel);
-        mainInfo.add(Box.createVerticalStrut(5));
-        JPanel combobox_sex = new JPanel();
-        combobox_sex.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 5, 5, 5);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.8;
-        c.weighty = 1;
-        combobox_sex.add(comboBox, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 0.2;
-        c.weighty = 1;
-        combobox_sex.add(genderPanel, c);
-        combobox_sex.setMaximumSize(new Dimension(500, 40));
-        mainInfo.add(combobox_sex);
         mainInfo.add(Box.createVerticalStrut(30));
-        reset = new JButton("Làm mới");
-        reset.setBackground(new Color(0, 191, 255));
-        save = new JButton("Lưu");
-        save.setBackground(new Color(50, 205, 50));
+        update = new JButton("Cập nhật");
+        update.setBackground(new Color(0, 191, 255));
         cancel = new JButton("Hủy");
         cancel.setBackground(new Color(250, 128, 114));
         // action thêm
-        reset.addActionListener(action);
-        save.addActionListener(action);
+        update.addActionListener(action);
         cancel.addActionListener(action);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 50, 20));
         ArrayList<JButton> buttons = new ArrayList<>();
         buttonPanel.setMaximumSize(new Dimension(500, 40));
         buttonPanel.setPreferredSize(new Dimension(500, 40));
-        buttons.add(reset);
+        buttons.add(update);
         buttons.add(cancel);
-        buttons.add(save);
         for (JButton b : buttons) {
             b.setPreferredSize(new Dimension(100, 40));
             b.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
@@ -157,14 +136,6 @@ public class AddNhanVienConsole extends JPanel {
         }
         mainInfo.add(buttonPanel);
         return mainInfo;
-    }
-
-    public void insertData(){
-        setMa(listAdd.get(0).getText().trim());
-        setTen(listAdd.get(1).getText().trim());
-        setEmail(listAdd.get(2).getText().trim());
-        setSdt(listAdd.get(3).getText().trim());
-        setChuc_vu((String)comboBox.getSelectedItem());
     }
 
     public JPanel mainIMG() {
@@ -236,59 +207,12 @@ public class AddNhanVienConsole extends JPanel {
         return parentImg;
     }
 
-    public static void addPlaceholderStyle(JTextComponent textComp, String placeholder) {
-        textComp.setText(placeholder);
-        textComp.setForeground(Color.BLACK);
-
-        textComp.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (textComp.getText().equals(placeholder)) {
-                    textComp.setText("");
-                    textComp.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (textComp.getText().isEmpty()) {
-                    textComp.setText(placeholder);
-                    textComp.setForeground(new Color(192, 192, 192));
-                }
-            }
-        });
-    }
-
-    public JButton getSaveButton() {
-        return save;
-    }
-
     public JButton getCancelButton() {
         return cancel;
     }
 
-    public JButton getResetButton() {
-        return reset;
-    }
-
-    public void resetForm() {
-        for (JTextField textField : listAdd) {
-            textField.setText(textField.getName());
-            textField.setForeground(new Color(192, 192, 192));
-        }
-        isResettingComboBox = true;
-        comboBox.setSelectedIndex(0);
-        genderPanel = getRadioSex(true, true);
-        genderPanel.repaint();
-        genderPanel.revalidate();
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
-        isResettingComboBox = false;
-        JPanel newParentImg = getJPanel(changeImage);
-        mainImg.remove(parentImg);
-        mainImg.add(newParentImg, BorderLayout.CENTER);
-        parentImg = newParentImg;
-        mainImg.revalidate();
-        mainImg.repaint();
+    public JButton getUpdateButton() {
+        return update;
     }
 
     public String getMa() {
@@ -307,27 +231,19 @@ public class AddNhanVienConsole extends JPanel {
         this.ten = ten;
     }
 
-    public String getEmail() {
-        return email;
+    public String getStd() {
+        return std;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setStd(String std) {
+        this.std = std;
     }
 
-    public String getSdt() {
-        return sdt;
+    public String getDiachi() {
+        return diachi;
     }
 
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
-    }
-
-    public String getChuc_vu() {
-        return chuc_vu;
-    }
-
-    public void setChuc_vu(String chuc_vu) {
-        this.chuc_vu = chuc_vu;
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
     }
 }
