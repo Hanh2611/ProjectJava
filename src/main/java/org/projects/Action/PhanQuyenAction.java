@@ -9,6 +9,7 @@ import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
 import org.projects.GUI.DiaLog.PhanQuyen.performPhanQuyen;
 import org.projects.GUI.DiaLog.PhanQuyen.updatePhanQuyen;
 import org.projects.GUI.Panel.*;
+import org.projects.GUI.Panel.KhachHangPack.KhachHang;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
 import org.projects.GUI.Panel.ThongkePack.ThongKe;

@@ -2,6 +2,7 @@ package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.NhanVienAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.NhanVienDao;
 import org.projects.GUI.Components.Transition.mainTransition;
@@ -10,6 +11,7 @@ import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowChiTietNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowDeleteNhanVienConsole;
+import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
@@ -113,7 +115,8 @@ public class NhanVien extends JPanel {
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
 //        addHeader(this, listItemHeader, quyen);
-        add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
+        //add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
+        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---"}));
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(nhanVienAction);
