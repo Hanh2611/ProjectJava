@@ -16,4 +16,8 @@ public class DanhMucSanPhamBus {
     public List<DanhMucSanPhamEntity> getAllDanhMucSanPham() {
         return danhMucSanPhamDAO.showlist();
     }
+
+    public int getIdDanhMuc(String tenDanhMuc) {
+        return danhMucSanPhamDAO.getIdByName(tenDanhMuc);
+    }
 }

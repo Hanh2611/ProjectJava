@@ -37,6 +37,21 @@ public class DanhMucSanPhamDAO implements ChucNangDAO<DanhMucSanPhamEntity>{
         return list;
     }
 
+    public int getIdByName(String tenDanhMuc) {
+        String query = "SELECT ma_danh_muc FROM danh_muc_san_pham WHERE ten_danh_muc = ?";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setString(1, tenDanhMuc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ma_danh_muc");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     @Override
     public int them(DanhMucSanPhamEntity add) {
         return 0;

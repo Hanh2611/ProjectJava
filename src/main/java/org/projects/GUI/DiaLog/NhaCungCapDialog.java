@@ -1,6 +1,7 @@
 package org.projects.GUI.DiaLog;
 
 import org.projects.Action.NhaCungCapAction;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.NhaCungCap;
 import org.projects.entity.NhaCungCapEntity;
@@ -20,6 +21,7 @@ public class NhaCungCapDialog extends JDialog {
     private JButton chucnangBTN;
     private JButton thoatBTN;
     private NhaCungCapAction nccAction;
+    private mainTransition ts = new mainTransition();
 
     private JPanel centerPanel,bottomPanel;
     public NhaCungCapDialog(String nccType,NhaCungCap ncc) {
@@ -27,13 +29,13 @@ public class NhaCungCapDialog extends JDialog {
         this.nccType = nccType;
         nccAction = new NhaCungCapAction(ncc, this);
         this.setTitle(this.setType());
-        this.setSize(600,400);
+//        this.setSize(600,400);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         bottomPanel = new JPanel(new FlowLayout(0,5,5));
         this.init();
         getEdit(this.getNccType());
-        this.setVisible(true);
+        ts.showZoomIn(this,600,400);
     }
     public void init() {
         centerPanel = new JPanel(new GridLayout(4,1));
