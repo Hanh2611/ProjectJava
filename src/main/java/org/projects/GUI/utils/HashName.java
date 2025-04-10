@@ -9,4 +9,8 @@ public class HashName {
 
         return noDiacritics.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
     }
+    public static String getFileExtension(String fileName) {
+        int lastIndex = fileName.lastIndexOf('.');
+        return lastIndex == -1 ? "" : fileName.substring(lastIndex);
+    }
 }

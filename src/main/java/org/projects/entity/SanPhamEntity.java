@@ -17,27 +17,16 @@ public class SanPhamEntity {
     public SanPhamEntity() {
     }
 
-    public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, QuyCach quyCach, String hinhAnh) {
-        this.id = id;
+
+    public SanPhamEntity(String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, QuyCach quyCach, String hinhAnh) {
         this.tenSanPham = tenSanPham;
         this.phanLoai = phanLoai;
         this.donVi = donVi;
         this.giaBan = giaBan;
-        this.soLuongTon = soLuongTon;
+        this.soLuongTon = 0;
         this.quyCach = quyCach;
         this.hinhAnh = hinhAnh;
         this.trangThai = true;
-    }
-
-    public SanPhamEntity(String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, QuyCach quyCach, String hinhAnh, boolean trangThai) {
-        this.tenSanPham = tenSanPham;
-        this.phanLoai = phanLoai;
-        this.donVi = donVi;
-        this.giaBan = giaBan;
-        this.soLuongTon = soLuongTon;
-        this.quyCach = quyCach;
-        this.hinhAnh = hinhAnh;
-        this.trangThai = trangThai;
     }
 
     public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, QuyCach quyCach, String hinhAnh, boolean trangThai) {

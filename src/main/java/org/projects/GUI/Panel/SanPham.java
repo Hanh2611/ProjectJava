@@ -2,6 +2,7 @@ package org.projects.GUI.Panel;
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.utils.PriceRenderer;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.SanPhamEntity;
 
@@ -47,13 +48,13 @@ public class SanPham extends JPanel{
         this.table = new JTable();
         this.header = new headerBar(listItemHeader, listAction, listCbBox);
 
-        String[] columns = {"Id", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Số lượng tồn", "Quy cách", "Đơn vị", "Trạng thái"};
-        int[] columnWidthPercentage = {3, 7, 38, 10, 10, 7, 7, 7, 10};
+        String[] columns = {"Hình ảnh", "Tên", "Phân loại", "Giá bán", "Trạng thái"};
+        int[] columnWidthPercentage = {10, 30, 20, 20, 20};
 
         model = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int column) {
-                return (column == 1) ? ImageIcon.class : Object.class;
+                return (column == 0) ? ImageIcon.class : Object.class;
             }
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -65,14 +66,17 @@ public class SanPham extends JPanel{
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < model.getColumnCount(); i++) {
-            if (i == 1){
+            if (i == 0){
                 continue;
             }
             table.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
+        renderer = new PriceRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(3).setCellRenderer(renderer);
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
-        sorter.setComparator(2, Comparator.comparing(String::toString));
-        sorter.setComparator(4, Comparator.comparingDouble(o -> Double.parseDouble(o.toString())));
+        sorter.setComparator(1, Comparator.comparing(String::toString));
+        sorter.setComparator(3, Comparator.comparingDouble(o -> Double.parseDouble(o.toString())));
         table.setRowSorter(sorter);
         table.setRowHeight(60);
         table.setDefaultEditor(Object.class, null);
@@ -107,21 +111,17 @@ public class SanPham extends JPanel{
                 ImageIcon imageIcon = new ImageIcon(new ImageIcon(imgPath)
                         .getImage().getScaledInstance(80, 55, Image.SCALE_SMOOTH));
                 model.addRow(new Object[]{
-                    sanPhamEntity.getId(),
                     imageIcon,
                     sanPhamEntity.getTenSanPham(),
                     sanPhamEntity.getPhanLoai().getTenDanhMuc(),
-                    sanPhamEntity.getGiaBan(),
-                    sanPhamEntity.getSoLuongTon(),
-                    sanPhamEntity.getQuyCach().getValue(),
-                    sanPhamEntity.getDonVi(),
+                    sanPhamEntity.getGiaBan()   ,
                     sanPhamEntity.isTrangThai() ? "Đang kinh doanh" : "Ngừng kinh doanh",
                 });
             }
         }
     }
 
-    private void reloadDAO() {
+    public void reloadDAO() {
         List<SanPhamEntity> listSanPham = sanPhamBus.getAllSanPham();
         loadList(listSanPham);
     }

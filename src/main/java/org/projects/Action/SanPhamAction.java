@@ -4,22 +4,37 @@ import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.SanPham.AddSanPhamDialog;
 import org.projects.GUI.Panel.SanPham;
+import org.projects.GUI.utils.HashName;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class SanPhamAction implements ActionListener, MouseListener, ItemListener, DocumentListener {
 
     private SanPham sanPham;
     private AddSanPhamDialog addSanPhamDialog;
     private SanPhamBus sanPhamBus;
+    public static String destinationDir = "src\\main\\resources\\img\\product";
 
     public SanPhamAction(SanPham sanPham, AddSanPhamDialog addSanPhamDialog) {
         this.sanPham = sanPham;
         this.addSanPhamDialog = addSanPhamDialog;
         this.sanPhamBus = new SanPhamBus(sanPham);
+    }
+
+    private boolean isDouble(String input) {
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     @Override
@@ -29,26 +44,46 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
         if(sanPham != null) {
             if(addSanPhamDialog != null && c instanceof JButton){
                 if("Thêm".equals(namebtn)) {
-                    String ten = addSanPhamDialog.getTenSanPhamField().getTextField().getText().trim();
-                    String phanloai = addSanPhamDialog.getPhanLoaiField().getSelectedItem().toString();
-                    String gia = addSanPhamDialog.getGiaBanField().getTextField().getText().trim();
-                    String donvi = addSanPhamDialog.getDonViField().getTextField().getText().trim();
-                    String quycach = addSanPhamDialog.getQuyCachField().getSelectedItem().toString();
-                    String hinhAnh = addSanPhamDialog.getFileChooser().getSelectedFile().getAbsolutePath();
-                    System.out.println("ten: " + ten);
-                    System.out.println("phanloai: " + phanloai);
-                    System.out.println("gia: " + gia);
-                    System.out.println("quycach: " + quycach);
-                    System.out.println("donvi: " + donvi);
-                    System.out.println("hinhAnh: " + hinhAnh);
-                    if(ten.equals("") || gia.equals("") || quycach.equals("") || donvi.equals("") || hinhAnh.equals("")
-                    ){
-                        JOptionPane.showMessageDialog(null, "Vui lòng nhâp đầy đủ các giá trị", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    if((addSanPhamDialog.getFileChooser().getSelectedFile() == null)){
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn hình ảnh", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    } else if(addSanPhamDialog.getTenSanPhamField().getTextField().getText().trim().equals("")){
+                        JOptionPane.showMessageDialog(null, "Vui lòng nhập tên sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    } else if(addSanPhamDialog.getGiaBanField().getTextField().getText().trim().equals("")){
+                        JOptionPane.showMessageDialog(null, "Vui lòng nhập giá sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    } else if(addSanPhamDialog.getDonViField().getTextField().getText().trim().equals("")){
+                        JOptionPane.showMessageDialog(null, "Vui lòng nhập đơn vị sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    } else if(addSanPhamDialog.getQuyCachField().getSelectedItem() == null){
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn quy cách sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
+                    } else if(addSanPhamDialog.getPhanLoaiField().getSelectedItem() == null) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn phân loại sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        sanPhamBus.addSanPham();
-                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
-                        sanPham.loadList(sanPhamBus.getAllSanPham());
-                        addSanPhamDialog.dispose();
+                        String ten = addSanPhamDialog.getTenSanPhamField().getTextField().getText().trim();
+                        String phanloai = addSanPhamDialog.getPhanLoaiField().getSelectedItem().toString();
+                        String donvi = addSanPhamDialog.getDonViField().getTextField().getText().trim();
+                        String gia = addSanPhamDialog.getGiaBanField().getTextField().getText().trim();
+                        String quycach = addSanPhamDialog.getQuyCachField().getSelectedItem().toString();
+                        File hinhAnh = addSanPhamDialog.getSelectedFile();
+                        String newFileName = HashName.convertToSlug(ten) + HashName.getFileExtension(hinhAnh.getName());
+                        File destinationFile = new File(SanPhamAction.destinationDir, newFileName);
+                        if (!isDouble(gia)) {
+                            JOptionPane.showMessageDialog(null, "Giá không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        try {
+                            new File(destinationDir).mkdirs();
+                            Files.copy(hinhAnh.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            System.out.println("Image uploaded successfully:\n" + destinationFile.getAbsolutePath());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Error saving the image.");
+                        }
+
+                        if(sanPhamBus.addSanPham(ten, phanloai, donvi, Double.parseDouble(gia), quycach, newFileName)){
+                            JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                            addSanPhamDialog.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Thêm sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
             }
@@ -70,7 +105,6 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
     @Override
     public void mousePressed(MouseEvent e) {
         generalFunction c = (generalFunction) e.getSource();
-        System.out.println(c);
         if (sanPham != null) {
             for (String name : sanPham.getHeader().getHeaderFunc().getHm().keySet()) {
                 generalFunction gf = sanPham.getHeader().getHeaderFunc().getHm().get(name);

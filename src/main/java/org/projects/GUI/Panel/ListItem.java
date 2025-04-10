@@ -36,7 +36,7 @@ public class ListItem extends JPanel{
     }
     private void init() {
         //khoi tao cac ListItem
-        String listItemTaskbar[][] = {
+        String[][] listItemTaskbar = {
                 {"icon/homepage.svg", "Trang chủ", "TrangChu"},
                 {"icon/dairy-products.svg", "Sản phẩm", "SanPham"},
                 {"icon/contact-form.svg", "Phiếu nhập", "PhieuNhap"},

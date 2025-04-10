@@ -104,9 +104,27 @@ public class SanPhamDao implements ChucNangDAO<SanPhamEntity> {
         return list;
     }
 
+
+
     @Override
-    public int them(SanPhamEntity add) {
-        return 0;
+    public int them(SanPhamEntity sanPhamEntity) {
+        String query = """
+                INSERT INTO san_pham (ten_san_pham, phan_loai, don_vi, gia_ban, quy_cach, img)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """;
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setString(1, sanPhamEntity.getTenSanPham());
+            ps.setInt(2, sanPhamEntity.getPhanLoai().getId());
+            ps.setString(3, sanPhamEntity.getDonVi());
+            ps.setDouble(4, sanPhamEntity.getGiaBan());
+            ps.setString(5, sanPhamEntity.getQuyCach().toString());
+            ps.setString(6, sanPhamEntity.getHinhAnh());
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
