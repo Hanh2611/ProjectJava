@@ -1,12 +1,17 @@
 package org.projects.GUI.DiaLog.PhieuNhap;
 
+
 import org.projects.GUI.Panel.PhieuNhap;
+import org.projects.entity.ChiTietPhieuNhapFullEntity;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ChiTietPN extends JPanel {
     private JLabel lblchitietpn, lblngaylap, lblmanguoilap, lbltennguoilap, lblmapn, lblmancc, lbltenncc;
@@ -19,11 +24,11 @@ public class ChiTietPN extends JPanel {
     private DefaultTableModel tableModel;
     private DefaultTableCellRenderer tableCellRenderer;
     private JButton btndong;
-    private PhieuNhap mainPanel;
+    private PhieuNhap phieuNhap;
     JPanel panelcon;
+    public ChiTietPN(PhieuNhap phieuNhap) {
 
-    public ChiTietPN(PhieuNhap mainPanel) {
-        this.mainPanel = mainPanel;
+        this.phieuNhap = phieuNhap;
         setOpaque(false);
         setLayout(null);
         init();
@@ -32,7 +37,7 @@ public class ChiTietPN extends JPanel {
     public void init() {
         panelcon = new JPanel();
         panelcon.setLayout(null);
-        panelcon.setBounds(5, 0, 930, 650);
+        panelcon.setBounds(1, 0, 940, 650);
         panelcon.setBackground(Color.WHITE);
 
         lblchitietpn = new JLabel("CHI TIẾT PHIẾU NHẬP");
@@ -109,13 +114,9 @@ public class ChiTietPN extends JPanel {
         txttenncc.setEditable(false);
         panelcon.add(txttenncc);
 
-        String [] colums = {"Mã SP", "Tên SP","Giá ","Đơn vị","Phân loại","Quy cách","Số lượng" };
-        Object[][] data = {
-                {"SP001", "Paracetamol", 2000, "Viên", "Thuốc giảm đau", "Hộp 10 viên", 100},
-                {"SP002", "Ibuprofen", 1500, "Viên", "Thuốc giảm đau", "Hộp 10 viên", 200},
-                {"SP003", "Amoxicillin", 5000, "Viên", "Kháng sinh", "Hộp 10 viên", 50}
-        };
-        tableModel = new DefaultTableModel(data,colums){
+        String [] colums = {"Mã SP", "Tên SP","Giá ","Đơn vị","Số lượng","Quy cách","Thành tiền" };
+
+        tableModel = new DefaultTableModel(colums,0){
             public boolean isCellEditable(int row, int column) {
                 return true;
             }
@@ -128,7 +129,7 @@ public class ChiTietPN extends JPanel {
         table.setFocusable(false);
         table.setSelectionBackground(new Color(204, 229, 255));
         table.setFont(fontChung);
-
+        table.setDefaultEditor(Object.class,null);
 
         header = table.getTableHeader();
         header.setFont(new Font("JetBrains Mono", Font.BOLD, 14));
@@ -145,26 +146,44 @@ public class ChiTietPN extends JPanel {
         btndong = new JButton("Đóng");
         btndong.setBackground(new Color(89,168,105,255));
         btndong.setBounds(400,605,110,35);
-        btndong.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btndong.addActionListener(e ->{
-            int result = JOptionPane.showConfirmDialog(
-                    null,
-                    "Bạn có chắc chắn muốn đóng ?",
-                    "Xác nhận",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
-            );
-
-            if (result == JOptionPane.YES_OPTION) {
-                mainPanel.showTrangChinh();
+        btndong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                phieuNhap.showTrangChinh();
             }
         });
         panelcon.add(btndong);
         panelcon.add(scrollPane);
 
 
-
         // Thêm panelcon vào giao diện
         add(panelcon);
+    }
+    public void setData(List<ChiTietPhieuNhapFullEntity> list) {
+        if (list == null || list.isEmpty()) return;
+
+        ChiTietPhieuNhapFullEntity first = list.get(0);
+
+        txtmapn.setText(String.valueOf(first.getMaPN()));
+        txtngaylap.setText(first.getNgaylap().toString());
+        txtmanguoilap.setText(String.valueOf(first.getMaNguoiLap())); // Nếu có mã người lập thì thêm vào entity và set
+        txttennguoilap.setText(first.getTenNguoiLap());
+        txtmancc.setText(String.valueOf(first.getMaNCC())); // Nếu có mã nhà cung cấp thì thêm vào entity và set
+        txttenncc.setText(first.getTenNCC());
+
+        tableModel.setRowCount(0); // Clear bảng
+
+        for (ChiTietPhieuNhapFullEntity ct : list) {
+            Object[] row = {
+                    ct.getMasp(),
+                    ct.getTenSP(),
+                    ct.getGia(),
+                    ct.getDonvi(),
+                    ct.getSoLuong(),
+                    ct.getQuyCach(),
+                    ct.getThanhtien(),
+            };
+            tableModel.addRow(row);
+        }
     }
 }

@@ -31,16 +31,16 @@ public class headerFunction extends JPanel {
     public void createHashMap(List<String> listAction) {
         for(String ac : listAction) {
             switch (ac) {
-                case "them":
+                case "add":
                     hm.put("add", new generalFunction("icon/add.svg","Thêm","add"));
                     break;
-                case "sua":
+                case "update":
                     hm.put("update",new generalFunction("icon/content-writing.svg","Sửa","update"));
                     break;
-                case "xoa":
+                case "delete":
                     hm.put("delete",new generalFunction("icon/trash.svg","Xóa","delete"));
                     break;
-                case "xem":
+                case "detail":
                     hm.put("detail",new generalFunction("icon/details.svg","Chi tiết","detail"));
                     break;
                 default:

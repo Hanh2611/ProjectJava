@@ -1,12 +1,12 @@
 package org.projects.GUI.DiaLog.PhieuNhap;
 
-
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.PhieuNhapDAO;
 import org.projects.DAO.SanPhamDao;
 import org.projects.GUI.DiaLog.PhieuNhap.Components.NumberOnlyFilter;
 import org.projects.GUI.DiaLog.PhieuNhap.Components.OnlyDigitFilter;
 import org.projects.GUI.Panel.PhieuNhap;
+import org.projects.entity.ChiTietPhieuNhapFullEntity;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.PhieuNhapEntity;
 import org.projects.entity.SanPhamEntity;
@@ -22,22 +22,22 @@ import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
 import java.util.List;
 
-
-public class ThemPN extends JPanel {
+public class CapNhatPN extends JPanel {
     JTextField timKiem, hienthi_masp, hienthi_tensp, nhapsoluong, nhapgiaban,
             txtQuyCach, txtDonViTinh, nhapMaPN, nhapNVNhap;
     JLabel masp, tensp, soluong, giaban, lblQuyCach, lblDonViTinh, maPN, nvNhap,
             ncc, lblTongTien, txtTongTien;
     JPanel panelLeft, panelright;
-    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP;
+    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP,btnSuaSP;
     JTable tableSanPham, danhSachSanPhamNhap;
     JTableHeader header, headerdanhSachSanPhamNhap;
     JComboBox<String> nhapNCC;
     JScrollPane scrollPane, scrollPaneNhap;
+    DefaultTableModel modelDanhSachNhap, tableModel;
     private PhieuNhap phieuNhap;
     private SanPhamEntity sanPhamEntity;
 
-    public ThemPN(PhieuNhap phieuNhap) {
+    public CapNhatPN(PhieuNhap phieuNhap) {
         setPreferredSize(new Dimension(940, 650));
         setOpaque(false);
         setLayout(null);
@@ -80,7 +80,7 @@ public class ThemPN extends JPanel {
 
         // Bảng dữ liệu sản phẩm
         String[] columnNames = {"Mã SP", "Tên SP"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames,0);
+        tableModel = new DefaultTableModel(columnNames,0);
         tableSanPham = new JTable(tableModel);
         tableSanPham.setRowHeight(25);
         tableSanPham.getColumnModel().getColumn(0).setPreferredWidth(80);
@@ -114,19 +114,26 @@ public class ThemPN extends JPanel {
         themSP = new JButton("Thêm Sản Phẩm");
         ImageIcon icon = createIconFromSVG("/icon/add.svg"); // Đảm bảo rằng đường dẫn đúng và có file SVG
         themSP.setIcon(icon);
-        themSP.setBounds(10, 355, 250, 30);
+        themSP.setBounds(10, 355, 220, 30);
         themSP.setBackground(new Color(89, 168, 105, 255));
         themSP.setForeground(Color.WHITE);
         themSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
         themSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
 
         btnHuyBoSP = new JButton("Bỏ sản phẩm");
-        btnHuyBoSP.setBounds(270, 355, 250, 30);
+        btnHuyBoSP.setBounds(240, 355, 220, 30);
         btnHuyBoSP.setBackground(Color.RED);
         btnHuyBoSP.setForeground(Color.WHITE);
         btnHuyBoSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnHuyBoSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
 
+        btnSuaSP = new JButton("Sửa sản phẩm");
+        btnSuaSP.setBounds(470, 355, 220, 30);
+        btnSuaSP.setBackground(Color.BLUE);
+        btnSuaSP.setForeground(Color.WHITE);
+        btnSuaSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnSuaSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        panelLeft.add(btnSuaSP);
         panelLeft.add(btnHuyBoSP);
         panelLeft.add(themSP);
 
@@ -257,7 +264,7 @@ public class ThemPN extends JPanel {
         });
         // 🆕 Tạo bảng chứa danh sách sản phẩm đã chọn
         String[] columnNamesNhap = {"Mã SP", "Tên SP", "Số lượng", "Giá nhập", "Quy cách", "Đơn vị"};
-        DefaultTableModel modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
+        modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -355,7 +362,7 @@ public class ThemPN extends JPanel {
     }
     private void loadDataToTableSanPham() {
         SanPhamDao dao = new SanPhamDao();
-        List<SanPhamEntity> list = dao.showlist();
+        java.util.List<SanPhamEntity> list = dao.showlist();
 
         DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();
         model.setRowCount(0); // clear dữ liệu cũ
@@ -371,7 +378,7 @@ public class ThemPN extends JPanel {
     }
     private void loadNhaCungCapCombobox(){
         NhaCungCapDAO dao = new NhaCungCapDAO();
-        List<NhaCungCapEntity> list = dao.showlist();
+        java.util.List<NhaCungCapEntity> list = dao.showlist();
         nhapNCC.removeAllItems(); // Xóa dữ liệu cũ
 
         for(NhaCungCapEntity sp : list){
@@ -390,6 +397,25 @@ public class ThemPN extends JPanel {
         }
         max = max +1 ;
         nhapMaPN.setText(String.valueOf(max));
+    }
+    public void loadDatatoTablePhieuNhap(List <ChiTietPhieuNhapFullEntity> list){
+        if (list == null || list.isEmpty()) return;
+        ChiTietPhieuNhapFullEntity first = list.get(0);
+        maPN.setText(String.valueOf(first.getMaPN()));
+        nvNhap.setText(first.getTenNguoiLap());
+        ncc.setText(first.getTenNCC());
+        modelDanhSachNhap.setRowCount(0);
+        for(ChiTietPhieuNhapFullEntity sp : list){
+            modelDanhSachNhap.addRow(new Object[]{
+                    sp.getMasp(),
+                    sp.getTenSP(),
+                    sp.getSoLuong(),
+                    sp.getGia(),
+                    sp.getQuyCach(),
+                    sp.getDonvi()
+
+            });
+        }
     }
 
     private void updateTotal(DefaultTableModel model, JLabel txtTongTien) {

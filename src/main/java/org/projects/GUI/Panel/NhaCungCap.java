@@ -4,19 +4,16 @@ import org.projects.Action.NhaCungCapAction;
 import org.projects.BUS.NhaCungCapBUS;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.GUI.Components.header.headerBar;
-import org.projects.GUI.Components.header.headerSearch;
-import org.projects.GUI.Components.layoutCompoment;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class NhaCungCap extends JPanel{
     private JPanel centerPanel;
