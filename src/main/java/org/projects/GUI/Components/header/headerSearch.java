@@ -20,8 +20,8 @@ public class headerSearch extends javax.swing.JPanel {
     }
 
     public void init(String[] listcombobox) {
-        searchField = handleComponents.createTextField("Nhập tên đăng nhập.....", 60, 190, 310, 40);
-        searchField.addFocusListener(FocusListenerUtils.createPlaceholderTextField("Nhập tên đăng nhập.....", searchField));
+        searchField = handleComponents.createTextField("", 60, 190, 310, 40);
+        searchField.addFocusListener(FocusListenerUtils.createPlaceholderTextField("", searchField));
         searchButton = handleComponents.createButtonIcon("icon/refresh.svg",40,40);
         searchComboBox = new JComboBox<>(listcombobox);
 

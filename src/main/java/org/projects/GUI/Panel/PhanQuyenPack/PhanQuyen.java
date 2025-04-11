@@ -23,8 +23,9 @@ public class PhanQuyen extends JPanel{
     private JPanel contentPanel;
     private headerBar header;
     private DefaultTableModel tableModel;
+    private String[][] listItemHeader;
     public PhanQuyen() {
-        String listItemHeader[][] = {
+        listItemHeader = new String[][]{
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
                 {"icon/trash.svg", "Xóa", "delete"},
@@ -88,7 +89,14 @@ public class PhanQuyen extends JPanel{
     public headerBar getHeader() {
         return header;
     }
+    public void setHeader(headerBar header) {
+        this.header = header;
+    }
     public DefaultTableModel getTableModel() {
         return tableModel;
+    }
+
+    public String[][] getListItemHeader() {
+        return listItemHeader;
     }
 }

@@ -44,7 +44,7 @@ public class headerFunction extends JPanel {
                     hm.put("detail",new generalFunction("icon/details.svg","Chi tiết","detail"));
                     break;
                 default:
-                    hm.put("excel",new generalFunction("icon/details.svg","Chi tiết","detail"));
+                    hm.put("excel",new generalFunction("icon/excel.svg","Xuất excel", "excel"));
                     break;
             }
         }

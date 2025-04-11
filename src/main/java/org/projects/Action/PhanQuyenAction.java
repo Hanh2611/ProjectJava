@@ -3,12 +3,17 @@ package org.projects.Action;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.CapQuyenDAO;
 import org.projects.GUI.Components.header.generalFunction;
+import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
 import org.projects.GUI.DiaLog.PhanQuyen.performPhanQuyen;
 import org.projects.GUI.DiaLog.PhanQuyen.updatePhanQuyen;
-import org.projects.GUI.Panel.NhaCungCap;
+import org.projects.GUI.Panel.*;
+import org.projects.GUI.Panel.KhachHangPack.KhachHang;
+import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
+import org.projects.GUI.Panel.ThongkePack.ThongKe;
+import org.projects.GUI.utils.Session;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -71,6 +76,20 @@ public class PhanQuyenAction implements ActionListener, MouseListener {
                         new updatePhanQuyen(mainGUI, maNhomQuyen, nameNhomQuyen);
                         phanQuyen.getTableModel().setRowCount(0);
                         phanQuyen.loadData();
+                        PhanQuyenBUS.getListAction();
+                        PhanQuyen pq = new PhanQuyen();
+                        ListItem.getMapItem().put("PhanQuyen", pq);
+                        ListItem.showPanel("PhanQuyen");
+                        ListItem.getMapItem().put("TrangChu", new TrangChu());
+//        mapItem.put("SanPham", new SanPham());
+                        ListItem.getMapItem().put("TaiKhoan", new TaiKhoan());
+                        ListItem.getMapItem().put("PhieuNhap", new PhieuNhap());
+                        ListItem.getMapItem().put("HoaDon", new HoaDon());
+                        ListItem.getMapItem().put("KhachHang", new KhachHang());
+                        ListItem.getMapItem().put("NhanVien", new NhanVien());
+                        ListItem.getMapItem().put("NhaCungCap", new NhaCungCap());
+                        ListItem.getMapItem().put("PhanQuyen", new PhanQuyen());
+                        ListItem.getMapItem().put("ThongKe", new ThongKe());
                     } else {
                         int row = mainTable.getSelectedRow();
                         if (row == -1) {

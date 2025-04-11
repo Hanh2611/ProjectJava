@@ -94,11 +94,11 @@ public class LoginGUI extends JFrame {
          
         //field ten dang nhap
         tenDangNhapField = handleComponents.createTextField(
-            "nhập tên đăng nhập.....", 
+            "Nhập tên đăng nhập.....",
             60, 190, 310, 40
         );
         tenDangNhapField.addFocusListener(FocusListenerUtils.createPlaceholderTextField(
-            "nhập tên đăng nhập.....", 
+            "Nhập tên đăng nhập.....",
             tenDangNhapField
         ));
         panel.add(tenDangNhapField);
