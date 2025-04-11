@@ -1,31 +1,23 @@
-package org.projects.GUI.Panel.NhanVienPack;
+package org.projects.GUI.Panel.KhachHangPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-//import org.projects.BUS.MainBUS;
-import org.projects.Action.NhanVienAction;
-import org.projects.BUS.NhanVienBus;
-import org.projects.GUI.Components.handleComponents;
-
+import org.projects.Action.KhachHangAction;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 
 import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
 
-public class AddNhanVienConsole extends JPanel {
-    JRadioButton radioButton;
+public class AddKhachHangConsole extends JPanel {
     static String changeImage;
     static JPanel parentImg;
     private static JPanel mainImg;
     private JButton reset, save, cancel;
-    private NhanVienAction action;
+    private KhachHangAction action;
     private boolean isResettingComboBox = false;
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
@@ -33,8 +25,8 @@ public class AddNhanVienConsole extends JPanel {
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
     private String ma;
-    private String ten , email , sdt , chuc_vu;
-    public AddNhanVienConsole() {
+    private String ten , sdt , diachi;
+    public AddKhachHangConsole() {
         initComponents();
     }
 
@@ -67,7 +59,7 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập mã nhân viên", "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại"};
+        String[] list = {"Nhập mã khách hàng", "Nhập họ và tên" ,"Nhập số điện thoại", "Nhập địa chỉ"};
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
         listAdd = new ArrayList<>();
         comboBox = new JComboBox<>(items);
@@ -162,9 +154,8 @@ public class AddNhanVienConsole extends JPanel {
     public void insertData(){
         setMa(listAdd.get(0).getText().trim());
         setTen(listAdd.get(1).getText().trim());
-        setEmail(listAdd.get(2).getText().trim());
-        setSdt(listAdd.get(3).getText().trim());
-        setChuc_vu((String)comboBox.getSelectedItem());
+        setSdt(listAdd.get(2).getText().trim());
+        setDiachi(listAdd.get(3).getText().trim());
     }
 
     public JPanel mainIMG() {
@@ -307,14 +298,6 @@ public class AddNhanVienConsole extends JPanel {
         this.ten = ten;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getSdt() {
         return sdt;
     }
@@ -323,11 +306,11 @@ public class AddNhanVienConsole extends JPanel {
         this.sdt = sdt;
     }
 
-    public String getChuc_vu() {
-        return chuc_vu;
+    public String getDiachi() {
+        return diachi;
     }
 
-    public void setChuc_vu(String chuc_vu) {
-        this.chuc_vu = chuc_vu;
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
     }
 }
