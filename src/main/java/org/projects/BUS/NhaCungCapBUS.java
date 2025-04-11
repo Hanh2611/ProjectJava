@@ -15,6 +15,7 @@ public class NhaCungCapBUS {
     public NhaCungCapBUS(NhaCungCap ncc) {
         this.ncc = ncc;
     }
+
     public static List<NhaCungCapEntity> getList() {
         listncc = nccDao.showlist();
         return listncc;
