@@ -79,8 +79,8 @@ public class PhanQuyenAction implements ActionListener, MouseListener {
                         PhanQuyenBUS.getListAction();
                         PhanQuyen pq = new PhanQuyen();
                         ListItem.getMapItem().put("PhanQuyen", pq);
-                        ListItem.showPanel("PhanQuyen");
                         ListItem.getMapItem().put("TrangChu", new TrangChu());
+                        ListItem.showPanel("PhanQuyen");
 //        mapItem.put("SanPham", new SanPham());
                         ListItem.getMapItem().put("TaiKhoan", new TaiKhoan());
                         ListItem.getMapItem().put("PhieuNhap", new PhieuNhap());
@@ -90,6 +90,7 @@ public class PhanQuyenAction implements ActionListener, MouseListener {
                         ListItem.getMapItem().put("NhaCungCap", new NhaCungCap());
                         ListItem.getMapItem().put("PhanQuyen", new PhanQuyen());
                         ListItem.getMapItem().put("ThongKe", new ThongKe());
+
                     } else {
                         int row = mainTable.getSelectedRow();
                         if (row == -1) {

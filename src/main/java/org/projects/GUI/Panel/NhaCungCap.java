@@ -39,6 +39,8 @@ public class NhaCungCap extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
         header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhaCungCap") - 1),new String[]{"---","mã","tên","địa chỉ"});
+//        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add","update","delete","detail")),new String[]{"---","mã","tên","địa chỉ"});
+
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));

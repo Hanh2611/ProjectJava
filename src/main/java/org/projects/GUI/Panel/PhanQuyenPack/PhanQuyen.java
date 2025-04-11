@@ -32,7 +32,9 @@ public class PhanQuyen extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"--"});
+//        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"--"});
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add","update","delete","detail","export")),new String[]{"---"});
+
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         this.add(header);
         init();
