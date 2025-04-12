@@ -10,7 +10,7 @@ import org.projects.GUI.Components.MenuItemComponents;
 
 public class WestTaskBar extends JPanel{
     private JPanel thongTinNguoiDung;
-    private JPanel MenuTaskBar;
+    private ListItem MenuTaskBar;
     private ListItem li;
     public WestTaskBar(MainGUI mainGui) {
         this.setLayout(new BorderLayout(0,0));
@@ -22,5 +22,9 @@ public class WestTaskBar extends JPanel{
         //menu cac item
         MenuTaskBar = new ListItem(mainGui);
         this.add(MenuTaskBar,BorderLayout.CENTER);
+    }
+
+    public ListItem getLi() {
+        return MenuTaskBar;
     }
 }

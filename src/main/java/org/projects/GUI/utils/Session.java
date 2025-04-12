@@ -10,4 +10,5 @@ public class Session {
     public static TaiKhoan curUser;
     public static List<List<String>> quyenTaiKhoan;
     public static List<Integer> maDanhMucQuyen;
+    public static List<Integer> maNhomQuyen;
 }

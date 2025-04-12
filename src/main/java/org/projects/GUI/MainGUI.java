@@ -22,7 +22,7 @@ import org.projects.GUI.utils.UIUtils;
 public class MainGUI extends JFrame {
     
     private JPanel title;
-    private JPanel MenuTask;
+    private WestTaskBar MenuTask;
     private JPanel contentItem;
     private JButton minusIcon;
     private JButton cancelIcon;
@@ -96,7 +96,7 @@ public class MainGUI extends JFrame {
         UIUtils.refreshComponent(contentPanel);
     }
     
-    public JPanel getMenuTask() {
+    public WestTaskBar getMenuTask() {
         return MenuTask;
     }
     public JPanel getContentItem() {
