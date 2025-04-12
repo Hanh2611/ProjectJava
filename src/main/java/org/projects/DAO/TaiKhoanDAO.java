@@ -27,7 +27,7 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoan>{
             e.printStackTrace();
             return result;
         }
-        return List.of();
+        return result;
     }
 
     @Override
@@ -51,8 +51,8 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoan>{
     }
 
     public String getTenNguoiDung(int maNguoiDung) {
-        String queryOnNhanVien = "select ten_nhan_vien from nhan_vien where ma_nguoi_dung = ?";
-        String queryOnKhachHang = "select ten_khach_hang from khach_hang where ma_nguoi_dung = ?";
+        String queryOnNhanVien = "select * from nhan_vien where ma_nguoi_dung = ?";
+        String queryOnKhachHang = "select * from khach_hang where ma_nguoi_dung = ?";
         String result = "";
         try (Connection connection = DatabasesConfig.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(queryOnNhanVien);) {
@@ -66,7 +66,7 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoan>{
                     preparedStatement2.setInt(1, maNguoiDung);
                     ResultSet resultSet2 = preparedStatement2.executeQuery();
                     if (resultSet2.next()) {
-                        result = resultSet.getString("ten_khach_hang");
+                        result = resultSet2.getString("ten_khach_hang");
                     }
                 } catch (SQLException e2) {
                     e2.printStackTrace();
@@ -81,6 +81,19 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoan>{
     }
 
     public String getLoaiNguoiDung(int maNguoiDung) {
-        String query = "select";
+        String query = "select loai_nguoi_dung from nguoi_dung where ma_nguoi_dung = ?";
+        String result = "";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+            preparedStatement.setInt(1, maNguoiDung);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = resultSet.getString("loai_nguoi_dung");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return result;
+        }
+        return result;
     }
 }

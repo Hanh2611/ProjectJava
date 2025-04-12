@@ -7,7 +7,9 @@ import org.projects.GUI.Components.layoutCompoment;
 import org.projects.GUI.utils.Session;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class TaiKhoan extends JPanel{
         this.setOpaque(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         initHeader();
+        initContent();
     }
 
     public void initHeader() {
@@ -46,7 +49,11 @@ public class TaiKhoan extends JPanel{
     }
 
     public void initContent() {
-
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new BorderLayout());
+        layoutCompoment.setupMainPanel(contentPanel);
+        initTable();
+        this.add(contentPanel);
     }
 
     public void initTable() {
@@ -54,12 +61,34 @@ public class TaiKhoan extends JPanel{
         tableModel = new DefaultTableModel(col, 0) {
             public boolean isCellEditable(int row, int column) {return false;}
         };
-
+        loadDataIntoTable();
+        mainTable = new JTable(tableModel);
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < mainTable.getColumnCount(); i++) {
+            mainTable.getColumnModel().getColumn(i).setPreferredWidth(200);
+            mainTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+        }
+        JTableHeader headerTable = mainTable.getTableHeader();
+        headerTable.setBackground(new Color(0, 102, 204));
+        headerTable.setForeground(new Color(240, 240, 240));
+        headerTable.setFont(new Font("JETBRAINS MONO", Font.BOLD, 16));
+        headerTable.setPreferredSize(new Dimension(header.getWidth(), 35));
+        mainTable.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 14));
+        mainTable.setRowHeight(40);
+        mainTable.getTableHeader().setReorderingAllowed(false);
+        mainTable.setShowGrid(false);
+        mainTable.setGridColor(Color.decode("#CAECF7"));
+        scrollPane = new JScrollPane(mainTable);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+        mainTable.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder());
     }
     public void loadDataIntoTable() {
         List<org.projects.entity.TaiKhoan> listTaiKhoan = TaiKhoanBUS.getListTaiKhoan();
         for (org.projects.entity.TaiKhoan t : listTaiKhoan) {
-            tableModel.addRow(new Object[]{TaiKhoanBUS.getTenNguoiDung(t.getMaNguoiDung()), t.getMaNguoiDung(), t.getTenDangNhap(), "", t.getTrangThai()});
+            tableModel.addRow(new Object[]{TaiKhoanBUS.getTenNguoiDung(t.getMaNguoiDung()), t.getMaNguoiDung(), t.getTenDangNhap(), TaiKhoanBUS.getLoaiNguoiDung(t.getMaNguoiDung()), t.getTrangThai()});
         }
     }
 }
