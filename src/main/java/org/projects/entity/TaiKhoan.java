@@ -5,6 +5,7 @@ public class TaiKhoan {
     private String matKhau;
     private String trangThai;
     private int maNguoiDung;
+    private int quyenNguoiDung;
 
     public TaiKhoan() {}
 
@@ -13,13 +14,20 @@ public class TaiKhoan {
         this.matKhau = matKhau;
         trangThai = "hoat_dong";
         maNguoiDung = 0;
+        quyenNguoiDung = 0;
     }
-
     public TaiKhoan(String tenDangNhap, String matKhau, String trangThai, int maNguoiDung) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
         this.trangThai = trangThai;
         this.maNguoiDung = maNguoiDung;
+    }
+    public TaiKhoan(String tenDangNhap, String matKhau, String trangThai, int maNguoiDung, int quyenNguoiDung) {
+        this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+        this.trangThai = trangThai;
+        this.maNguoiDung = maNguoiDung;
+        this.quyenNguoiDung = quyenNguoiDung;
     }
 
     public String getTenDangNhap() {

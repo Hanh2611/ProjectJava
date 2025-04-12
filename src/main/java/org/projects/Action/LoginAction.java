@@ -37,6 +37,7 @@ public class LoginAction implements MouseListener {
                 JOptionPane.showMessageDialog(loginGUI, "Đăng nhập thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
                 Session.curUser = user;
                 Session.maDanhMucQuyen = PhanQuyenBUS.getQuyenDanhMuc(user);
+                Session.maNhomQuyen = PhanQuyenBUS.getListNhomQuyen(user.getMaNguoiDung());
                 PhanQuyenBUS.getListAction();
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override

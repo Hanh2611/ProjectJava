@@ -77,11 +77,14 @@ public class PhanQuyenBUS {
         return DanhMucQuanLyDAO.getMaDanhMuc(nameDanhMuc);
     }
 
+    public static List<Integer> getListNhomQuyen(int maNguoiDung) {
+        return new NhomQuyenDAO().getNhomQuyenOfUser(maNguoiDung);
+    }
     public static void getListAction() {
-        Session.quyenTaiKhoan = new ArrayList<>();
-        List<DanhMucQuanLy> danhMuc = new DanhMucQuanLyDAO().showlist();
-        for (DanhMucQuanLy dm : danhMuc) {
-            Session.quyenTaiKhoan.add(new DanhMucQuanLyDAO().quyenHanhDong(dm.getMa_danh_muc_quan_ly()));
-        }
+        Session.quyenTaiKhoan = new DanhMucQuanLyDAO().quyenHanhDong(Session.maNhomQuyen);
+    }
+
+    public static boolean checkExitsNameNhomQuyen(String nameNhomQuyen) {
+        return new NhomQuyenDAO().checkExist(nameNhomQuyen);
     }
 }
