@@ -1,8 +1,10 @@
 package org.projects.GUI.Panel;
 import org.projects.Action.SanPhamAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.utils.Helper;
+import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.Enum.QuyCach;
 import org.projects.entity.SanPhamEntity;
@@ -41,10 +43,9 @@ public class SanPham extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        List<String> listAction = new ArrayList<>(Arrays.asList("add", "update", "delete", "detail"));
         String[] listCbBox = new String[]{"---", "Mã", "Tên", "Phân loại"};
         this.table = new JTable();
-        header = new headerBar(listItemHeader, listAction, listCbBox);
+        header = new headerBar(listItemHeader,  Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("SanPham") - 1), listCbBox);
 
         String[] columns = {"Mã", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Trạng thái"};
         int[] columnWidthPercentage = {2, 8, 35, 20, 15, 20};
