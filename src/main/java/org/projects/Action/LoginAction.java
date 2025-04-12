@@ -28,7 +28,7 @@ public class LoginAction implements MouseListener {
             SignUpDialog.HienThiDangKy();
         }
         if(e.getSource().equals(loginGUI.getDangNhapButton())) {
-            TaiKhoan user = LoginBUS.login(new TaiKhoan(loginGUI.getTenDangNhapField().getText(), loginGUI.getMatKhauField().getText()));
+            this.user = LoginBUS.login(new TaiKhoan(loginGUI.getTenDangNhapField().getText(), loginGUI.getMatKhauField().getText()));
             //todo: kiểm tra trạng thái
             //todo: focus textfield
             if (user == null) {

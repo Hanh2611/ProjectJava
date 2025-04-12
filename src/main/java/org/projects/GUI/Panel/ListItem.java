@@ -15,6 +15,7 @@ import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.Components.MenuItemComponents;
+import org.projects.GUI.Panel.KhachHangPack.KhachHang;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
 import org.projects.GUI.Panel.ThongkePack.ThongKe;
@@ -35,7 +36,7 @@ public class ListItem extends JPanel{
     }
     private void init() {
         //khoi tao cac ListItem
-        String listItemTaskbar[][] = {
+        String[][] listItemTaskbar = {
                 {"icon/homepage.svg", "Trang chủ", "TrangChu"},
                 {"icon/dairy-products.svg", "Sản phẩm", "SanPham"},
                 {"icon/contact-form.svg", "Phiếu nhập", "PhieuNhap"},
@@ -51,7 +52,7 @@ public class ListItem extends JPanel{
 
         //them ten panel vao map de truy xuat den -> hien thi panel tuong ung
         mapItem.put("TrangChu", new TrangChu());
-//        mapItem.put("SanPham", new SanPham());
+        mapItem.put("SanPham", new SanPham());
         mapItem.put("TaiKhoan", new TaiKhoan());
         mapItem.put("PhieuNhap", new PhieuNhap());
         mapItem.put("HoaDon", new HoaDon());
