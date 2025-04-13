@@ -48,6 +48,22 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
 
     @Override
     public int xoa(HoaDonEntity delete) {
+        String queryChiTiet = "DELETE FROM chi_tiet_hoa_don WHERE ma_hoa_don = ?";
+        String queryHoaDon = "DELETE FROM hoa_don WHERE ma_hoa_don = ?";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement psChiTiet = c.prepareStatement(queryChiTiet);
+             PreparedStatement psHoaDon = c.prepareStatement(queryHoaDon)) {
+
+            // Xóa chi tiết hóa đơn trước
+            psChiTiet.setInt(1, delete.getMaHoaDon());
+            psChiTiet.executeUpdate();
+
+            // Sau đó mới xóa hóa đơn
+            psHoaDon.setInt(1, delete.getMaHoaDon());
+            return psHoaDon.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 

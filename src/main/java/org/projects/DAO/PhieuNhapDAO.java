@@ -72,12 +72,26 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
 
     @Override
     public int xoa(PhieuNhapEntity pn) {
-        String query = "DELETE FROM phieu_nhap WHERE ma_phieu_nhap = ?;";
-        try (Connection c = DatabasesConfig.getConnection();
-             PreparedStatement ps = c.prepareStatement(query)) {
+        String deleteChiTiet = "DELETE FROM chi_tiet_phieu_nhap WHERE ma_phieu_nhap = ?;";
+        String deletePhieu = "DELETE FROM phieu_nhap WHERE ma_phieu_nhap = ?;";
 
-            ps.setInt(1, pn.getMaPN());
-            return ps.executeUpdate();
+        try (Connection c = DatabasesConfig.getConnection()) {
+            c.setAutoCommit(false); // Bắt đầu transaction
+
+            // Xóa chi tiết trước
+            try (PreparedStatement psChiTiet = c.prepareStatement(deleteChiTiet)) {
+                psChiTiet.setInt(1, pn.getMaPN());
+                psChiTiet.executeUpdate();
+            }
+
+            // Xóa phiếu nhập
+            try (PreparedStatement psPhieu = c.prepareStatement(deletePhieu)) {
+                psPhieu.setInt(1, pn.getMaPN());
+                int rowsAffected = psPhieu.executeUpdate();
+
+                c.commit(); // Hoàn tất transaction
+                return rowsAffected;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

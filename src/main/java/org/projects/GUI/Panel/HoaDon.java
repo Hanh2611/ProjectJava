@@ -1,6 +1,7 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.HoaDonAction;
+import org.projects.BUS.HoaDonBUS;
 import org.projects.DAO.HoaDonDAO;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.HoaDon.ChiTietHD;
@@ -25,6 +26,7 @@ public class HoaDon extends JPanel{
     private JTable table;
     private HoaDonAction actionHandler;
     private HoaDonEntity hoaDonEntity;
+    private HoaDonBUS hoaDonBUS = new HoaDonBUS(this);
 
     public HoaDon() {
         String[][] listItemHeader = {
@@ -125,6 +127,9 @@ private void customizeTable() {
         cardLayout.show(contentPanel, "themHD");
     }
     public void showSuaHD(){
+    }
+    public JTable getTable() {
+        return table;
     }
     public void showTrangChinh(){
         cardLayout.show(contentPanel, "trangchinh");

@@ -1,6 +1,7 @@
 package org.projects.GUI.DiaLog.PhieuNhap;
 
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.PhieuNhapDAO;
 import org.projects.DAO.SanPhamDao;
@@ -29,11 +30,12 @@ public class ThemPN extends JPanel {
     JLabel masp, tensp, soluong, giaban, lblQuyCach, lblDonViTinh, maPN, nvNhap,
             ncc, lblTongTien, txtTongTien;
     JPanel panelLeft, panelright;
-    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP;
+    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP,btnSuaSP;
     JTable tableSanPham, danhSachSanPhamNhap;
     JTableHeader header, headerdanhSachSanPhamNhap;
     JComboBox<String> nhapNCC;
     JScrollPane scrollPane, scrollPaneNhap;
+    FlatSVGIcon icon_them, icon_sua,icon_xoa,icon_huybo,icon_nhaphang;
     private PhieuNhap phieuNhap;
     private SanPhamEntity sanPhamEntity;
 
@@ -112,23 +114,35 @@ public class ThemPN extends JPanel {
         panelLeft.add(scrollPane);
 
         themSP = new JButton("Thêm Sản Phẩm");
-        ImageIcon icon = createIconFromSVG("/icon/add.svg"); // Đảm bảo rằng đường dẫn đúng và có file SVG
-        themSP.setIcon(icon);
-        themSP.setBounds(10, 355, 250, 30);
+        icon_them = new FlatSVGIcon("icon/add.svg", 15, 15);
+        themSP.setIcon(icon_them);
+        themSP.setBounds(10, 355, 220, 30);
         themSP.setBackground(new Color(89, 168, 105, 255));
         themSP.setForeground(Color.WHITE);
         themSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        themSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        themSP.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 14));
 
         btnHuyBoSP = new JButton("Bỏ sản phẩm");
-        btnHuyBoSP.setBounds(270, 355, 250, 30);
+        btnHuyBoSP.setBounds(240, 355, 220, 30);
+        icon_xoa = new FlatSVGIcon("icon/trash.svg", 15, 15);
+        btnHuyBoSP.setIcon(icon_xoa);
         btnHuyBoSP.setBackground(Color.RED);
         btnHuyBoSP.setForeground(Color.WHITE);
         btnHuyBoSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnHuyBoSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
 
+        btnSuaSP = new JButton("Sửa sản phẩm");
+        btnSuaSP.setBounds(470, 355, 220, 30);
+        icon_sua = new FlatSVGIcon("icon/content-writing.svg", 15, 15);
+        btnSuaSP.setIcon(icon_sua);
+        btnSuaSP.setBackground(Color.BLUE);
+        btnSuaSP.setForeground(Color.WHITE);
+        btnSuaSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnSuaSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        panelLeft.add(btnSuaSP);
         panelLeft.add(btnHuyBoSP);
         panelLeft.add(themSP);
+
 
 
         masp = new JLabel("Mã Sản phẩm");
@@ -227,8 +241,11 @@ public class ThemPN extends JPanel {
         panelright.add(txtTongTien);
 
 // Nút Nhập hàng (màu xanh, bo góc, hover đổi màu)
-        btnNhapHang = new JButton("Nhập hàng");
+        btnNhapHang = new JButton("Nhập ");
         btnNhapHang.setBounds(100, 560, 100, 35);
+        icon_nhaphang = new FlatSVGIcon("icon/import.svg",15,15);
+        btnNhapHang.setIcon(icon_nhaphang);
+        btnNhapHang.setIconTextGap(5);
         btnNhapHang.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
         btnNhapHang.setBackground(Color.BLUE); // Xanh dương đậm
         btnNhapHang.setForeground(Color.WHITE);
@@ -236,7 +253,10 @@ public class ThemPN extends JPanel {
 
         btnHuyBo = new JButton("Hủy bỏ");
         btnHuyBo.setBounds(10, 560, 90, 35);
-        btnHuyBo.setBackground(Color.RED);
+        icon_huybo = new FlatSVGIcon("icon/forbid.svg",15,15);
+        btnHuyBo.setIcon(icon_huybo);
+        btnHuyBo.setIconTextGap(7);
+        btnHuyBo.setBackground(new Color(103,116,132));
         btnHuyBo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnHuyBo.setForeground(Color.WHITE);
         btnHuyBo.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
@@ -350,8 +370,136 @@ public class ThemPN extends JPanel {
                 updateTotal(modelDanhSachNhap, txtTongTien);
             }
         });
+        btnSuaSP.addActionListener(e -> {
+            int selectedRow = danhSachSanPhamNhap.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
+            // Lấy dữ liệu cũ từ dòng đã chọn
+            String maSP = modelDanhSachNhap.getValueAt(selectedRow,0).toString();
+            String tenSP = (String) modelDanhSachNhap.getValueAt(selectedRow, 1);
+            String soLuong = modelDanhSachNhap.getValueAt(selectedRow, 2).toString();
+            String giaNhap = modelDanhSachNhap.getValueAt(selectedRow, 3).toString();
+            String quyCach = modelDanhSachNhap.getValueAt(selectedRow, 4).toString();
+            String donVi = modelDanhSachNhap.getValueAt(selectedRow, 5).toString();
+
+            // Tạo JDialog
+            JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(panelLeft), "Sửa sản phẩm", true);
+            dialog.setSize(400, 350);
+            dialog.setLocationRelativeTo(null);
+            dialog.setLayout(null);
+
+            // Label + text field
+            // Font dùng chung
+            Font labelFont = new Font("JETBRAINS MONO", Font.BOLD, 11);
+            Font fieldFont = new Font("JETBRAINS MONO", Font.PLAIN, 11);
+
+// Mã SP (không chỉnh sửa)
+            JLabel lblMaSP = new JLabel("Mã sản phẩm:");
+            lblMaSP.setFont(labelFont);
+            lblMaSP.setBounds(30, 20, 100, 25);
+            JTextField txtMaSP = new JTextField(maSP);
+            txtMaSP.setFont(fieldFont);
+            txtMaSP.setBounds(150, 20, 200, 25);
+            txtMaSP.setEditable(false);
+            txtMaSP.setBackground(new Color(240, 240, 240)); // Màu xám nhẹ
+
+// Tên SP (không chỉnh sửa)
+            JLabel lblTenSP = new JLabel("Tên sản phẩm:");
+            lblTenSP.setFont(labelFont);
+            lblTenSP.setBounds(30, 55, 100, 25);
+            JTextField txtTenSP = new JTextField(tenSP);
+            txtTenSP.setFont(fieldFont);
+            txtTenSP.setBounds(150, 55, 200, 25);
+            txtTenSP.setEditable(false);
+            txtTenSP.setBackground(new Color(240, 240, 240));
+
+// Các field có thể chỉnh sửa
+            JLabel lblSoLuong = new JLabel("Số lượng:");
+            lblSoLuong.setFont(labelFont);
+            lblSoLuong.setBounds(30, 90, 100, 25);
+            JTextField txtSoLuong = new JTextField(soLuong);
+            ((AbstractDocument) txtSoLuong.getDocument()).setDocumentFilter(new OnlyDigitFilter());
+            txtSoLuong.setFont(fieldFont);
+            txtSoLuong.setBounds(150, 90, 200, 25);
+
+            JLabel lblGiaNhap = new JLabel("Giá nhập:");
+            lblGiaNhap.setFont(labelFont);
+            lblGiaNhap.setBounds(30, 125, 100, 25);
+            JTextField txtGiaNhap = new JTextField(giaNhap);
+            ((AbstractDocument) txtGiaNhap.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+            txtGiaNhap.setFont(fieldFont);
+            txtGiaNhap.setBounds(150, 125, 200, 25);
+
+            JLabel lblQuyCach = new JLabel("Quy cách:");
+            lblQuyCach.setFont(labelFont);
+            lblQuyCach.setBounds(30, 160, 100, 25);
+            JTextField txtQuyCach = new JTextField(quyCach);
+            txtQuyCach.setFont(fieldFont);
+            txtQuyCach.setBounds(150, 160, 200, 25);
+
+            JLabel lblDonVi = new JLabel("Đơn vị tính:");
+            lblDonVi.setFont(labelFont);
+            lblDonVi.setBounds(30, 195, 100, 25);
+            JTextField txtDonVi = new JTextField(donVi);
+            txtDonVi.setFont(fieldFont);
+            txtDonVi.setBounds(150, 195, 200, 25);
+
+// Nút lưu
+            JButton btnLuu = new JButton("Lưu");
+            btnLuu.setBounds(100, 260, 90, 30);
+            btnLuu.setBackground(new Color(89, 168, 105));
+            btnLuu.setIcon(icon_them);
+            btnLuu.setIconTextGap(7);
+            btnLuu.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            btnLuu.setForeground(Color.WHITE);
+            btnLuu.setFocusPainted(false);
+
+// Nút hủy
+            JButton btnHuy = new JButton("Hủy");
+            btnHuy.setBounds(200, 260, 90, 30);
+            btnHuy.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            btnHuy.setIcon(icon_huybo);
+            btnHuy.setIconTextGap(7);
+            btnHuy.setBackground(new Color(103,116,132));
+            btnHuy.setForeground(Color.WHITE);
+            btnHuy.setFocusPainted(false);
+
+            // Thêm vào dialog
+            dialog.add(lblMaSP); dialog.add(txtMaSP);
+            dialog.add(lblTenSP); dialog.add(txtTenSP);
+            dialog.add(lblSoLuong); dialog.add(txtSoLuong);
+            dialog.add(lblGiaNhap); dialog.add(txtGiaNhap);
+            dialog.add(lblQuyCach); dialog.add(txtQuyCach);
+            dialog.add(lblDonVi); dialog.add(txtDonVi);
+            dialog.add(btnLuu); dialog.add(btnHuy);
+
+            // Sự kiện nút Hủy
+            btnHuy.addActionListener(ev -> dialog.dispose());
+
+            // Sự kiện nút Lưu
+            btnLuu.addActionListener(ev -> {
+                    String newSoLuong = txtSoLuong.getText();
+                    String newGiaNhap = txtGiaNhap.getText();
+                    String newQuyCach = txtQuyCach.getText();
+                    String newDonVi = txtDonVi.getText();
+                    modelDanhSachNhap.setValueAt(newSoLuong, selectedRow, 2);
+                    modelDanhSachNhap.setValueAt(newGiaNhap, selectedRow, 3);
+                    modelDanhSachNhap.setValueAt(txtQuyCach.getText().trim(), selectedRow, 4);
+                    modelDanhSachNhap.setValueAt(txtDonVi.getText().trim(), selectedRow, 5);
+
+                    // Nếu cần cập nhật tổng tiền:
+                    updateTotal(modelDanhSachNhap,txtTongTien);
+
+                    dialog.dispose();
+            });
+
+            dialog.setVisible(true);
+        });
         panelright.add(nhapNCC);
+
     }
     private void loadDataToTableSanPham() {
         SanPhamDao dao = new SanPhamDao();

@@ -17,6 +17,7 @@ public class PhieuNhapEntity {
         this.tongGiaTri = tongGiaTri;
         this.tenNCC = tenNCC;
     }
+    public PhieuNhapEntity() {}
     public int getMaPN() {return maPN;}
     public int getMaNV() {return maNV;}
     public int getMaNCC() {return maNCC;}
