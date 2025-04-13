@@ -21,6 +21,8 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.projects.Action.LoginAction.mainGUI;
 
@@ -138,9 +140,7 @@ public class addPhanQuyen extends JDialog {
 
     public void pushData() {
         String nameNhomQuyen  = textField.getText();
-        if (nameNhomQuyen.equals("") || nameNhomQuyen == null || nameNhomQuyen.equals("Nhập tên nhóm quyền.....")) {
-            JOptionPane.showMessageDialog(mainGUI, "Vui lòng nhập tên nhóm quyền!");
-            textField.requestFocusInWindow();
+        if (!checkNameNhomQuyen(nameNhomQuyen)) {
             return;
         }
 //        String[] danhMuc = {"nhan_vien", "khach_hang", "san_pham", "don_hang", "thong_ke", "nha_cung_cap", "hoa_don", "tai_khoan", "phieu_nhap"};
@@ -159,5 +159,27 @@ public class addPhanQuyen extends JDialog {
         PhanQuyenBUS.addCapQuyen(danhMucData, maNhomQuyen);
         JOptionPane.showMessageDialog(mainGUI, "Thêm nhóm quyền thành công!");
         dispose();
+    }
+
+    public boolean checkNameNhomQuyen(String nameNhomQuyen) {
+        String regex = "^[a-zA-Z0-9_-]{3,30}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(nameNhomQuyen);
+        if (!matcher.matches()) {
+            JOptionPane.showMessageDialog(mainGUI, "Tên nhóm quyền không hợp lệ. Tên chỉ được chứa chữ cái, số, dấu gạch dưới (_) hoặc dấu gạch ngang (-), và phải có độ dài từ 3 đến 30 ký tự.");
+            textField.requestFocusInWindow();
+            return false;
+        }
+        if (nameNhomQuyen.equals("") || nameNhomQuyen == null || nameNhomQuyen.equals("Nhập tên nhóm quyền.....")) {
+            JOptionPane.showMessageDialog(mainGUI, "Vui lòng nhập tên nhóm quyền!");
+            textField.requestFocusInWindow();
+            return false;
+        }
+        if (PhanQuyenBUS.checkExitsNameNhomQuyen(nameNhomQuyen)) {
+            JOptionPane.showMessageDialog(mainGUI, "Tên nhóm quyền đã tồn tại!");
+            textField.requestFocusInWindow();
+            return false;
+        }
+        return true;
     }
 }
