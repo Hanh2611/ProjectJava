@@ -44,7 +44,11 @@ public class SanPhamDao implements ChucNangDAO<SanPhamEntity> {
     }
 
     public SanPhamEntity findById(int id) {
-        String query = "SELECT * FROM san_pham WHERE ma_san_pham = ?";
+        String query = """
+        SELECT * FROM san_pham
+         JOIN danh_muc_san_pham on san_pham.phan_loai = danh_muc_san_pham.ma_danh_muc
+         WHERE ma_san_pham = ?
+        """;
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement ps = c.prepareStatement(query)) {
             ps.setInt(1, id);
@@ -52,7 +56,7 @@ public class SanPhamDao implements ChucNangDAO<SanPhamEntity> {
             if (rs.next()) {
                 return new SanPhamEntity(rs.getInt("ma_san_pham"),
                                          rs.getString("ten_san_pham"),
-                                         new DanhMucSanPhamEntity(rs.getInt("ma_danh_muc"), rs.getString("ten_danh_muc")),
+                                         new DanhMucSanPhamEntity(rs.getInt("phan_loai"), rs.getString("ten_danh_muc")),
                                          rs.getString("don_vi"),
                                          rs.getDouble("gia_ban"),
                                          rs.getDouble("so_luong_ton"),
@@ -128,13 +132,44 @@ public class SanPhamDao implements ChucNangDAO<SanPhamEntity> {
     }
 
     @Override
-    public int sua(SanPhamEntity fix) {
-        return 0;
+    public int sua(SanPhamEntity sanPhamEntity) {
+        String query = """
+            UPDATE san_pham
+            SET ten_san_pham = ?, phan_loai = ?, don_vi = ?, gia_ban = ?, so_luong_ton = ?, quy_cach = ?, img = ?, trang_thai = ?
+            WHERE ma_san_pham = ?
+        """;
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setString(1, sanPhamEntity.getTenSanPham());
+            ps.setInt(2, sanPhamEntity.getPhanLoai().getId());
+            ps.setString(3, sanPhamEntity.getDonVi());
+            ps.setDouble(4, sanPhamEntity.getGiaBan());
+            ps.setDouble(5, sanPhamEntity.getSoLuongTon());
+            ps.setString(6, sanPhamEntity.getQuyCach().toString());
+            ps.setString(7, sanPhamEntity.getHinhAnh());
+            ps.setBoolean(8, sanPhamEntity.isTrangThai());
+            ps.setInt(9, sanPhamEntity.getId());
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
-    public int xoa(SanPhamEntity delete) {
-        return 0;
+    public int xoa(SanPhamEntity sanPhamEntity) {
+        String query = """
+            DELETE FROM san_pham
+            WHERE ma_san_pham = ?
+        """;
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setInt(1, sanPhamEntity.getId());
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
