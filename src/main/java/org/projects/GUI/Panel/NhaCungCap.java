@@ -19,6 +19,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class NhaCungCap extends JPanel{
     private JPanel centerPanel;
@@ -39,12 +40,10 @@ public class NhaCungCap extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
         header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhaCungCap") - 1),new String[]{"---","mã","tên","địa chỉ"});
-//        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add","update","delete","detail")),new String[]{"---","mã","tên","địa chỉ"});
 
         this.add(header);
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setPreferredSize(new Dimension(940,1000));
-//        layoutCompoment.addHeader(this, listItemHeader,new String[]{"add","update","delete","detail"});
         this.init();
         reloadDAO();
     }
@@ -59,16 +58,29 @@ public class NhaCungCap extends JPanel{
         };
         nameTableModel.setColumnIdentifiers(new String[]{"Mã nhà cung cấp","tên nhà cung cấp","số điện thoại","email","địa chỉ"});
         nccTabel = new JTable();
-        nccTabel.setSelectionBackground(new Color(204, 229, 255));
+        nccTabel.setSelectionBackground(new Color(184, 207, 255));
+        nccTabel.setSelectionForeground(Color.BLACK);
         nccTabel.setRowHeight(40);
-        nccTabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        nccTabel.setFont(new Font("Jetbrains Mono", Font.PLAIN, 12));
+        nccTabel.setGridColor(new Color(200,200,200));
+        nccTabel.setShowGrid(true);
+        nccTabel.setIntercellSpacing(new Dimension(5, 5)); //padding của mỗi ô
         nccTabel.setModel(nameTableModel);
         listRenderTable = new DefaultTableCellRenderer();
         listRenderTable.setHorizontalAlignment(JLabel.CENTER);
         for(int i = 0 ; i < nccTabel.getColumnCount();++i) {
             nccTabel.getColumnModel().getColumn(i).setCellRenderer(listRenderTable);
         }
+
+        JTableHeader titleTableheader = nccTabel.getTableHeader();
+        titleTableheader.setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
+        titleTableheader.setBackground(new Color(100, 149, 237));
+        titleTableheader.setForeground(Color.WHITE);
+        titleTableheader.setPreferredSize(new Dimension(titleTableheader.getWidth(), 40));
+        titleTableheader.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
+
         scrollData = new JScrollPane(nccTabel);
+        scrollData.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 
