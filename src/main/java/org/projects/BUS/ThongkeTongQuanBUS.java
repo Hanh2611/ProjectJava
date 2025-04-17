@@ -2,6 +2,8 @@ package org.projects.BUS;
 
 import org.projects.DAO.ThongKeTongQuanDAO;
 
+import java.util.HashMap;
+
 public class ThongkeTongQuanBUS {
     private static ThongKeTongQuanDAO tktqDAO = new ThongKeTongQuanDAO();
 
@@ -34,5 +36,21 @@ public class ThongkeTongQuanBUS {
             return String.valueOf(soluong);
         }
         return "không có khách hàng";
+    }
+
+    public HashMap<String,Double> getDoanhthu() {
+        HashMap<String,Double> doanhthu = tktqDAO.getDoanhthutheothang();
+        if(doanhthu.size() > 0){
+            return doanhthu;
+        }
+        return new HashMap<>();
+    }
+
+    public HashMap<String,Double> getNhacungcapvatonggiatrinhap() {
+        HashMap<String,Double> nccvatonggiatrinhap = tktqDAO.getnhacungcapvatonggiatrinhap();
+        if(nccvatonggiatrinhap.size() > 0){
+            return nccvatonggiatrinhap;
+        }
+        return new HashMap<>();
     }
 }

@@ -11,6 +11,7 @@ public class CardPanel extends JPanel {
     private JLabel iconLabel;
     private JLabel nameCardLabel;
     private JLabel valueLabel;
+
     public CardPanel(String iconPath,String nameCard, String value) {
         FlatSVGIcon icon = new FlatSVGIcon(iconPath, 40, 40);
         this.setLayout(new BorderLayout(5,5));
@@ -29,5 +30,45 @@ public class CardPanel extends JPanel {
         this.add(iconLabel, BorderLayout.WEST);
         this.add(nameCardLabel, BorderLayout.NORTH);
         this.add(valueLabel, BorderLayout.CENTER);
+    }
+
+    public String getNameCard() {
+        return nameCard;
+    }
+
+    public void setNameCard(String nameCard) {
+        this.nameCard = nameCard;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public JLabel getIconLabel() {
+        return iconLabel;
+    }
+
+    public void setIconLabel(JLabel iconLabel) {
+        this.iconLabel = iconLabel;
+    }
+
+    public JLabel getNameCardLabel() {
+        return nameCardLabel;
+    }
+
+    public void setNameCardLabel(JLabel nameCardLabel) {
+        this.nameCardLabel = nameCardLabel;
+    }
+
+    public JLabel getValueLabel() {
+        return valueLabel;
+    }
+
+    public void setValueLabel(JLabel valueLabel) {
+        this.valueLabel = valueLabel;
     }
 }
