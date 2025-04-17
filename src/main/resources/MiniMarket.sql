@@ -259,7 +259,7 @@ VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An'),
        (10, 'nhan_vien_ban_hang', 'Hoang Nam');
 
 INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai)
-VALUES ('nguyenan', 1, 'password123', 1, 'hoat_dong'),
+VALUES ('admin', 1, '123', 1, 'hoat_dong'),
        ('tranbinh', 2, 'password456', 2, 'da_khoa'),
        ('levan', 3, 'password789', 3, 'hoat_dong'),
        ('phamduong', 4, 'password000', 3, 'hoat_dong'),
