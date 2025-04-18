@@ -112,4 +112,63 @@ public class ThongKeTongQuanDAO {
         }
         return nhacungcapvatonggiatrinhap;
     }
+
+    public HashMap<Integer,String> gethoadontrangthai() {
+        HashMap<Integer,String> hoadontrangthai = new HashMap<>();
+        String query = "select hd.ma_hoa_don,hd.trang_thai\n" +
+                "from hoa_don hd;";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);
+            ResultSet rs = prs.executeQuery()) {
+            while(rs.next()) {
+                int mahoadon = rs.getInt("ma_hoa_don");
+                String trangthai = rs.getString("trang_thai");
+                hoadontrangthai.put(mahoadon,trangthai);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hoadontrangthai;
+    }
+
+    public HashMap<Integer,String> gettaikhoantrangthai() {
+        HashMap<Integer,String> taikhoantrangthai = new HashMap<>();
+        String query = "select tk.ma_nguoi_dung,tk.trang_thai\n" +
+                "from tai_khoan tk;";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);
+            ResultSet rs = prs.executeQuery()) {
+            while(rs.next()) {
+                int manguoidung = rs.getInt("ma_nguoi_dung");
+                String trangthai = rs.getString("trang_thai");
+                taikhoantrangthai.put(manguoidung,trangthai);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return taikhoantrangthai;
+    }
+
+    public HashMap<Integer,String> getsanphamtrangthai() {
+        HashMap<Integer,String> sanphamtrangthai = new HashMap<>();
+        String query = "\n" +
+                "select sp.ma_san_pham,sp.trang_thai\n" +
+                "from san_pham sp;";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);
+            ResultSet rs = prs.executeQuery();) {
+            while (rs.next()) {
+                int masanpham = rs.getInt("ma_san_pham");
+                String trangthai = rs.getString("trang_thai");
+
+                String tt = "Đang kinh doanh";
+                if(trangthai.equals("0")) tt = "Ngừng kinh doanh";
+                sanphamtrangthai.put(masanpham,tt);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sanphamtrangthai;
+    }
+
 }

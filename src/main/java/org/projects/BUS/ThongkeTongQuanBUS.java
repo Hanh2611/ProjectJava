@@ -53,4 +53,28 @@ public class ThongkeTongQuanBUS {
         }
         return new HashMap<>();
     }
+
+    public HashMap<Integer,String> getHDtrangthai() {
+        HashMap<Integer,String> hm = tktqDAO.gethoadontrangthai();
+        if(hm.size() > 0){
+            return hm;
+        }
+        return new HashMap<>();
+    }
+
+    public HashMap<Integer,String> getTKtrangthai() {
+        HashMap<Integer,String> hm = tktqDAO.gettaikhoantrangthai();
+        if(hm.size() > 0){
+            return hm;
+        }
+        return new HashMap<>();
+    }
+
+    public HashMap<Integer,String> getSPtrangthai() {
+        HashMap<Integer,String> hm = tktqDAO.getsanphamtrangthai();
+        if(hm.size() > 0){
+            return hm;
+        }
+        return new HashMap<>();
+    }
 }

@@ -3,7 +3,9 @@ package org.projects.GUI.Panel.ThongkePack;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.projects.BUS.ThongkeTongQuanBUS;
 import org.projects.GUI.Components.CardPanel;
 
@@ -31,6 +33,19 @@ public class thongkeTongquan extends JPanel {
     private JPanel topnhacungcapPanel;
     private ChartPanel topnhacungcapChart;
     private HashMap<String,Double> topnhacungcap;
+
+    //bottom
+    //3 bieu do tròn: tai khoan,hoa don,khach hang
+    private JPanel bottomChart;
+    private JPanel taikhoanPanel;
+    private ChartPanel taikhoanChart;
+    private HashMap<Integer,String> taikhoantt;
+    private JPanel hoadonPanel;
+    private ChartPanel hoadonChart;
+    private HashMap<Integer,String> hoadontt;
+    private JPanel sanphamPanel;
+    private ChartPanel sanphamChart;
+    private HashMap<Integer,String> sanphamtt;
 
     private ThongkeTongQuanBUS tktqBUS = new ThongkeTongQuanBUS();
 
@@ -81,8 +96,53 @@ public class thongkeTongquan extends JPanel {
         topnhacungcapChart.setPreferredSize(new Dimension(360,300));
         topnhacungcapPanel.add(topnhacungcapChart,BorderLayout.CENTER);
         centerChart.add(topnhacungcapPanel);
-
         this.add(centerChart,BorderLayout.CENTER);
+
+        //bottom
+        bottomChart = new JPanel(new GridLayout(1,3,10,10));
+        taikhoantt = tktqBUS.getTKtrangthai();
+        taikhoanPanel = createPieChart("tài khoản",taikhoantt,taikhoanChart);
+
+        hoadontt = tktqBUS.getHDtrangthai();
+        hoadonPanel = createPieChart("hóa đơn",hoadontt,hoadonChart);
+
+        sanphamtt = tktqBUS.getSPtrangthai();
+        sanphamPanel = createPieChart("Sản phẩm",sanphamtt,sanphamChart);
+
+        bottomChart.add(taikhoanPanel);
+        bottomChart.add(hoadonPanel);
+        bottomChart.add(sanphamPanel);
+        this.add(bottomChart,BorderLayout.SOUTH);
+    }
+
+    //bieu do pie cho tai khoan + ton kho
+    private JPanel createPieChart(String title,HashMap<Integer,String> hm,ChartPanel cp) {
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.setBackground(Color.WHITE);
+            panel.setBorder(BorderFactory.createLineBorder(Color.decode("#95a5a6")));
+
+        DefaultPieDataset dataPie = new DefaultPieDataset();
+        for(Integer key : hm.keySet()) {
+            dataPie.setValue(hm.get(key),key);
+        }
+
+        JFreeChart pieChart = ChartFactory.createPieChart(title,dataPie,true,true,false);
+        PiePlot plot = (PiePlot) pieChart.getPlot();
+
+        for(Integer key : hm.keySet()) {
+            String trangthai = hm.get(key);
+            if(trangthai.equalsIgnoreCase("da_thanh_toan") || trangthai.equalsIgnoreCase("hoat_dong") || trangthai.equalsIgnoreCase("Đang kinh doanh")) {
+                plot.setSectionPaint(trangthai,Color.decode("#74b9ff"));
+            } else if(trangthai.equalsIgnoreCase("da_khoa") || trangthai.equalsIgnoreCase("chua_thanh_toan") || trangthai.equalsIgnoreCase("Ngừng kinh doanh")) {
+                plot.setSectionPaint(trangthai,Color.decode("#1B1464"));
+            } else {
+                plot.setSectionPaint(trangthai,Color.decode("#636e72"));
+            }
+        }
+        cp = new ChartPanel(pieChart);
+        cp.setPreferredSize(new Dimension(150,200));
+        panel.add(cp,BorderLayout.CENTER);
+        return panel;
     }
 
 }
