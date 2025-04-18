@@ -229,7 +229,27 @@ VALUES
     (1, 4, 'sua'),
     (1, 4, 'xoa'),
     (1, 4, 'xem'),
-    (1, 5, 'xem'),
+    (1, 5, 'them'),
+    (1,5,'sua'),
+    (1,5,'xoa'),
+    (1,5,'xem'),
+    (1, 6, 'them'),
+    (1, 6, 'sua'),
+    (1, 6, 'xoa'),
+    (1, 6, 'xem'),
+    (1, 7, 'them'),
+    (1, 7, 'sua'),
+    (1, 7, 'xoa'),
+    (1, 7, 'xem'),
+    (1, 8, 'them'),
+    (1, 8, 'sua'),
+    (1, 8, 'xoa'),
+    (1, 8, 'xem'),
+    (1, 9, 'them'),
+    (1, 9, 'sua'),
+    (1, 9, 'xoa'),
+    (1, 9, 'xem'),
+
     -- Nhân viên bán hàng chỉ có quyền với khách hàng và đơn hàng
     (2, 2, 'them'),
     (2, 2, 'sua'),
@@ -259,7 +279,7 @@ VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An'),
        (10, 'nhan_vien_ban_hang', 'Hoang Nam');
 
 INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai)
-VALUES ('nguyenan', 1, 'password123', 1, 'hoat_dong'),
+VALUES ('admin', 1, '123', 1, 'hoat_dong'),
        ('tranbinh', 2, 'password456', 2, 'da_khoa'),
        ('levan', 3, 'password789', 3, 'hoat_dong'),
        ('phamduong', 4, 'password000', 3, 'hoat_dong'),
@@ -306,7 +326,17 @@ INSERT INTO hoa_don (ma_hoa_don, ma_nhan_vien, ma_khach_hang, ngay_tao, tong_gia
 VALUES (1, 1, 1, NOW(), 500000, 'chua_thanh_toan'),
        (2, 2, 2, NOW(), 1200000, 'da_thanh_toan'),
        (3, 3, 3, NOW(), 2500000, 'chua_thanh_toan'),
-       (4, 4, 4, NOW(), 1700000, 'da_thanh_toan');
+       (4, 4, 4, NOW(), 1700000, 'da_thanh_toan'),
+       (5, 1, 1, '2025-01-15', 500000, 'chua_thanh_toan'),
+       (6, 2, 2, '2025-02-10', 1200000, 'da_thanh_toan'),
+       (7, 3, 3, '2025-02-20', 2500000, 'chua_thanh_toan'),
+       (8, 4, 4, '2025-03-05', 1700000, 'da_thanh_toan'),
+       (9, 1, 5, '2025-01-25', 700000, 'chua_thanh_toan'),
+       (10, 2, 6, '2025-03-18', 1500000, 'da_thanh_toan'),
+       (11, 3, 7, '2025-04-10', 1900000, 'chua_thanh_toan'),
+       (12, 4, 8, '2025-04-12', 3000000, 'da_thanh_toan'),
+       (13, 1, 9, '2025-03-22', 1300000, 'chua_thanh_toan'),
+       (14, 2, 10, '2025-01-30', 1800000, 'da_thanh_toan');
 
 INSERT INTO chi_tiet_hoa_don (ma_san_pham, ma_hoa_don, so_luong, gia_ban, thanh_tien)
 VALUES (1, 1, 1, 8000, 8000),

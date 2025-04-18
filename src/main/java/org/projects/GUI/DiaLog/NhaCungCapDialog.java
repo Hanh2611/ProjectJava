@@ -8,6 +8,7 @@ import org.projects.entity.NhaCungCapEntity;
 import org.projects.GUI.Components.*;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class NhaCungCapDialog extends JDialog {
@@ -29,31 +30,34 @@ public class NhaCungCapDialog extends JDialog {
         this.nccType = nccType;
         nccAction = new NhaCungCapAction(ncc, this);
         this.setTitle(this.setType());
-//        this.setSize(600,400);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
-        bottomPanel = new JPanel(new FlowLayout(0,5,5));
+        this.getContentPane().setBackground(new Color(240, 240, 240));
         this.init();
         getEdit(this.getNccType());
         ts.showZoomIn(this,600,400);
     }
     public void init() {
-        centerPanel = new JPanel(new GridLayout(4,1));
+        centerPanel = new JPanel(new GridLayout(4,1,10,10));
+        centerPanel.setBorder(new EmptyBorder(20,20,20,20));
+        centerPanel.setBackground(new Color(240, 240, 240));
+
         tenNCC = new labelText("tên nhà cung cấp ",30,5);
         sodienthoaiNCC = new labelText("số điện thoại ",30,5);
         emailNCC = new labelText("email",30,5);
         diachiNCC = new labelText("địa chỉ ",30,5);
+
         centerPanel.add(tenNCC);
         centerPanel.add(sodienthoaiNCC);
         centerPanel.add(emailNCC);
         centerPanel.add(diachiNCC);
 
-        chucnangBTN = typeButton(getNccType());
-        chucnangBTN.setForeground(Color.BLACK);
-        chucnangBTN.setBackground(Color.decode("#7ed6df"));
-        thoatBTN = new JButton("Thoát");
-        thoatBTN.setForeground(Color.BLACK);
-        thoatBTN.setBackground(Color.decode("#ff7979"));
+        bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10,10));
+        bottomPanel.setBackground(new Color(240, 240, 240));
+
+        chucnangBTN = ButtonEditStyle.styleButton(typeButton(getNccType()),new Color(52,152,219),Color.WHITE);
+        thoatBTN = ButtonEditStyle.styleButton("Thoát",new Color(231,76,60),Color.WHITE);
+
         bottomPanel.add(chucnangBTN);
         bottomPanel.add(thoatBTN);
 
@@ -67,7 +71,7 @@ public class NhaCungCapDialog extends JDialog {
         thoatBTN.addMouseListener(nccAction);
     }
 
-    public JButton typeButton(String nccType) {
+    public String  typeButton(String nccType) {
         String namebtn= "";
         switch (nccType) {
             case "add":
@@ -82,7 +86,7 @@ public class NhaCungCapDialog extends JDialog {
             default:
                 break;
         }
-        return new JButton(namebtn);
+        return namebtn;
     }
     public String setType() {
         if(nccType != null) {
