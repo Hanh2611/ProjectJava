@@ -43,7 +43,7 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                     NhaCungCapEntity nccEntity = new NhaCungCapEntity(ten, sdt, email, dc);
                     if (NhaCungCapBUS.them(nccEntity)) {
                         JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
-                        ncc.loadList(NhaCungCapBUS.getList());
+//                        ncc.loadList(NhaCungCapBUS.getList());
                         nccDialog.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
@@ -67,7 +67,7 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                         NhaCungCapEntity newnccEntity = new NhaCungCapEntity(nccEntity.getMaNCC(), nccEntity.getTenNCC(), nccEntity.getSoDienThoaiNCC(), nccEntity.getEmailNCC(), nccEntity.getDiaCHiNCC());
                         if (NhaCungCapBUS.sua(newnccEntity)) {
                             JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                            ncc.loadList(NhaCungCapBUS.getList());
+//                            ncc.loadList(NhaCungCapBUS.getList());
                             nccDialog.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Cập nhật thông tin Thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
@@ -126,7 +126,7 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Xóa nhà cung cấp thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
                                 }
-                                ncc.loadList(NhaCungCapBUS.getList());
+//                                ncc.loadList(NhaCungCapBUS.getList());
                             }
                         }
                     }
@@ -192,6 +192,7 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
     public void changedUpdate(DocumentEvent e) {
         String keyword = ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
         String textfield = e.getDocument().toString();
+        System.out.println(textfield);
         ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
     }
 }

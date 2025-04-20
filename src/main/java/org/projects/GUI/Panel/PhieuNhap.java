@@ -1,6 +1,7 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.PhieuNhapAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.PhieuNhapBUS;
 import org.projects.DAO.PhieuNhapDAO;
 import org.projects.GUI.Components.header.headerBar;
@@ -43,7 +44,7 @@ public class PhieuNhap extends JPanel {
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")), new String[]{"---", "mã", "tên", "địa chỉ"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"---","mã","tên","địa chỉ"});
         this.add(header);
         init();
         reloadDAO();
