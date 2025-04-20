@@ -1,34 +1,30 @@
 package org.projects.entity;
 
-public class ChiTietPhieuNhapEntity {
-    private int maPN;
+public class ChiTietHoaDonEntity {
     private int maSP;
+    private int maHD;
     private int soLuong;
-    private double giaNhap;
+    private double giaBan;
     private double thanhTien;
-
-    public ChiTietPhieuNhapEntity(int maPN,int maSP, int soLuong, double giaNhap, double thanhTien) {
-        this.maPN = maPN;
+    public ChiTietHoaDonEntity(int maSP, int maHD, int soLuong, double giaBan, double thanhTien) {
         this.maSP = maSP;
+        this.maHD = maHD;
         this.soLuong = soLuong;
-        this.giaNhap = giaNhap;
+        this.giaBan = giaBan;
         this.thanhTien = thanhTien;
-    }
-
-    public ChiTietPhieuNhapEntity(){
-    }
-
-    public int getMaPN() {
-        return maPN;
-    }
-    public void setMaPN(int maPN) {
-        this.maPN = maPN;
     }
     public int getMaSP() {
         return maSP;
+
     }
     public void setMaSP(int maSP) {
         this.maSP = maSP;
+    }
+    public int getMaHD() {
+        return maHD;
+    }
+    public void setMaHD(int maHD) {
+        this.maHD = maHD;
     }
     public int getSoLuong() {
         return soLuong;
@@ -36,11 +32,11 @@ public class ChiTietPhieuNhapEntity {
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
     }
-    public double getGiaNhap() {
-        return giaNhap;
+    public double getGiaBan() {
+        return giaBan;
     }
-    public void setGiaNhap(double giaNhap) {
-        this.giaNhap = giaNhap;
+    public void setGiaBan(double giaBan) {
+        this.giaBan = giaBan;
     }
     public double getThanhTien() {
         return thanhTien;
@@ -48,7 +44,5 @@ public class ChiTietPhieuNhapEntity {
     public void setThanhTien(double thanhTien) {
         this.thanhTien = thanhTien;
     }
-
-
 
 }

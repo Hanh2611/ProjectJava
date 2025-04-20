@@ -1,6 +1,7 @@
 package org.projects.Action;
 
 import org.projects.BUS.ChiTietPhieuNhapFullEntityBUS;
+import org.projects.BUS.PhieuNhapBUS;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.PhieuNhap.ChiTietPN;
 import org.projects.GUI.Panel.PhieuNhap;
@@ -43,13 +44,36 @@ public class PhieuNhapAction extends MouseAdapter {
                 }
                 break;
             case "delete":
-                JOptionPane.showMessageDialog(null, "Chức năng xóa chưa triển khai");
-                break;
-            case "detail":
                 JTable table1 = panel.getTable();
                 int selectedRow1 = table1.getSelectedRow();
-                if (selectedRow1 != -1) {
+                if(selectedRow1 != -1) {
                     int maPN = (int) table1.getValueAt(selectedRow1, 0);
+                    int confirm = JOptionPane.showConfirmDialog(
+                            null,
+                            "Bạn có chắc chắn muốn xóa phiếu nhập này?",
+                            "Xác nhận xóa",
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        PhieuNhapEntity pn = new PhieuNhapEntity();
+                        pn.setMaPN(maPN);
+                        boolean result = PhieuNhapBUS.xoa(pn);
+                        if (result) {
+                            JOptionPane.showMessageDialog(null, "Xóa phiếu nhập thành công!");
+                            panel.reloadDAO(); // nếu có
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Xóa thất bại!");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn phiếu nhập để xóa!");
+                }
+                break;
+            case "detail":
+                JTable table2 = panel.getTable();
+                int selectedRow2 = table2.getSelectedRow();
+                if (selectedRow2 != -1) {
+                    int maPN = (int) table2.getValueAt(selectedRow2, 0);
                     ChiTietPhieuNhapFullEntityBUS bus1 = new ChiTietPhieuNhapFullEntityBUS();
                     List<ChiTietPhieuNhapFullEntity> list1 = bus1.getChiTietByMaPN(maPN);
                     // Gọi panel để hiển thị

@@ -1,12 +1,16 @@
 package org.projects.GUI.DiaLog.PhieuNhap;
 
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.DAO.ChiTietPhieuNhapDAO;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.PhieuNhapDAO;
 import org.projects.DAO.SanPhamDao;
-import org.projects.GUI.DiaLog.PhieuNhap.Components.NumberOnlyFilter;
-import org.projects.GUI.DiaLog.PhieuNhap.Components.OnlyDigitFilter;
+import org.projects.GUI.Components.NumberOnlyFilter;
+import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.Panel.PhieuNhap;
+import org.projects.GUI.utils.Session;
+import org.projects.entity.ChiTietPhieuNhapEntity;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.PhieuNhapEntity;
 import org.projects.entity.SanPhamEntity;
@@ -17,10 +21,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ThemPN extends JPanel {
@@ -29,13 +37,16 @@ public class ThemPN extends JPanel {
     JLabel masp, tensp, soluong, giaban, lblQuyCach, lblDonViTinh, maPN, nvNhap,
             ncc, lblTongTien, txtTongTien;
     JPanel panelLeft, panelright;
-    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP;
+    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP,btnSuaSP;
     JTable tableSanPham, danhSachSanPhamNhap;
     JTableHeader header, headerdanhSachSanPhamNhap;
     JComboBox<String> nhapNCC;
     JScrollPane scrollPane, scrollPaneNhap;
+    FlatSVGIcon icon_them, icon_sua,icon_xoa,icon_huybo,icon_nhaphang;
     private PhieuNhap phieuNhap;
     private SanPhamEntity sanPhamEntity;
+    private Map<String, NhaCungCapEntity> nccMap = new HashMap<>();
+
 
     public ThemPN(PhieuNhap phieuNhap) {
         setPreferredSize(new Dimension(940, 650));
@@ -112,23 +123,35 @@ public class ThemPN extends JPanel {
         panelLeft.add(scrollPane);
 
         themSP = new JButton("Thêm Sản Phẩm");
-        ImageIcon icon = createIconFromSVG("/icon/add.svg"); // Đảm bảo rằng đường dẫn đúng và có file SVG
-        themSP.setIcon(icon);
-        themSP.setBounds(10, 355, 250, 30);
+        icon_them = new FlatSVGIcon("icon/add.svg", 15, 15);
+        themSP.setIcon(icon_them);
+        themSP.setBounds(10, 355, 220, 30);
         themSP.setBackground(new Color(89, 168, 105, 255));
         themSP.setForeground(Color.WHITE);
         themSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        themSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        themSP.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 14));
 
         btnHuyBoSP = new JButton("Bỏ sản phẩm");
-        btnHuyBoSP.setBounds(270, 355, 250, 30);
+        btnHuyBoSP.setBounds(240, 355, 220, 30);
+        icon_xoa = new FlatSVGIcon("icon/trash.svg", 15, 15);
+        btnHuyBoSP.setIcon(icon_xoa);
         btnHuyBoSP.setBackground(Color.RED);
         btnHuyBoSP.setForeground(Color.WHITE);
         btnHuyBoSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnHuyBoSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
 
+        btnSuaSP = new JButton("Sửa sản phẩm");
+        btnSuaSP.setBounds(470, 355, 220, 30);
+        icon_sua = new FlatSVGIcon("icon/content-writing.svg", 15, 15);
+        btnSuaSP.setIcon(icon_sua);
+        btnSuaSP.setBackground(Color.BLUE);
+        btnSuaSP.setForeground(Color.WHITE);
+        btnSuaSP.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnSuaSP.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
+        panelLeft.add(btnSuaSP);
         panelLeft.add(btnHuyBoSP);
         panelLeft.add(themSP);
+
 
 
         masp = new JLabel("Mã Sản phẩm");
@@ -150,32 +173,32 @@ public class ThemPN extends JPanel {
         soluong = new JLabel("Số lượng nhập");
         soluong.setBounds(450, 150, 100, 30);
         nhapsoluong = new JTextField();
-        nhapsoluong.setBounds(450, 180, 115, 30);
+        nhapsoluong.setBounds(450, 180, 265, 30);
         panelLeft.add(soluong);
         panelLeft.add(nhapsoluong);
 
         giaban = new JLabel("Giá nhập");
-        giaban.setBounds(580, 150, 100, 30);
+        giaban.setBounds(450, 215, 100, 30);
         nhapgiaban = new JTextField();
-        nhapgiaban.setBounds(580, 180, 135, 30);
+        nhapgiaban.setBounds(450, 245, 265, 30);
         panelLeft.add(giaban);
         panelLeft.add(nhapgiaban);
 
         ((AbstractDocument) nhapsoluong.getDocument()).setDocumentFilter(new OnlyDigitFilter());
         ((AbstractDocument) nhapgiaban.getDocument()).setDocumentFilter(new NumberOnlyFilter());
-        lblQuyCach = new JLabel("Quy cách");
-        lblQuyCach.setBounds(450, 215, 100, 30);
-        txtQuyCach = new JTextField();
-        txtQuyCach.setBounds(450, 245, 265, 30);
-        panelLeft.add(lblQuyCach);
-        panelLeft.add(txtQuyCach);
-
-        lblDonViTinh = new JLabel("Đơn vị tính");
-        lblDonViTinh.setBounds(450, 280, 100, 30);
-        txtDonViTinh = new JTextField();
-        txtDonViTinh.setBounds(450, 310, 265, 30);
-        panelLeft.add(lblDonViTinh);
-        panelLeft.add(txtDonViTinh);
+//        lblQuyCach = new JLabel("Quy cách");
+//        lblQuyCach.setBounds(450, 215, 100, 30);
+//        txtQuyCach = new JTextField();
+//        txtQuyCach.setBounds(450, 245, 265, 30);
+//        panelLeft.add(lblQuyCach);
+//        panelLeft.add(txtQuyCach);
+//
+//        lblDonViTinh = new JLabel("Đơn vị tính");
+//        lblDonViTinh.setBounds(450, 280, 100, 30);
+//        txtDonViTinh = new JTextField();
+//        txtDonViTinh.setBounds(450, 310, 265, 30);
+//        panelLeft.add(lblDonViTinh);
+//        panelLeft.add(txtDonViTinh);
 
         panelright = new JPanel();
         panelright.setBounds(735, 5, 210, 655);
@@ -204,7 +227,7 @@ public class ThemPN extends JPanel {
         ncc = new JLabel("Nhà cung cấp");
         ncc.setBounds(10, 170, 180, 30);
         panelright.add(ncc);
-        nhapNCC = new JComboBox<>(new String[]{"Cty TGDD", "Cty FPT", "Cty Viettel"});
+        nhapNCC = new JComboBox<>();
         nhapNCC.setBounds(10, 200, 180, 30);
         // Tổng tiền
         // Tổng tiền (sát mép dưới)
@@ -227,8 +250,11 @@ public class ThemPN extends JPanel {
         panelright.add(txtTongTien);
 
 // Nút Nhập hàng (màu xanh, bo góc, hover đổi màu)
-        btnNhapHang = new JButton("Nhập hàng");
+        btnNhapHang = new JButton("Nhập ");
         btnNhapHang.setBounds(100, 560, 100, 35);
+        icon_nhaphang = new FlatSVGIcon("icon/import.svg",15,15);
+        btnNhapHang.setIcon(icon_nhaphang);
+        btnNhapHang.setIconTextGap(5);
         btnNhapHang.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
         btnNhapHang.setBackground(Color.BLUE); // Xanh dương đậm
         btnNhapHang.setForeground(Color.WHITE);
@@ -236,7 +262,10 @@ public class ThemPN extends JPanel {
 
         btnHuyBo = new JButton("Hủy bỏ");
         btnHuyBo.setBounds(10, 560, 90, 35);
-        btnHuyBo.setBackground(Color.RED);
+        icon_huybo = new FlatSVGIcon("icon/forbid.svg",15,15);
+        btnHuyBo.setIcon(icon_huybo);
+        btnHuyBo.setIconTextGap(7);
+        btnHuyBo.setBackground(new Color(103,116,132));
         btnHuyBo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnHuyBo.setForeground(Color.WHITE);
         btnHuyBo.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
@@ -250,13 +279,16 @@ public class ThemPN extends JPanel {
             if (selectedRow != -1) { // Kiểm tra có chọn dòng nào không
                 String maSP = String.valueOf(tableModel.getValueAt(selectedRow, 0));
                 String tenSP = (String) tableModel.getValueAt(selectedRow, 1);
-
+//                String donViTinh = (String) tableModel.getValueAt(selectedRow, 2); // <-- thêm
+//                String quyCach = (String) tableModel.getValueAt(selectedRow, 3);   // <-- thêm
                 hienthi_masp.setText(maSP);
                 hienthi_tensp.setText(tenSP);
+//                txtDonViTinh.setText(donViTinh); // <-- gán giá trị
+//                txtQuyCach.setText(quyCach);
             }
         });
         // 🆕 Tạo bảng chứa danh sách sản phẩm đã chọn
-        String[] columnNamesNhap = {"Mã SP", "Tên SP", "Số lượng", "Giá nhập", "Quy cách", "Đơn vị"};
+        String[] columnNamesNhap = {"Mã SP", "Tên SP", "Số lượng", "Giá nhập", "Thành Tiền"};
         DefaultTableModel modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -290,25 +322,35 @@ public class ThemPN extends JPanel {
             String tenSP = hienthi_tensp.getText();
             String soLuong = nhapsoluong.getText();
             String giaNhap = nhapgiaban.getText();
-            String quyCach = txtQuyCach.getText();
-            String donViTinh = txtDonViTinh.getText();
-
             // Kiểm tra nếu các ô không được để trống
-            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty() || giaNhap.isEmpty() || quyCach.isEmpty() || donViTinh.isEmpty()) {
+            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty() || giaNhap.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Thêm vào bảng danh sách nhập hàng
-            modelDanhSachNhap.addRow(new Object[]{maSP, tenSP, soLuong, giaNhap, quyCach, donViTinh});
-            updateTotal(modelDanhSachNhap, txtTongTien);
+            try {
+                int sl = Integer.parseInt(soLuong);
+                long gia = parseTien(giaNhap); // Bỏ định dạng ₫, .
+                long thanhTien = sl * gia;
 
-            hienthi_masp.setText("");
-            hienthi_tensp.setText("");
-            nhapsoluong.setText("");
-            nhapgiaban.setText("");
-            txtQuyCach.setText("");
-            txtDonViTinh.setText("");
+                modelDanhSachNhap.addRow(new Object[]{
+                        maSP,
+                        tenSP,
+                        sl,
+                        formatVND(gia),          // ➜ Hiển thị giá nhập đẹp
+                        formatVND(thanhTien)     // ➜ Hiển thị thành tiền đẹp
+                });
+
+                updateTotal(modelDanhSachNhap, txtTongTien);
+
+                hienthi_masp.setText("");
+                hienthi_tensp.setText("");
+                nhapsoluong.setText("");
+                nhapgiaban.setText("");
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Số lượng và giá nhập phải là số hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         btnHuyBoSP.addActionListener( e ->{
@@ -350,8 +392,162 @@ public class ThemPN extends JPanel {
                 updateTotal(modelDanhSachNhap, txtTongTien);
             }
         });
+        btnSuaSP.addActionListener(e -> {
+            int selectedRow = danhSachSanPhamNhap.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
+            // Lấy dữ liệu cũ từ dòng đã chọn
+            String maSP = modelDanhSachNhap.getValueAt(selectedRow,0).toString();
+            String tenSP = (String) modelDanhSachNhap.getValueAt(selectedRow, 1);
+            String soLuong = modelDanhSachNhap.getValueAt(selectedRow, 2).toString();
+            String giaNhap = modelDanhSachNhap.getValueAt(selectedRow, 3).toString();
+            String thanhTien = modelDanhSachNhap.getValueAt(selectedRow, 4).toString();
+            // Tạo JDialog
+            JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(panelLeft), "Sửa sản phẩm", true);
+            dialog.setSize(400, 300);
+            dialog.setLocationRelativeTo(null);
+            dialog.setLayout(null);
+
+            // Label + text field
+            // Font dùng chung
+            Font labelFont = new Font("JETBRAINS MONO", Font.BOLD, 11);
+            Font fieldFont = new Font("JETBRAINS MONO", Font.PLAIN, 11);
+
+// Mã SP (không chỉnh sửa)
+            JLabel lblMaSP = new JLabel("Mã sản phẩm:");
+            lblMaSP.setFont(labelFont);
+            lblMaSP.setBounds(30, 20, 100, 25);
+            JTextField txtMaSP = new JTextField(maSP);
+            txtMaSP.setFont(fieldFont);
+            txtMaSP.setBounds(150, 20, 200, 25);
+            txtMaSP.setEditable(false);
+            txtMaSP.setBackground(new Color(240, 240, 240)); // Màu xám nhẹ
+
+// Tên SP (không chỉnh sửa)
+            JLabel lblTenSP = new JLabel("Tên sản phẩm:");
+            lblTenSP.setFont(labelFont);
+            lblTenSP.setBounds(30, 55, 100, 25);
+            JTextField txtTenSP = new JTextField(tenSP);
+            txtTenSP.setFont(fieldFont);
+            txtTenSP.setBounds(150, 55, 200, 25);
+            txtTenSP.setEditable(false);
+            txtTenSP.setBackground(new Color(240, 240, 240));
+
+// Các field có thể chỉnh sửa
+            JLabel lblSoLuong = new JLabel("Số lượng:");
+            lblSoLuong.setFont(labelFont);
+            lblSoLuong.setBounds(30, 90, 100, 25);
+            JTextField txtSoLuong = new JTextField(soLuong);
+            ((AbstractDocument) txtSoLuong.getDocument()).setDocumentFilter(new OnlyDigitFilter());
+            txtSoLuong.setFont(fieldFont);
+            txtSoLuong.setBounds(150, 90, 200, 25);
+
+            JLabel lblGiaNhap = new JLabel("Giá nhập:");
+            lblGiaNhap.setFont(labelFont);
+            lblGiaNhap.setBounds(30, 125, 100, 25);
+            JTextField txtGiaNhap = new JTextField(giaNhap);
+            ((AbstractDocument) txtGiaNhap.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+            txtGiaNhap.setFont(fieldFont);
+            txtGiaNhap.setBounds(150, 125, 200, 25);
+
+// Nút lưu
+            JButton btnLuu = new JButton("Lưu");
+            btnLuu.setBounds(100, 210, 90, 30);
+            btnLuu.setBackground(new Color(89, 168, 105));
+            btnLuu.setIcon(icon_them);
+            btnLuu.setIconTextGap(7);
+            btnLuu.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            btnLuu.setForeground(Color.WHITE);
+            btnLuu.setFocusPainted(false);
+
+// Nút hủy
+            JButton btnHuy = new JButton("Hủy");
+            btnHuy.setBounds(200, 210, 90, 30);
+            btnHuy.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            btnHuy.setIcon(icon_huybo);
+            btnHuy.setIconTextGap(7);
+            btnHuy.setBackground(new Color(103,116,132));
+            btnHuy.setForeground(Color.WHITE);
+            btnHuy.setFocusPainted(false);
+
+            // Thêm vào dialog
+            dialog.add(lblMaSP); dialog.add(txtMaSP);
+            dialog.add(lblTenSP); dialog.add(txtTenSP);
+            dialog.add(lblSoLuong); dialog.add(txtSoLuong);
+            dialog.add(lblGiaNhap); dialog.add(txtGiaNhap);
+            dialog.add(btnLuu); dialog.add(btnHuy);
+
+            // Sự kiện nút Hủy
+            btnHuy.addActionListener(ev -> dialog.dispose());
+
+            // Sự kiện nút Lưu
+            btnLuu.addActionListener(ev -> {
+                    String newSoLuong = txtSoLuong.getText();
+                    String newGiaNhap = txtGiaNhap.getText();
+                    modelDanhSachNhap.setValueAt(newSoLuong, selectedRow, 2);
+                    modelDanhSachNhap.setValueAt(newGiaNhap, selectedRow, 3);
+                    int sl = Integer.parseInt(txtSoLuong.getText());
+                    long gia = parseTien(newGiaNhap);
+                    long thanhtien = sl* gia;
+                    modelDanhSachNhap.setValueAt(formatVND(thanhtien), selectedRow, 4);
+                    // Nếu cần cập nhật tổng tiền:
+                    updateTotal(modelDanhSachNhap,txtTongTien);
+
+                    dialog.dispose();
+            });
+
+            dialog.setVisible(true);
+        });
+        btnNhapHang.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int maPN = Integer.parseInt(nhapMaPN.getText());
+                    int maNV = Session.curUser.getMaNguoiDung();
+                    String selectedName = (String) nhapNCC.getSelectedItem();
+                    if (selectedName == null || !nccMap.containsKey(selectedName)) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp!");
+                        return;
+                    }
+                    NhaCungCapEntity selectedNCC = nccMap.get(selectedName);
+                    int maNCC = selectedNCC.getMaNCC();
+                    long tongTien = parseTien(txtTongTien.getText());
+                    PhieuNhapEntity pn = new PhieuNhapEntity(maPN,maNV,maNCC,tongTien);
+                    PhieuNhapDAO dao = new PhieuNhapDAO();
+                    dao.them(pn);
+
+                    ChiTietPhieuNhapDAO chiTietPhieuNhapDAO = new ChiTietPhieuNhapDAO();
+                    for(int i=0;i<modelDanhSachNhap.getRowCount();i++){
+                        int masp = Integer.parseInt(modelDanhSachNhap.getValueAt(i,0).toString());
+                        int soluong = Integer.parseInt(modelDanhSachNhap.getValueAt(i,2).toString());
+                        String giaNhapStr = modelDanhSachNhap.getValueAt(i, 3).toString();
+                        double gianhap = parseTien(giaNhapStr); // Xử lý giống như tổng tiền
+                        double thanhtien = soluong * gianhap;
+                        ChiTietPhieuNhapEntity ct = new ChiTietPhieuNhapEntity(maPN, masp, soluong, gianhap, thanhtien);
+                        chiTietPhieuNhapDAO.them(ct);
+                    }
+                    JOptionPane.showMessageDialog(null, "Nhập hàng thành công!");
+                    phieuNhap.showTrangChinh(); // Gọi hàm trong MainFrame
+                    phieuNhap.reloadDAO();
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Lỗi khi nhập hàng: " + ex.getMessage());
+                }
+            }
+        });
         panelright.add(nhapNCC);
+
+    }
+    public static String formatVND(long value) {
+        return new DecimalFormat("#,###").format(value).replace(",", ".") + " ₫";
+    }
+    public static long parseTien(String text) {
+        if (text == null) return 0;
+        text = text.replaceAll("[^\\d]", "");
+        return text.isEmpty() ? 0 : Long.parseLong(text);
     }
     private void loadDataToTableSanPham() {
         SanPhamDao dao = new SanPhamDao();
@@ -364,18 +560,31 @@ public class ThemPN extends JPanel {
             model.addRow(new Object[]{
                     sp.getId(),
                     sp.getTenSanPham(),
+//                    sp.getQuyCach(),
+//                    sp.getDonVi()
             });
         }
         loadNhaCungCapCombobox();
         loadMaPhieuNhap();
+        loadNhanVienNhap();
     }
-    private void loadNhaCungCapCombobox(){
+    private void loadNhanVienNhap(){
+        String tenNV = Session.curUser.getTenDangNhap();
+        nhapNVNhap.setText(tenNV);
+    }
+    private void loadNhaCungCapCombobox() {
         NhaCungCapDAO dao = new NhaCungCapDAO();
         List<NhaCungCapEntity> list = dao.showlist();
-        nhapNCC.removeAllItems(); // Xóa dữ liệu cũ
+        nhapNCC.removeAllItems();
+        nccMap.clear(); // reset map
+        // ➕ Thêm dòng placeholder đầu tiên
+        nhapNCC.addItem("— Chọn nhà cung cấp —");
 
-        for(NhaCungCapEntity sp : list){
-            nhapNCC.addItem(sp.getTenNCC()); // Thêm trực tiếp đối tượng NCC
+        for (NhaCungCapEntity ncc : list) {
+            String displayName = ncc.getTenNCC() + " (ID: " + ncc.getMaNCC() + ")";
+            nhapNCC.addItem(displayName);
+            nccMap.put(displayName, ncc); // ánh xạ tên → object
+
         }
     }
 
@@ -416,14 +625,4 @@ public class ThemPN extends JPanel {
         txtTongTien.setText(formatted);
     }
 
-    private ImageIcon createIconFromSVG(String svgFilePath) {
-        // Tạo icon từ file SVG
-        ImageIcon icon = new ImageIcon(getClass().getResource(svgFilePath));
-        if (icon != null) {
-            return icon;  // Trả về icon hợp lệ
-        } else {
-            System.out.println("Không thể tạo icon từ file SVG.");
-            return null;  // Nếu không thành công thì trả về null
-        }
-    }
 }

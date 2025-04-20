@@ -1,12 +1,14 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.PhieuNhapAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.PhieuNhapBUS;
 import org.projects.DAO.PhieuNhapDAO;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.PhieuNhap.CapNhatPN;
 import org.projects.GUI.DiaLog.PhieuNhap.ChiTietPN;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
+import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ChiTietPhieuNhapFullEntity;
 import org.projects.entity.PhieuNhapEntity;
@@ -16,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,10 +44,12 @@ public class PhieuNhap extends JPanel {
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")), new String[]{"---", "mã", "tên", "địa chỉ"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"---","mã","tên","địa chỉ"});
         this.add(header);
         init();
         reloadDAO();
+        System.out.println("Người đang đăng nhập có mã: " + Session.curUser.getMaNguoiDung());
+
     }
 
     private void init() {
@@ -76,17 +81,21 @@ public class PhieuNhap extends JPanel {
         List<PhieuNhapEntity> lst = new PhieuNhapDAO().showlist();
         loadList(lst);
     }
-
+    public static String formatCurrency(long value) {
+        DecimalFormat format = new DecimalFormat("#,###");
+        return format.format(value).replace(",", ".") + " ₫";
+    }
     public void loadList(List<PhieuNhapEntity> list) {
         tableModel.setRowCount(0);
         if (list != null) {
             for (PhieuNhapEntity pn : list) {
+                String tongFormatted = formatCurrency((long) pn.getTongGiaTri());
                 tableModel.addRow(new Object[]{
                         pn.getMaPN(),
                         pn.getMaNV(),
                         pn.getMaNCC(),
                         pn.getNgayNhap(),
-                        pn.getTongGiaTri()
+                        tongFormatted
                 });
             }
         }
