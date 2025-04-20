@@ -61,7 +61,7 @@ CREATE TABLE khach_hang
 
 CREATE TABLE hoa_don
 (
-    ma_hoa_don    INT PRIMARY KEY NOT NULL,
+    ma_hoa_don    INT PRIMARY KEY AUTO_INCREMENT,
     ma_nhan_vien  INT,
     ma_khach_hang INT,
     ngay_tao      TIMESTAMP                                 DEFAULT CURRENT_TIMESTAMP,
@@ -109,7 +109,7 @@ CREATE TABLE nha_cung_cap
 
 CREATE TABLE phieu_nhap
 (
-    ma_phieu_nhap     INT NOT NULL PRIMARY KEY,
+    ma_phieu_nhap     INT PRIMARY KEY AUTO_INCREMENT,
     ma_nhan_vien      INT,
     ma_nha_cung_cap   INT,
     ngay_nhap         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

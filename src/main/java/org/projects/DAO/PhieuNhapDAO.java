@@ -22,8 +22,7 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
                         rs.getInt("ma_phieu_nhap"),
                         rs.getInt("ma_nhan_vien"),
                         rs.getInt("ma_nha_cung_cap"),
-                        rs.getDouble("tong_gia_tri_nhap"),
-                        "" // placeholder cho tenNCC nếu muốn join thêm
+                        rs.getDouble("tong_gia_tri_nhap")
                 );
                 pn.setNgayNhap(rs.getTimestamp("ngay_nhap"));
                 list.add(pn);
@@ -36,7 +35,7 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
 
     @Override
     public int them(PhieuNhapEntity pn) {
-        String query = "INSERT INTO phieu_nhap (ma_phieu_nhap, ma_nhan_vien, ma_nha_cung_cap, tong_gia_tri_nhap) VALUES (?, ?, ?, ?);";
+        String query = "INSERT INTO phieu_nhap (ma_phieu_nhap, ma_nhan_vien, ma_nha_cung_cap, tong_gia_tri_nhap) VALUES (?, ?, ?, ?)";
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement ps = c.prepareStatement(query)) {
 
@@ -52,9 +51,10 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
         }
     }
 
+
     @Override
     public int sua(PhieuNhapEntity pn) {
-        String query = "UPDATE phieu_nhap SET ma_nhan_vien = ?, ma_nha_cung_cap = ?, tong_gia_tri_nhap = ? WHERE ma_phieu_nhap = ?;";
+        String query = "UPDATE phieu_nhap SET ma_nhan_vien = ?, ma_nha_cung_cap = ?, tong_gia_tri_nhap = ? WHERE ma_phieu_nhap = ?";
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement ps = c.prepareStatement(query)) {
 
@@ -111,8 +111,7 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
                             rs.getInt("ma_phieu_nhap"),
                             rs.getInt("ma_nhan_vien"),
                             rs.getInt("ma_nha_cung_cap"),
-                            rs.getDouble("tong_gia_tri_nhap"),
-                            ""
+                            rs.getDouble("tong_gia_tri_nhap")
                     );
                     pn.setNgayNhap(rs.getTimestamp("ngay_nhap"));
                     return pn;
