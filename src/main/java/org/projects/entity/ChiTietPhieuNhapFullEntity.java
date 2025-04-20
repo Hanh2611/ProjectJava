@@ -16,6 +16,8 @@ public class ChiTietPhieuNhapFullEntity {
     private double thanhtien;
     private String quyCach;
     private int soLuong;
+    private double tongGiaTriNhap;
+
     public ChiTietPhieuNhapFullEntity(Timestamp ngaylap,int maNguoiLap,String tenNguoiLap,int maPN,int maNCC,String tenNCC,
                                   int masp, String tenSP, double gia, String donvi, double thanhtien, String quyCach,int soLuong){
         this.ngaylap = ngaylap;
@@ -100,6 +102,7 @@ public class ChiTietPhieuNhapFullEntity {
         return thanhtien;
     }
     public void setThanhtien(double thanhtien) {
+
         this.thanhtien = thanhtien;
     }
     public String getQuyCach() {
@@ -114,6 +117,13 @@ public class ChiTietPhieuNhapFullEntity {
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
     }
+    public double getTongGiaTriNhap() {
+        return tongGiaTriNhap;
+    }
+    public void setTongGiaTriNhap(double tongGiaTriNhap) {
+        this.tongGiaTriNhap = tongGiaTriNhap;
+    }
+
 
 
 }
