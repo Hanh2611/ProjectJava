@@ -37,7 +37,6 @@ public class NhanVienAction implements ActionListener  , MouseListener {
         String nameButton = e.getActionCommand();
         if(show_add_nv != null) {
             if (source.equals(show_add_nv.add.getSaveButton())) {
-                System.out.println("save");
                 show_add_nv.add.insertData();
                 if(show_add_nv.add.getMa().equals("Nhập mã nhân viên")) {
                     JOptionPane.showMessageDialog(null,"Vui lòng nhâp mã nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
@@ -66,7 +65,7 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                     show_add_nv.add.comboBox.requestFocusInWindow();
                 }else {
                     NhanVienEntity nve = new NhanVienEntity(Integer.parseInt(show_add_nv.add.getMa()), show_add_nv.add.getTen()
-                            , show_add_nv.add.getEmail(), show_add_nv.add.getSdt(), show_add_nv.add.getChuc_vu());
+                            , show_add_nv.add.getEmail(), show_add_nv.add.getSdt(), show_add_nv.add.getChuc_vu() , show_add_nv.add.getLuong() , show_add_nv.add.getGioitinh());
                     if (bus.them(nve)) {
                         JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
                         nv.loadList(bus.getList());
@@ -76,19 +75,15 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                     }
                 }
             } else if (source.equals(show_add_nv.add.getCancelButton())) {
-                System.out.println("cancel");
                 show_add_nv.close();
             } else if (source.equals(show_add_nv.add.getResetButton())) {
-                System.out.println("reset");
                 show_add_nv.add.resetForm();
             }
         }
         if(show_del_nv != null) {
             if (source.equals(show_del_nv.del.getCancelButton())) {
-//                System.out.println("del cancel");
                 show_del_nv.close();
             }else if(source.equals(show_del_nv.del.getOkButton())){
-//                System.out.println("del ok");
                 NhanVienEntity nve = nv.getRow();
                 if(bus.xoa(nve)){
                     JOptionPane.showMessageDialog(null , "Đã xóa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
@@ -100,10 +95,8 @@ public class NhanVienAction implements ActionListener  , MouseListener {
         }
         if(show_fix_nv != null) {
             if (source.equals(show_fix_nv.fix.getCancelButton())) {
-//                System.out.println("fix ok cancel");
                 show_fix_nv.close();
             }else if (source.equals(show_fix_nv.fix.getUpdateButton())){
-//                System.out.println("fix ok update");
                 show_fix_nv.fix.insertData();
                 if(show_fix_nv.fix.getTen().isEmpty()) {
                     JOptionPane.showMessageDialog(null,"Vui lòng nhâp tên nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
@@ -122,7 +115,7 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                     show_fix_nv.fix.comboBox.requestFocusInWindow();
                 }else{
                     NhanVienEntity nve = new NhanVienEntity(Integer.parseInt(show_fix_nv.fix.getMa()), show_fix_nv.fix.getTen()
-                            , show_fix_nv.fix.getEmail(), show_fix_nv.fix.getStd(), show_fix_nv.fix.getChucvu());
+                            , show_fix_nv.fix.getEmail(), show_fix_nv.fix.getStd(), show_fix_nv.fix.getChucvu() , show_fix_nv.fix.getLuong(), show_fix_nv.fix.getGioitinh());
                     if(bus.sua(nve)){
                         JOptionPane.showMessageDialog(null , "Đã sửa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
                         show_fix_nv.close();
@@ -147,7 +140,6 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                 generalFunction gf = nv.getHeader().getHeaderFunc().getHm().get(name);
                 if(c.equals(gf)){
                     if (name == null && name.trim().isEmpty()) return;
-                    System.out.println("ten cua nut la : " + name);
                     if("add".equals(name)){
                         show_add_nv = new ShowAddNhanVienConsole();
                         show_add_nv.add.getResetButton().addActionListener(this);
@@ -167,7 +159,6 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                                 show_fix_nv.Show();
                                 show_fix_nv.fix.getUpdateButton().addActionListener(this);
                                 show_fix_nv.fix.getCancelButton().addActionListener(this);
-//                                System.out.println("ok");
                             }
                         }else if("detail".equals(name)){
                             info = nv.getRow();
@@ -175,7 +166,6 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                             if(info != null){
                                 show_detail_nv.chiTietUserConsole.setInfo(info);
                                 show_detail_nv.Show();
-//                                System.out.println("ok");
                             }
                         }
                         else if("delete".equals(name)){

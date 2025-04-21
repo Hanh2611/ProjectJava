@@ -6,6 +6,10 @@ import org.projects.entity.KhachHangEntity;
 import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -94,8 +98,8 @@ public class DetailKhachHangConsole extends JPanel { ;
             index %= iconList.length;
         }
 
-        JPanel genderPanel = getRadioSex(false , true);
-        infoPanel.add(genderPanel);
+//        JPanel genderPanel = getRadioSex(false , true);
+//        infoPanel.add(genderPanel);
 
         right.add(infoPanel, BorderLayout.CENTER);
 
@@ -106,16 +110,59 @@ public class DetailKhachHangConsole extends JPanel { ;
         this.add(right, gbc);
 
         JPanel bothPanel = new JPanel();
-        bothPanel.setBackground(new Color(255, 0, 0));
+        String[] col = {"test1", "test2", "test3", "test4" , "test5"};
+        DefaultTableModel tableModel;
+        tableModel = new DefaultTableModel(col, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable table = new JTable(tableModel);
+        table.getColumnModel().getColumn(0).setPreferredWidth(200);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setPreferredWidth(200);
+        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        JTableHeader header = table.getTableHeader();
+        header.setBackground(new Color(0, 102, 204));
+        header.setForeground(Color.white);
+        header.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
         bothPanel.setOpaque(true);
         bothPanel.setPreferredSize(new Dimension(700, 400));
+        table.setBackground(new Color(245, 245, 245));
+        table.setRowHeight(30);
+        table.setShowGrid(true);
+        table.setGridColor(new Color(220, 220, 220));
+        table.setSelectionBackground(new Color(204, 229, 255));
+        table.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 13));
+        table.setIntercellSpacing(new Dimension(0, 0));
+        table.setOpaque(true);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for(int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBackground(Color.WHITE);
+        CompoundBorder border = BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10, 10, 10, 10),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(Color.WHITE, 2),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                )
+        );
+        scrollPane.setPreferredSize(new Dimension(700, 400));
+        scrollPane.setBorder(border);
+        scrollPane.setBackground(new Color(220, 220, 220));
+        bothPanel.add(scrollPane);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         this.add(bothPanel, gbc);
-
         return this;
     }
 

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-import static org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole.addPlaceholderStyle;
 import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
 
 public class FixNhanVienConsole extends JPanel {
@@ -30,10 +29,13 @@ public class FixNhanVienConsole extends JPanel {
     private boolean isResettingComboBox = false;
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
+    ChiTietUserConsole chiTietUserConsole = new ChiTietUserConsole();
     public ArrayList<JTextField> listAdd;
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
     private String ma , ten , email , std , chucvu;
+    private int luong ;
+    private boolean gioitinh;
     public FixNhanVienConsole() {
 //        initComponents();
     }
@@ -42,7 +44,9 @@ public class FixNhanVienConsole extends JPanel {
         setTen(listAdd.get(1).getText().trim());
         setEmail(listAdd.get(2).getText().trim());
         setStd(listAdd.get(3).getText().trim());
+        setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
         setChucvu((String)comboBox.getSelectedItem());
+        setGioitinh(chiTietUserConsole.isGioitinh());
     }
     public void setInfo(NhanVienEntity info) {
         setMa(Integer.toString(info.getMaNhanVien()));
@@ -50,6 +54,8 @@ public class FixNhanVienConsole extends JPanel {
         setEmail(info.getEmailNhanVien());
         setStd(info.getSdtNhanVien());
         setChucvu(info.getChucvu());
+        setLuong(info.getLuong());
+        setGioitinh(info.getGioitinh());
     }
     public JPanel initComponents() {
         this.setLayout(new GridBagLayout());
@@ -81,9 +87,9 @@ public class FixNhanVienConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {getMa() , getTen() , getEmail() , getStd()};
+        String[] list = {getMa() , getTen() , getEmail() , getStd() , Integer.toString(getLuong())};
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
-        String [] str = {"Mã số: ", "Tên: ", "Email: ", "Sdt: "};
+        String [] str = {"Mã NV: ", "Tên: ", "Email: ", "Sdt: ", "Lương: "};
         listAdd = new ArrayList<>();
         comboBox = new JComboBox<>(items);
         int index = 0;
@@ -139,7 +145,7 @@ public class FixNhanVienConsole extends JPanel {
         comboBox.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
         mainInfo.add(comboBox);
         mainInfo.add(Box.createVerticalStrut(5));
-        genderPanel = getRadioSex(true, true);
+        genderPanel = getRadioSex(true, getGioitinh());
         genderPanel.setMaximumSize(new Dimension(500, 40));
         mainInfo.add(genderPanel);
         mainInfo.add(Box.createVerticalStrut(5));
@@ -299,5 +305,21 @@ public class FixNhanVienConsole extends JPanel {
 
     public void setChucvu(String chucvu) {
         this.chucvu = chucvu;
+    }
+
+    public boolean getGioitinh() {
+        return gioitinh;
+    }
+
+    public void setLuong(int luong) {
+        this.luong = luong;
+    }
+
+    public void setGioitinh(boolean gioitinh) {
+        this.gioitinh = gioitinh;
+    }
+
+    public int getLuong() {
+        return luong;
     }
 }

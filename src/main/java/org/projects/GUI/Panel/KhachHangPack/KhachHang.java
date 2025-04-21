@@ -108,8 +108,8 @@ public class KhachHang extends JPanel {
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
 //        addHeader(this, listItemHeader, quyen);
-//        add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
-        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("KhachHang") - 1) , new String[]{"---"}));
+        add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
+        //add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("KhachHang") - 1) , new String[]{"---"}));
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(khachHangAction);
