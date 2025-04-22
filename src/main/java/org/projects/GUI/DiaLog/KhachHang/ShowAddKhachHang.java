@@ -19,12 +19,11 @@ public class ShowAddKhachHang extends JDialog {
         khachHang = new KhachHang();
         add = new AddKhachHangConsole();
         init();
-        transition.showZoomIn(this , 500 , 700);
+        //transition.showZoomIn(this , 500 , 700);
     }
     public void init(){
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setUndecorated(true);
-
         JPanel detailPanel = add;
         FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
         this.setIconImage(svgIcon.getImage());
@@ -39,10 +38,12 @@ public class ShowAddKhachHang extends JDialog {
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel, BorderLayout.CENTER);
-
         this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
     public void close(){
-        transition.closeWithZoomOut(this);
+        //transition.closeWithZoomOut(this);
+        this.dispose();
     }
 }

@@ -1,18 +1,16 @@
 package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.mysql.cj.jdbc.integration.c3p0.MysqlConnectionTester;
+import com.mysql.cj.protocol.Resultset;
 import org.projects.Action.NhanVienAction;
-import org.projects.BUS.PhanQuyenBUS;
-import org.projects.DAO.NhaCungCapDAO;
+import org.projects.BUS.NhaCungCapBUS;
+import org.projects.BUS.NhanVienBus;
 import org.projects.DAO.NhanVienDao;
 import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Components.header.headerBar;
-import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
-import org.projects.GUI.DiaLog.Nhanvien.ShowChiTietNhanVienConsole;
-import org.projects.GUI.DiaLog.Nhanvien.ShowDeleteNhanVienConsole;
-import org.projects.GUI.utils.Session;
-import org.projects.GUI.utils.UIUtils;
+import org.projects.config.DatabasesConfig;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
 
@@ -24,6 +22,9 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,7 +73,6 @@ public class NhanVien extends JPanel {
 
     public void reloadDAO() {
         List<NhanVienEntity> showlist = new NhanVienDao().showlist();
-        System.out.println("Số lượng nhân viên: " + showlist.size());
         loadList(showlist);
     }
 
@@ -114,13 +114,17 @@ public class NhanVien extends JPanel {
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
-//        addHeader(this, listItemHeader, quyen);
-        //add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
-        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---"}));
+        //add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---"}));
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---", "mã" , "tên", "chức vụ"});
+        this.add(header);
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(nhanVienAction);
         }
+
+        header.getSearch().getSearchComboBox().addItemListener(nhanVienAction);
+        header.getSearch().getSearchButton().addActionListener(nhanVienAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(nhanVienAction);
     }
     private void setupLayout() {
         setBackground(new Color(240, 240, 240));
@@ -170,13 +174,11 @@ public class NhanVien extends JPanel {
         cancelIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                transition.closeWithZoomOut(dialog);
+                dialog.dispose();
             }
         });
         return cancelIcon;
     }
-
-
     public headerBar getHeader() {
         return header;
     }
@@ -189,7 +191,33 @@ public class NhanVien extends JPanel {
         String email = table.getValueAt(row,2).toString();
         String sdt = table.getValueAt(row,3).toString();
         String chucVu = table.getValueAt(row,4).toString();
-        return new NhanVienEntity(ma,ten,email,sdt,chucVu);
+        int luong = 0;
+        boolean gioi_tinh = true;
+        String query = "SELECT luong, gioi_tinh FROM nhan_vien WHERE ma_nhan_vien = ?";
+
+        try (Connection c = DatabasesConfig.getConnection();
+                PreparedStatement ps = c.prepareStatement(query);) {
+            ps.setInt(1, ma);
+            //System.out.println(ma);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    luong = rs.getInt("luong");
+                    gioi_tinh = rs.getBoolean("gioi_tinh");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new NhanVienEntity(ma,ten,email,sdt,chucVu , luong , gioi_tinh);
+    }
+
+    public void searchfunction(String keyword,String textfield) {
+        keyword = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        textfield = this.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---") && !textfield.trim().isEmpty()) {
+            List<NhanVienEntity> lst = NhanVienBus.search(keyword,textfield);
+            loadList(lst);
+        } else reloadDAO();
     }
 }
 

@@ -122,7 +122,7 @@ public class AddKhachHangConsole extends JPanel {
         c.weighty = 1;
         combobox_sex.add(genderPanel, c);
         combobox_sex.setMaximumSize(new Dimension(500, 40));
-        mainInfo.add(combobox_sex);
+        //mainInfo.add(combobox_sex);
         mainInfo.add(Box.createVerticalStrut(30));
         reset = new JButton("Làm mới");
         reset.setBackground(new Color(0, 191, 255));

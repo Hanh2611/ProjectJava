@@ -1,18 +1,26 @@
 package org.projects.GUI.Panel.KhachHangPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.DAO.ChiTietHoaDonFullDAO;
 import org.projects.GUI.Panel.NhanVienPack.RoundedImageLabel;
+import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.KhachHangEntity;
 import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DetailKhachHangConsole extends JPanel { ;
     private String ma, ten , diachi , sdt;
     public DetailKhachHangConsole() {}
+    DefaultTableModel tableModel;
     public void setInfo(KhachHangEntity info) {
         setMa(Integer.toString(info.getMa()));
         setTen(info.getTen());
@@ -64,7 +72,7 @@ public class DetailKhachHangConsole extends JPanel { ;
         infoPanel.setBackground(new Color(240, 240, 240));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] info = {"Mã nhân viên: ", "Họ và tên: ", "Số điện thoại: ", "Địa chỉ: "};
+        String[] info = {"Mã khách hàng: ", "Họ và tên: ", "Số điện thoại: ", "Địa chỉ: "};
         FlatSVGIcon iconIdNV = new FlatSVGIcon("icon/idNV.svg", 20, 20) ;
         FlatSVGIcon iconNameNV = new FlatSVGIcon("icon/nameNV.svg", 20, 20) ;
         FlatSVGIcon iconBrithDay = new FlatSVGIcon("icon/brithday.svg", 20, 20);
@@ -94,8 +102,8 @@ public class DetailKhachHangConsole extends JPanel { ;
             index %= iconList.length;
         }
 
-        JPanel genderPanel = getRadioSex(false , true);
-        infoPanel.add(genderPanel);
+//        JPanel genderPanel = getRadioSex(false , true);
+//        infoPanel.add(genderPanel);
 
         right.add(infoPanel, BorderLayout.CENTER);
 
@@ -106,41 +114,76 @@ public class DetailKhachHangConsole extends JPanel { ;
         this.add(right, gbc);
 
         JPanel bothPanel = new JPanel();
-        bothPanel.setBackground(new Color(255, 0, 0));
+        String[] col = {"Mã SP", "Tên SP", "SL", "Tổng Giá" , "Ngày Lập"};
+        tableModel = new DefaultTableModel(col, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable table = new JTable(tableModel);
+        table.getColumnModel().getColumn(0).setPreferredWidth(70);
+        table.getColumnModel().getColumn(1).setPreferredWidth(300);
+        table.getColumnModel().getColumn(2).setPreferredWidth(70);
+        table.getColumnModel().getColumn(3).setPreferredWidth(200);
+        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        JTableHeader header = table.getTableHeader();
+        header.setBackground(new Color(0, 102, 204));
+        header.setForeground(Color.white);
+        header.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
         bothPanel.setOpaque(true);
         bothPanel.setPreferredSize(new Dimension(700, 400));
+        table.setBackground(new Color(245, 245, 245));
+        table.setRowHeight(30);
+        table.setShowGrid(true);
+        table.setGridColor(new Color(220, 220, 220));
+        table.setSelectionBackground(new Color(204, 229, 255));
+        table.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 13));
+        table.setIntercellSpacing(new Dimension(0, 0));
+        table.setOpaque(true);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for(int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBackground(Color.WHITE);
+        CompoundBorder border = BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10, 10, 10, 10),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(Color.WHITE, 2),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                )
+        );
+        scrollPane.setPreferredSize(new Dimension(700, 400));
+        scrollPane.setBorder(border);
+        scrollPane.setBackground(new Color(220, 220, 220));
+        bothPanel.add(scrollPane);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         this.add(bothPanel, gbc);
-
+        ReloadLSmua();
         return this;
     }
+    public void ReloadLSmua(){
+        ChiTietHoaDonFullDAO dao = new ChiTietHoaDonFullDAO();
+        List<ChiTietHoaDonFullEntity> ds = new ArrayList<>();
+        ds.addAll(dao.showListByKhachHang(Integer.parseInt(getMa())));
 
-    public static JPanel getRadioSex(boolean edit, boolean data) {
-        JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        genderPanel.setOpaque(true);
-        genderPanel.setBackground(new Color(240, 240, 240));
-
-        JRadioButton radioNam = new JRadioButton("Nam", data);
-        data = !data;
-        JRadioButton radioNu = new JRadioButton("Nữ", data);
-        radioNam.setFont(new Font("JetBrains Mono", Font.BOLD, 14));
-        radioNu.setFont(new Font("JetBrains Mono", Font.BOLD, 14));
-        if(!edit) {
-            radioNam.setEnabled(false);
-            radioNu.setEnabled(false);
+        for (ChiTietHoaDonFullEntity e : ds) {
+            Object[] row = {
+                    e.getMaSP(),
+                    e.getTenSP(),
+                    e.getSoLuong(),
+                    e.getThanhTien(),
+                    e.getNgayTao()
+            };
+            tableModel.addRow(row);
         }
-
-        ButtonGroup genderGroup = new ButtonGroup();
-        genderGroup.add(radioNam);
-        genderGroup.add(radioNu);
-
-        genderPanel.add(radioNam);
-        genderPanel.add(radioNu);
-        return genderPanel;
     }
 
     public String getMa() {
