@@ -1,6 +1,8 @@
 package org.projects.entity;
 
 
+import org.projects.entity.Enum.QuyCach;
+
 public class SanPhamEntity {
     private int id;
     private String tenSanPham;
@@ -8,13 +10,26 @@ public class SanPhamEntity {
     private String donVi;
     private double giaBan;
     private double soLuongTon;
-    private String quyCach;
+    private QuyCach quyCach;
     private String hinhAnh;
+    private boolean trangThai;
 
     public SanPhamEntity() {
     }
 
-    public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, String quyCach, String hinhAnh) {
+
+    public SanPhamEntity(String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, QuyCach quyCach, String hinhAnh) {
+        this.tenSanPham = tenSanPham;
+        this.phanLoai = phanLoai;
+        this.donVi = donVi;
+        this.giaBan = giaBan;
+        this.soLuongTon = 0;
+        this.quyCach = quyCach;
+        this.hinhAnh = hinhAnh;
+        this.trangThai = true;
+    }
+
+    public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, QuyCach quyCach, String hinhAnh, boolean trangThai) {
         this.id = id;
         this.tenSanPham = tenSanPham;
         this.phanLoai = phanLoai;
@@ -23,6 +38,7 @@ public class SanPhamEntity {
         this.soLuongTon = soLuongTon;
         this.quyCach = quyCach;
         this.hinhAnh = hinhAnh;
+        this.trangThai = trangThai;
     }
 
     public int getId() {
@@ -69,11 +85,11 @@ public class SanPhamEntity {
         this.soLuongTon = soLuongTon;
     }
 
-    public String getQuyCach() {
+    public QuyCach getQuyCach() {
         return quyCach;
     }
 
-    public void setQuyCach(String quyCach) {
+    public void setQuyCach(QuyCach quyCach) {
         this.quyCach = quyCach;
     }
 
@@ -84,4 +100,8 @@ public class SanPhamEntity {
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
     }
+
+    public boolean isTrangThai() { return trangThai; }
+
+    public void setTrangThai(boolean trangThai) { this.trangThai = trangThai; }
 }

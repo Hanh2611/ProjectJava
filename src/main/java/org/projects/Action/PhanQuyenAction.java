@@ -8,6 +8,7 @@ import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.DiaLog.PhanQuyen.addPhanQuyen;
 import org.projects.GUI.DiaLog.PhanQuyen.performPhanQuyen;
 import org.projects.GUI.DiaLog.PhanQuyen.updatePhanQuyen;
+import org.projects.GUI.MainGUI;
 import org.projects.GUI.Panel.*;
 import org.projects.GUI.Panel.KhachHangPack.KhachHang;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
@@ -78,18 +79,19 @@ public class PhanQuyenAction implements ActionListener, MouseListener {
                         phanQuyen.loadData();
                         PhanQuyenBUS.getListAction();
                         PhanQuyen pq = new PhanQuyen();
-                        ListItem.getMapItem().put("PhanQuyen", pq);
-                        ListItem.showPanel("PhanQuyen");
-                        ListItem.getMapItem().put("TrangChu", new TrangChu());
+                        mainGUI.getMenuTask().getLi().getMapItem();
+                        mainGUI.getMenuTask().getLi().getMapItem().put("PhanQuyen", pq);
+                        mainGUI.getMenuTask().getLi().getMapItem().put("TrangChu", new TrangChu());
 //        mapItem.put("SanPham", new SanPham());
-                        ListItem.getMapItem().put("TaiKhoan", new TaiKhoan());
-                        ListItem.getMapItem().put("PhieuNhap", new PhieuNhap());
-                        ListItem.getMapItem().put("HoaDon", new HoaDon());
-                        ListItem.getMapItem().put("KhachHang", new KhachHang());
-                        ListItem.getMapItem().put("NhanVien", new NhanVien());
-                        ListItem.getMapItem().put("NhaCungCap", new NhaCungCap());
-                        ListItem.getMapItem().put("PhanQuyen", new PhanQuyen());
-                        ListItem.getMapItem().put("ThongKe", new ThongKe());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("TaiKhoan", new TaiKhoan());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("PhieuNhap", new PhieuNhap());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("HoaDon", new HoaDon());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("KhachHang", new KhachHang());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("NhanVien", new NhanVien());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("NhaCungCap", new NhaCungCap());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("PhanQuyen", new PhanQuyen());
+                        mainGUI.getMenuTask().getLi().getMapItem().put("ThongKe", new ThongKe());
+                        mainGUI.getMenuTask().getLi().showPanel("PhanQuyen");
                     } else {
                         int row = mainTable.getSelectedRow();
                         if (row == -1) {

@@ -1,9 +1,6 @@
 package org.projects.GUI.Components;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Image;
+import java.awt.*;
 import java.net.URL;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -31,6 +28,19 @@ public class handleComponents {
         button.setBorderPainted(false);
         button.setBackground(null);
         button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
+    }
+
+    public static JButton createButton(String namebtn,int width,int height) {
+        JButton button = new JButton(namebtn);
+        button.setPreferredSize(new Dimension(width, height));
+        button.setFont(new Font("JetBrains Mono", Font.BOLD, 13));
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setOpaque(true);
+        button.setContentAreaFilled(true);
+        button.setBorderPainted(true);
+        button.setFocusPainted(true);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
     }
@@ -63,6 +73,7 @@ public class handleComponents {
         pf.setBounds(x, y, width, height);
         return pf;
     }
+
 
 
 }

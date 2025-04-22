@@ -1,26 +1,39 @@
 package org.projects.GUI.Panel;
 import org.projects.Action.SanPhamAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.headerBar;
-import org.projects.GUI.DiaLog.AddSanPhamDialog;
+import org.projects.GUI.utils.Helper;
+import org.projects.GUI.utils.Session;
+import org.projects.GUI.utils.UIUtils;
+import org.projects.entity.Enum.QuyCach;
 import org.projects.entity.SanPhamEntity;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.swing.table.*;
 
 public class SanPham extends JPanel{
 
-    private JTable table;
     private headerBar header;
-    private List<SanPhamEntity> listSanPham;
+    private DefaultTableModel model;
+    private JTable table;
+    private final SanPhamAction sanPhamAction = new SanPhamAction(this);
+
+    private final SanPhamBus sanPhamBus = new SanPhamBus(this);
 
     public SanPham() {
+        this.setLayout(new FlowLayout(FlowLayout.CENTER));
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setPreferredSize(new Dimension(940,650));
         initComponent();
+        this.add(header);
+        centerPanel.add(new JScrollPane(table), BorderLayout.CENTER);
+        this.add(centerPanel);
+        reloadDAO();
     }
 
     private void initComponent() {
@@ -30,17 +43,15 @@ public class SanPham extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        String[] quyen = new String[]{"add", "update", "delete", "detail"};
+        String[] listCbBox = new String[]{"---", "Mã", "Tên", "Phân loại"};
         this.table = new JTable();
-//        this.header = new headerBar(listItemHeader, quyen);
-//        this.add(header);
+//        header = new headerBar(listItemHeader,  Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("SanPham") - 1), listCbBox);
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),listCbBox);
 
-        String[] columns = {"Id", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Số lượng tồn", "Quy cách", "Đơn vị"};
-        int[] columnWidthPercentage = {5, 10, 35, 10, 10, 10, 10, 10};
-        SanPhamBus sanPhamBus = new SanPhamBus();
-        List<SanPhamEntity> list = sanPhamBus.getAllSanPham();
+        String[] columns = {"Mã", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Trạng thái"};
+        int[] columnWidthPercentage = {2, 8, 35, 20, 15, 20};
 
-        DefaultTableModel model = new DefaultTableModel() {
+        model = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int column) {
                 return (column == 1) ? ImageIcon.class : Object.class;
@@ -51,22 +62,6 @@ public class SanPham extends JPanel{
             }
         };
         model.setColumnIdentifiers(columns);
-        for (SanPhamEntity sanPhamEntity : list) {
-            String imgPath = "src/main/resources/img/product/" + sanPhamEntity.getHinhAnh();
-            ImageIcon imageIcon = new ImageIcon(new ImageIcon(imgPath)
-                    .getImage().getScaledInstance(80, 55, Image.SCALE_SMOOTH));
-            model.addRow(new Object[]{
-                    sanPhamEntity.getId(),
-                    imageIcon,
-                    sanPhamEntity.getTenSanPham(),
-                    sanPhamEntity.getPhanLoai().getTenDanhMuc(),
-                    sanPhamEntity.getGiaBan(),
-                    sanPhamEntity.getSoLuongTon(),
-                    sanPhamEntity.getQuyCach(),
-                    sanPhamEntity.getDonVi(),
-                    });
-        }
-
         table.setModel(model);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(JLabel.CENTER);
@@ -76,9 +71,13 @@ public class SanPham extends JPanel{
             }
             table.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        sorter.setComparator(2, Comparator.comparing(String::toString));
+        sorter.setComparator(4, Comparator.comparingDouble(o -> Double.parseDouble(o.toString())));
+        table.setRowSorter(sorter);
         table.setRowHeight(60);
         table.setDefaultEditor(Object.class, null);
-        table.setPreferredScrollableViewportSize(new Dimension(960, 650));
+        table.setPreferredScrollableViewportSize(new Dimension(900, 650));
         table.setFillsViewportHeight(true);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.setShowGrid(true);
@@ -88,10 +87,69 @@ public class SanPham extends JPanel{
             TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(totalWidth * columnWidthPercentage[i] / 100);
         }
-        this.add(new JScrollPane(table));
-//        for(String name : header.getHeaderFunc().getHm().keySet()) {
-//            header.getHeaderFunc().getHm().get(name).addMouseListener(new SanPhamAction(this, null));
-//        }
+
+        for(String name : header.getHeaderFunc().getHm().keySet()) {
+            header.getHeaderFunc().getHm().get(name).addMouseListener(sanPhamAction);
+        }
+
+        //su kien tim kiem
+        header.getSearch().getSearchComboBox().addItemListener(sanPhamAction);
+        header.getSearch().getSearchField().addKeyListener(sanPhamAction);
+        header.getSearch().getSearchButton().addActionListener(sanPhamAction);
+
+        UIUtils.refreshComponent(this);
+    }
+
+    public void loadList(List<SanPhamEntity> list) {
+        model.setRowCount(0);
+        if (list != null) {
+            for (SanPhamEntity sanPhamEntity : list) {
+                String imgPath = Helper.getProductImagePath(sanPhamEntity.getHinhAnh());
+                ImageIcon imageIcon = new ImageIcon(new ImageIcon(imgPath)
+                        .getImage().getScaledInstance(80, 55, Image.SCALE_SMOOTH));
+                model.addRow(new Object[]{
+                    sanPhamEntity.getId(),
+                    imageIcon,
+                    sanPhamEntity.getTenSanPham(),
+                    sanPhamEntity.getPhanLoai().getTenDanhMuc(),
+                    (sanPhamEntity.getQuyCach().equals(QuyCach.KG) || sanPhamEntity.getQuyCach().equals(QuyCach.G))?
+                            Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getDonVi():
+                            Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getQuyCach().getValue() + "/" + sanPhamEntity.getDonVi(),
+                    sanPhamEntity.isTrangThai() ? "Đang kinh doanh" : "Ngừng kinh doanh",
+                });
+            }
+        }
+    }
+
+    public void reloadDAO() {
+        List<SanPhamEntity> listSanPham = sanPhamBus.getAllSanPham();
+        loadList(listSanPham);
+    }
+
+    private SanPhamEntity getSanPhamEntity() {
+        int row = table.getSelectedRow();
+        if (row == -1) return null;
+        int id = (int) table.getValueAt(row, 0);
+        return sanPhamBus.getSanPhamById(id);
+    };
+
+    public SanPhamEntity getSelectedRow() {
+        int row = table.getSelectedRow();
+        if(row == -1) return null;
+        int ma = (int) table.getValueAt(row,0);
+        return sanPhamBus.getSanPhamById(ma);
+    }
+
+    public headerBar getHeader() {
+        return header;
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultTableModel model) {
+        this.model = model;
     }
 
     public JTable getTable() {
@@ -102,19 +160,11 @@ public class SanPham extends JPanel{
         this.table = table;
     }
 
-    public headerBar getHeader() {
-        return header;
+    public SanPhamAction getSanPhamAction() {
+        return sanPhamAction;
     }
 
-    public void setHeader(headerBar header) {
-        this.header = header;
-    }
-
-    public List<SanPhamEntity> getListSanPham() {
-        return listSanPham;
-    }
-
-    public void setListSanPham(List<SanPhamEntity> listSanPham) {
-        this.listSanPham = listSanPham;
+    public SanPhamBus getSanPhamBus() {
+        return sanPhamBus;
     }
 }

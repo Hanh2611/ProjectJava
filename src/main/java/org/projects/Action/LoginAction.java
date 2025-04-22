@@ -28,7 +28,7 @@ public class LoginAction implements MouseListener {
             SignUpDialog.HienThiDangKy();
         }
         if(e.getSource().equals(loginGUI.getDangNhapButton())) {
-            TaiKhoan user = LoginBUS.login(new TaiKhoan(loginGUI.getTenDangNhapField().getText(), loginGUI.getMatKhauField().getText()));
+            this.user = LoginBUS.login(new TaiKhoan(loginGUI.getTenDangNhapField().getText(), loginGUI.getMatKhauField().getText()));
             //todo: kiểm tra trạng thái
             //todo: focus textfield
             if (user == null) {
@@ -37,6 +37,7 @@ public class LoginAction implements MouseListener {
                 JOptionPane.showMessageDialog(loginGUI, "Đăng nhập thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
                 Session.curUser = user;
                 Session.maDanhMucQuyen = PhanQuyenBUS.getQuyenDanhMuc(user);
+                Session.maNhomQuyen = PhanQuyenBUS.getListNhomQuyen(user.getMaNguoiDung());
                 PhanQuyenBUS.getListAction();
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
