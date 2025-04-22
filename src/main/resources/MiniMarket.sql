@@ -47,7 +47,9 @@ CREATE TABLE nhan_vien
     ten_nhan_vien VARCHAR(50) NOT NULL,
     email         VARCHAR(50) NOT NULL,
     so_dien_thoai VARCHAR(15) NOT NULL,
-    chuc_vu       VARCHAR(50) NOT NULL
+    chuc_vu       VARCHAR(50) NOT NULL,
+    luong INT NOT NULL,
+    gioi_tinh INT NOT NULL
 );
 
 CREATE TABLE khach_hang
@@ -290,13 +292,14 @@ VALUES ('admin', 1, '123', 1, 'hoat_dong'),
        ('lanhha', 9, 'password444', 3, 'hoat_dong'),
        ('hoangnam', 10, 'password555', 2, 'hoat_dong');
 
-INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu)
-VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc'),
-       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng'),
-       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán'),
-       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho'),
-       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm'),
-       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật');
+INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh)
+VALUES
+    (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1),
+    (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0),
+    (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1),
+    (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1),
+    (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1),
+    (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1);
 
 INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi)
 VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam'),
@@ -350,7 +353,7 @@ VALUES (1, 1, 1, '2025-04-01 08:30:00', 5000000),
        (2, 2, 2, '2025-04-02 10:15:00', 3000000),
        (3, 3, 3, '2025-04-03 14:45:00', 4500000),
        (4, 4, 4, '2025-04-04 09:00:00', 6000000),
-           (5, 5, 5, '2025-04-05 16:20:00', 2500000);
+       (5, 5, 5, '2025-04-05 16:20:00', 2500000);
 
 INSERT INTO chi_tiet_phieu_nhap (ma_phieu_nhap, ma_san_pham, so_luong, gia_nhap, thanh_tien)
 VALUES (1, 1, 10, 7000, 70000),
