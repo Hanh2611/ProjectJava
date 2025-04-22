@@ -18,4 +18,8 @@ public class ThongKeHoaDonBUS {
     public List<ThongkeHoaDonEntity> getList() {
         return tkhdDAO.showtable();
     }
+
+    public List<ThongkeHoaDonEntity> getListtheongayvatrangthai(String from,String to,String trangthai) {
+        return tkhdDAO.getHoadontheongayvatrangthai(from,to,trangthai);
+    }
 }

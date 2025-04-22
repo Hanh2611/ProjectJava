@@ -67,5 +67,33 @@ public class ThongKeHoaDonDAO {
         return lst;
     }
 
+    public List<ThongkeHoaDonEntity> getHoadontheongayvatrangthai(String from,String to,String trangthai) {
+        List<ThongkeHoaDonEntity> lst = new ArrayList<>();
+        String query = "SELECT DATE(hd.ngay_tao) AS ngay, COUNT(*) AS so_luong_hoa_don, hd.trang_thai\n" +
+                "FROM hoa_don hd\n" +
+                "where hd.ngay_tao between ? and ?\n" +
+                "and (? = 'Tất cả' or hd.trang_thai = ?)\n" +
+                "GROUP BY DATE(hd.ngay_tao), hd.trang_thai\n" +
+                "order by DATE (hd.ngay_tao) ";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);
+            ) {
+            prs.setString(1, from);
+            prs.setString(2, to);
+            prs.setString(3, trangthai);
+            prs.setString(4, trangthai);
+            ResultSet rs = prs.executeQuery();
+            while (rs.next()) {
+                lst.add(new ThongkeHoaDonEntity(
+                        rs.getString("ngay"),
+                        rs.getInt("so_luong_hoa_don"),
+                        rs.getString("trang_thai")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lst;
+    }
 
 }

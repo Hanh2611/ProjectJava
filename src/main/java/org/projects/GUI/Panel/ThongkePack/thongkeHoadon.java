@@ -28,6 +28,7 @@ public class thongkeHoadon extends JPanel {
     private JLabel trangthailLabel;
     private JComboBox<String> cbxtrangthai;
     private JButton loctrangthai;
+    private JButton reset;
 
     private JPanel center;
     private ChartPanel hoadonChart;
@@ -67,6 +68,9 @@ public class thongkeHoadon extends JPanel {
         loctrangthai = handleComponents.createButton("Lọc",60,30);
         loctrangthai.setBackground(Color.decode("#55efc4"));
 
+        reset = handleComponents.createButton("Reset",60,40);
+        reset.setBackground(Color.decode("#00a8ff"));
+
         header.add(ngayLabel);
         header.add(dateFrom);
         header.add(denLabel);
@@ -74,6 +78,7 @@ public class thongkeHoadon extends JPanel {
         header.add(trangthailLabel);
         header.add(cbxtrangthai);
         header.add(loctrangthai);
+        header.add(reset);
 
         //center
         String from = dateFrom.getDate() != null ? new SimpleDateFormat("yyyy-MM-dd").format(dateFrom.getDate()) : "";
@@ -124,6 +129,7 @@ public class thongkeHoadon extends JPanel {
         tkhdAction = new ThongKeHoaDonAction(this,tkhdBUS);
         cbxtrangthai.addItemListener(tkhdAction);
         loctrangthai.addActionListener(tkhdAction);
+        reset.addActionListener(tkhdAction);
     }
 
     public void loadlist(List<ThongkeHoaDonEntity> list) {
@@ -176,4 +182,7 @@ public class thongkeHoadon extends JPanel {
         return cbxtrangthai;
     }
 
+    public JButton getReset() {
+        return reset;
+    }
 }
