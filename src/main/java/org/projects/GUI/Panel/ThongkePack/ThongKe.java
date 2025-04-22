@@ -1,12 +1,8 @@
     package org.projects.GUI.Panel.ThongkePack;
 
-    import org.projects.GUI.Components.ButtonEditStyle;
-
     import java.awt.*;
     import java.awt.event.ActionEvent;
     import java.awt.event.ActionListener;
-    import java.awt.event.MouseAdapter;
-    import java.awt.event.MouseEvent;
     import java.util.ArrayList;
     import java.util.HashMap;
     import java.util.List;
@@ -26,7 +22,7 @@
         private thongkeSanpham tksp;
         private thongkeHoadon tkhd;
         private thongkePhieunhap tkpn;
-        private thongkeKhachhang tkkh;
+        private thongkeDoanhthu tkdt;
         private thongkeNhacungcap tkncc;
         private HashMap<ButtonThongke,JPanel> listthongke;
         public ThongKe() {
@@ -51,14 +47,14 @@
             headerToolbar.setRollover(true);
             headerToolbar.setFloatable(false);
 //            headerToolbar.setBackground(Color.decode("#f1f2f6"));
-            String[] listcn = new String[]{"Tổng quan","Sản phẩm", "Hóa đơn", "Phiếu nhập", "Khách hàng", "Nhà cung cấp"};
+            String[] listcn = new String[]{"Tổng quan","Sản phẩm", "Hóa đơn", "Phiếu nhập", "Doanh thu", "Nhà cung cấp"};
             tktq = new thongkeTongquan();
             tksp = new thongkeSanpham();
             tkhd = new thongkeHoadon();
             tkpn = new thongkePhieunhap();
-            tkkh = new thongkeKhachhang();
+            tkdt = new thongkeDoanhthu();
             tkncc = new thongkeNhacungcap();
-            JPanel[] listpanel = {tktq,tksp,tkhd,tkpn,tkkh,tkncc};
+            JPanel[] listpanel = {tktq,tksp,tkhd,tkpn,tkdt,tkncc};
             for (int i = 0; i < listcn.length; i++) {
                 btn = new ButtonThongke(listcn[i]);
                 btn.addActionListener(new ActionListener() {
@@ -143,8 +139,8 @@
             return tkpn;
         }
 
-        public thongkeKhachhang getTkkh() {
-            return tkkh;
+        public thongkeDoanhthu getTkkh() {
+            return tkdt;
         }
 
         public thongkeNhacungcap getTkncc() {
@@ -155,4 +151,5 @@
         public HashMap<ButtonThongke, JPanel> getListthongke() {
             return listthongke;
         }
+
     }
