@@ -15,7 +15,13 @@ public class TrangChu extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245));
         JPanel header = new JPanel(new BorderLayout());
+        JPanel borderHeader = new JPanel();
+        borderHeader.setLayout(new BoxLayout(borderHeader, BoxLayout.X_AXIS));
         header.setBackground(new Color(245, 245, 245));
+        borderHeader.setOpaque(true);
+        borderHeader.add(Box.createHorizontalStrut(240));
+        borderHeader.setBackground(new Color(245, 245, 245));
+        borderHeader.add(header);
         header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         JLabel logo = new JLabel(new FlatSVGIcon("icon/supermarket.svg", 100, 100));
         header.add(logo, BorderLayout.WEST);
@@ -35,7 +41,7 @@ public class TrangChu extends JPanel {
         textHeader.add(text1);
         textHeader.add(Box.createVerticalStrut(10));
         textHeader.add(text2);
-        add(header, BorderLayout.NORTH);
+        add(borderHeader, BorderLayout.NORTH);
 
         JPanel borderCenter = new JPanel();
         borderCenter.setLayout(new BoxLayout(borderCenter, BoxLayout.Y_AXIS));
@@ -82,6 +88,7 @@ public class TrangChu extends JPanel {
         box.setOpaque(true);
         JTextField field = new JTextField(slogan);
         field.setFont(new Font("JetBrains Mono", Font.BOLD, 21));
+        field.setForeground(new Color(79, 163, 246));
         field.setHorizontalAlignment(SwingConstants.CENTER);
         field.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         box.add(field);

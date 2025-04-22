@@ -109,7 +109,7 @@ public class FixNhanVienConsole extends JPanel {
             jTextField.setBackground(new Color(240, 240, 240));
             jTextField2.setBackground(new Color(240, 240, 240));
             jTextField.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
-            jTextField2.setPreferredSize(new Dimension(80, 40));
+            jTextField2.setPreferredSize(new Dimension(100, 40));
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             jTextField2.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             p.add(jTextField2);
