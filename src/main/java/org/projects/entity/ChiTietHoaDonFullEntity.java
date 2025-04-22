@@ -46,7 +46,7 @@ public class ChiTietHoaDonFullEntity {
     }
     public int getMaKH() {
         return maKH;
-    }
+    }   
     public void setMaKH(int maKH) {
         this.maKH = maKH;
     }

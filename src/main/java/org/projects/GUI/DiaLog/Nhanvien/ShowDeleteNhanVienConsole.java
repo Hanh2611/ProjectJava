@@ -19,7 +19,7 @@ public class ShowDeleteNhanVienConsole extends JDialog {
         nhanVien = new NhanVien();
         del = new DeleteNhanVienConsole();
         initComponents();
-        transition.showZoomIn(this,700 , 400);
+//        transition.showZoomIn(this,700 , 400);
     }
     public ShowDeleteNhanVienConsole(){}
     void initComponents() {
@@ -38,10 +38,11 @@ public class ShowDeleteNhanVienConsole extends JDialog {
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel);
         this.pack();
-//        this.setLocationRelativeTo(null);
-//        this.setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
     public void close(){
-        transition.closeWithZoomOut(this);
+//        transition.closeWithZoomOut(this);
+        this.dispose();
     }
 }

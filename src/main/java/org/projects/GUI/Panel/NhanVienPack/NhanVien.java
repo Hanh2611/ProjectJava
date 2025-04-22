@@ -123,7 +123,6 @@ public class NhanVien extends JPanel {
         }
 
         header.getSearch().getSearchComboBox().addItemListener(nhanVienAction);
-//        header.getSearch().getSearchField().addKeyListener(nhanVienAction);
         header.getSearch().getSearchButton().addActionListener(nhanVienAction);
         header.getSearch().getSearchField().getDocument().addDocumentListener(nhanVienAction);
     }

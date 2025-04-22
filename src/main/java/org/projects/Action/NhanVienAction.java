@@ -9,6 +9,7 @@ import org.projects.GUI.DiaLog.Nhanvien.ShowFixNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.DeleteNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhanVienEntity;
 
 import javax.print.attribute.standard.JobMessageFromOperator;
@@ -62,7 +63,10 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
                 }else if(show_add_nv.add.comboBox.getSelectedIndex() == 0) {
                     JOptionPane.showMessageDialog(null,"Vui lòng chọn chức vụ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.comboBox.requestFocusInWindow();
-                }else {
+                }else if((show_add_nv.add.getLuong() < 0 || show_add_nv.add.getLuong() > 1e9)) {
+                    JOptionPane.showMessageDialog(null,"Lương chỉ nằm trong khoảng [1-9] và chỉ chứa số" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    show_add_nv.add.listAdd.get(4).requestFocusInWindow();
+                } else {
                     NhanVienEntity nve = new NhanVienEntity(Integer.parseInt(show_add_nv.add.getMa()), show_add_nv.add.getTen()
                             , show_add_nv.add.getEmail(), show_add_nv.add.getSdt(), show_add_nv.add.getChuc_vu() , show_add_nv.add.getLuong() , show_add_nv.add.getGioitinh());
                     if (bus.them(nve)) {
@@ -112,11 +116,15 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
                 }else if(show_fix_nv.fix.comboBox.getSelectedIndex() == 0) {
                     JOptionPane.showMessageDialog(null,"Vui lòng chọn chức vụ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_fix_nv.fix.comboBox.requestFocusInWindow();
-                }else{
+                }else if(show_fix_nv.fix.getLuong() < 0 || show_fix_nv.fix.getLuong() > 1e9){
+                    JOptionPane.showMessageDialog(null,"Lương chỉ nằm trong khoảng [1-9] và chỉ chứa số" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    show_fix_nv.fix.listAdd.get(4).requestFocusInWindow();
+                } else{
                     NhanVienEntity nve = new NhanVienEntity(Integer.parseInt(show_fix_nv.fix.getMa()), show_fix_nv.fix.getTen()
                             , show_fix_nv.fix.getEmail(), show_fix_nv.fix.getStd(), show_fix_nv.fix.getChucvu() , show_fix_nv.fix.getLuong(), show_fix_nv.fix.getGioitinh());
                     if(bus.sua(nve)){
                         JOptionPane.showMessageDialog(null , "Đã sửa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
+                        nv.loadList(bus.getList());
                         show_fix_nv.close();
                     }else{
                         JOptionPane.showMessageDialog(null , "Sửa không thành công" , "thông báo" ,JOptionPane.ERROR_MESSAGE);
@@ -124,12 +132,13 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
                 }
             }
         }
-
-        JButton refresh = nv.getHeader().getSearch().getSearchButton();
-        if(source instanceof JButton && source.equals(refresh)) {
-            nv.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
-            nv.getHeader().getSearch().getSearchField().setText("");
-            this.nv.searchfunction(nv.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),nv.getHeader().getSearch().getSearchField().getText());
+        if(nv != null) {
+            JButton refresh = nv.getHeader().getSearch().getSearchButton();
+            if (source instanceof JButton && source.equals(refresh)) {
+                nv.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
+                nv.getHeader().getSearch().getSearchField().setText("");
+                this.nv.searchfunction(nv.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(), nv.getHeader().getSearch().getSearchField().getText());
+            }
         }
     }
 
@@ -205,8 +214,6 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
         if (e.getStateChange() == ItemEvent.SELECTED) {
             String keyword = e.getItem().toString();
             String textField = nv.getHeader().getSearch().getSearchField().getText();
-            System.out.println(keyword);
-            System.out.println(textField);
             nv.loadList(bus.search(keyword, textField));
         }
     }
