@@ -35,7 +35,7 @@ public class thongkeSanpham extends JPanel {
     private JPanel bottomPanel;
     private JPanel headerBottom;
     private JComboBox<String> danhmucsanphamComboBox;
-    List<String> listtendanhmuc;
+    private List<String> listtendanhmuc;
     private JButton btnExcel;
     private JTable sanphamTable;
     private JScrollPane sanphamScroll;
