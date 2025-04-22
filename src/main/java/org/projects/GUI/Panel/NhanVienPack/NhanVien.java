@@ -4,11 +4,14 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.mysql.cj.jdbc.integration.c3p0.MysqlConnectionTester;
 import com.mysql.cj.protocol.Resultset;
 import org.projects.Action.NhanVienAction;
+import org.projects.BUS.NhaCungCapBUS;
+import org.projects.BUS.NhanVienBus;
 import org.projects.DAO.NhanVienDao;
 import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.config.DatabasesConfig;
+import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
@@ -112,12 +115,17 @@ public class NhanVien extends JPanel {
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
         //add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---"}));
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---",});
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---", "mã" , "tên", "chức vụ"});
         this.add(header);
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(nhanVienAction);
         }
+
+        header.getSearch().getSearchComboBox().addItemListener(nhanVienAction);
+//        header.getSearch().getSearchField().addKeyListener(nhanVienAction);
+        header.getSearch().getSearchButton().addActionListener(nhanVienAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(nhanVienAction);
     }
     private void setupLayout() {
         setBackground(new Color(240, 240, 240));
@@ -167,7 +175,7 @@ public class NhanVien extends JPanel {
         cancelIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                transition.closeWithZoomOut(dialog);
+                dialog.dispose();
             }
         });
         return cancelIcon;
@@ -202,6 +210,15 @@ public class NhanVien extends JPanel {
             e.printStackTrace();
         }
         return new NhanVienEntity(ma,ten,email,sdt,chucVu , luong , gioi_tinh);
+    }
+
+    public void searchfunction(String keyword,String textfield) {
+        keyword = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        textfield = this.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---") && !textfield.trim().isEmpty()) {
+            List<NhanVienEntity> lst = NhanVienBus.search(keyword,textfield);
+            loadList(lst);
+        } else reloadDAO();
     }
 }
 

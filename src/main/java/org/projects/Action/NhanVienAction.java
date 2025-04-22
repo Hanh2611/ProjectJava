@@ -13,18 +13,17 @@ import org.projects.entity.NhanVienEntity;
 
 import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.event.*;
 
-public class NhanVienAction implements ActionListener  , MouseListener {
+public class NhanVienAction implements ActionListener  , MouseListener , ItemListener, KeyListener, DocumentListener {
     private NhanVien nv;
     private ShowAddNhanVienConsole show_add_nv;
     private ShowDeleteNhanVienConsole show_del_nv;
     private ShowChiTietNhanVienConsole show_detail_nv;
     private ShowFixNhanVienConsole show_fix_nv;
-    NhanVienBus bus;
+    static NhanVienBus bus;
     String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$";
     public NhanVienAction(NhanVien nv) {
         this.nv = nv;
@@ -125,6 +124,13 @@ public class NhanVienAction implements ActionListener  , MouseListener {
                 }
             }
         }
+
+        JButton refresh = nv.getHeader().getSearch().getSearchButton();
+        if(source instanceof JButton && source.equals(refresh)) {
+            nv.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
+            nv.getHeader().getSearch().getSearchField().setText("");
+            this.nv.searchfunction(nv.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),nv.getHeader().getSearch().getSearchField().getText());
+        }
     }
 
     @Override
@@ -192,5 +198,54 @@ public class NhanVienAction implements ActionListener  , MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            String keyword = e.getItem().toString();
+            String textField = nv.getHeader().getSearch().getSearchField().getText();
+            System.out.println(keyword);
+            System.out.println(textField);
+            nv.loadList(bus.search(keyword, textField));
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    public void doSearch(){
+        String key = nv.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String text = nv.getHeader().getSearch().getSearchField().getText();
+        if (!key.equals("---")) {
+            nv.loadList(bus.search(key, text));
+        }
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        doSearch();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        doSearch();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        doSearch();
     }
 }
