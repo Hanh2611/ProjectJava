@@ -1,4 +1,4 @@
-package org.projects.GUI.DiaLog.PhieuNhap.Components;
+package org.projects.GUI.Components;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;

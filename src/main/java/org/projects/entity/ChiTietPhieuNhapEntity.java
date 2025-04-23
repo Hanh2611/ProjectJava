@@ -13,10 +13,9 @@ public class ChiTietPhieuNhapEntity {
         this.soLuong = soLuong;
         this.giaNhap = giaNhap;
         this.thanhTien = thanhTien;
-
     }
 
-    public ChiTietPhieuNhapEntity(int maPhieuNhap, int maSanPham, int soLuong, double thanhTien, double tongGiaTriNhap, String s) {
+    public ChiTietPhieuNhapEntity(){
     }
 
     public int getMaPN() {

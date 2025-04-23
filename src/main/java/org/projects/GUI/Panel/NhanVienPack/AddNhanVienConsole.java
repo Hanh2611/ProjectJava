@@ -20,7 +20,6 @@ import java.util.Objects;
 import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
 
 public class AddNhanVienConsole extends JPanel {
-    JRadioButton radioButton;
     static String changeImage;
     static JPanel parentImg;
     private static JPanel mainImg;
@@ -34,6 +33,9 @@ public class AddNhanVienConsole extends JPanel {
     GridBagConstraints f = new GridBagConstraints();
     private String ma;
     private String ten , email , sdt , chuc_vu;
+    private int luong ;
+    private boolean gioitinh;
+    ChiTietUserConsole chiTietUserConsole = new ChiTietUserConsole();
     public AddNhanVienConsole() {
         initComponents();
     }
@@ -67,7 +69,7 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập mã nhân viên", "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại"};
+        String[] list = {"Nhập mã nhân viên", "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại" , "Nhập lương nhân viên"};
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
         listAdd = new ArrayList<>();
         comboBox = new JComboBox<>(items);
@@ -110,7 +112,7 @@ public class AddNhanVienConsole extends JPanel {
         comboBox.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
         mainInfo.add(comboBox);
         mainInfo.add(Box.createVerticalStrut(5));
-        genderPanel = getRadioSex(true, true);
+        genderPanel = getRadioSex(true, getGioitinh());
         genderPanel.setMaximumSize(new Dimension(500, 40));
         mainInfo.add(genderPanel);
         mainInfo.add(Box.createVerticalStrut(5));
@@ -164,7 +166,9 @@ public class AddNhanVienConsole extends JPanel {
         setTen(listAdd.get(1).getText().trim());
         setEmail(listAdd.get(2).getText().trim());
         setSdt(listAdd.get(3).getText().trim());
+        setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
         setChuc_vu((String)comboBox.getSelectedItem());
+        setGioitinh(chiTietUserConsole.isGioitinh());
     }
 
     public JPanel mainIMG() {
@@ -329,5 +333,21 @@ public class AddNhanVienConsole extends JPanel {
 
     public void setChuc_vu(String chuc_vu) {
         this.chuc_vu = chuc_vu;
+    }
+
+    public int getLuong() {
+        return luong;
+    }
+
+    public void setLuong(int luong) {
+        this.luong = luong;
+    }
+
+    public boolean getGioitinh() {
+        return gioitinh;
+    }
+
+    public void setGioitinh(boolean gioitinh) {
+        this.gioitinh = gioitinh;
     }
 }

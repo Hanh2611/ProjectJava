@@ -1,10 +1,13 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.HoaDonAction;
+import org.projects.BUS.HoaDonBUS;
 import org.projects.DAO.HoaDonDAO;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.DiaLog.HoaDon.CapNhatHD;
 import org.projects.GUI.DiaLog.HoaDon.ChiTietHD;
 import org.projects.GUI.DiaLog.HoaDon.ThemHD;
+import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.HoaDonEntity;
 
 import javax.swing.*;
@@ -12,6 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,12 +23,15 @@ import java.util.List;
 
 public class HoaDon extends JPanel{
     private headerBar header;
-    private JPanel contentPanel,main,themHD,chiTietHD;
+    private JPanel contentPanel,main,themHD;
     private DefaultTableModel tableModel;
     private CardLayout cardLayout;
     private JTable table;
     private HoaDonAction actionHandler;
     private HoaDonEntity hoaDonEntity;
+    private HoaDonBUS hoaDonBUS = new HoaDonBUS(this);
+    private CapNhatHD capNhatHD;
+    private ChiTietHD chiTietHD;
 
     public HoaDon() {
         String[][] listItemHeader = {
@@ -37,6 +44,7 @@ public class HoaDon extends JPanel{
         this.add(header);
         init();
         reloadDAO();
+        showTrangChinh();
     }
     private void init() {
         JPanel main = createTablePanel();
@@ -47,7 +55,9 @@ public class HoaDon extends JPanel{
         add(contentPanel);
         cardLayout.show(contentPanel, "trangchinh");
         themHD = new ThemHD(this);
-        chiTietHD = new ChiTietHD();
+        chiTietHD = new ChiTietHD(this);
+        capNhatHD = new CapNhatHD(this);
+        contentPanel.add(capNhatHD, "Capnhat HD");
         contentPanel.add(main, "trangchinh");
         contentPanel.add(themHD, "themHD");
         contentPanel.add(chiTietHD, "chiTietHD");
@@ -80,16 +90,21 @@ public class HoaDon extends JPanel{
         List<HoaDonEntity> lst = new HoaDonDAO().showlist();
         loadList(lst);
     }
+    public static String formatCurrency(long value) {
+        DecimalFormat format = new DecimalFormat("#,###");
+        return format.format(value).replace(",", ".") + " ₫";
+    }
     public void loadList(List<HoaDonEntity> list){
         tableModel.setRowCount(0);
         if(list != null){
             for(HoaDonEntity hd : list){
+                String giaFormatted = formatCurrency((long) hd.getTongGiaTri());
                 tableModel.addRow(new Object[]{
                         hd.getMaHoaDon(),
                         hd.getMaNV(),
                         hd.getMaKh(),
                         hd.getNgayTao(),
-                        hd.getTongGiaTri(),
+                        giaFormatted,
                         hd.getTrangThai(),
                 });
             }
@@ -118,13 +133,20 @@ private void customizeTable() {
     header.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
     header.setPreferredSize(new Dimension(header.getWidth(), 35));
     }
-    public void showChiTietHD(){
-        cardLayout.show(contentPanel, "chiTietHD");
-    }
+
     public void showThemHD(){
         cardLayout.show(contentPanel, "themHD");
     }
-    public void showSuaHD(){
+    public void showSuaHD(List <ChiTietHoaDonFullEntity> list){
+        capNhatHD.loadDatatoTableHoaDon(list);
+        cardLayout.show(contentPanel, "Capnhat HD");
+    }
+    public void showChiTietHD(List<ChiTietHoaDonFullEntity> list){
+        chiTietHD.setData(list);
+        cardLayout.show(contentPanel, "chiTietHD");
+    }
+    public JTable getTable() {
+        return table;
     }
     public void showTrangChinh(){
         cardLayout.show(contentPanel, "trangchinh");

@@ -1,6 +1,7 @@
 package org.projects.GUI.DiaLog.PhieuNhap;
 
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.GUI.Panel.PhieuNhap;
 import org.projects.entity.ChiTietPhieuNhapFullEntity;
 
@@ -14,8 +15,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ChiTietPN extends JPanel {
-    private JLabel lblchitietpn, lblngaylap, lblmanguoilap, lbltennguoilap, lblmapn, lblmancc, lbltenncc;
-    private JTextField txtngaylap, txtmanguoilap, txttennguoilap, txtmapn, txtmancc, txttenncc;
+    private JLabel lblchitietpn, lblngaylap, lblmanguoilap, lbltennguoilap, lblmapn, lblmancc, lbltenncc,lblTongGiaTri;
+    private JTextField txtngaylap, txtmanguoilap, txttennguoilap, txtmapn, txtmancc, txttenncc,txtTongGiaTri;
     private Font fontHeader = new Font("JetBrains Mono", Font.BOLD, 20); // Font Header
     private Font fontChung = new Font("JetBrains Mono", Font.PLAIN, 14);
     private JTable table;
@@ -25,6 +26,7 @@ public class ChiTietPN extends JPanel {
     private DefaultTableCellRenderer tableCellRenderer;
     private JButton btndong;
     private PhieuNhap phieuNhap;
+    FlatSVGIcon icon_close;
     JPanel panelcon;
     public ChiTietPN(PhieuNhap phieuNhap) {
 
@@ -114,7 +116,7 @@ public class ChiTietPN extends JPanel {
         txttenncc.setEditable(false);
         panelcon.add(txttenncc);
 
-        String [] colums = {"Mã SP", "Tên SP","Giá ","Đơn vị","Số lượng","Quy cách","Thành tiền" };
+        String [] colums = {"Mã SP", "Tên SP","Giá ","Số lượng","Thành tiền" };
 
         tableModel = new DefaultTableModel(colums,0){
             public boolean isCellEditable(int row, int column) {
@@ -142,9 +144,13 @@ public class ChiTietPN extends JPanel {
             table.getColumnModel().getColumn(i).setCellRenderer(tableCellRenderer);
         }
         scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(30,220,860,380);
+        scrollPane.setBounds(30,220,860,330);
         btndong = new JButton("Đóng");
-        btndong.setBackground(new Color(89,168,105,255));
+        icon_close = new FlatSVGIcon("icon/forbid.svg",15,15);
+        btndong.setIcon(icon_close);
+        btndong.setIconTextGap(6);
+        btndong.setForeground(Color.WHITE);
+        btndong.setBackground(new Color(103,116,132));
         btndong.setBounds(400,605,110,35);
         btndong.addActionListener(new ActionListener() {
             @Override
@@ -155,6 +161,20 @@ public class ChiTietPN extends JPanel {
         panelcon.add(btndong);
         panelcon.add(scrollPane);
 
+        lblTongGiaTri = new JLabel("Tổng giá trị:");
+        lblTongGiaTri.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblTongGiaTri.setBounds(600, 560, 100, 30); // Vị trí bên phải dưới bảng
+
+// TextField tổng tiền
+        txtTongGiaTri = new JTextField();
+        txtTongGiaTri.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtTongGiaTri.setEditable(false); // Không cho người dùng sửa
+        txtTongGiaTri.setHorizontalAlignment(JTextField.RIGHT); // Căn phải
+        txtTongGiaTri.setBounds(700, 560, 190, 30);
+
+// Thêm vào panel
+        panelcon.add(lblTongGiaTri);
+        panelcon.add(txtTongGiaTri);
 
         // Thêm panelcon vào giao diện
         add(panelcon);
@@ -170,18 +190,20 @@ public class ChiTietPN extends JPanel {
         txttennguoilap.setText(first.getTenNguoiLap());
         txtmancc.setText(String.valueOf(first.getMaNCC())); // Nếu có mã nhà cung cấp thì thêm vào entity và set
         txttenncc.setText(first.getTenNCC());
+        String tonggiatri = PhieuNhap.formatCurrency((long) first.getTongGiaTriNhap());
+        txtTongGiaTri.setText(tonggiatri);
 
         tableModel.setRowCount(0); // Clear bảng
 
         for (ChiTietPhieuNhapFullEntity ct : list) {
+            String giaBan = PhieuNhap.formatCurrency((long) ct.getGia());
+            String thanhTien = PhieuNhap.formatCurrency((long) ct.getThanhtien());
             Object[] row = {
                     ct.getMasp(),
                     ct.getTenSP(),
-                    ct.getGia(),
-                    ct.getDonvi(),
+                    giaBan,
                     ct.getSoLuong(),
-                    ct.getQuyCach(),
-                    ct.getThanhtien(),
+                    thanhTien
             };
             tableModel.addRow(row);
         }

@@ -5,13 +5,12 @@ import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class ChiTietUserConsole extends JPanel { ;
     private String ma, ten , email , sdt , chucvu;
+    private static boolean gioitinh;
+    private int luong;
     public ChiTietUserConsole() {
-//        setupDetailBox_USER();
     }
     public void setInfo(NhanVienEntity info) {
         setMa(Integer.toString(info.getMaNhanVien()));
@@ -19,6 +18,8 @@ public class ChiTietUserConsole extends JPanel { ;
         setEmail(info.getEmailNhanVien());
         setSdt(info.getSdtNhanVien());
         setChucvu(info.getChucvu());
+        setLuong(info.getLuong());
+        setGioitinh(info.getGioitinh());
     }
     public JPanel setupDetailBox_USER() {
         this.setLayout(new GridBagLayout());
@@ -64,7 +65,7 @@ public class ChiTietUserConsole extends JPanel { ;
         infoPanel.setBackground(new Color(240, 240, 240));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] info = {"Mã nhân viên: ", "Họ và tên: ","Email: ", "Số điện thoại: ", "Chức vụ: "};
+        String[] info = {"Mã nhân viên: ", "Họ và tên: ","Email: ", "Số điện thoại: ", "Chức vụ: " , "Lương: "};
         FlatSVGIcon iconIdNV = new FlatSVGIcon("icon/idNV.svg", 20, 20) ;
         FlatSVGIcon iconNameNV = new FlatSVGIcon("icon/nameNV.svg", 20, 20) ;
         FlatSVGIcon iconBrithDay = new FlatSVGIcon("icon/brithday.svg", 20, 20);
@@ -72,9 +73,9 @@ public class ChiTietUserConsole extends JPanel { ;
         FlatSVGIcon iconPhoneNV = new FlatSVGIcon("icon/phone.svg", 20, 20) ;
         FlatSVGIcon iconphucvuNV = new FlatSVGIcon("icon/phucvu.svg", 20, 20) ;
         FlatSVGIcon iconSalaryNV = new FlatSVGIcon("icon/money-dollars-svgrepo-com.svg", 20, 20) ;
-        FlatSVGIcon[] iconList = {iconIdNV, iconNameNV,iconEmailNV,iconPhoneNV,iconphucvuNV};
+        FlatSVGIcon[] iconList = {iconIdNV, iconNameNV,iconEmailNV,iconPhoneNV,iconphucvuNV,iconSalaryNV};
         int index = 0;
-        String[] values = { getMa(), getTen(), getEmail(), getSdt(), getChucvu() };
+        String[] values = { getMa(), getTen(), getEmail(), getSdt(), getChucvu() , convert(String.valueOf(getLuong()))};
         for (String labelText : info) {
             JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT , 5 , 0));
             pan.setBackground(new Color(240, 240, 240));
@@ -94,7 +95,7 @@ public class ChiTietUserConsole extends JPanel { ;
             index %= iconList.length;
         }
 
-        JPanel genderPanel = getRadioSex(false , true);
+        JPanel genderPanel = getRadioSex(false , isGioitinh());
         infoPanel.add(genderPanel);
 
         right.add(infoPanel, BorderLayout.CENTER);
@@ -109,7 +110,7 @@ public class ChiTietUserConsole extends JPanel { ;
         JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         genderPanel.setOpaque(true);
         genderPanel.setBackground(new Color(240, 240, 240));
-
+//        System.out.println(data);
         JRadioButton radioNam = new JRadioButton("Nam", data);
         data = !data;
         JRadioButton radioNu = new JRadioButton("Nữ", data);
@@ -119,14 +120,33 @@ public class ChiTietUserConsole extends JPanel { ;
             radioNam.setEnabled(false);
             radioNu.setEnabled(false);
         }
-
         ButtonGroup genderGroup = new ButtonGroup();
         genderGroup.add(radioNam);
         genderGroup.add(radioNu);
-
+        radioNam.addActionListener(e -> setGioitinh(true));
+        radioNu .addActionListener(e -> setGioitinh(false));
         genderPanel.add(radioNam);
         genderPanel.add(radioNu);
         return genderPanel;
+    }
+
+    public String convert(String value){
+        int cnt = 0;
+        String ans = "";
+        String temp = "";
+        int n = value.length();
+        for(int i = n - 1 ; i >= 0 ; i--){
+            if(cnt % 3 == 0 && cnt != 0 && cnt != n){
+                temp += '.';
+            }
+            temp += value.charAt(i);
+            cnt++;
+        }
+        for(int i = temp.length() - 1 ; i >= 0 ; i--){
+            ans = ans + temp.charAt(i);
+        }
+        ans += 'đ';
+        return ans;
     }
 
     public String getMa() {
@@ -167,5 +187,21 @@ public class ChiTietUserConsole extends JPanel { ;
 
     public void setChucvu(String chucvu) {
         this.chucvu = chucvu;
+    }
+
+    public static void setGioitinh(boolean gioitinh) {
+        ChiTietUserConsole.gioitinh = gioitinh;
+    }
+
+    public boolean isGioitinh() {
+        return gioitinh;
+    }
+
+    public void setLuong(int luong) {
+        this.luong = luong;
+    }
+
+    public int getLuong() {
+        return luong;
     }
 }

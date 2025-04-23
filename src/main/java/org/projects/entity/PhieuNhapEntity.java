@@ -10,13 +10,13 @@ public class PhieuNhapEntity {
     private String tenNCC;
     private Timestamp ngayNhap;
 
-    public PhieuNhapEntity( int maPN, int maNV, int maNCC, double tongGiaTri, String tenNCC) {
+    public PhieuNhapEntity( int maPN, int maNV, int maNCC, double tongGiaTri) {
         this.maPN = maPN;
         this.maNV = maNV;
         this.maNCC = maNCC;
         this.tongGiaTri = tongGiaTri;
-        this.tenNCC = tenNCC;
     }
+    public PhieuNhapEntity() {}
     public int getMaPN() {return maPN;}
     public int getMaNV() {return maNV;}
     public int getMaNCC() {return maNCC;}

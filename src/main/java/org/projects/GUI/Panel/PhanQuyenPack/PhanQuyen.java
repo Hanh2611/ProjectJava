@@ -33,6 +33,7 @@ public class PhanQuyen extends JPanel{
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
         header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"--"});
+
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         this.add(header);
         init();
