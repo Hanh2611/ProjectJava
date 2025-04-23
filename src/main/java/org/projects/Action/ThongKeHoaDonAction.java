@@ -3,6 +3,7 @@ package org.projects.Action;
 import org.projects.BUS.ThongKeHoaDonBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Panel.ThongkePack.thongkeHoadon;
+import org.projects.GUI.utils.ChangeDateToString;
 import org.projects.entity.ThongkeHoaDonEntity;
 
 import javax.swing.*;
@@ -34,10 +35,8 @@ public class ThongKeHoaDonAction implements ActionListener, ItemListener {
             tkhd.loadlist(all);
         } else {
             updateChart();
-            Date fromDate = tkhd.getDateFrom().getDate();
-            Date toDate = tkhd.getDateTo().getDate();
-            String from = fromDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(fromDate) : "";
-            String to = toDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(toDate) : "";
+            String from = ChangeDateToString.changeDate(tkhd.getDateFrom());
+            String to = ChangeDateToString.changeDate(tkhd.getDateTo());
             String trangthai = tkhd.getCbxtrangthai().getSelectedItem().toString();
             List<ThongkeHoaDonEntity> loc = tkhdBUS.getListtheongayvatrangthai(from, to, trangthai);
             tkhd.loadlist(loc);
