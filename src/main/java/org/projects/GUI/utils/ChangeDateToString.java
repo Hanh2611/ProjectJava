@@ -6,6 +6,6 @@ import java.text.SimpleDateFormat;
 
 public class ChangeDateToString {
     public static String changeDate(JDateChooser date) {
-        return (date.getDate() != null) ? new SimpleDateFormat("dd/MM/yyyy").format(date.getDate()) : "";
+        return (date.getDate() != null) ? new SimpleDateFormat("yyyyy-MM-dd").format(date.getDate()) : "";
     }
 }

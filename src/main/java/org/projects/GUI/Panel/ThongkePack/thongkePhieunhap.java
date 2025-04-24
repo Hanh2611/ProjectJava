@@ -2,6 +2,7 @@ package org.projects.GUI.Panel.ThongkePack;
 
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.ChartPanel;
+import org.projects.Action.ThongKePhieuNhapAction;
 import org.projects.BUS.NhaCungCapBUS;
 import org.projects.BUS.NhanVienBus;
 import org.projects.BUS.ThongKePhieuNhapBUS;
@@ -47,6 +48,7 @@ public class thongkePhieunhap extends JPanel {
     private JScrollPane thongkeScroll;
 
     private ThongKePhieuNhapBUS tkpnBUS = new ThongKePhieuNhapBUS();
+    private ThongKePhieuNhapAction tkpnAction;
     public thongkePhieunhap() {
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
@@ -144,6 +146,12 @@ public class thongkePhieunhap extends JPanel {
         this.add(west, BorderLayout.WEST);
         this.add(center, BorderLayout.CENTER);
         loadData();
+        //action
+        tkpnAction = new ThongKePhieuNhapAction(this,tkpnBUS);
+        nccBox.addItemListener(tkpnAction);
+        nvBox.addItemListener(tkpnAction);
+        timkiembtn.addActionListener(tkpnAction);
+        resetbtn.addActionListener(tkpnAction);
     }
 
     public void loadList(List<ThongKePhieuNhapEntity> list) {
@@ -160,4 +168,179 @@ public class thongkePhieunhap extends JPanel {
         loadList(tkpnBUS.showlist());
     }
 
+    public JButton getTimkiembtn() {
+        return timkiembtn;
+    }
+
+    public void setTimkiembtn(JButton timkiembtn) {
+        this.timkiembtn = timkiembtn;
+    }
+
+    public JPanel getWest() {
+        return west;
+    }
+
+    public void setWest(JPanel west) {
+        this.west = west;
+    }
+
+    public JPanel getHeaderWest() {
+        return headerWest;
+    }
+
+    public void setHeaderWest(JPanel headerWest) {
+        this.headerWest = headerWest;
+    }
+
+    public JLabel getFromLabel() {
+        return fromLabel;
+    }
+
+    public void setFromLabel(JLabel fromLabel) {
+        this.fromLabel = fromLabel;
+    }
+
+    public JDateChooser getDateFrom() {
+        return dateFrom;
+    }
+
+    public void setDateFrom(JDateChooser dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    public JLabel getToLabel() {
+        return toLabel;
+    }
+
+    public void setToLabel(JLabel toLabel) {
+        this.toLabel = toLabel;
+    }
+
+    public JDateChooser getDateTo() {
+        return dateTo;
+    }
+
+    public void setDateTo(JDateChooser dateTo) {
+        this.dateTo = dateTo;
+    }
+
+    public JLabel getTenNcc() {
+        return tenNcc;
+    }
+
+    public void setTenNcc(JLabel tenNcc) {
+        this.tenNcc = tenNcc;
+    }
+
+    public JComboBox<String> getNccBox() {
+        return nccBox;
+    }
+
+    public void setNccBox(JComboBox<String> nccBox) {
+        this.nccBox = nccBox;
+    }
+
+    public JLabel getTenNv() {
+        return tenNv;
+    }
+
+    public void setTenNv(JLabel tenNv) {
+        this.tenNv = tenNv;
+    }
+
+    public JComboBox<String> getNvBox() {
+        return nvBox;
+    }
+
+    public void setNvBox(JComboBox<String> nvBox) {
+        this.nvBox = nvBox;
+    }
+
+    public JButton getResetbtn() {
+        return resetbtn;
+    }
+
+    public void setResetbtn(JButton resetbtn) {
+        this.resetbtn = resetbtn;
+    }
+
+    public JPanel getBottomWest() {
+        return bottomWest;
+    }
+
+    public void setBottomWest(JPanel bottomWest) {
+        this.bottomWest = bottomWest;
+    }
+
+    public ChartPanel getPie() {
+        return pie;
+    }
+
+    public void setPie(ChartPanel pie) {
+        this.pie = pie;
+    }
+
+    public JPanel getCenter() {
+        return center;
+    }
+
+    public void setCenter(JPanel center) {
+        this.center = center;
+    }
+
+    public JPanel getContentChart() {
+        return contentChart;
+    }
+
+    public void setContentChart(JPanel contentChart) {
+        this.contentChart = contentChart;
+    }
+
+    public ChartPanel getColumns() {
+        return columns;
+    }
+
+    public void setColumns(ChartPanel columns) {
+        this.columns = columns;
+    }
+
+    public JPanel getTableData() {
+        return tableData;
+    }
+
+    public void setTableData(JPanel tableData) {
+        this.tableData = tableData;
+    }
+
+    public JTable getThongkeTable() {
+        return thongkeTable;
+    }
+
+    public void setThongkeTable(JTable thongkeTable) {
+        this.thongkeTable = thongkeTable;
+    }
+
+    public DefaultTableModel getThongkeTableModel() {
+        return thongkeTableModel;
+    }
+
+    public void setThongkeTableModel(DefaultTableModel thongkeTableModel) {
+        this.thongkeTableModel = thongkeTableModel;
+    }
+
+    public JScrollPane getThongkeScroll() {
+        return thongkeScroll;
+    }
+
+    public void setThongkeScroll(JScrollPane thongkeScroll) {
+        this.thongkeScroll = thongkeScroll;
+    }
+
+    public ThongKePhieuNhapBUS getTkpnBUS() {
+        return tkpnBUS;
+    }
+
+    public void setTkpnBUS(ThongKePhieuNhapBUS tkpnBUS) {
+        this.tkpnBUS = tkpnBUS;
+    }
 }

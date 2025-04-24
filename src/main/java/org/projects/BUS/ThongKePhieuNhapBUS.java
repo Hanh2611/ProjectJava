@@ -20,4 +20,14 @@ public class ThongKePhieuNhapBUS {
     public List<ThongKePhieuNhapEntity> showlist() {
         return tkpnDAO.getlist();
     }
+
+    public HashMap<String,Double> loctheonhieutieuchi(String from, String to,String tenncc,String tennv) {
+        return tkpnDAO.loctheonhieutieuchi(from,to,tenncc,tennv);
+    }
+    public HashMap<String,Integer> loctheonhacungcapvasoluong(String from, String to,String tenncc,String tennv) {
+        return tkpnDAO.getNCCVaSoLuongTheoTieuChi(from,to,tenncc,tennv);
+    }
+    public List<ThongKePhieuNhapEntity> getListtheonhieutieuchi(String from, String to,String tenncc,String tennv) {
+        return tkpnDAO.getListTheoTieuChi(from,to,tenncc,tennv);
+    }
 }
