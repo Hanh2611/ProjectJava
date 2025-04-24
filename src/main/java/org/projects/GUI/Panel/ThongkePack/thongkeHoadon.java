@@ -6,6 +6,7 @@ import org.projects.Action.ThongKeHoaDonAction;
 import org.projects.BUS.ThongKeHoaDonBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.utils.ChangeDateToString;
 import org.projects.entity.ThongkeHoaDonEntity;
 
 import javax.swing.*;
@@ -81,8 +82,8 @@ public class thongkeHoadon extends JPanel {
         header.add(reset);
 
         //center
-        String from = dateFrom.getDate() != null ? new SimpleDateFormat("yyyy-MM-dd").format(dateFrom.getDate()) : "";
-        String to = dateTo.getDate() != null ? new SimpleDateFormat("yyyy-MM-dd").format(dateTo.getDate()) : "";
+        String from = ChangeDateToString.changeDate(dateFrom);
+        String to = ChangeDateToString.changeDate(dateTo);
         String trangthai = cbxtrangthai.getSelectedItem().toString();
         soluonghoadontheongay  = tkhdBUS.getSLHDtheongay(from,to,trangthai);
         center = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày",hoadonChart,"Ngày-tháng-năm","Số lượng",soluonghoadontheongay,500,500);
