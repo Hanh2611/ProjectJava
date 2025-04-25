@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //todo: mình sẽ cho tạo tài khoản mặc định sẽ là khách hàng, sau đó mình sẽ set tài khoản vào với nhân viên
@@ -44,7 +46,9 @@ public class TaiKhoan extends JPanel{
     }
 
     public void initHeader() {
-        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--"});
+//        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--"});
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
+
         this.add(header);
     }
 

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.net.URL;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.toedter.calendar.JDateChooser;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -74,7 +75,20 @@ public class handleComponents {
         return pf;
     }
 
+    public static JLabel setLabelText(String text) {
+        JLabel lb = new JLabel(text);
+        lb.setFont(PLACEHOLDER_FONT);
+        lb.setForeground(Color.BLACK);
+        return lb;
+    }
 
+    public static JDateChooser createDate(int width,int height) {
+        JDateChooser date = new JDateChooser();
+        date.setDateFormatString("yyyy-MM-dd");
+        date.setFont(new Font("Jetbrains Mono", Font.PLAIN, 13));
+        date.setPreferredSize(new Dimension(width, height));
+        return date;
+    }
 
 }
 
