@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SanPhamDao implements ChucNangDAO<SanPhamEntity> {
+public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
 
     @Override
     public List<SanPhamEntity> showlist() {

@@ -4,7 +4,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.DAO.ChiTietPhieuNhapDAO;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.PhieuNhapDAO;
-import org.projects.DAO.SanPhamDao;
+import org.projects.DAO.SanPhamDAO;
 import org.projects.GUI.Components.NumberOnlyFilter;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.Panel.PhieuNhap;
@@ -533,7 +533,7 @@ public class CapNhatPN extends JPanel {
         }
 
     private void loadDataToTableSanPham() {
-        SanPhamDao dao = new SanPhamDao();
+        SanPhamDAO dao = new SanPhamDAO();
         java.util.List<SanPhamEntity> list = dao.showlist();
 
         DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();

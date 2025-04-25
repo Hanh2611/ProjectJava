@@ -266,8 +266,7 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getSource() instanceof JTextField) {
-            JTextField textField = (JTextField) e.getSource();
+        if (e.getSource() instanceof JTextField textField) {
             String text = textField.getText();
             System.out.println(text);
             String selectedItem = (String) sanPham.getHeader().getSearch().getSearchComboBox().getSelectedItem();

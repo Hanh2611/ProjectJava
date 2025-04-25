@@ -1,10 +1,8 @@
 package org.projects.BUS;
 
 import org.projects.DAO.DanhMucSanPhamDAO;
-import org.projects.DAO.SanPhamDao;
+import org.projects.DAO.SanPhamDAO;
 import org.projects.GUI.Panel.SanPham;
-import org.projects.entity.DanhMucSanPhamEntity;
-import org.projects.entity.Enum.QuyCach;
 import org.projects.entity.SanPhamEntity;
 
 import java.util.ArrayList;
@@ -13,12 +11,12 @@ import java.util.List;
 public class SanPhamBus {
 
     private final SanPham sanPham;
-    private final SanPhamDao sanPhamDao;
+    private final SanPhamDAO sanPhamDao;
     private final DanhMucSanPhamDAO danhMucSanPhamDao;
 
     public SanPhamBus(SanPham sanPham) {
         this.sanPham = sanPham;
-        this.sanPhamDao = new SanPhamDao();
+        this.sanPhamDao = new SanPhamDAO();
         this.danhMucSanPhamDao = new DanhMucSanPhamDAO();
     }
 

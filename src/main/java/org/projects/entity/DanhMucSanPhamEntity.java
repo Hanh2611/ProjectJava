@@ -4,6 +4,10 @@ public class DanhMucSanPhamEntity {
     private int id;
     private String tenDanhMuc;
 
+    public DanhMucSanPhamEntity(String tenDanhMuc) {
+        this.tenDanhMuc = tenDanhMuc;
+    }
+
     public DanhMucSanPhamEntity(int id, String tenDanhMuc) {
         this.id = id;
         this.tenDanhMuc = tenDanhMuc;

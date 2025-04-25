@@ -23,7 +23,7 @@ public class AddSanPhamDialog extends JDialog {
     private labelText tenSanPhamField, donViField, giaBanField;
 
     private JComboBox<String> quyCachField, phanLoaiField;
-    private JButton uploadBtn, lamMoiBtn, huyBtn, luuBtn;
+    private JButton uploadBtn, lamMoiBtn, huyBtn, luuBtn, btnAddPhanLoai;
     private JFileChooser fileChooser;
     private File selectedFile;
 
@@ -97,6 +97,7 @@ public class AddSanPhamDialog extends JDialog {
         JPanel phanLoaiPanel = new JPanel();
         phanLoaiPanel.setLayout(new GridLayout(2, 1));
         JLabel phanLoaiLabel = new JLabel("Chọn phân loại:");
+        JPanel phanLoaiContainer= new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         phanLoaiLabel.setPreferredSize(new Dimension(450, 20));
         phanLoaiPanel.add(phanLoaiLabel);
         DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
@@ -104,8 +105,16 @@ public class AddSanPhamDialog extends JDialog {
                 .stream()
                 .map(DanhMucSanPhamEntity::getTenDanhMuc)
                 .toList();
+        btnAddPhanLoai = new JButton("+");
+        btnAddPhanLoai.setPreferredSize(new Dimension(30, 30));
+        btnAddPhanLoai.addActionListener(e -> {
+            new AddDanhMucDialog(this, this.sanPham).showDialog();
+        });
         phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
-        phanLoaiPanel.add(phanLoaiField);
+        phanLoaiField.setPreferredSize(new Dimension(350, 30));
+        phanLoaiContainer.add(phanLoaiField);
+        phanLoaiContainer.add(btnAddPhanLoai);
+        phanLoaiPanel.add(phanLoaiContainer);
         content.add(phanLoaiPanel);
 
         // Buttons
