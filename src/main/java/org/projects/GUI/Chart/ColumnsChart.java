@@ -38,7 +38,7 @@ public class ColumnsChart {
         panel.setBackground(Color.WHITE);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(String key : hm.keySet()) {
-            dataset.addValue(hm.get(key), title.substring(0,17), key);
+            dataset.addValue(hm.get(key), title, key);
         }
         JFreeChart chart = ChartFactory.createBarChart(title, xAxisLabel, yAxisLabel, dataset);
         CategoryPlot plot = chart.getCategoryPlot();
