@@ -2,8 +2,7 @@ package org.projects.GUI.Panel.ThongkePack;
 
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.ChartPanel;
-import org.projects.Action.ThongKeDoanhThuAction;
-import org.projects.Action.ThongKeHoaDonAction;
+import org.projects.Action.ThongKeDoanhThuTheoNgayAction;
 import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.handleComponents;
@@ -11,7 +10,6 @@ import org.projects.GUI.utils.ChangeDateToString;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -38,7 +36,7 @@ public class thongkedoanhthutheoNgay extends JPanel {
     private JScrollPane doanhthuTheongayScrollPane;
 
     private ThongKeDoanhThuBUS tkdtBUS = new ThongKeDoanhThuBUS();
-    private ThongKeDoanhThuAction tkdtAction;
+    private ThongKeDoanhThuTheoNgayAction tkdtAction;
 
     public thongkedoanhthutheoNgay() {
         this.setLayout(new BorderLayout());
@@ -105,7 +103,7 @@ public class thongkedoanhthutheoNgay extends JPanel {
         center2.add(doanhthuTheongayScrollPane);
         center.add(center2);
         //action
-        tkdtAction = new ThongKeDoanhThuAction(this,null,null,tkdtBUS);
+        tkdtAction = new ThongKeDoanhThuTheoNgayAction(this,tkdtBUS);
         thongke.addActionListener(tkdtAction);
         reset.addActionListener(tkdtAction);
         this.add(center, BorderLayout.CENTER);

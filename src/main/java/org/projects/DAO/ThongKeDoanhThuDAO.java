@@ -1,5 +1,6 @@
 package org.projects.DAO;
 
+import org.projects.GUI.utils.Helper;
 import org.projects.config.DatabasesConfig;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
@@ -93,5 +94,54 @@ public class ThongKeDoanhThuDAO {
             e.printStackTrace();
         }
         return lst;
+    }
+
+    //lấy ra tổng hóa đơn theo tháng
+    public HashMap<String,Double> laytongtienhoadontheothang(String thang,String nam) {
+        HashMap<String,Double> hm = new HashMap<>();
+        if(thang.equals("Tất cả")) {
+            return laytatcatongtienhoadontheothang();
+        }
+        String thangFormat = String.format("%02d", Integer.parseInt(thang));
+        int songaytrongthang = Helper.layNgaytrongthang(Integer.parseInt(thang),Integer.parseInt(nam));
+        String startDate = nam + "-" + thangFormat + "-01";
+        String endDate = nam + "-" + thangFormat + "-" + String.valueOf(songaytrongthang);
+        String query = "select MONTH(hd.ngay_tao) as thang,YEAR(hd.ngay_tao) as nam,SUM(hd.tong_gia_tri) as tong_hoa_don\n" +
+                "from hoa_don hd\n" +
+                "where hd.ngay_tao >= ? and hd.ngay_tao <= ?\n" +
+                "group by MONTH(hd.ngay_tao), YEAR(hd.ngay_tao)\n" +
+                "order by nam,thang";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);) {
+            prs.setString(1, startDate);
+            prs.setString(2, endDate);
+            ResultSet rs = prs.executeQuery();
+            while(rs.next()) {
+                String thangnam = rs.getString("thang") + "-" + rs.getString("nam");
+                hm.put(thangnam,rs.getDouble("tong_hoa_don"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hm;
+    }
+
+    public HashMap<String,Double> laytatcatongtienhoadontheothang() {
+        HashMap<String,Double> hm = new HashMap<>();
+        String query = "select MONTH(hd.ngay_tao) as thang,YEAR(hd.ngay_tao) as nam,SUM(hd.tong_gia_tri) as tong_hoa_don\n" +
+                "from hoa_don hd\n" +
+                "group by MONTH(hd.ngay_tao), YEAR(hd.ngay_tao)\n" +
+                "order by nam,thang";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);
+            ResultSet rs = prs.executeQuery()) {
+            while(rs.next()) {
+                String thangnam = rs.getString("thang") + "-" + rs.getString("nam");
+                hm.put(thangnam,rs.getDouble("tong_hoa_don"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hm;
     }
 }

@@ -8,33 +8,31 @@ import org.projects.GUI.Panel.ThongkePack.thongkedoanhthutheoThang;
 import org.projects.GUI.utils.ChangeDateToString;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-public class ThongKeDoanhThuAction implements ActionListener {
+public class ThongKeDoanhThuTheoNgayAction implements ActionListener {
     private thongkedoanhthutheoNgay tkdtTheoNgay;
-    private thongkedoanhthutheoThang tkdtTheoThang;
-    private thongkedoanhthutheoNam tkdtTheoNam;
     private ThongKeDoanhThuBUS tkdtBUS;
-    public ThongKeDoanhThuAction(thongkedoanhthutheoNgay tkdtTheoNgay,thongkedoanhthutheoThang tkdtTheoThang,thongkedoanhthutheoNam tkdtTheoNam,ThongKeDoanhThuBUS tkdtBUS) {
+    public ThongKeDoanhThuTheoNgayAction(thongkedoanhthutheoNgay tkdtTheoNgay,ThongKeDoanhThuBUS tkdtBUS) {
         this.tkdtTheoNgay = tkdtTheoNgay;
-        this.tkdtTheoThang = tkdtTheoThang;
-        this.tkdtTheoNam = tkdtTheoNam;
         this.tkdtBUS = tkdtBUS;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         //thống kê theo ngày
         if(e.getSource() == tkdtTheoNgay.getThongke()) {
-            updateChartandTable();
+            updateChartAndTableDay();
         } else if (e.getSource() == tkdtTheoNgay.getReset()) {
             tkdtTheoNgay.getDatefrom().setDate(null);
             tkdtTheoNgay.getDateto().setDate(null);
-            updateChartandTable();
+            updateChartAndTableDay();
         }
     }
-    public void updateChartandTable() {
+
+    public void updateChartAndTableDay() {
         String from = ChangeDateToString.changeDate(tkdtTheoNgay.getDatefrom());
         String to = ChangeDateToString.changeDate(tkdtTheoNgay.getDateto());
         tkdtTheoNgay.getCenter1().removeAll();

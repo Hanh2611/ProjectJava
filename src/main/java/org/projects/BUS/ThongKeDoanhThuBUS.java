@@ -16,4 +16,8 @@
         public List<ThongkeDoanhThuEntity> getdanhsach(String from, String to) {
             return tkdtDAO.laydanhsachtheongay(from, to);
         }
+
+        public HashMap<String,Double> getthangvatongtien(String thang,String nam) {
+            return tkdtDAO.laytongtienhoadontheothang(thang,nam);
+        }
     }
