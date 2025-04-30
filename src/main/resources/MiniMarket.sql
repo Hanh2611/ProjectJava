@@ -281,7 +281,7 @@ VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An'),
        (10, 'nhan_vien_ban_hang', 'Hoang Nam');
 
 INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai)
-VALUES ('admin', 1, '123', 1, 'hoat_dong'),
+VALUES ('a', 1, '123', 1, 'hoat_dong'),
        ('tranbinh', 2, 'password456', 2, 'da_khoa'),
        ('levan', 3, 'password789', 3, 'hoat_dong'),
        ('phamduong', 4, 'password000', 3, 'hoat_dong'),
@@ -326,20 +326,10 @@ VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'trax
         'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg');
 
 INSERT INTO hoa_don (ma_hoa_don, ma_nhan_vien, ma_khach_hang, ngay_tao, tong_gia_tri, trang_thai)
-VALUES (1, 1, 1, NOW(), 500000, 'chua_thanh_toan'),
-       (2, 2, 2, NOW(), 1200000, 'da_thanh_toan'),
-       (3, 3, 3, NOW(), 2500000, 'chua_thanh_toan'),
-       (4, 4, 4, NOW(), 1700000, 'da_thanh_toan'),
-       (5, 1, 1, '2025-01-15', 500000, 'chua_thanh_toan'),
-       (6, 2, 2, '2025-02-10', 1200000, 'da_thanh_toan'),
-       (7, 3, 3, '2025-02-20', 2500000, 'chua_thanh_toan'),
-       (8, 4, 4, '2025-03-05', 1700000, 'da_thanh_toan'),
-       (9, 1, 1, '2025-01-25', 700000, 'chua_thanh_toan'),
-       (10, 2, 2, '2025-03-18', 1500000, 'da_thanh_toan'),
-       (11, 3, 3, '2025-04-10', 1900000, 'chua_thanh_toan'),
-       (12, 4, 4, '2025-04-12', 3000000, 'da_thanh_toan'),
-       (13, 1, 1, '2025-03-22', 1300000, 'chua_thanh_toan'),
-       (14, 2, 2, '2025-01-30', 1800000, 'da_thanh_toan');
+VALUES (1, 1, 1, NOW(), 8000, 'chua_thanh_toan'),
+       (2, 2, 2, NOW(), 41000, 'da_thanh_toan'),
+       (3, 3, 3, NOW(), 42000, 'chua_thanh_toan'),
+       (4, 4, 4, NOW(), 297000, 'da_thanh_toan');
 
 INSERT INTO chi_tiet_hoa_don (ma_san_pham, ma_hoa_don, so_luong, gia_ban, thanh_tien)
 VALUES (1, 1, 1, 8000, 8000),
@@ -349,11 +339,11 @@ VALUES (1, 1, 1, 8000, 8000),
        (4, 4, 3, 99000, 297000);
 
 INSERT INTO phieu_nhap (ma_phieu_nhap, ma_nhan_vien, ma_nha_cung_cap, ngay_nhap, tong_gia_tri_nhap)
-VALUES (1, 1, 1, '2025-04-01 08:30:00', 5000000),
-       (2, 2, 2, '2025-04-02 10:15:00', 3000000),
-       (3, 3, 3, '2025-04-03 14:45:00', 4500000),
-       (4, 4, 4, '2025-04-04 09:00:00', 6000000),
-       (5, 5, 5, '2025-04-05 16:20:00', 2500000);
+VALUES (1, 1, 1, '2025-04-01 08:30:00', 70000),
+       (2, 2, 2, '2025-04-02 10:15:00', 45000),
+       (3, 3, 3, '2025-04-03 14:45:00', 126000),
+       (4, 4, 4, '2025-04-04 09:00:00', 1080000),
+       (5, 5, 5, '2025-04-05 16:20:00', 440000);
 
 INSERT INTO chi_tiet_phieu_nhap (ma_phieu_nhap, ma_san_pham, so_luong, gia_nhap, thanh_tien)
 VALUES (1, 1, 10, 7000, 70000),
