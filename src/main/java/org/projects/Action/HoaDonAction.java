@@ -27,7 +27,6 @@ public class HoaDonAction extends MouseAdapter {
                 hoaDon.showThemHD();
                 break;
             case "update":
-                JOptionPane.showMessageDialog(null, "Cập nhật hóa đơn");
                 JTable table = hoaDon.getTable();
                 int selectedRow = table.getSelectedRow();
                 if(selectedRow != -1) {
