@@ -3,6 +3,7 @@ package org.projects.GUI;
 import javax.swing.*;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.GUI.Panel.HeaderTrangChu;
+import org.projects.GUI.Panel.TrangChu;
 
 import java.awt.*;
 

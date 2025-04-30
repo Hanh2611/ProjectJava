@@ -152,7 +152,7 @@ public class DetailKhachHangConsole extends JPanel { ;
         CompoundBorder border = BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(10, 10, 10, 10),
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.WHITE, 2),
+                        BorderFactory.createLineBorder(Color.white, 2),
                         BorderFactory.createEmptyBorder(5, 5, 5, 5)
                 )
         );

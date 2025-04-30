@@ -24,8 +24,7 @@ public class AddKhachHangConsole extends JPanel {
     public ArrayList<JTextField> listAdd;
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
-    private String ma;
-    private String ten , sdt , diachi;
+    private String ma ,ten , sdt , diachi;
     public AddKhachHangConsole() {
         initComponents();
     }
@@ -167,14 +166,16 @@ public class AddKhachHangConsole extends JPanel {
         JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
+        //changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage);
+        FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 220 , 220);
+        JLabel userLabel = new JLabel(user);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
         mainImg.add(button_add_image, BorderLayout.NORTH);
-        mainImg.add(parentImg, BorderLayout.CENTER);
+        mainImg.add(userLabel, BorderLayout.CENTER);
         mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }

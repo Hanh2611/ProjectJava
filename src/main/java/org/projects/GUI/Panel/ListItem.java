@@ -1,5 +1,7 @@
 package org.projects.GUI.Panel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.Components.MenuItemComponents;
 import org.projects.GUI.LoginGUI;
@@ -20,6 +22,7 @@ import java.util.List;
 
 
 public class ListItem extends JPanel{
+    private static final Logger log = LogManager.getLogger(ListItem.class);
     private List<MenuItemComponents> list;
     private HashMap<String,JPanel> mapItem;
     private MainGUI mainGui;
@@ -29,6 +32,7 @@ public class ListItem extends JPanel{
         this.list = new ArrayList<>();
         this.mapItem = new HashMap<>();
         init();
+        showTrangChu();
         this.setVisible(true);
     }
     private void init() {
@@ -85,6 +89,23 @@ public class ListItem extends JPanel{
 
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
+    }
+
+    public void selectTrangChu() {
+        //System.out.println(list.getFirst().getNameLabel().getText());
+        if(list.getFirst().getNameLabel().getText().equals("Trang chủ")) {
+            list.getFirst().setBackground(Color.GRAY);
+            list.getFirst().getNameLabel().setForeground(Color.WHITE);
+        }
+        else{
+            list.getFirst().setBackground(Color.white);
+            list.getFirst().getNameLabel().setForeground(Color.BLACK);
+        }
+    }
+
+    public void showTrangChu(){
+        showPanel("TrangChu");
+        selectTrangChu();
     }
 
     public void showPanel(String name) {

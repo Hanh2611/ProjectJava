@@ -10,6 +10,7 @@ import org.projects.entity.KhachHangEntity;
 import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -65,7 +66,7 @@ public class FixKhachHang extends JPanel {
         JPanel img = mainIMG();
         JPanel info = mainINFO();
         this.add(img, f);
-        c.fill = GridBagConstraints.VERTICAL;
+        c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
@@ -82,18 +83,20 @@ public class FixKhachHang extends JPanel {
         mainInfo.setOpaque(true);
         String[] list = {getMa() , getTen() , getStd() , getDiachi()};
 //        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
-        String [] str = {"Mã số: ", "Tên: ", "Sdt: ", "Địa chỉ: "};
+        String [] str = {"Mã KH: ", "Tên: ", "Sdt: ", "Địa chỉ: "};
         listAdd = new ArrayList<>();
 //        comboBox = new JComboBox<>(items);
         for (int index = 0; index < list.length; index++) {
             String s = list[index];
             JPanel p = new JPanel(new BorderLayout(5, 5));
             p.setBackground(new Color(240, 240, 240));
+//            p.setPreferredSize(new Dimension(400 , 40));
 
+//            p.setBorder(border);
             JTextField jTextFieldLabel = new JTextField(str[index]);
             jTextFieldLabel.setEditable(false);
             jTextFieldLabel.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
-            jTextFieldLabel.setPreferredSize(new Dimension(80, 40));
+            jTextFieldLabel.setPreferredSize(new Dimension(100, 40));
             jTextFieldLabel.setBackground(new Color(240, 240, 240));
             jTextFieldLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             JTextField jTextFieldValue = new JTextField(s);
@@ -105,15 +108,21 @@ public class FixKhachHang extends JPanel {
             jTextFieldValue.setPreferredSize(new Dimension(220, 40));
             jTextFieldValue.setBackground(new Color(240, 240, 240));
             jTextFieldValue.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
-
-            p.add(jTextFieldLabel, BorderLayout.WEST);
-            p.add(jTextFieldValue, BorderLayout.CENTER);
+            p.add(jTextFieldLabel , BorderLayout.WEST);
+            p.add(jTextFieldValue , BorderLayout.CENTER);
 
             mainInfo.add(p);
             mainInfo.add(Box.createVerticalStrut(5));
             listAdd.add(jTextFieldValue);
         }
-
+        CompoundBorder border = BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10 , 65 , 10 , 65),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(Color.white , 0),
+                        BorderFactory.createEmptyBorder(5 , 5 , 5 , 5)
+                )
+        );
+        mainInfo.setBorder(border);
         mainInfo.add(Box.createVerticalStrut(30));
         update = new JButton("Cập nhật");
         update.setBackground(new Color(0, 191, 255));
@@ -150,11 +159,13 @@ public class FixKhachHang extends JPanel {
         changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage);
+        FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 220 , 220);
+        JLabel userLabel = new JLabel(user);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
         mainImg.add(button_add_image, BorderLayout.NORTH);
-        mainImg.add(parentImg, BorderLayout.CENTER);
+        mainImg.add(userLabel, BorderLayout.CENTER);
         mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }
