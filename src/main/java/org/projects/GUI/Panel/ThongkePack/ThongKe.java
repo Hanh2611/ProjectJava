@@ -23,7 +23,6 @@
         private thongkeHoadon tkhd;
         private thongkePhieunhap tkpn;
         private thongkeDoanhthu tkdt;
-        private thongkeNhacungcap tkncc;
         private HashMap<ButtonThongke,JPanel> listthongke;
         public ThongKe() {
             listbtn = new ArrayList<>();
@@ -47,14 +46,13 @@
             headerToolbar.setRollover(true);
             headerToolbar.setFloatable(false);
 //            headerToolbar.setBackground(Color.decode("#f1f2f6"));
-            String[] listcn = new String[]{"Tổng quan","Sản phẩm", "Hóa đơn", "Phiếu nhập", "Doanh thu", "Nhà cung cấp"};
+            String[] listcn = new String[]{"Tổng quan","Sản phẩm", "Hóa đơn", "Phiếu nhập", "Doanh thu"};
             tktq = new thongkeTongquan();
             tksp = new thongkeSanpham();
             tkhd = new thongkeHoadon();
             tkpn = new thongkePhieunhap();
             tkdt = new thongkeDoanhthu();
-            tkncc = new thongkeNhacungcap();
-            JPanel[] listpanel = {tktq,tksp,tkhd,tkpn,tkdt,tkncc};
+            JPanel[] listpanel = {tktq,tksp,tkhd,tkpn,tkdt};
             for (int i = 0; i < listcn.length; i++) {
                 btn = new ButtonThongke(listcn[i]);
                 btn.addActionListener(new ActionListener() {
@@ -142,11 +140,6 @@
         public thongkeDoanhthu getTkkh() {
             return tkdt;
         }
-
-        public thongkeNhacungcap getTkncc() {
-            return tkncc;
-        }
-
 
         public HashMap<ButtonThongke, JPanel> getListthongke() {
             return listthongke;
