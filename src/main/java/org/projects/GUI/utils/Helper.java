@@ -2,12 +2,17 @@ package org.projects.GUI.utils;
 
 import org.projects.GUI.Panel.SanPham;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 public class Helper {
 
-    public static String imageBasePath = "src\\main\\resources\\img\\product\\";
+//    public static String imageBasePath = "src\\main\\resources\\img\\product\\"; window
+//    public static String imageBasePath = "src/main/resources/img/product/"; linux
+public static String imageBasePath = "src" + File.separator + "main" + File.separator +
+        "resources" + File.separator + "img" + File.separator + "product" + File.separator;
+
 
     public static String getProductImagePath(String imageFileName) {
         return Helper.imageBasePath + imageFileName;

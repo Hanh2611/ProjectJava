@@ -144,4 +144,8 @@ public class ThongKeDoanhThuDAO {
         }
         return hm;
     }
+
+    //lấy ra bảng chứa tháng,năm,tổng doanh thu trong tháng,lợi nhuận thu về
+    //lợi nhuận thu về = tổng doanh thu - (chi phí nhập hàng + lương nhân viên trong tháng đó)
+
 }
