@@ -20,4 +20,13 @@ public class DanhMucSanPhamBus {
     public int getIdDanhMuc(String tenDanhMuc) {
         return danhMucSanPhamDAO.getIdByName(tenDanhMuc);
     }
+
+    public int createDanhMuc(String danhMuc) {
+        if (danhMuc == null || danhMuc.isEmpty()) {
+            return -1;
+        }
+        DanhMucSanPhamEntity danhMucSanPham = new DanhMucSanPhamEntity(danhMuc);
+        danhMucSanPham.setTenDanhMuc(danhMuc);
+        return danhMucSanPhamDAO.them(danhMucSanPham);
+    }
 }

@@ -54,7 +54,15 @@ public class DanhMucSanPhamDAO implements ChucNangDAO<DanhMucSanPhamEntity>{
 
     @Override
     public int them(DanhMucSanPhamEntity add) {
-        return 0;
+        String query = "INSERT INTO danh_muc_san_pham (ten_danh_muc) VALUES (?)";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setString(1, add.getTenDanhMuc());
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override

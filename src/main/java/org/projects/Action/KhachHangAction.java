@@ -11,12 +11,11 @@ import org.projects.GUI.Panel.KhachHangPack.KhachHang;
 import org.projects.entity.KhachHangEntity;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.event.*;
 
-public class KhachHangAction implements ActionListener  , MouseListener {
+public class KhachHangAction implements ActionListener  , MouseListener, ItemListener, KeyListener, DocumentListener {
     private KhachHang kh;
     private ShowAddKhachHang showAddKhachHang;
     private ShowFixKhachHang showFixKhachHang;
@@ -121,6 +120,12 @@ public class KhachHangAction implements ActionListener  , MouseListener {
                 }
             }
         }
+        JButton refresh = kh.getHeader().getSearch().getSearchButton();
+        if(source instanceof JButton && source.equals(refresh)) {
+            kh.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
+            kh.getHeader().getSearch().getSearchField().setText("");
+            this.kh.searchfunction(kh.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),kh.getHeader().getSearch().getSearchField().getText());
+        }
     }
 
     @Override
@@ -195,5 +200,54 @@ public class KhachHangAction implements ActionListener  , MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            String keyword = e.getItem().toString();
+            String textField = kh.getHeader().getSearch().getSearchField().getText();
+            System.out.println(keyword);
+            System.out.println(textField);
+            kh.loadList(bus.search(keyword, textField));
+        }
+    }
+
+    public void doSearch(){
+        String key = kh.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String text = kh.getHeader().getSearch().getSearchField().getText();
+        if (!key.equals("---")) {
+            kh.loadList(bus.search(key, text));
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        doSearch();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        doSearch();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        doSearch();
     }
 }

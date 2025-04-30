@@ -13,13 +13,13 @@ import java.util.List;
 
 public class KhachHangBUS {
     private KhachHang khachHang;
-    private KhachHangDAO khDao = new KhachHangDAO();
-    private List<KhachHangEntity> list = new ArrayList<>();
+    private static KhachHangDAO khDao = new KhachHangDAO();
+    private static List<KhachHangEntity> list = new ArrayList<>();
     public KhachHangBUS(KhachHang kh) {
         this.khachHang = kh;
     }
 
-    public List<KhachHangEntity> getList() {
+    public static List<KhachHangEntity> getList() {
         list = khDao.showlist();
         return list;
     }
@@ -52,5 +52,33 @@ public class KhachHangBUS {
             }
         }
         return false;
+    }
+
+    public static List<KhachHangEntity> search(String key, String text) {
+        getList();
+        List<KhachHangEntity> newList = new ArrayList<>();
+        text = text.toLowerCase();
+        if(key.equals("---")){
+            newList.addAll(list);
+        }else if(key.equals("mã")){
+            for(KhachHangEntity khe : list){
+                if(String.valueOf(khe.getMa()).toLowerCase().contains(text)){
+                    newList.add(khe);
+                }
+            }
+        }else if(key.equals("tên")){
+            for(KhachHangEntity khe : list){
+                if(khe.getTen().toLowerCase().contains(text)){
+                    newList.add(khe);
+                }
+            }
+        }else if(key.equals("địa chỉ")){
+            for(KhachHangEntity khe : list){
+                if(khe.getDiaChi().toLowerCase().contains(text)){
+                    newList.add(khe);
+                }
+            }
+        }
+        return newList;
     }
 }

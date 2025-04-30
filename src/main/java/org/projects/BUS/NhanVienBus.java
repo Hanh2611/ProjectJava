@@ -10,13 +10,13 @@ import java.util.List;
 
 public class NhanVienBus {
     private NhanVien nv;
-    private NhanVienDao nvDao = new NhanVienDao();
-    private List<NhanVienEntity> list = new ArrayList<>();
+    private static NhanVienDao nvDao = new NhanVienDao();
+    private static List<NhanVienEntity> list = new ArrayList<>();
     public NhanVienBus(NhanVien nv) {
         this.nv = nv;
     }
 
-    public List<NhanVienEntity> getList() {
+    public static List<NhanVienEntity> getList() {
         list = nvDao.showlist();
         return list;
     }
@@ -50,5 +50,34 @@ public class NhanVienBus {
             }
         }
         return false;
+    }
+
+    public static List<NhanVienEntity> search(String key , String text){
+        getList();
+        List<NhanVienEntity> newList = new ArrayList<>();
+        text = text.toLowerCase();
+        if(key.equals("---")){
+            newList.addAll(list);
+        }else if(key.equals("mã")){
+            for(NhanVienEntity nve : list){
+                if(String.valueOf(nve.getMaNhanVien()).toLowerCase().contains(text)){
+                    newList.add(nve);
+                }
+            }
+        }else if(key.equals("tên")){
+            for(NhanVienEntity nve : list){
+                if(nve.getTenNhanVien().toLowerCase().contains(text)){
+                    newList.add(nve);
+                    System.out.println(nve.getTenNhanVien());
+                }
+            }
+        }else if(key.equals("chức vụ")){
+            for(NhanVienEntity nve : list){
+                if(nve.getChucvu().toLowerCase().contains(text)){
+                    newList.add(nve);
+                }
+            }
+        }
+        return newList;
     }
 }

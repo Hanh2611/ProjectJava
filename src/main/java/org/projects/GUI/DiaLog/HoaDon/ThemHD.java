@@ -5,7 +5,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.DAO.ChiTietHoaDonDAO;
 import org.projects.DAO.HoaDonDAO;
 import org.projects.DAO.KhachHangDAO;
-import org.projects.DAO.SanPhamDao;
+import org.projects.DAO.SanPhamDAO;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
 import org.projects.GUI.Panel.HoaDon;
@@ -692,7 +692,7 @@ public class ThemHD extends JPanel {
     }
     private void loadDataToTableSanPham() {
 
-        SanPhamDao dao = new SanPhamDao();
+        SanPhamDAO dao = new SanPhamDAO();
         List<SanPhamEntity> list = dao.showlist();
 
         DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();
