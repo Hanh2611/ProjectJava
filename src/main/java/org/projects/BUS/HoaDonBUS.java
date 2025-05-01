@@ -17,5 +17,14 @@ public class HoaDonBUS {
         listHoaDon = hoaDonDAO.showlist();
         return listHoaDon;
     }
+    public static boolean xoa(HoaDonEntity pn) {
+        if (hoaDon != null) {
+            if (hoaDonDAO.xoa(pn) > 0) {
+                hoaDon.reloadDAO(); // cái này có thể dư nếu gọi ngoài rồi
+                return true;
+            }
+        }
+        return false; // bổ sung return false
+    }
 
 }

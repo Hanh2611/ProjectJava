@@ -6,7 +6,8 @@ public enum QuyCach {
     TUI("Túi"),
     KG("Kg"),
     G("G"),
-    HOP("Hộp");
+    HOP("Hộp"),
+    KHAY("Khay");
 
     private final String value;
 

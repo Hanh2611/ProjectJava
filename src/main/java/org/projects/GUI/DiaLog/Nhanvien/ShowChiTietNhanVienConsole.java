@@ -20,7 +20,7 @@ public class ShowChiTietNhanVienConsole extends JDialog {
     }
     public void Show() {
         init();
-        transition.showZoomIn(this , 700 , 400);
+//        transition.showZoomIn(this , 700 , 400);
     }
 
     public void init() {
@@ -39,5 +39,7 @@ public class ShowChiTietNhanVienConsole extends JDialog {
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel);
         this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 }

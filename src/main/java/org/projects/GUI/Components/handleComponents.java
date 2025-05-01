@@ -1,12 +1,10 @@
 package org.projects.GUI.Components;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Image;
+import java.awt.*;
 import java.net.URL;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.toedter.calendar.JDateChooser;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,6 +29,19 @@ public class handleComponents {
         button.setBorderPainted(false);
         button.setBackground(null);
         button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
+    }
+
+    public static JButton createButton(String namebtn,int width,int height) {
+        JButton button = new JButton(namebtn);
+        button.setPreferredSize(new Dimension(width, height));
+        button.setFont(new Font("JetBrains Mono", Font.BOLD, 13));
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setOpaque(true);
+        button.setContentAreaFilled(true);
+        button.setBorderPainted(true);
+        button.setFocusPainted(true);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
     }
@@ -64,6 +75,20 @@ public class handleComponents {
         return pf;
     }
 
+    public static JLabel setLabelText(String text) {
+        JLabel lb = new JLabel(text);
+        lb.setFont(PLACEHOLDER_FONT);
+        lb.setForeground(Color.BLACK);
+        return lb;
+    }
+
+    public static JDateChooser createDate(int width,int height) {
+        JDateChooser date = new JDateChooser();
+        date.setDateFormatString("yyyy-MM-dd");
+        date.setFont(new Font("Jetbrains Mono", Font.PLAIN, 13));
+        date.setPreferredSize(new Dimension(width, height));
+        return date;
+    }
 
 }
 

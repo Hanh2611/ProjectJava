@@ -14,17 +14,18 @@ public class ChiTietPhieuNhapFullEntityDAO {
     public List<ChiTietPhieuNhapFullEntity> showlist(int maPN) {
         List<ChiTietPhieuNhapFullEntity> list = new ArrayList<>();
         String query = """
-        SELECT ct.ma_phieu_nhap, ct.ma_san_pham, sp.ten_san_pham, sp.don_vi,
-               ct.so_luong, ct.gia_nhap, ct.thanh_tien,
-               ncc.ten_nha_cung_cap, pn.ma_nha_cung_cap,
-               nv.ten_nhan_vien, pn.ma_nhan_vien, pn.ngay_nhap
-        FROM chi_tiet_phieu_nhap ct
-        JOIN san_pham sp ON ct.ma_san_pham = sp.ma_san_pham
-        JOIN phieu_nhap pn ON ct.ma_phieu_nhap = pn.ma_phieu_nhap
-        JOIN nha_cung_cap ncc ON pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap
-        JOIN nhan_vien nv ON pn.ma_nhan_vien = nv.ma_nhan_vien
-        WHERE ct.ma_phieu_nhap = ?;
-    """;
+    SELECT ct.ma_phieu_nhap, ct.ma_san_pham, sp.ten_san_pham, sp.don_vi,
+           ct.so_luong, ct.gia_nhap, ct.thanh_tien,
+           ncc.ten_nha_cung_cap, pn.ma_nha_cung_cap,
+           nv.ten_nhan_vien, pn.ma_nhan_vien, pn.ngay_nhap, pn.tong_gia_tri_nhap
+    FROM chi_tiet_phieu_nhap ct
+    JOIN san_pham sp ON ct.ma_san_pham = sp.ma_san_pham
+    JOIN phieu_nhap pn ON ct.ma_phieu_nhap = pn.ma_phieu_nhap
+    JOIN nha_cung_cap ncc ON pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap
+    JOIN nhan_vien nv ON pn.ma_nhan_vien = nv.ma_nhan_vien
+    WHERE ct.ma_phieu_nhap = ?;
+""";
+
 
 
         try (Connection c = DatabasesConfig.getConnection();
@@ -46,6 +47,7 @@ public class ChiTietPhieuNhapFullEntityDAO {
                     ct.setThanhtien(rs.getDouble("thanh_tien"));
                     ct.setMaNCC(rs.getInt("ma_nha_cung_cap"));
                     ct.setMaNguoiLap(rs.getInt("ma_nhan_vien"));
+                    ct.setTongGiaTriNhap(rs.getDouble("tong_gia_tri_nhap"));
                     list.add(ct);
                 }
             }

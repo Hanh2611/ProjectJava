@@ -1,6 +1,8 @@
 package org.projects.GUI.Panel.KhachHangPack;
 
 import org.projects.Action.KhachHangAction;
+import org.projects.BUS.KhachHangBUS;
+import org.projects.BUS.NhanVienBus;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.KhachHangDAO;
 import org.projects.DAO.NhanVienDao;
@@ -66,7 +68,6 @@ public class KhachHang extends JPanel {
 
     public void reloadDAO() {
         List<KhachHangEntity> showlist = new KhachHangDAO().showlist();
-        System.out.println("Số lượng kh: " + showlist.size());
         loadList(showlist);
     }
 
@@ -108,12 +109,17 @@ public class KhachHang extends JPanel {
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
 //        addHeader(this, listItemHeader, quyen);
-//        add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"--"}));
-        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("KhachHang") - 1) , new String[]{"---"}));
+        add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---" , "mã" , "tên" , "địa chỉ"}));
+        //add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("KhachHang") - 1) , new String[]{"---"}));
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(khachHangAction);
         }
+
+        header.getSearch().getSearchComboBox().addItemListener(khachHangAction);
+//        header.getSearch().getSearchField().addKeyListener(nhanVienAction);
+        header.getSearch().getSearchButton().addActionListener(khachHangAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(khachHangAction);
     }
     private void setupLayout() {
         setBackground(new Color(240, 240, 240));
@@ -141,35 +147,6 @@ public class KhachHang extends JPanel {
         add(centerPanel);
     }
 
-    public JButton add_minusIcon(){
-        JButton minusIcon;
-        minusIcon = handleComponents.createButtonIcon("icon/minus-sign.svg", 15, 20);
-        minusIcon.setBounds(470,0,30,30);
-        minusIcon.setForeground(Color.WHITE);
-        minusIcon.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        return minusIcon;
-    }
-
-    public static JButton add_cancelIcon(JDialog dialog){
-        JButton cancelIcon;
-        cancelIcon = handleComponents.createButtonIcon("icon/close.svg", 20, 20);
-        cancelIcon.setBounds(670,0,30,30);
-        cancelIcon.setForeground(Color.WHITE);
-        cancelIcon.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                transition.closeWithZoomOut(dialog);
-            }
-        });
-        return cancelIcon;
-    }
-
-
     public headerBar getHeader() {
         return header;
     }
@@ -182,6 +159,15 @@ public class KhachHang extends JPanel {
         String sdt = table.getValueAt(row,2).toString();
         String diachi = table.getValueAt(row,3).toString();
         return new KhachHangEntity(ma , ten ,sdt, diachi);
+    }
+
+    public void searchfunction(String keyword,String textfield) {
+        keyword = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        textfield = this.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---") && !textfield.trim().isEmpty()) {
+            List<KhachHangEntity> lst = KhachHangBUS.search(keyword,textfield);
+            loadList(lst);
+        } else reloadDAO();
     }
 }
 

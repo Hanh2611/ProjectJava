@@ -5,6 +5,7 @@ import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.FixNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
+import org.projects.GUI.utils.UIUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ public class ShowFixNhanVienConsole extends JDialog {
     }
     public void Show(){
         init();
-        transition.showZoomIn(this , 500 , 700);
+        //transition.showZoomIn(this , 500 , 700);
     }
     public void init(){
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -38,10 +39,12 @@ public class ShowFixNhanVienConsole extends JDialog {
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel, BorderLayout.CENTER);
-
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
         this.pack();
     }
     public void close(){
-        transition.closeWithZoomOut(this);
+//        transition.closeWithZoomOut(this);
+        this.dispose();
     }
 }

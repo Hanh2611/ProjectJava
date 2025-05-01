@@ -4,6 +4,7 @@ import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
+import org.projects.GUI.utils.Helper;
 import org.projects.entity.DanhMucSanPhamEntity;
 import org.projects.entity.Enum.QuyCach;
 
@@ -14,17 +15,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AddSanPhamDialog extends JDialog {
-
-    private SanPham sanPham;
-    private SanPhamAction sanPhamAction;
+    private final SanPham sanPham;
+    private final SanPhamAction sanPhamAction;
 
     private JLabel imgPreview;
-    private labelText tenSanPhamField;
-    private labelText donViField;
-    private labelText giaBanField;
-    private JComboBox<String> quyCachField;
-    private JComboBox<String> phanLoaiField;
-    private JButton lamMoiBtn, huyBtn, luuBtn;
+
+    private labelText tenSanPhamField, donViField, giaBanField;
+
+    private JComboBox<String> quyCachField, phanLoaiField;
+    private JButton uploadBtn, lamMoiBtn, huyBtn, luuBtn, btnAddPhanLoai;
     private JFileChooser fileChooser;
     private File selectedFile;
 
@@ -35,11 +34,11 @@ public class AddSanPhamDialog extends JDialog {
         setSize(450, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        init();
+        initComponent();
         setVisible(true);
     }
 
-    public void init() {
+    public void initComponent() {
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -54,22 +53,21 @@ public class AddSanPhamDialog extends JDialog {
         content.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Upload Button
-        JButton uploadBtn = new JButton("ADD IMAGE");
+        uploadBtn = new JButton("Thêm hình ảnh");
         uploadBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         uploadBtn.addActionListener(e -> uploadImage());
+        content.add(uploadBtn);
 
         // Image preview
         imgPreview = new JLabel();
-        imgPreview.setIcon(new ImageIcon(new ImageIcon("src/main/resources/img/user.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH))); // Set default if needed
-        imgPreview.setPreferredSize(new Dimension(180, 150));
+        imgPreview.setIcon(new ImageIcon(new ImageIcon(Helper.getProductImagePath("product.jpg")).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH))); // Set default if needed
+        imgPreview.setPreferredSize(new Dimension(200, 150));
         imgPreview.setHorizontalAlignment(SwingConstants.CENTER);
         imgPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         JPanel imgPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         imgPanel.setOpaque(false);
         imgPanel.add(imgPreview);
-
-        content.add(uploadBtn);
         content.add(Box.createRigidArea(new Dimension(0, 10)));
         content.add(imgPanel);
 
@@ -99,6 +97,7 @@ public class AddSanPhamDialog extends JDialog {
         JPanel phanLoaiPanel = new JPanel();
         phanLoaiPanel.setLayout(new GridLayout(2, 1));
         JLabel phanLoaiLabel = new JLabel("Chọn phân loại:");
+        JPanel phanLoaiContainer= new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         phanLoaiLabel.setPreferredSize(new Dimension(450, 20));
         phanLoaiPanel.add(phanLoaiLabel);
         DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
@@ -106,8 +105,16 @@ public class AddSanPhamDialog extends JDialog {
                 .stream()
                 .map(DanhMucSanPhamEntity::getTenDanhMuc)
                 .toList();
+        btnAddPhanLoai = new JButton("+");
+        btnAddPhanLoai.setPreferredSize(new Dimension(30, 30));
+        btnAddPhanLoai.addActionListener(e -> {
+            new AddDanhMucDialog(this, this.sanPham).showDialog();
+        });
         phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
-        phanLoaiPanel.add(phanLoaiField);
+        phanLoaiField.setPreferredSize(new Dimension(350, 30));
+        phanLoaiContainer.add(phanLoaiField);
+        phanLoaiContainer.add(btnAddPhanLoai);
+        phanLoaiPanel.add(phanLoaiContainer);
         content.add(phanLoaiPanel);
 
         // Buttons
@@ -142,7 +149,7 @@ public class AddSanPhamDialog extends JDialog {
         if (result == JFileChooser.APPROVE_OPTION) {
             setSelectedFile(fileChooser.getSelectedFile());
             ImageIcon icon = new ImageIcon(getSelectedFile().getAbsolutePath());
-            imgPreview.setIcon(new ImageIcon(icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+            imgPreview.setIcon(new ImageIcon(icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH)));
         }
     }
 
@@ -155,94 +162,8 @@ public class AddSanPhamDialog extends JDialog {
         imgPreview.setIcon(null);
     }
 
-//    public AddSanPhamDialog(SanPham sanPham) {
-//        this.sanPham = sanPham;
-//        sanPhamAction = new SanPhamAction(sanPham, this);
-//        this.setTitle("Thêm sản phẩm");
-//        this.setSize(600, 400);
-//        this.setLocationRelativeTo(null);
-//        this.init();
-//        this.setVisible(true);
-//    }
-//
-//    public void init() {
-//        setLayout(new BorderLayout());
-//        tenSanPhamField = new labelText("Tên sản phẩm", 30, 10);
-//        donViField = new labelText("Đơn vị", 30, 10);
-//        giaBanField = new labelText("Giá bán", 30, 10);
-//
-//        JPanel firstPanel = new JPanel(new GridLayout(3, 1, 0, 0));
-//        firstPanel.add(tenSanPhamField);
-//        firstPanel.add(giaBanField);
-//        firstPanel.add(donViField);
-//
-//        JPanel secondPanel = new JPanel(new GridLayout(4, 1, 0,0));
-//        DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
-//        List<String> listQuyCach = Arrays.stream(QuyCach.values())
-//                .map(QuyCach::getValue)
-//                .toList();
-//        List<String> listDanhMuc = danhMucSanPhamBus.getAllDanhMucSanPham()
-//                .stream()
-//                .map(DanhMucSanPhamEntity::getTenDanhMuc)
-//                .toList();
-//        quyCach = new JLabel("Quy cách");
-//        quyCachField = new JComboBox<>(listQuyCach.toArray(new String[0]));
-//        quyCachField.setSelectedIndex(0);
-//        quyCachField.setPreferredSize(new Dimension(50, 15));
-//
-//        phanLoai = new JLabel("Phân loại");
-//        phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
-//        phanLoaiField.setSelectedIndex(0);
-//        phanLoaiField.setPreferredSize(new Dimension(50, 15));
-//
-//        secondPanel.add(quyCach);
-//        secondPanel.add(quyCachField);
-//        secondPanel.add(phanLoai);
-//        secondPanel.add(phanLoaiField);
-//
-//        JButton uploadButton = new JButton("Tải ảnh");
-//        uploadButton.addActionListener(e -> uploadImage());
-//
-//        JPanel imagePanel = new JPanel(new BorderLayout());
-//        imgPreview = new JLabel("Ảnh xem trước", SwingConstants.CENTER);
-//        imgPreview.setPreferredSize(new Dimension(50, 50));
-//        imgPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-//        imagePanel.add(imgPreview, BorderLayout.CENTER);
-//        imagePanel.add(uploadButton, BorderLayout.SOUTH);
-//
-//        JPanel mainPanel = new JPanel(new GridLayout(1, 3, 10, 10));
-//        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-//        mainPanel.setPreferredSize(new Dimension(600, 300));
-//        mainPanel.add(firstPanel);
-//        mainPanel.add(secondPanel);
-//        mainPanel.add(imagePanel);
-//
-//        add(mainPanel, BorderLayout.CENTER);
-//
-//        JButton confirmButton = new JButton("Thêm");
-//        confirmButton.addActionListener(sanPhamAction);
-//        add(confirmButton, BorderLayout.SOUTH);
-//        pack();
-//    }
-
-//    private void uploadImage() {
-//        fileChooser = new JFileChooser();
-//        int option = fileChooser.showOpenDialog(this);
-//        if (option == JFileChooser.APPROVE_OPTION) {
-//            File selectedFile = fileChooser.getSelectedFile();
-//            ImageIcon icon = new ImageIcon(selectedFile.getAbsolutePath());
-//            Image scaled = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-//            imgPreview.setIcon(new ImageIcon(scaled));
-//            imgPreview.setText(null);
-//        }
-//    }
-
     public SanPham getSanPham() {
         return sanPham;
-    }
-
-    public void setSanPham(SanPham sanPham) {
-        this.sanPham = sanPham;
     }
 
     public JLabel getImgPreview() {

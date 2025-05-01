@@ -19,6 +19,7 @@ public class HoaDonEntity {
         this.trangThai = trangThai;
 
     }
+    public HoaDonEntity() {}
     public int getMaHoaDon() {
         return maHoaDon;
     }
