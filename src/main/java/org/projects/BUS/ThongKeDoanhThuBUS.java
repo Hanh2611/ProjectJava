@@ -20,4 +20,8 @@
         public HashMap<String,Double> getthangvatongtien(String thang,String nam) {
             return tkdtDAO.laytongtienhoadontheothang(thang,nam);
         }
+
+        public List<ThongkeDoanhThuEntity> laydanhsach(String thang,String nam) {
+            return tkdtDAO.laydanhsachtheothangnam(thang,nam);
+        }
     }
