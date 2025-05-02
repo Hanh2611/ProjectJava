@@ -21,6 +21,12 @@ public class ThongkeDoanhThuEntity {
         this.tongchiphinhaptrongthang = tongchiphinhaptrongthang;
         this.loinhuan = loinhuan;
     }
+    public ThongkeDoanhThuEntity(String nam,double tongtienhoadon,double tongchiphinhaptrongthang,double loinhuan) {
+        this.nam = nam;
+        this.tongtienhoadon = tongtienhoadon;
+        this.tongchiphinhaptrongthang = tongchiphinhaptrongthang;
+        this.loinhuan = loinhuan;
+    }
     public int getMahoadon() {
         return mahoadon;
     }
