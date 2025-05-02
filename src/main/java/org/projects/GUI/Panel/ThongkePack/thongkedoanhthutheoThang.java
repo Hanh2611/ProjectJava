@@ -6,10 +6,14 @@ import org.projects.Action.ThongKeDoanhThuTheoThangAction;
 import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.entity.ThongkeDoanhThuEntity;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.util.List;
 
 public class thongkedoanhthutheoThang extends JPanel {
     private JPanel header;
@@ -67,8 +71,41 @@ public class thongkedoanhthutheoThang extends JPanel {
         columnsChartPanel = ColumnsChart.createColumnChart2("Doanh thu theo tháng",columnsChart,"Tháng-năm","Doanh thu",tkdtBUS.getthangvatongtien(thang,nam),900,300);
         thangChartPanel.add(columnsChartPanel);
 
+        tablePanel = new JPanel(new GridLayout(1,1));
+        String[] cols = new String[]{"Tháng","Năm","Tổng tiền","Tổng chi phí nhập trong tháng","lợi nhuận"};
+        doanhthutheothangTableModel = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        doanhthutheothangTableModel.setColumnIdentifiers(cols);
+        doanhthutheothangTable = new JTable();
+        doanhthutheothangTable.setSelectionBackground(new Color(184, 207, 255));
+        doanhthutheothangTable.setSelectionForeground(Color.BLACK);
+        doanhthutheothangTable.setRowHeight(30);
+        doanhthutheothangTable.setFont(new Font("Jetbrains Mono", Font.PLAIN, 10));
+        doanhthutheothangTable.setGridColor(new Color(200,200,200));
+        doanhthutheothangTable.setShowGrid(true);
+        doanhthutheothangTable.setIntercellSpacing(new Dimension(5, 5)); //padding của mỗi ô
+        doanhthutheothangTable.setModel(doanhthutheothangTableModel);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        for(int i = 0 ; i < doanhthutheothangTableModel.getRowCount(); i++){
+            doanhthutheothangTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JTableHeader titleTableheader = doanhthutheothangTable.getTableHeader();
+        titleTableheader.setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
+        titleTableheader.setBackground(new Color(100, 149, 237));
+        titleTableheader.setForeground(Color.WHITE);
+        titleTableheader.setPreferredSize(new Dimension(titleTableheader.getWidth(), 40));
+        titleTableheader.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
+        doanhthutheothangScrollPane = new JScrollPane(doanhthutheothangTable);
+        doanhthutheothangScrollPane.setPreferredSize(new Dimension(940, 250));
+        tablePanel.add(doanhthutheothangScrollPane);
+
         center.add(thangChartPanel);
-//        center.add(tablePanel);
+        center.add(tablePanel);
+        loadData(thang,nam);
         this.add(center, BorderLayout.CENTER);
         //action
         tkdtAction = new ThongKeDoanhThuTheoThangAction(this,tkdtBUS);
@@ -76,6 +113,22 @@ public class thongkedoanhthutheoThang extends JPanel {
         cbxnam.addItemListener(tkdtAction);
         thongke.addActionListener(tkdtAction);
         reset.addActionListener(tkdtAction);
+    }
+
+    public void loadlist(List<ThongkeDoanhThuEntity> lst) {
+        doanhthutheothangTableModel.setRowCount(0);
+        for(ThongkeDoanhThuEntity tkdtE : lst) {
+            doanhthutheothangTableModel.addRow(new Object[]{
+                    tkdtE.getThang(),
+                    tkdtE.getNam(),
+                    tkdtE.getTongtienhoadon(),
+                    tkdtE.getTongchiphinhaptrongthang(),
+                    tkdtE.getLoinhuan()
+            });
+        }
+    }
+    public void loadData(String thang,String nam) {
+        loadlist(tkdtBUS.laydanhsach(thang,nam));
     }
 
     public JPanel getHeader() {
