@@ -10,14 +10,16 @@ import java.util.List;
 
 public class SanPhamBus {
 
-    private final SanPham sanPham;
+    private SanPham sanPham;
     private final SanPhamDAO sanPhamDao;
-    private final DanhMucSanPhamDAO danhMucSanPhamDao;
+
+    public SanPhamBus() {
+        this.sanPhamDao = new SanPhamDAO();
+    }
 
     public SanPhamBus(SanPham sanPham) {
         this.sanPham = sanPham;
         this.sanPhamDao = new SanPhamDAO();
-        this.danhMucSanPhamDao = new DanhMucSanPhamDAO();
     }
 
     public List<SanPhamEntity> getAllSanPham() {
@@ -54,6 +56,10 @@ public class SanPhamBus {
             }
         }
         return listSanPham;
+    }
+
+    public List<SanPhamEntity> getSanPhamByDanhMuc(int id) {
+        return sanPhamDao.getSanPhamByDanhMuc(id);
     }
 
     public boolean addSanPham(SanPhamEntity sanPhamEntity) {
