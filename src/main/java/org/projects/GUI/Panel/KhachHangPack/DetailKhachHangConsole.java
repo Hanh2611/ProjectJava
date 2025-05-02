@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -114,7 +115,7 @@ public class DetailKhachHangConsole extends JPanel { ;
         this.add(right, gbc);
 
         JPanel bothPanel = new JPanel();
-        String[] col = {"Mã SP", "Tên SP", "SL", "Tổng Giá" , "Ngày Lập"};
+        String[] col = {"Mã HD", "Tên SP", "SL", "Tổng Giá" , "Ngày Lập"};
         tableModel = new DefaultTableModel(col, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -152,7 +153,7 @@ public class DetailKhachHangConsole extends JPanel { ;
         CompoundBorder border = BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(10, 10, 10, 10),
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.WHITE, 2),
+                        BorderFactory.createLineBorder(Color.white, 2),
                         BorderFactory.createEmptyBorder(5, 5, 5, 5)
                 )
         );
@@ -176,7 +177,7 @@ public class DetailKhachHangConsole extends JPanel { ;
 
         for (ChiTietHoaDonFullEntity e : ds) {
             Object[] row = {
-                    e.getMaSP(),
+                    e.getMaHD(),
                     e.getTenSP(),
                     e.getSoLuong(),
                     e.getThanhTien(),
@@ -184,6 +185,7 @@ public class DetailKhachHangConsole extends JPanel { ;
             };
             tableModel.addRow(row);
         }
+        ds.sort(Comparator.comparingInt(ChiTietHoaDonFullEntity::getMaHD));
     }
 
     public String getMa() {
