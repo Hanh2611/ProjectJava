@@ -101,26 +101,28 @@ public class TrangChuDemo extends JFrame {
         searchBarContainer.add(searchField, BorderLayout.CENTER);
 
         searchField.addKeyListener(
-            new KeyListener() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    String value = searchField.getText();
-                    if (!value.equals("Nhập tên sản phẩm...") && !value.isEmpty()) {
-                        List<SanPhamEntity> filteredList = sanPhamList.stream().filter(sp -> sp.getTenSanPham().toLowerCase().contains(value.toLowerCase())).toList();
-                        renderListSanPham(filteredList);
+                new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        String value = searchField.getText();
+                        if (!value.equals("Nhập tên sản phẩm...") && !value.isEmpty()) {
+                            List<SanPhamEntity> filteredList = sanPhamList.stream().filter(sp -> sp.getTenSanPham().toLowerCase().contains(value.toLowerCase())).toList();
+                            renderListSanPham(filteredList);
+                        } else {
+                            renderListSanPham(sanPhamList);
+                        }
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
                     }
                 }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-
-                }
-            }
         );
 
         sanPhamList = sanPhamBus.getAllSanPham();
@@ -137,7 +139,7 @@ public class TrangChuDemo extends JFrame {
 
         JPanel productsGridPanel = new JPanel();
 
-        productsGridPanel.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
+        productsGridPanel.setPreferredSize(new Dimension(0,(int) Math.ceil((double) list.size() / 4) * 245));
         productsGridPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         if (list.isEmpty()) {
@@ -167,7 +169,7 @@ public class TrangChuDemo extends JFrame {
             imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             imageLabel.setPreferredSize(new Dimension(200, 120));
 
-            JLabel nameLabel = new JLabel("<html><div style='text-align: center; width: 160px; font-size: 11px; font-weight:bold'>" + sp.getTenSanPham() + "</div></html>");
+            JLabel nameLabel = new JLabel("<html><div style='text-align: center; width: 150px; font-size: 11px; font-weight:bold'>" + sp.getTenSanPham() + "</div></html>");
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             nameLabel.setPreferredSize(new Dimension(150, 60));
 
@@ -198,100 +200,5 @@ public class TrangChuDemo extends JFrame {
         scrollPane.revalidate();
         productContainer.revalidate();
         productContainer.repaint();
-    }
-
-    public static class WrapLayout extends FlowLayout {
-        private Dimension preferredLayoutSize;
-
-        public WrapLayout() {
-            super();
-        }
-
-        public WrapLayout(int align) {
-            super(align);
-        }
-
-        public WrapLayout(int align, int hgap, int vgap) {
-            super(align, hgap, vgap);
-        }
-
-        @Override
-        public Dimension preferredLayoutSize(Container target) {
-            return layoutSize(target, true);
-        }
-
-        @Override
-        public Dimension minimumLayoutSize(Container target) {
-            Dimension minimum = layoutSize(target, false);
-            minimum.width -= (getHgap() + 1);
-            return minimum;
-        }
-
-        private Dimension layoutSize(Container target, boolean preferred) {
-            synchronized (target.getTreeLock()) {
-                // Tính toán chiều cao dựa trên giá trị chiều rộng cha hiện tại
-                int targetWidth = target.getWidth();
-
-                // Nếu chiều rộng bằng 0, sử dụng container cha
-                if (targetWidth == 0)
-                    targetWidth = ((JScrollPane)target.getParent().getParent()).getWidth();
-
-                // Trừ đi padding và scrollbar (nếu cần)
-                targetWidth = targetWidth - (target.getInsets().left + target.getInsets().right + 20);
-
-                int hgap = getHgap();
-                int vgap = getVgap();
-                Insets insets = target.getInsets();
-                int horizontalInsetsAndGap = insets.left + insets.right + (hgap * 2);
-                int maxWidth = targetWidth - horizontalInsetsAndGap;
-
-                // Tính chiều cao cần thiết
-                Dimension dim = new Dimension(0, 0);
-                int rowWidth = 0;
-                int rowHeight = 0;
-
-                int nmembers = target.getComponentCount();
-
-                for (int i = 0; i < nmembers; i++) {
-                    Component m = target.getComponent(i);
-
-                    if (m.isVisible()) {
-                        Dimension d = preferred ? m.getPreferredSize() : m.getMinimumSize();
-
-                        if (rowWidth + d.width > maxWidth) {
-                            addRow(dim, rowWidth, rowHeight);
-                            rowWidth = 0;
-                            rowHeight = 0;
-                        }
-
-                        if (rowWidth > 0) {
-                            rowWidth += hgap;
-                        }
-
-                        rowWidth += d.width;
-                        rowHeight = Math.max(rowHeight, d.height);
-                    }
-                }
-
-                addRow(dim, rowWidth, rowHeight);
-
-                dim.width += horizontalInsetsAndGap;
-                dim.height += insets.top + insets.bottom + vgap * 2;
-
-                preferredLayoutSize = dim;
-                return dim;
-            }
-        }
-
-        // Thêm hàng mới vào tổng chiều cao
-        private void addRow(Dimension dim, int rowWidth, int rowHeight) {
-            dim.width = Math.max(dim.width, rowWidth);
-
-            if (dim.height > 0) {
-                dim.height += getVgap();
-            }
-
-            dim.height += rowHeight;
-        }
     }
 }

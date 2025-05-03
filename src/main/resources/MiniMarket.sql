@@ -330,7 +330,7 @@ VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'trax
         'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg'),
        ('Cà rốt trái từ 150g trở lên', 4, '2kg', 34000, 0, 'KG', 'carottraitu150gtrolen.jpg'),
        ('Bột ngọt Meizan gói 1kg', 3, '1kg', 69000, 0, 'Túi', 'botngotmeizangoi1kg.jpg'),
-       ('Bột ngọt Meizan gói 400g', 1, '400g', 32000, 0, 'Túi', 'botngotmeizangoi400g.jpg'),
+       ('Bột ngọt Meizan gói 400g', 3, '400g', 32000, 0, 'Túi', 'botngotmeizangoi400g.jpg'),
        ('Bánh bơ trứng Richy Karo gói 270g', 6, '270g', 37000, 0, 'Túi', 'banhbotrungrichykarogoi270g.jpg');
 
 
