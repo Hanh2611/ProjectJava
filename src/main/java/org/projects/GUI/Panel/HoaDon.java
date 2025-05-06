@@ -7,6 +7,7 @@ import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.HoaDon.CapNhatHD;
 import org.projects.GUI.DiaLog.HoaDon.ChiTietHD;
 import org.projects.GUI.DiaLog.HoaDon.ThemHD;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.HoaDonEntity;
 
@@ -40,7 +41,7 @@ public class HoaDon extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên khách hàng"});
         this.add(header);
         init();
         reloadDAO();
@@ -65,6 +66,10 @@ public class HoaDon extends JPanel{
         for (String name : header.getHeaderFunc().getHm().keySet()) {
             header.getHeaderFunc().getHm().get(name).addMouseListener(actionHandler);
         }
+        UIUtils.refreshComponent(this);
+        header.getSearch().getSearchComboBox().addItemListener(actionHandler);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(actionHandler);
+        header.getSearch().getSearchButton().addActionListener(actionHandler);
     }
     private JPanel createTablePanel() {
         JPanel right = new JPanel(new BorderLayout());
@@ -72,7 +77,7 @@ public class HoaDon extends JPanel{
         right.setOpaque(false);
 
         // Dữ liệu bảng
-        String[] columnNames = {"Mã hóa đơn", "Mã nhân viên", "Mã khách hàng", "Ngày tạo", "Tổng giá trị","Trạng thái"};
+        String[] columnNames = {"Mã hóa đơn", "Tên nhân viên", "Tên khách hàng", "Ngày tạo", "Tổng giá trị","Trạng thái"};
 
         tableModel = new DefaultTableModel(columnNames, 0);
 
@@ -101,14 +106,25 @@ public class HoaDon extends JPanel{
                 String giaFormatted = formatCurrency((long) hd.getTongGiaTri());
                 tableModel.addRow(new Object[]{
                         hd.getMaHoaDon(),
-                        hd.getMaNV(),
-                        hd.getMaKh(),
+                        hd.getTenNV(),
+                        hd.getTenKh(),
                         hd.getNgayTao(),
                         giaFormatted,
                         hd.getTrangThai(),
                 });
             }
         }
+    }
+    public headerBar getHeader() {
+        return header;
+    }
+    public void searchfunction(String keyword,String textfield) {
+        keyword = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        textfield = this.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("Tất cả") && !textfield.trim().isEmpty()) {
+            List<HoaDonEntity> lst = HoaDonBUS.search(keyword,textfield);
+            loadList(lst);
+        } else reloadDAO();
     }
 private void customizeTable() {
     table.setDefaultEditor(Object.class, null);

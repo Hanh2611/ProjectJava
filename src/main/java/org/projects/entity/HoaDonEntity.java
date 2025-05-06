@@ -9,11 +9,13 @@ public class HoaDonEntity {
     private Timestamp ngayTao;
     private double tongGiaTri;
     private String trangThai;
+    private String tenNV;
+    private String tenKh;
 
-    public HoaDonEntity(int maHoaDon, int maNV,int maKh, Timestamp ngayTao, double tongGiaTri, String trangThai) {
+    public HoaDonEntity(int maHoaDon, String tenNV,String tenKh, Timestamp ngayTao, double tongGiaTri, String trangThai) {
         this.maHoaDon = maHoaDon;
-        this.maNV = maNV;
-        this.maKh = maKh;
+        this.tenNV = tenNV;
+        this.tenKh = tenKh;
         this.ngayTao = ngayTao;
         this.tongGiaTri = tongGiaTri;
         this.trangThai = trangThai;
@@ -55,6 +57,19 @@ public class HoaDonEntity {
     }
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
+    }
+    public String getTenNV() {
+        return tenNV;
+    }
+    public void setTenNV(String tenNV) {
+        this.tenNV = tenNV;
+    }
+    public String getTenKh() {
+        return tenKh;
+    }
+
+    public void setTenKh(String tenKh) {
+        this.tenKh = tenKh;
     }
 
 }
