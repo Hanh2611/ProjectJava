@@ -78,6 +78,19 @@ public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
 
     @Override
     public KhachHangEntity search(int id) {
+        String query = "select * from khach_hang where ma_khach_hang= ?";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement ps = c.prepareStatement(query);) {
+            ps.setInt(1,id);
+            try(ResultSet rs = ps.executeQuery()) {
+                if(rs.next()) {
+                    return new KhachHangEntity(rs.getInt("ma_khach_hang"),rs.getString("ten_khach_hang"),rs.getString("so_dien_thoai"),rs.getString("dia_chi"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
         return null;
     }
 }

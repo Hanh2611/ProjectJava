@@ -5,9 +5,10 @@ import java.sql.Timestamp;
 public class PhieuNhapEntity {
     private int maPN;
     private int maNV;
+    private String tenNV;
+    private String tenNCC;
     private int maNCC;
     private double tongGiaTri;
-    private String tenNCC;
     private Timestamp ngayNhap;
 
     public PhieuNhapEntity( int maPN, int maNV, int maNCC, double tongGiaTri) {
@@ -36,5 +37,16 @@ public class PhieuNhapEntity {
         this.ngayNhap = ngayNhap;
     }
 
+    public void setTenNV(String tenNV) {
+        this.tenNV = tenNV;
+    }
+    public void settenNCC(String tenNCC) {
+        this.tenNCC = tenNCC;
+    }
+
+    public String gettenNCC() {return tenNCC;}
+    public String getTenNV(){
+        return tenNV;
+    }
 }
 

@@ -1,14 +1,12 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.PhieuNhapAction;
-import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.PhieuNhapBUS;
 import org.projects.DAO.PhieuNhapDAO;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.PhieuNhap.CapNhatPN;
 import org.projects.GUI.DiaLog.PhieuNhap.ChiTietPN;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
-import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ChiTietPhieuNhapFullEntity;
 import org.projects.entity.PhieuNhapEntity;
@@ -33,7 +31,7 @@ public class PhieuNhap extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     private PhieuNhapAction actionHandler = new PhieuNhapAction(this);
-    private PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS(this); // ✅ Khai báo BUS
+    private PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS(this); //  Khai báo BUS
     private PhieuNhapEntity phieuNhapEntity;
     private PhieuNhapDAO phieuNhapDAO;
 
@@ -45,13 +43,10 @@ public class PhieuNhap extends JPanel {
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
 //        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"---","mã","tên","địa chỉ"});
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
-
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên NCC"});
         this.add(header);
         init();
         reloadDAO();
-        System.out.println("Người đang đăng nhập có mã: " + Session.curUser.getMaNguoiDung());
-
     }
 
     private void init() {
@@ -77,6 +72,20 @@ public class PhieuNhap extends JPanel {
         }
 
         UIUtils.refreshComponent(this);
+        header.getSearch().getSearchComboBox().addItemListener(actionHandler);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(actionHandler);
+        header.getSearch().getSearchButton().addActionListener(actionHandler);
+    }
+    public headerBar getHeader() {
+        return header;
+    }
+    public void searchfunction(String keyword,String textfield) {
+        keyword = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        textfield = this.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---") && !textfield.trim().isEmpty()) {
+            List<PhieuNhapEntity> lst = PhieuNhapBUS.search(keyword,textfield);
+            loadList(lst);
+        } else reloadDAO();
     }
 
     public void reloadDAO() {
@@ -94,8 +103,8 @@ public class PhieuNhap extends JPanel {
                 String tongFormatted = formatCurrency((long) pn.getTongGiaTri());
                 tableModel.addRow(new Object[]{
                         pn.getMaPN(),
-                        pn.getMaNV(),
-                        pn.getMaNCC(),
+                        pn.getTenNV(),
+                        pn.getTenNCC(),
                         pn.getNgayNhap(),
                         tongFormatted
                 });
@@ -109,7 +118,7 @@ public class PhieuNhap extends JPanel {
         right.setBackground(Color.WHITE);
         right.setOpaque(false);
 
-        String[] columnNames = {"Mã Phiếu Nhập", "Mã Nhân Viên", "Mã NCC", "Ngày Nhập", "Tổng tiền"};
+        String[] columnNames = {"Mã Phiếu Nhập", "Tên Nhân Viên", "Tên Nhà Cung Cấp", "Ngày Nhập", "Tổng tiền"};
         tableModel = new DefaultTableModel(columnNames, 0);
         table = new JTable(tableModel);
         customizeTable();

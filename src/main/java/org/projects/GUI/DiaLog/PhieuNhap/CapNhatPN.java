@@ -488,6 +488,10 @@ public class CapNhatPN extends JPanel {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp!");
                     return;
                 }
+                if (modelDanhSachNhap.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
+                    return;
+                }
                 NhaCungCapEntity selectedNCC = nccMap.get(selectedName);
                 int maNCC = selectedNCC.getMaNCC();
                 long tongTien = ThemPN.parseTien(txtTongTien.getText()); // parse ngược lại số
@@ -497,7 +501,6 @@ public class CapNhatPN extends JPanel {
                 pn.setMaNCC(maNCC);
                 pn.setMaNV(maNV);
                 pn.setTongGiaTri(tongTien);
-                System.out.println("Đang sửa phiếu nhập với mã: " + maPN);
 
                 int result = new PhieuNhapDAO().sua(pn);
 

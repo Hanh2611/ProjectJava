@@ -15,6 +15,7 @@ public class PhieuNhapBUS {
     public PhieuNhapBUS(PhieuNhap phieuNhap) {
         this.phieuNhap = phieuNhap;
     }
+
     public static List<PhieuNhapEntity> getList(){
         listPN = pnDao.showlist();
         return listPN;
@@ -24,6 +25,8 @@ public class PhieuNhapBUS {
         if(phieuNhap != null){
             if(pnDao.them(pn) > 0){
                 phieuNhap.reloadDAO();
+                listPN = getList();  // Cập nhật lại listPN
+
                 return true;
             }
         }
@@ -34,6 +37,8 @@ public class PhieuNhapBUS {
         if(phieuNhap != null){
             if(pnDao.sua(pn) > 0){
                 phieuNhap.reloadDAO();
+                listPN = getList();  // Cập nhật lại listPN
+
                 return true;
             }
         }
@@ -45,6 +50,7 @@ public class PhieuNhapBUS {
         if(phieuNhap != null){
             if(pnDao.xoa(pn) > 0){
                 phieuNhap.reloadDAO();
+                listPN = getList();  // Cập nhật lại listPN
                 return true;
             }
         }
@@ -52,38 +58,43 @@ public class PhieuNhapBUS {
     }
 
     //khong su dung
+
     public static List<PhieuNhapEntity> search(String keyword, String textField) {
-        getList();
-        List<PhieuNhapEntity> newlist = new ArrayList<PhieuNhapEntity>();
+        listPN = getList();  // Cập nhật lại listPN
+        List<PhieuNhapEntity> newlist = new ArrayList<>();
         textField = textField.toLowerCase();
-        switch (keyword) {
-            case "---":
+        switch (keyword.toLowerCase()) {
+            case "tất cả":
                 newlist.addAll(listPN);
                 break;
-
             case "mã":
-                for (PhieuNhapEntity pn : listPN) {
-                    if (String.valueOf(pn.getMaNCC()).contains(textField)) {
-                        newlist.add(pn);
+                for (PhieuNhapEntity phieuNhapEntity : listPN) {
+                    if (String.valueOf(phieuNhapEntity.getMaPN()).contains(textField)) {
+                        newlist.add(phieuNhapEntity);
                     }
                 }
                 break;
-            case "tên":
-                for (PhieuNhapEntity pn : listPN) {
-                    if (String.valueOf(pn.getMaNCC()).contains(textField)) {}
+            case "tên nhân viên":
+                for (PhieuNhapEntity phieuNhapEntity : listPN) {
+                    if (String.valueOf(phieuNhapEntity.getTenNV()).toLowerCase().contains(textField)) {
+                        newlist.add(phieuNhapEntity);
+                    }
                 }
                 break;
-            case "địa chỉ":
-                for(PhieuNhapEntity pn : listPN){
-                    if(String.valueOf(pn.getMaNCC()).contains(textField)){
-                        newlist.add(pn);
+            case "tên ncc":
+                for (PhieuNhapEntity phieuNhapEntity : listPN) {
+                    if (String.valueOf(phieuNhapEntity.getTenNCC()).toLowerCase().contains(textField)) {
+                        newlist.add(phieuNhapEntity);
                     }
                 }
                 break;
             default:
-                System.out.println("khong tim thay" + keyword + "va" + textField);
+                System.out.println("không tìm thấy " + keyword + " và " + textField);
                 break;
         }
-    return newlist;
+        System.out.println("danh sach ban dau: " + listPN.size());
+        System.out.println("danh sach sau khi tim kiem theo " + keyword + " va " + textField + ": " + newlist.size());
+        return newlist;
     }
+
 }
