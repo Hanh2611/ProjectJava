@@ -26,7 +26,7 @@ CREATE TABLE cap_quyen
 
 CREATE TABLE nguoi_dung
 (
-    ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY,
+    ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY auto_increment,
     loai_nguoi_dung ENUM ('nhan_vien_kho', 'khach_hang', 'nhan_vien_ban_hang') NOT NULL,
     ten_nguoi_dung  VARCHAR(50)                                                NOT NULL
 );

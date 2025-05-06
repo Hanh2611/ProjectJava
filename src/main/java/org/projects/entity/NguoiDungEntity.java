@@ -1,21 +1,27 @@
 package org.projects.entity;
 
-public class NguoiDung {
+public class NguoiDungEntity {
     private int maNguoiDung;
     private String loaiNguoiDung;
+    private String tenNguoiDung;
 
-    public NguoiDung() {
+    public NguoiDungEntity() {
         loaiNguoiDung = "khach_hang";
     }
 
-    public NguoiDung(int maNguoiDung) {
+    public NguoiDungEntity(int maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
         loaiNguoiDung = "khach_hang";
     }
 
-    public NguoiDung(int maNguoiDung, String loaiNguoiDung) {
+    public NguoiDungEntity(int maNguoiDung, String loaiNguoiDung) {
         this.maNguoiDung = maNguoiDung;
         this.loaiNguoiDung = loaiNguoiDung;
+    }
+
+    public NguoiDungEntity(String loaiNguoiDung,String tenNguoiDung) {
+        this.loaiNguoiDung = loaiNguoiDung;
+        this.tenNguoiDung = tenNguoiDung;
     }
 
     public int getMaNguoiDung() {
@@ -32,5 +38,11 @@ public class NguoiDung {
 
     public void setLoaiNguoiDung(String loaiNguoiDung) {
         this.loaiNguoiDung = loaiNguoiDung;
+    }
+    public String getTenNguoiDung() {
+        return tenNguoiDung;
+    }
+    public void setTenNguoiDung(String tenNguoiDung) {
+        this.tenNguoiDung = tenNguoiDung;
     }
 }

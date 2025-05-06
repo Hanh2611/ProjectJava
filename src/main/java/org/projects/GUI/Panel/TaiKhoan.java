@@ -1,10 +1,10 @@
 package org.projects.GUI.Panel;
 
-import org.projects.BUS.PhanQuyenBUS;
+import org.projects.Action.TaiKhoanAction;
 import org.projects.BUS.TaiKhoanBUS;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
-import org.projects.GUI.utils.Session;
+import org.projects.entity.TaiKhoanEntity;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -30,6 +30,7 @@ public class TaiKhoan extends JPanel{
     private JPanel contentPanel;
     private DefaultTableModel tableModel;
     private String[][] listItemHeader;
+    private TaiKhoanAction tkAction;
     public TaiKhoan() {
         listItemHeader = new String[][]{
                 {"icon/add.svg", "Thêm", "add"},
@@ -38,6 +39,7 @@ public class TaiKhoan extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
+        tkAction = new TaiKhoanAction(this,null);
         this.setBackground(Color.decode("#CAECF7"));
         this.setOpaque(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -88,11 +90,56 @@ public class TaiKhoan extends JPanel{
         mainTable.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        //action
+        for(String name : this.getHeader().getHeaderFunc().getHm().keySet()) {
+            this.getHeader().getHeaderFunc().getHm().get(name).addMouseListener(tkAction);
+        }
+
     }
     public void loadDataIntoTable() {
-        List<org.projects.entity.TaiKhoan> listTaiKhoan = TaiKhoanBUS.getListTaiKhoan();
-        for (org.projects.entity.TaiKhoan t : listTaiKhoan) {
+        List<TaiKhoanEntity> listTaiKhoanEntity = TaiKhoanBUS.getListTaiKhoan();
+        for (TaiKhoanEntity t : listTaiKhoanEntity) {
             tableModel.addRow(new Object[]{TaiKhoanBUS.getTenNguoiDung(t.getMaNguoiDung()), t.getMaNguoiDung(), t.getTenDangNhap(), TaiKhoanBUS.getLoaiNguoiDung(t.getMaNguoiDung()), t.getTrangThai()});
         }
+    }
+
+    public headerBar getHeader() {
+        return header;
+    }
+
+    public void setHeader(headerBar header) {
+        this.header = header;
+    }
+
+    public JTable getMainTable() {
+        return mainTable;
+    }
+
+    public void setMainTable(JTable mainTable) {
+        this.mainTable = mainTable;
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
+    }
+
+    public JPanel getContentPanel() {
+        return contentPanel;
+    }
+
+    public void setContentPanel(JPanel contentPanel) {
+        this.contentPanel = contentPanel;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
+    }
+
+    public void setTableModel(DefaultTableModel tableModel) {
+        this.tableModel = tableModel;
     }
 }
