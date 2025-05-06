@@ -177,4 +177,35 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
         return null;
     }
 
+    public List<SanPhamEntity> getSanPhamByDanhMuc(int id) {
+        List<SanPhamEntity> list = new ArrayList<>();
+        String query = """
+                SELECT *
+                FROM san_pham
+                JOIN danh_muc_san_pham on san_pham.phan_loai = danh_muc_san_pham.ma_danh_muc
+                WHERE phan_loai = ?
+                ORDER BY san_pham.ma_san_pham
+                """;
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SanPhamEntity sp = new SanPhamEntity(rs.getInt("ma_san_pham"),
+                                                     rs.getString("ten_san_pham"),
+                                                     new DanhMucSanPhamEntity(rs.getInt("ma_danh_muc"), rs.getString("ten_danh_muc")),
+                                                     rs.getString("don_vi"),
+                                                     rs.getDouble("gia_ban"),
+                                                     rs.getDouble("so_luong_ton"),
+                                                     QuyCach.fromValue(rs.getString("quy_cach")),
+                                                     rs.getString("img"),
+                                                     rs.getBoolean("trang_thai"));
+                list.add(sp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

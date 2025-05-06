@@ -180,9 +180,11 @@ public class AddNhanVienConsole extends JPanel {
         JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
+        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage);
+        //FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 220 , 220);
+        //JLabel userLabel = new JLabel(user);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
@@ -199,22 +201,23 @@ public class AddNhanVienConsole extends JPanel {
             String actionCommand = e.getActionCommand();
 
             if ("ADD IMAGE".equals(actionCommand)) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
-
-                int result = fileChooser.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    java.io.File selectedFile = fileChooser.getSelectedFile();
-                    System.out.println("File được chọn: " + selectedFile.getAbsolutePath());
-                    changeImage = selectedFile.getAbsolutePath();
-                    JPanel newParentImg = getJPanel(changeImage);
-                    mainImg.remove(parentImg);
-                    mainImg.add(newParentImg, BorderLayout.CENTER);
-                    parentImg = newParentImg;
-                    mainImg.revalidate();
-                    mainImg.repaint();
-                }
+//                JFileChooser fileChooser = new JFileChooser();
+//                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
+//
+//                int result = fileChooser.showOpenDialog(null);
+//                if (result == JFileChooser.APPROVE_OPTION) {
+//                    java.io.File selectedFile = fileChooser.getSelectedFile();
+//                    System.out.println("File được chọn: " + selectedFile.getAbsolutePath());
+//                    changeImage = selectedFile.getAbsolutePath();
+//                    JPanel newParentImg = getJPanel(changeImage);
+//                    mainImg.remove(parentImg);
+//                    mainImg.add(newParentImg, BorderLayout.CENTER);
+//                    parentImg = newParentImg;
+//                    mainImg.revalidate();
+//                    mainImg.repaint();
+//                }
+                JOptionPane.showMessageDialog(null, "Chức năng hiện đang bảo trì.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         button_add_image.setBackground(new Color(135, 206, 250));
@@ -226,7 +229,7 @@ public class AddNhanVienConsole extends JPanel {
     private static JPanel getJPanel(String path) {
 //        FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);
         ImageIcon addIcon_user = new ImageIcon(path);
-        Image scale = addIcon_user.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        Image scale = addIcon_user.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
 //        JLabel img = new RoundedImageLabel(addIcon_user , 100 , 100);
         JLabel img = new JLabel(new ImageIcon(scale));
         img.setHorizontalAlignment(SwingConstants.CENTER);
@@ -285,7 +288,7 @@ public class AddNhanVienConsole extends JPanel {
         genderPanel = getRadioSex(true, true);
         genderPanel.repaint();
         genderPanel.revalidate();
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
+        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
         isResettingComboBox = false;
         JPanel newParentImg = getJPanel(changeImage);
         mainImg.remove(parentImg);

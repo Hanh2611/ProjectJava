@@ -113,7 +113,7 @@ public class SanPham extends JPanel{
                     sanPhamEntity.getTenSanPham(),
                     sanPhamEntity.getPhanLoai().getTenDanhMuc(),
                     (sanPhamEntity.getQuyCach().equals(QuyCach.KG) || sanPhamEntity.getQuyCach().equals(QuyCach.G))?
-                            Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getDonVi():
+                            Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getQuyCach().getValue():
                             Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getQuyCach().getValue() + "/" + sanPhamEntity.getDonVi(),
                     sanPhamEntity.isTrangThai() ? "Đang kinh doanh" : "Ngừng kinh doanh",
                 });
