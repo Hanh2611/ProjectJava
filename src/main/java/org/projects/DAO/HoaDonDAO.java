@@ -12,7 +12,19 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
     @Override
     public List<HoaDonEntity> showlist() {
         List<HoaDonEntity> list = new ArrayList<>();
-        String query = "SELECT * FROM hoa_don";
+        String query = "SELECT \n" +
+                "    hd.ma_hoa_don, \n" +
+                "    nv.ten_nhan_vien, \n" +
+                "    kh.ten_khach_hang, \n" +
+                "    hd.ngay_tao, \n" +
+                "    hd.tong_gia_tri, \n" +
+                "    hd.trang_thai\n" +
+                "FROM \n" +
+                "    hoa_don hd\n" +
+                "JOIN \n" +
+                "    nhan_vien nv ON hd.ma_nhan_vien = nv.ma_nhan_vien\n" +
+                "JOIN \n" +
+                "    khach_hang kh ON hd.ma_khach_hang = kh.ma_khach_hang";
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement ps = c.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -20,8 +32,8 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
             while (rs.next()) {
                 HoaDonEntity hd = new HoaDonEntity(
                         rs.getInt("ma_hoa_don"),
-                        rs.getInt("ma_nhan_vien"),
-                        rs.getInt("ma_khach_hang"),
+                        rs.getString("ten_nhan_vien"),
+                        rs.getString("ten_khach_hang"),
                         rs.getTimestamp("ngay_tao"),
                         rs.getDouble("tong_gia_tri"),
                         rs.getString("trang_thai") // ✅ thêm trạng thái ở đây

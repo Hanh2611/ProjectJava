@@ -16,11 +16,12 @@ import org.projects.entity.KhachHangEntity;
 import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
@@ -29,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class ThemHD extends JPanel {
     JTextField timKiem, hienthi_masp, hienthi_tensp, nhapsoluong, nhapgiaban,
@@ -91,7 +93,7 @@ public class ThemHD extends JPanel {
         // Bảng dữ liệu sản phẩm
         String[] columnNames = {"Mã SP", "Tên SP","Giá bán"};
 
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -123,7 +125,6 @@ public class ThemHD extends JPanel {
         for (int i = 0; i < tableSanPham.getColumnCount(); i++) {
             tableSanPham.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
-
         scrollPane = new JScrollPane(tableSanPham);
         scrollPane.setBounds(10, 50, 430, 300);
         panelLeft.add(scrollPane);
@@ -337,6 +338,34 @@ public class ThemHD extends JPanel {
         btnThemKH.addActionListener(e -> {
             showChonKhachHangDialog();
         });
+        timKiem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                timKiemSanPham();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                timKiemSanPham();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                timKiemSanPham();
+            }
+
+            private void timKiemSanPham() {
+                String keyword = timKiem.getText().trim().toLowerCase();
+                TableRowSorter<TableModel> sorter = new TableRowSorter<>(tableSanPham.getModel());
+                tableSanPham.setRowSorter(sorter);
+                if (keyword.isEmpty() || keyword.equals("tìm kiếm mã sản phẩm, tên sản phẩm")) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(keyword)));
+                }
+            }
+        });
+
 // 🆕 Thêm sự kiện cho nút "Thêm Sản Phẩm"
         themSP.addActionListener(e -> {
             String maSP = hienthi_masp.getText();
@@ -578,8 +607,32 @@ public class ThemHD extends JPanel {
         dialog.setLayout(new BorderLayout(10, 10));
         dialog.getContentPane().setBackground(new Color(250, 250, 250));
 
+
         Font font = new Font("JetBrains Mono", Font.PLAIN, 13);
         Font headerFont = new Font("JetBrains Mono", Font.BOLD, 13);
+
+        JTextField txtTimKiem = new JTextField();
+        txtTimKiem.setPreferredSize(new Dimension(460, 28));
+        txtTimKiem.setFont(font);
+        txtTimKiem.setText("Tìm theo tên hoặc số điện thoại");
+        txtTimKiem.setForeground(Color.GRAY);
+
+        txtTimKiem.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                if (txtTimKiem.getText().equals("Tìm theo tên hoặc số điện thoại")) {
+                    txtTimKiem.setText("");
+                    txtTimKiem.setForeground(Color.BLACK);
+                }
+            }
+
+            public void focusLost(FocusEvent e) {
+                if (txtTimKiem.getText().isEmpty()) {
+                    txtTimKiem.setText("Tìm theo tên hoặc số điện thoại");
+                    txtTimKiem.setForeground(Color.GRAY);
+                }
+            }
+        });
+
 
         // Bảng khách hàng
         DefaultTableModel model = new DefaultTableModel(new Object[]{"Tên khách hàng", "Số điện thoại"}, 0) {
@@ -588,6 +641,8 @@ public class ThemHD extends JPanel {
             }
         };
         JTable table = new JTable(model);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(sorter);
         table.setFont(font);
         table.getTableHeader().setFont(headerFont);
         table.setRowHeight(24);
@@ -595,7 +650,20 @@ public class ThemHD extends JPanel {
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        txtTimKiem.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { filter(); }
+            public void removeUpdate(DocumentEvent e) { filter(); }
+            public void changedUpdate(DocumentEvent e) { filter(); }
 
+            private void filter() {
+                String text = txtTimKiem.getText().trim();
+                if (text.isEmpty() || text.equals("Tìm theo tên hoặc số điện thoại")) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
+                }
+            }
+        });
 // Hiển thị đường kẻ
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
@@ -655,7 +723,10 @@ public class ThemHD extends JPanel {
 
         // Sự kiện hủy
         btnHuy.addActionListener(e -> dialog.dispose());
-
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        searchPanel.setBackground(new Color(250, 250, 250));
+        searchPanel.add(txtTimKiem);
+        dialog.add(searchPanel, BorderLayout.NORTH);
         dialog.add(scrollPane, BorderLayout.CENTER);
         dialog.add(btnPanel, BorderLayout.SOUTH);
         dialog.setVisible(true);

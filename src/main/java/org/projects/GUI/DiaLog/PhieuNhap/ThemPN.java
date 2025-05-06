@@ -16,9 +16,9 @@ import org.projects.entity.PhieuNhapEntity;
 import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,6 +29,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 
 public class ThemPN extends JPanel {
@@ -317,6 +318,34 @@ public class ThemPN extends JPanel {
         headerdanhSachSanPhamNhap.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
         headerdanhSachSanPhamNhap.setPreferredSize(new Dimension(headerdanhSachSanPhamNhap.getWidth(), 35));
 // 🆕 Thêm sự kiện cho nút "Thêm Sản Phẩm"
+        timKiem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                timKiemSanPham();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                timKiemSanPham();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                timKiemSanPham();
+            }
+
+            private void timKiemSanPham() {
+                String keyword = timKiem.getText().trim().toLowerCase();
+                TableRowSorter<TableModel> sorter = new TableRowSorter<>(tableSanPham.getModel());
+                tableSanPham.setRowSorter(sorter);
+                if (keyword.isEmpty() || keyword.equals("tìm kiếm mã sản phẩm, tên sản phẩm")) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(keyword)));
+                }
+            }
+        });
+
         themSP.addActionListener(e -> {
             String maSP = hienthi_masp.getText();
             String tenSP = hienthi_tensp.getText();
@@ -510,6 +539,10 @@ public class ThemPN extends JPanel {
                     String selectedName = (String) nhapNCC.getSelectedItem();
                     if (selectedName == null || !nccMap.containsKey(selectedName)) {
                         JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp!");
+                        return;
+                    }
+                    if (modelDanhSachNhap.getRowCount() == 0) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
                         return;
                     }
                     NhaCungCapEntity selectedNCC = nccMap.get(selectedName);
