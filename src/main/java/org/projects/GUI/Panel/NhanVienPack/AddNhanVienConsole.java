@@ -183,13 +183,13 @@ public class AddNhanVienConsole extends JPanel {
         changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage);
-        //FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 220 , 220);
-        //JLabel userLabel = new JLabel(user);
+        FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 210 , 210);
+        JLabel userLabel = new JLabel(user);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
         mainImg.add(button_add_image, BorderLayout.NORTH);
-        mainImg.add(parentImg, BorderLayout.CENTER);
+        mainImg.add(userLabel, BorderLayout.CENTER);
         mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }
