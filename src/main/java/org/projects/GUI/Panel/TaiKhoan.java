@@ -49,7 +49,7 @@ public class TaiKhoan extends JPanel{
 
     public void initHeader() {
 //        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--"});
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","tên đăng nhập","mã người dùng"});
 
         this.add(header);
     }
@@ -94,6 +94,9 @@ public class TaiKhoan extends JPanel{
         for(String name : this.getHeader().getHeaderFunc().getHm().keySet()) {
             this.getHeader().getHeaderFunc().getHm().get(name).addMouseListener(tkAction);
         }
+        header.getSearch().getSearchComboBox().addItemListener(tkAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(tkAction);
+        header.getSearch().getSearchButton().addActionListener(tkAction);
 
     }
     public void loadDataIntoTable() {
@@ -115,6 +118,27 @@ public class TaiKhoan extends JPanel{
         }
         return null;
     }
+
+    public void searchFunction(String key, String word) {
+        key = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        word = this.getHeader().getSearch().getSearchField().getText().trim();
+        if (!key.equals("---") && !word.isEmpty()) {
+            List<TaiKhoanEntity> tks = TaiKhoanBUS.search(key, word);
+            tableModel.setRowCount(0); // Xóa bảng
+            for (TaiKhoanEntity t : tks) {
+                tableModel.addRow(new Object[]{
+                        TaiKhoanBUS.getTenNguoiDung(t.getMaNguoiDung()),
+                        t.getMaNguoiDung(),
+                        t.getTenDangNhap(),
+                        TaiKhoanBUS.getLoaiNguoiDung(t.getMaNguoiDung()),
+                        t.getTrangThai()
+                });
+            }
+        } else {
+            loadDataIntoTable();
+        }
+    }
+
 
     public headerBar getHeader() {
         return header;
