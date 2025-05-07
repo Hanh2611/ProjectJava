@@ -88,7 +88,7 @@ public class TrangChuDemo extends JFrame {
             int selectedIndex = danhMucComboBox.getSelectedIndex();
             System.out.println(selectedIndex);
             if (selectedIndex == 0) {
-                sanPhamList = sanPhamBus.getAllSanPham();
+                sanPhamList = sanPhamBus.getAllAvailableSanPham();
             } else {
                 int selectedId = danhMucList.get(selectedIndex - 1).getId();
                 sanPhamList = sanPhamBus.getSanPhamByDanhMuc(selectedId);
@@ -125,7 +125,7 @@ public class TrangChuDemo extends JFrame {
                 }
         );
 
-        sanPhamList = sanPhamBus.getAllSanPham();
+        sanPhamList = sanPhamBus.getAllAvailableSanPham();
 
         center.add(searchBarContainer, BorderLayout.NORTH);
         center.add(productContainer, BorderLayout.CENTER);

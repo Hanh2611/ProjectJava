@@ -26,6 +26,10 @@ public class SanPhamBus {
         return sanPhamDao.showlist();
     }
 
+    public List<SanPhamEntity> getAllAvailableSanPham() {
+        return sanPhamDao.showlistAvailable();
+    }
+
     public SanPhamEntity getSanPhamById(int id) {
         return sanPhamDao.findById(id);
     }
