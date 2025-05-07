@@ -2,6 +2,7 @@ package org.projects.GUI.DiaLog;
 
 import org.projects.Action.TaiKhoanAction;
 import org.projects.BUS.TaiKhoanBUS;
+import org.projects.DAO.NhomQuyenDAO;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.labelText;
@@ -19,10 +20,9 @@ public class TaiKhoanDialog extends JDialog {
     private String tkType;
 
     private JPanel center;
-    private labelText tennguoidung;
-    private labelText loainguoidung;
     private labelText tendangnhap;
     private labelText matkhau;
+    private labelText manhanvien;
     private labelText quyen;
     private labelText trangthai;
 
@@ -33,39 +33,26 @@ public class TaiKhoanDialog extends JDialog {
     private TaiKhoanAction tkAction;
     private mainTransition ts = new mainTransition();
 
-    public TaiKhoanDialog(String tkType, TaiKhoan tk) {
+    public TaiKhoanDialog(String tkType, TaiKhoan tk,TaiKhoanEntity tkEntity) {
         this.tk = tk;
         this.tkType = tkType;
+        this.tkEntity = tkEntity;
         tkAction = new TaiKhoanAction(tk,this);
+
         this.setTitle(setType());
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.getContentPane().setBackground(new Color(240, 240, 240));
-        this.tkAction = new TaiKhoanAction(tk, this);
 
         init();
-        getEdit(getTKType());
-        ts.showZoomIn(this, 600, 600);
+        getEdit(tkType);
+        ts.showZoomIn(this, 600, 400);
     }
 
     private void init() {
-        center = new JPanel(new GridLayout(6, 1, 10, 10));
+        center = new JPanel(new GridLayout(3, 1, 10, 10));
         center.setBorder(new EmptyBorder(20, 20, 20, 20));
         center.setBackground(new Color(240, 240, 240));
-
-        tennguoidung = new labelText("Tên người dùng", 30, 5);
-        loainguoidung = new labelText("Loại người dùng", (ArrayList<String>) TaiKhoanBUS.getDanhsachLoainguoidung());
-        tendangnhap = new labelText("Tên đăng nhập", 30, 5);
-        matkhau = new labelText("Mật khẩu", 30, 5);
-        quyen = new labelText("Quyền",(ArrayList<String>) TaiKhoanBUS.laytennhomquyen());
-        trangthai = new labelText("Trạng thái", (ArrayList<String>) TaiKhoanBUS.laytrangthai());
-
-        center.add(tennguoidung);
-        center.add(loainguoidung);
-        center.add(tendangnhap);
-        center.add(matkhau);
-        center.add(quyen);
-        center.add(trangthai);
 
         bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         bottom.setBackground(new Color(240, 240, 240));
@@ -90,7 +77,6 @@ public class TaiKhoanDialog extends JDialog {
                 return "Thêm";
             case "update":
                 return "Cập nhật";
-            case "delete":
             case "detail":
                 return "----";
             default:
@@ -112,19 +98,74 @@ public class TaiKhoanDialog extends JDialog {
         return "Tài khoản";
     }
 
-    private void getEdit(String tkType) {
-        switch (tkType) {
+    private void getEdit(String typeTK) {
+        switch (tkType.toLowerCase()) {
+            case "add":
+                initAdd();
+                break;
             case "update":
-                getEdit(true);
+                initUpdate();
                 break;
             case "detail":
-                getEdit(false);
+                initDetail();
                 break;
         }
     }
 
-    public void getEdit(Boolean edit) {
+    private void initAdd() {
+        tendangnhap = new labelText("Tên đăng nhập", 30, 5);
+        matkhau = new labelText("Mật khẩu", 30, 5);
+        manhanvien = new labelText("Mã nhân viên", (ArrayList<String>) TaiKhoanBUS.laydanhsachnv());
 
+        center.add(tendangnhap);
+        center.add(matkhau);
+        center.add(manhanvien);
+    }
+
+    private void initUpdate() {
+        matkhau = new labelText("Mật khẩu", 30, 5);
+
+        quyen = new labelText("Quyền", (ArrayList<String>) NhomQuyenDAO.getDanhsachtennhomquyen());
+        trangthai = new labelText("Trạng thái", (ArrayList<String>) TaiKhoanBUS.laytrangthai());
+
+        center.add(matkhau);
+        center.add(quyen);
+        center.add(trangthai);
+
+
+        if (tkEntity != null) {
+            matkhau.getTextField().setText(tkEntity.getMatKhau());
+            quyen.getCbx().setSelectedItem(TaiKhoanBUS.getTenQuyen(tkEntity.getMaNguoiDung()));
+            trangthai.getCbx().setSelectedItem(tkEntity.getTrangThai());
+        }
+    }
+
+    private void initDetail() {
+        tendangnhap = new labelText("Tên đăng nhập", 30, 5);
+        labelText tenNguoiDung = new labelText("Tên người dùng", 30, 5);
+        labelText loaiTaiKhoan = new labelText("Loại tài khoản", 30, 5);
+        quyen = new labelText("Quyền", (ArrayList<String>) NhomQuyenDAO.getDanhsachtennhomquyen());
+        trangthai = new labelText("Trạng thái", (ArrayList<String>) TaiKhoanBUS.laytrangthai());
+
+        tendangnhap.getTextField().setEnabled(false);
+        tenNguoiDung.getTextField().setEnabled(false);
+        loaiTaiKhoan.getTextField().setEnabled(false);
+        quyen.getCbx().setEnabled(false);
+        trangthai.getCbx().setEnabled(false);
+
+        if (tkEntity != null) {
+            tendangnhap.getTextField().setText(tkEntity.getTenDangNhap());
+            tenNguoiDung.getTextField().setText(TaiKhoanBUS.getTenNguoiDung(tkEntity.getMaNguoiDung()));
+            loaiTaiKhoan.getTextField().setText(TaiKhoanBUS.getLoaiNguoiDung(tkEntity.getMaNguoiDung()));
+            quyen.getCbx().setSelectedItem(TaiKhoanBUS.getTenQuyen(tkEntity.getMaNguoiDung()));
+            trangthai.getCbx().setSelectedItem((tkEntity.getTrangThai()));
+        }
+
+        center.add(tenNguoiDung);
+        center.add(tendangnhap);
+        center.add(loaiTaiKhoan);
+        center.add(quyen);
+        center.add(trangthai);
     }
     private String getTKType() {
         return this.tkType;
@@ -144,22 +185,6 @@ public class TaiKhoanDialog extends JDialog {
 
     public void setCenter(JPanel center) {
         this.center = center;
-    }
-
-    public labelText getTennguoidung() {
-        return tennguoidung;
-    }
-
-    public void setTennguoidung(labelText tennguoidung) {
-        this.tennguoidung = tennguoidung;
-    }
-
-    public labelText getLoainguoidung() {
-        return loainguoidung;
-    }
-
-    public void setLoainguoidung(labelText loainguoidung) {
-        this.loainguoidung = loainguoidung;
     }
 
     public labelText getMatkhau() {
@@ -216,5 +241,29 @@ public class TaiKhoanDialog extends JDialog {
 
     public void setCancel(JButton cancel) {
         this.cancel = cancel;
+    }
+
+    public TaiKhoan getTk() {
+        return tk;
+    }
+
+    public void setTk(TaiKhoan tk) {
+        this.tk = tk;
+    }
+
+    public TaiKhoanEntity getTkEntity() {
+        return tkEntity;
+    }
+
+    public void setTkEntity(TaiKhoanEntity tkEntity) {
+        this.tkEntity = tkEntity;
+    }
+
+    public labelText getManhanvien() {
+        return manhanvien;
+    }
+
+    public void setManhanvien(labelText manhanvien) {
+        this.manhanvien = manhanvien;
     }
 }

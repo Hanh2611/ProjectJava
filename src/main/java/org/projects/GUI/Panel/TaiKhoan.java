@@ -19,7 +19,7 @@ import java.util.List;
 //todo: mã người dùng sẽ được tạo tự động rồi lấy cái mã đó để có thể set cho nhân viên
 //todo: trong phần chi tiết ta có tên người dùng(Lấy từ mã người dùng), tên đăng nhập, loại tài khoản, các quyền, trạng thái;
 //todo: (Nhớ dùng regex) trong phần thêm ta sẽ nhập tên đăng nhập, mật khẩu, mã nhân viên (vì trước đó cần có nhân viên nên ta sẽ tạo 1 người dùng, rồi sau đó tạo tài khoản với mã người dùng đó)
-//todo: (Nhớ dùng regex) trong phần sửa thì ta sẽ được quyền sửa mật khẩu, mã người dùng, quyền, trạng thái
+//todo: (Nhớ dùng regex) trong phần sửa thì ta sẽ được quyền sửa mật khẩu, quyền, trạng thái
 //todo: Trong phần quyền mình có thể dùng combobox kết hợp với tìm kiếm để có thể chọn nhóm quyền 1 cách dễ dàng
 //todo: Phần trạng thái cũng sẽ là combobox
 //todo: Xóa thì có thể xóa tài khoản, sau đó xóa người dùng
@@ -97,10 +97,23 @@ public class TaiKhoan extends JPanel{
 
     }
     public void loadDataIntoTable() {
+        tableModel.setRowCount(0);
         List<TaiKhoanEntity> listTaiKhoanEntity = TaiKhoanBUS.getListTaiKhoan();
         for (TaiKhoanEntity t : listTaiKhoanEntity) {
             tableModel.addRow(new Object[]{TaiKhoanBUS.getTenNguoiDung(t.getMaNguoiDung()), t.getMaNguoiDung(), t.getTenDangNhap(), TaiKhoanBUS.getLoaiNguoiDung(t.getMaNguoiDung()), t.getTrangThai()});
         }
+    }
+
+    public TaiKhoanEntity getSelectedTaiKhoanEntity() {
+        int row = mainTable.getSelectedRow();
+        if(row >= 0) {
+            String tendangnhap = mainTable.getModel().getValueAt(row, 2).toString();
+            List<TaiKhoanEntity> lst = TaiKhoanBUS.getListTaiKhoan();
+            for(TaiKhoanEntity tkEntity : lst) {
+                if(tkEntity.getTenDangNhap().equals(tendangnhap)) return tkEntity;
+            }
+        }
+        return null;
     }
 
     public headerBar getHeader() {

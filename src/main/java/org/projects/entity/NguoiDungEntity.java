@@ -19,10 +19,6 @@ public class NguoiDungEntity {
         this.loaiNguoiDung = loaiNguoiDung;
     }
 
-    public NguoiDungEntity(String loaiNguoiDung,String tenNguoiDung) {
-        this.loaiNguoiDung = loaiNguoiDung;
-        this.tenNguoiDung = tenNguoiDung;
-    }
 
     public int getMaNguoiDung() {
         return maNguoiDung;
@@ -39,9 +35,11 @@ public class NguoiDungEntity {
     public void setLoaiNguoiDung(String loaiNguoiDung) {
         this.loaiNguoiDung = loaiNguoiDung;
     }
+
     public String getTenNguoiDung() {
         return tenNguoiDung;
     }
+
     public void setTenNguoiDung(String tenNguoiDung) {
         this.tenNguoiDung = tenNguoiDung;
     }
