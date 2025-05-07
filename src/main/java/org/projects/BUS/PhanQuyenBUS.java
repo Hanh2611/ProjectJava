@@ -69,7 +69,7 @@ public class PhanQuyenBUS {
         new NhomQuyenDAO().sua(new NhomQuyen(maNhomQuyen, nameNhomQuyen));
     }
 
-    public static List<Integer> getQuyenDanhMuc(TaiKhoan user) {
+    public static List<Integer> getQuyenDanhMuc(TaiKhoanEntity user) {
         return new DanhMucQuanLyDAO().getDanhMucQuanLyByMaNguoiDung(user.getMaNguoiDung());
     }
 

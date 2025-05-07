@@ -2,12 +2,11 @@ package org.projects.Action;
 
 import org.projects.BUS.LoginBUS;
 import org.projects.BUS.PhanQuyenBUS;
-import org.projects.DAO.DanhMucQuanLyDAO;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.DiaLog.SignUpDialog;
 import org.projects.GUI.utils.Session;
-import org.projects.entity.TaiKhoan;
+import org.projects.entity.TaiKhoanEntity;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,7 +15,7 @@ import javax.swing.*;
 
 public class LoginAction implements MouseListener {
     private LoginGUI loginGUI;
-    private TaiKhoan user;
+    private TaiKhoanEntity user;
     public static MainGUI mainGUI;
     public LoginAction(LoginGUI loginGUI) {
         this.loginGUI = loginGUI;
@@ -28,7 +27,7 @@ public class LoginAction implements MouseListener {
             SignUpDialog.HienThiDangKy();
         }
         if(e.getSource().equals(loginGUI.getDangNhapButton())) {
-            this.user = LoginBUS.login(new TaiKhoan(loginGUI.getTenDangNhapField().getText(), loginGUI.getMatKhauField().getText()));
+            this.user = LoginBUS.login(new TaiKhoanEntity(loginGUI.getTenDangNhapField().getText(), loginGUI.getMatKhauField().getText()));
             //todo: kiểm tra trạng thái
             //todo: focus textfield
             if (user == null) {

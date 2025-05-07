@@ -12,6 +12,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.projects.Action.ThongKeSanPhamAction;
 import org.projects.BUS.ThongKeSanPhamBUS;
+import org.projects.GUI.Chart.PieChart;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.ThongKeSanPhamEntity;
 
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class thongkeSanpham extends JPanel {
     private JPanel centerPanel;
+    private JPanel sanphamPanel;
     private ChartPanel sanphamChart;
     private HashMap<String,Integer> sanphamhm;
     private JPanel notePanel;
@@ -50,19 +52,8 @@ public class thongkeSanpham extends JPanel {
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        sanphamhm = tkspBUS.getDanhmucvasoluongsp();
-        DefaultPieDataset DatadanhmucPie = new DefaultPieDataset();
-
-        for(String key : sanphamhm.keySet()){
-            DatadanhmucPie.setValue(key,sanphamhm.get(key));
-        }
-        JFreeChart danhmucPie = ChartFactory.createPieChart("Tỉ lệ sản phẩm theo danh mục sản phẩm",DatadanhmucPie,true,true,false);
-        PiePlot plot = (PiePlot) danhmucPie.getPlot();
-        sanphamChart = new ChartPanel(danhmucPie);
-        sanphamChart.setBackground(Color.WHITE);
-        sanphamChart.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        sanphamChart.setPreferredSize(new Dimension(700,400));
-        centerPanel.add(sanphamChart);
+        sanphamPanel = PieChart.createPieChart("Tỉ lệ sản phẩm theo danh mục sản phẩm",sanphamChart,tkspBUS.getDanhmucvasoluongsp(),650,400);
+        centerPanel.add(sanphamPanel);
 
         notePanel = new JPanel();
         notePanel.setPreferredSize(new Dimension(150, 150));

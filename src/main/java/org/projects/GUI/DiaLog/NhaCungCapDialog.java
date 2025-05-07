@@ -66,9 +66,7 @@ public class NhaCungCapDialog extends JDialog {
 
         //add action
         chucnangBTN.addActionListener(nccAction);
-        chucnangBTN.addMouseListener(nccAction);
         thoatBTN.addActionListener(nccAction);
-        thoatBTN.addMouseListener(nccAction);
     }
 
     public String  typeButton(String nccType) {

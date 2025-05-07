@@ -3,11 +3,16 @@ package org.projects.GUI.Chart;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.NumberFormat;
 import java.util.HashMap;
 
 public class ColumnsChart {
@@ -22,10 +27,28 @@ public class ColumnsChart {
         for(String key : hm.keySet()) {
             dataset.addValue(hm.get(key), "Số lượng", key);
         }
-        JFreeChart chart = ChartFactory.createBarChart(title, xAxisLabel, yAxisLabel, dataset);
-        CategoryPlot plot = chart.getCategoryPlot();
-        plot.setOutlinePaint(Color.WHITE);
+        JFreeChart chart = ChartFactory.createBarChart(title, xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL,true,true,false);
         chart.setBackgroundPaint(Color.WHITE);
+        chart.setAntiAlias(true);
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(new Color(250, 250, 255));      // nền dịu
+        plot.setOutlineVisible(false);
+        plot.setRangeGridlinesVisible(true);
+        plot.setRangeGridlinePaint(new Color(200, 200, 200));
+        BarRenderer renderer = new BarRenderer() {
+            @Override
+            public Paint getItemPaint(int row, int column) {
+                return new GradientPaint(
+                        0f, 0f, new Color(102, 178, 255),
+                        0f, 300f, new Color(0, 102, 204)
+                );
+            }
+        };
+        renderer.setShadowVisible(true);
+        renderer.setShadowPaint(new Color(0, 0, 0, 50));
+        renderer.setBarPainter(new StandardBarPainter());
+        renderer.setDefaultToolTipGenerator(new StandardCategoryToolTipGenerator());
+        plot.setRenderer(renderer);
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(width, height));
         panel.add(chartPanel, BorderLayout.CENTER);
@@ -40,17 +63,33 @@ public class ColumnsChart {
         for(String key : hm.keySet()) {
             dataset.addValue(hm.get(key), title, key);
         }
-        JFreeChart chart = ChartFactory.createBarChart(title, xAxisLabel, yAxisLabel, dataset);
+        JFreeChart chart = ChartFactory.createBarChart(title, xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL,true,true,false);
+        chart.setBackgroundPaint(Color.WHITE);
+        chart.setAntiAlias(true);
         CategoryPlot plot = chart.getCategoryPlot();
-        plot.setOutlinePaint(Color.WHITE);
-        plot.setBackgroundPaint(Color.WHITE);
+        plot.setBackgroundPaint(new Color(250, 250, 255));      // nền dịu
+        plot.setOutlineVisible(false);
+        plot.setRangeGridlinesVisible(true);
+        plot.setRangeGridlinePaint(new Color(200, 200, 200));
+        BarRenderer renderer = new BarRenderer() {
+            @Override
+            public Paint getItemPaint(int row, int column) {
+                return new GradientPaint(
+                        0f, 0f, new Color(102, 178, 255),
+                        0f, 300f, new Color(0, 102, 204)
+                );
+            }
+        };
+        renderer.setShadowVisible(true);
+        renderer.setShadowPaint(new Color(0, 0, 0, 50));
+        renderer.setBarPainter(new StandardBarPainter());
+        renderer.setDefaultToolTipGenerator(new StandardCategoryToolTipGenerator());
+        plot.setRenderer(renderer);
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(width, height));
         panel.add(chartPanel, BorderLayout.CENTER);
         return panel;
     }
-
-
 
     public String getTitle() {
         return title;
