@@ -64,4 +64,32 @@ public class TaiKhoanBUS {
     public static String getTenQuyen(int manguoidung) {
         return new TaiKhoanDAO().layTenNhomQuyenTheoMaNguoiDung(manguoidung);
     }
+
+    public static List<TaiKhoanEntity> search(String key,String word) {
+        getListTaiKhoan();
+        List<TaiKhoanEntity> lst = new ArrayList<>();
+        word = word.toLowerCase();
+        switch (key) {
+            case "---":
+                lst.addAll(getListTaiKhoan());
+                break;
+            case "tên đăng nhập":
+                for(TaiKhoanEntity tk : getListTaiKhoan()) {
+                    if(tk.getTenDangNhap().contains(word)) {
+                        lst.add(tk);
+                    }
+                }
+                break;
+            case "mã người dùng":
+                for(TaiKhoanEntity tk : getListTaiKhoan()) {
+                    if(tk.getMaNguoiDung() == (Integer.parseInt(word))) {
+                        lst.add(tk);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return lst;
+    }
 }

@@ -1,5 +1,6 @@
 package org.projects.Action;
 
+import org.projects.BUS.NhaCungCapBUS;
 import org.projects.BUS.NhanVienBus;
 import org.projects.BUS.TaiKhoanBUS;
 import org.projects.DAO.NguoiDungDAO;
@@ -16,10 +17,12 @@ import org.projects.entity.NhanVienEntity;
 import org.projects.entity.TaiKhoanEntity;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.*;
 import java.util.HashMap;
 
-public class TaiKhoanAction implements ActionListener, ItemListener, MouseListener {
+public class TaiKhoanAction implements ActionListener, ItemListener, MouseListener, DocumentListener {
     private TaiKhoan tk;
     private TaiKhoanDialog tkDialog;
     private TaiKhoanBUS tkBUS;
@@ -40,6 +43,12 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
                     suataikhoan();
                 }
             }
+        }
+        JButton refresh = tk.getHeader().getSearch().getSearchButton();
+        if(c instanceof JButton && c.equals(refresh)) {
+            tk.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
+            tk.getHeader().getSearch().getSearchField().setText("");
+            this.tk.searchFunction(tk.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),tk.getHeader().getSearch().getSearchField().getText());
         }
     }
 
@@ -151,7 +160,9 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-
+        String keyword = e.getItem().toString();
+        String textfield = tk.getHeader().getSearch().getSearchField().getText();
+        tk.searchFunction(keyword, textfield);
     }
 
     @Override
@@ -199,6 +210,26 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
 
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        String keyword = tk.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = tk.getHeader().getSearch().getSearchField().getText();
+        tk.searchFunction(keyword, textfield);
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        String keyword = tk.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = tk.getHeader().getSearch().getSearchField().getText();
+        tk.searchFunction(keyword, textfield);
+    }
+
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
 
     }
 }
