@@ -56,7 +56,6 @@ public class ThemHD extends JPanel {
         loadDataToTableSanPham();
         loadMaHoaDon();
         loadNgayTao(); // thêm dòng này
-
     }
 
     public void init() {

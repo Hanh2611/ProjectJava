@@ -21,9 +21,10 @@ public class SanPham extends JPanel{
     private headerBar header;
     private DefaultTableModel model;
     private JTable table;
+    private List<SanPhamEntity> spList;
     private final SanPhamAction sanPhamAction = new SanPhamAction(this);
 
-    private final SanPhamBus sanPhamBus = new SanPhamBus(this);
+    private final SanPhamBus sanPhamBus = new SanPhamBus();
 
     public SanPham() {
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -115,23 +116,16 @@ public class SanPham extends JPanel{
                     (sanPhamEntity.getQuyCach().equals(QuyCach.KG) || sanPhamEntity.getQuyCach().equals(QuyCach.G))?
                             Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getQuyCach().getValue():
                             Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getQuyCach().getValue() + "/" + sanPhamEntity.getDonVi(),
-                    sanPhamEntity.isTrangThai() ? "Đang kinh doanh" : "Ngừng kinh doanh",
+                    (sanPhamEntity.isTrangThai()) ?  "Đang kinh doanh" : ((sanPhamEntity.getSoLuongTon() <= 0) ? "Hết hàng" : "Ngừng kinh doanh"),
                 });
             }
         }
     }
 
     public void reloadDAO() {
-        List<SanPhamEntity> listSanPham = sanPhamBus.getAllSanPham();
-        loadList(listSanPham);
+        this.spList = sanPhamBus.getAllSanPham();
+        loadList(spList);
     }
-
-    private SanPhamEntity getSanPhamEntity() {
-        int row = table.getSelectedRow();
-        if (row == -1) return null;
-        int id = (int) table.getValueAt(row, 0);
-        return sanPhamBus.getSanPhamById(id);
-    };
 
     public SanPhamEntity getSelectedRow() {
         int row = table.getSelectedRow();
