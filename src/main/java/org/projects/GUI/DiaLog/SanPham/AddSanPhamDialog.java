@@ -2,6 +2,7 @@ package org.projects.GUI.DiaLog.SanPham;
 
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
+import org.projects.GUI.Components.NumberOnlyFilter;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
 import org.projects.GUI.utils.Helper;
@@ -10,6 +11,7 @@ import org.projects.entity.Enum.QuyCach;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -76,6 +78,8 @@ public class AddSanPhamDialog extends JDialog {
         tenSanPhamField = new labelText("Nhập tên sản phẩm", 30, 10);
         giaBanField = new labelText("Nhập giá bán", 30, 10);
         donViField = new labelText("Nhập đơn vị", 30, 10);
+
+        ((AbstractDocument) giaBanField.getTextField().getDocument()).setDocumentFilter(new NumberOnlyFilter());
 
         content.add(tenSanPhamField);
         content.add(giaBanField);

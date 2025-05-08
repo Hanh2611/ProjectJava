@@ -25,6 +25,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class SanPhamAction implements ActionListener, MouseListener, ItemListener, KeyListener {
+    private Timer debounceTimer;
+    private final int DEBOUNCE_DELAY = 300;
 
     private final SanPham sanPham;
     private AddSanPhamDialog addSanPhamDialog;
@@ -110,6 +112,8 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                         File destinationFile = new File(Helper.imageBasePath, newFileName);
 
                         if (!isDouble(gia)) {
+                            addSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
+                            addSanPhamDialog.getGiaBanField().getTextField().requestFocus();
                             JOptionPane.showMessageDialog(addSanPhamDialog, "Giá không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
@@ -175,17 +179,22 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             String soLuongTon = updateSanPhamDialog.getSoLuongTonField().getTextField().getText().trim();
                             String quyCach = updateSanPhamDialog.getQuyCachField().getSelectedItem().toString();
                             boolean trangThai = updateSanPhamDialog.getIsAvailable().isSelected();
+                            boolean hetHang = updateSanPhamDialog.getIsOutOfStock().isSelected();
                             File hinhAnh = updateSanPhamDialog.getSelectedFile();
                             String oldFileName = HashName.convertToSlug(updateSanPhamDialog.getSanPhamEntity().getTenSanPham()) + HashName.getFileExtension(updateSanPhamDialog.getSanPhamEntity().getHinhAnh());
                             String newFileName = HashName.convertToSlug(ten) + HashName.getFileExtension(hinhAnh.getName());
                             File destinationFile = new File(Helper.getProductImagePath(newFileName));
 
                             if (!isDouble(soLuongTon) || Double.parseDouble(soLuongTon) < 0) {
-                                JOptionPane.showMessageDialog(updateSanPhamDialog, "Số lượng tồn không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                updateSanPhamDialog.getSoLuongTonField().getTextField().setBorder(redBorder);
+                                updateSanPhamDialog.getSoLuongTonField().getTextField().requestFocus();
+                                JOptionPane.showMessageDialog(updateSanPhamDialog, "Số lượng tồn không được âm", "Thông báo", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
                             if (!isDouble(gia)) {
+                                updateSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
+                                updateSanPhamDialog.getGiaBanField().getTextField().requestFocus();
                                 JOptionPane.showMessageDialog(updateSanPhamDialog, "Giá không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
@@ -203,8 +212,9 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
                             int idDanhMuc = danhMucSanPhamBus.getIdDanhMuc(phanLoai);
                             DanhMucSanPhamEntity danhMucSanPhamEntity = new DanhMucSanPhamEntity(idDanhMuc, phanLoai);
-                            this.sanPhamEntity = new SanPhamEntity(id, ten, danhMucSanPhamEntity, donVi, Double.parseDouble(gia), Double.parseDouble(soLuongTon), QuyCach.fromValue(quyCach), newFileName, trangThai);
-                            this.sanPhamEntity.setTrangThai(Double.parseDouble(soLuongTon) != 0);
+                            this.sanPhamEntity = new SanPhamEntity(id, ten, danhMucSanPhamEntity, donVi, Double.parseDouble(gia), Double.parseDouble(soLuongTon), QuyCach.fromValue(quyCach), newFileName, hetHang, trangThai);
+                            this.sanPhamEntity.setHetHang(Double.parseDouble(soLuongTon) == 0);
+                            this.sanPhamEntity.setHetHang(hetHang);
 
                             if (sanPhamBus.updateSanPham(sanPhamEntity)) {
                                 JOptionPane.showMessageDialog(updateSanPhamDialog, "Cập nhật sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -221,6 +231,7 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
         }
         JButton refresh = sanPham.getHeader().getSearch().getSearchButton();
         if(c instanceof JButton && c.equals(refresh)) {
+            sanPham.loadList(sanPhamBus.getAllSanPham());
             sanPham.getHeader().getSearch().getSearchField().setText("");
         }
     }
@@ -321,10 +332,13 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
     @Override
     public void keyTyped(KeyEvent e) {
         if (e.getSource() instanceof JTextField textField) {
-            String text = textField.getText();
-            System.out.println(text);
-            String selectedItem = (String) sanPham.getHeader().getSearch().getSearchComboBox().getSelectedItem();
-            sanPham.loadList(sanPhamBus.searchSanPham(selectedItem, text));
+            debounceTimer = new Timer(DEBOUNCE_DELAY, event -> {
+                String keyword = sanPham.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+                String textfield = textField.getText();
+                sanPham.loadList(sanPhamBus.searchSanPham(keyword, textfield));
+            });
+            debounceTimer.setRepeats(false);
+            debounceTimer.start();
         }
     }
 

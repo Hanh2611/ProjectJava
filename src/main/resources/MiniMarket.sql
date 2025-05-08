@@ -87,6 +87,7 @@ CREATE TABLE san_pham
     so_luong_ton DOUBLE  DEFAULT 0,
     quy_cach     ENUM ('Thùng', 'Chai', 'Túi', 'KG', 'Hộp', 'G', 'Khay'),
     img          VARCHAR(255),
+    het_hang     BOOLEAN DEFAULT TRUE,
     trang_thai   BOOLEAN DEFAULT TRUE
 );
 
@@ -318,20 +319,20 @@ VALUES ('Nước giải khát'),
        ('Bánh');
 
 
-INSERT INTO san_pham (ten_san_pham, phan_loai, don_vi, gia_ban, so_luong_ton, quy_cach, img)
-VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'traxanhc2hngchanh360ml.jpg'),
-       ('Trà xanh C2 hương chanh 500ml', 1, '500ml', 10000, 100, 'Chai', 'traxanhc2hngchanh500ml.jpg'),
-       ('Nước ngọt Coca Cola nguyên bản chai 1.5l', 1, '1.5l', 21000, 200, 'Chai', 'ncngtcocacolanguyenbnchai15l.jpg'),
-       ('Beefsteak bò Úc 200g', 2, '200g', 99000, 50, 'Khay', 'beefsteakbouc200g.jpg'),
-       ('Ba chỉ bò Úc đông lạnh Mr.T khay 300g', 2, '300g', 119000, 50, 'Hộp', 'bachbouconglnhmrtkhay300g.jpg'),
-       ('Gạo thơm Neptune ST25 Extra túi 5kg', 3, '5kg', 123000, 70, 'Túi', 'gothmneptunest25extratui5kg.jpg'),
-       ('Xoài keo 1kg', 4, '2kg', 23900, 20, 'KG', 'xoaikeo1kg.jpg'),
+INSERT INTO san_pham (ten_san_pham, phan_loai, don_vi, gia_ban, so_luong_ton, quy_cach, img, het_hang)
+VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'traxanhc2hngchanh360ml.jpg', 0),
+       ('Trà xanh C2 hương chanh 500ml', 1, '500ml', 10000, 100, 'Chai', 'traxanhc2hngchanh500ml.jpg', 0),
+       ('Nước ngọt Coca Cola nguyên bản chai 1.5l', 1, '1.5l', 21000, 200, 'Chai', 'ncngtcocacolanguyenbnchai15l.jpg', 0),
+       ('Beefsteak bò Úc 200g', 2, '200g', 99000, 50, 'Khay', 'beefsteakbouc200g.jpg', 0),
+       ('Ba chỉ bò Úc đông lạnh Mr.T khay 300g', 2, '300g', 119000, 50, 'Hộp', 'bachbouconglnhmrtkhay300g.jpg', 0),
+       ('Gạo thơm Neptune ST25 Extra túi 5kg', 3, '5kg', 123000, 70, 'Túi', 'gothmneptunest25extratui5kg.jpg', 0),
+       ('Xoài keo 1kg', 4, '2kg', 23900, 20, 'KG', 'xoaikeo1kg.jpg', 0),
        ('Thùng 48 hộp sữa tươi tiệt trùng ít đường TH true MILK 180ml', 5, '48 hộp', 415000, 90, 'Thùng',
-        'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg'),
-       ('Cà rốt trái từ 150g trở lên', 4, '2kg', 34000, 0, 'KG', 'carottraitu150gtrolen.jpg'),
-       ('Bột ngọt Meizan gói 1kg', 3, '1kg', 69000, 0, 'Túi', 'botngotmeizangoi1kg.jpg'),
-       ('Bột ngọt Meizan gói 400g', 3, '400g', 32000, 0, 'Túi', 'botngotmeizangoi400g.jpg'),
-       ('Bánh bơ trứng Richy Karo gói 270g', 6, '270g', 37000, 0, 'Túi', 'banhbotrungrichykarogoi270g.jpg');
+        'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg', 0),
+       ('Cà rốt trái từ 150g trở lên', 4, '2kg', 34000, 0, 'KG', 'carottraitu150gtrolen.jpg', 1),
+       ('Bột ngọt Meizan gói 1kg', 3, '1kg', 69000, 0, 'Túi', 'botngotmeizangoi1kg.jpg', 1),
+       ('Bột ngọt Meizan gói 400g', 3, '400g', 32000, 0, 'Túi', 'botngotmeizangoi400g.jpg', 1),
+       ('Bánh bơ trứng Richy Karo gói 270g', 6, '270g', 37000, 0, 'Túi', 'banhbotrungrichykarogoi270g.jpg', 1);
 
 
 
