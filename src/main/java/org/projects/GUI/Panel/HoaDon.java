@@ -2,11 +2,13 @@ package org.projects.GUI.Panel;
 
 import org.projects.Action.HoaDonAction;
 import org.projects.BUS.HoaDonBUS;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.HoaDonDAO;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.HoaDon.CapNhatHD;
 import org.projects.GUI.DiaLog.HoaDon.ChiTietHD;
 import org.projects.GUI.DiaLog.HoaDon.ThemHD;
+import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.HoaDonEntity;
@@ -41,7 +43,8 @@ public class HoaDon extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên khách hàng"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("HoaDon") - 1),new String[]{"---","mã","tên","địa chỉ"});
+//        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên khách hàng"});
         this.add(header);
         init();
         reloadDAO();
