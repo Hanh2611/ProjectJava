@@ -7,10 +7,12 @@ import com.mysql.cj.protocol.Resultset;
 import org.projects.Action.NhanVienAction;
 import org.projects.BUS.NhaCungCapBUS;
 import org.projects.BUS.NhanVienBus;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.NhanVienDao;
 import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.utils.Session;
 import org.projects.config.DatabasesConfig;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
@@ -115,9 +117,9 @@ public class NhanVien extends JPanel {
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
-        //add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---"}));
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---", "mã" , "tên", "chức vụ"});
-        this.add(header);
+        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---"}));
+//        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---", "mã" , "tên", "chức vụ"});
+//        this.add(header);
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(nhanVienAction);

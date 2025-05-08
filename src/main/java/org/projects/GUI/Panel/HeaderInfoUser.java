@@ -64,16 +64,16 @@ public class HeaderInfoUser extends JPanel {
         int id = Session.curUser.getMaNguoiDung();
         String user = getTenNguoiDung(id);
         tenNguoiDung = new JLabel(user);
-        tenNguoiDung.setBounds(95, 20, 200, 40);
+        tenNguoiDung.setBounds(95, 35, 200, 40);
         tenNguoiDung.setFont(new Font("JetBrains Mono",Font.BOLD,13));
         tenNguoiDung.setForeground(Color.BLACK);
         this.add(tenNguoiDung);
 
-        chucVu = new JLabel("Chức vụ");
-        chucVu.setBounds(95, 40, 200, 40);
-        chucVu.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
-        chucVu.setForeground(Color.BLACK);
-        this.add(chucVu);
+//        chucVu = new JLabel("Chức vụ");
+//        chucVu.setBounds(95, 40, 200, 40);
+//        chucVu.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
+//        chucVu.setForeground(Color.BLACK);
+//        this.add(chucVu);
         
     }
 }
