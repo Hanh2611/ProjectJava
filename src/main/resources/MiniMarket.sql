@@ -26,7 +26,7 @@ CREATE TABLE cap_quyen
 
 CREATE TABLE nguoi_dung
 (
-    ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY,
+    ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY auto_increment,
     loai_nguoi_dung ENUM ('nhan_vien_kho', 'khach_hang', 'nhan_vien_ban_hang') NOT NULL,
     ten_nguoi_dung  VARCHAR(50)                                                NOT NULL
 );
@@ -43,7 +43,7 @@ CREATE TABLE tai_khoan
 CREATE TABLE nhan_vien
 (
     ma_nhan_vien  INT         NOT NULL PRIMARY KEY,
-    ma_nguoi_dung INT         NOT NULL,
+    ma_nguoi_dung INT         ,
     ten_nhan_vien VARCHAR(50) NOT NULL,
     email         VARCHAR(50) NOT NULL,
     so_dien_thoai VARCHAR(15) NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE danh_muc_san_pham
 
 CREATE TABLE san_pham
 (
-    ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
+     ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
     ten_san_pham VARCHAR(255) NOT NULL,
     phan_loai    INT,
     don_vi       VARCHAR(50),

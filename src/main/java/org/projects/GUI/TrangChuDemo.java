@@ -13,6 +13,7 @@ import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Panel.HeaderTrangChu;
 import org.projects.GUI.utils.Helper;
 import org.projects.entity.DanhMucSanPhamEntity;
+import org.projects.entity.Enum.QuyCach;
 import org.projects.entity.SanPhamEntity;
 
 public class TrangChuDemo extends JFrame {
@@ -88,7 +89,7 @@ public class TrangChuDemo extends JFrame {
             int selectedIndex = danhMucComboBox.getSelectedIndex();
             System.out.println(selectedIndex);
             if (selectedIndex == 0) {
-                sanPhamList = sanPhamBus.getAllSanPham();
+                sanPhamList = sanPhamBus.getAllAvailableSanPham();
             } else {
                 int selectedId = danhMucList.get(selectedIndex - 1).getId();
                 sanPhamList = sanPhamBus.getSanPhamByDanhMuc(selectedId);
@@ -125,7 +126,7 @@ public class TrangChuDemo extends JFrame {
                 }
         );
 
-        sanPhamList = sanPhamBus.getAllSanPham();
+        sanPhamList = sanPhamBus.getAllAvailableSanPham();
 
         center.add(searchBarContainer, BorderLayout.NORTH);
         center.add(productContainer, BorderLayout.CENTER);
@@ -173,7 +174,9 @@ public class TrangChuDemo extends JFrame {
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             nameLabel.setPreferredSize(new Dimension(150, 60));
 
-            JLabel priceLabel = new JLabel(Helper.formatPrice(sp.getGiaBan()));
+            JLabel priceLabel = new JLabel((sp.getQuyCach().equals(QuyCach.KG) || sp.getQuyCach().equals(QuyCach.G))?
+                    Helper.formatPrice(sp.getGiaBan()) + "/" + sp.getQuyCach().getValue():
+                    Helper.formatPrice(sp.getGiaBan()) + "/" + sp.getQuyCach().getValue() + "/" + sp.getDonVi());
             priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             priceLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
             priceLabel.setForeground(Color.RED);

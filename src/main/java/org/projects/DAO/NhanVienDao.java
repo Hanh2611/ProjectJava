@@ -41,26 +41,25 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
 
     @Override
     public int them(NhanVienEntity add) {
-        String query = "insert into nhan_vien(ma_nhan_vien ,ma_nguoi_dung, ten_nhan_vien , email, so_dien_thoai , chuc_vu, luong , gioi_tinh) values(?,?,?,?,?,?,?,?);";
+        String query = "insert into nhan_vien(ma_nhan_vien , ten_nhan_vien , email, so_dien_thoai , chuc_vu, luong , gioi_tinh) values(?,?,?,?,?,?,?);";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);)
         {
            ps.setInt(1 , add.getMaNhanVien());
-           ps.setInt(2, 10);
-           ps.setString(3 , add.getTenNhanVien());
-           ps.setString(4 , add.getEmailNhanVien());
-           ps.setString(5 , add.getSdtNhanVien());
-           ps.setString(6 , add.getChucvu());
-           ps.setInt(7, add.getLuong());
-           ps.setBoolean(8,add.getGioitinh());
-            System.out.println("Chuẩn bị insert:");
-            System.out.println("Mã NV: " + add.getMaNhanVien());
-            System.out.println("Tên: " + add.getTenNhanVien());
-            System.out.println("Email: " + add.getEmailNhanVien());
-            System.out.println("SĐT: " + add.getSdtNhanVien());
-            System.out.println("Chức vụ: " + add.getChucvu());
-            System.out.println("Lương: " + add.getLuong());
-            System.out.println("Giới tính: " + add.getGioitinh());
+           ps.setString(2 , add.getTenNhanVien());
+           ps.setString(3 , add.getEmailNhanVien());
+           ps.setString(4 , add.getSdtNhanVien());
+           ps.setString(5 , add.getChucvu());
+           ps.setInt(6, add.getLuong());
+           ps.setBoolean(7,add.getGioitinh());
+//            System.out.println("Chuẩn bị insert:");
+//            System.out.println("Mã NV: " + add.getMaNhanVien());
+//            System.out.println("Tên: " + add.getTenNhanVien());
+//            System.out.println("Email: " + add.getEmailNhanVien());
+//            System.out.println("SĐT: " + add.getSdtNhanVien());
+//            System.out.println("Chức vụ: " + add.getChucvu());
+//            System.out.println("Lương: " + add.getLuong());
+//            System.out.println("Giới tính: " + add.getGioitinh());
            return ps.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -116,5 +115,20 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
 
         }
         return null;
+    }
+
+    public static boolean updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(int manguoidung,int manv) {
+        String query = "update nhan_vien\n" +
+                "set ma_nguoi_dung = ?\n" +
+                "where ma_nhan_vien = ?";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement prs = c.prepareStatement(query);) {
+            prs.setInt(1,manguoidung);
+            prs.setInt(2,manv);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

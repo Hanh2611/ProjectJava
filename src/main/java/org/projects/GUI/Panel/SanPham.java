@@ -45,8 +45,8 @@ public class SanPham extends JPanel{
         };
         String[] listCbBox = new String[]{"---", "Mã", "Tên", "Phân loại"};
         this.table = new JTable();
-//        header = new headerBar(listItemHeader,  Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("SanPham") - 1), listCbBox);
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),listCbBox);
+        header = new headerBar(listItemHeader,  Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("SanPham") - 1), listCbBox);
+//        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),listCbBox);
 
         String[] columns = {"Mã", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Trạng thái"};
         int[] columnWidthPercentage = {2, 8, 35, 20, 15, 20};

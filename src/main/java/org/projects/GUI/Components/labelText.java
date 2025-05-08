@@ -1,11 +1,14 @@
 package org.projects.GUI.Components;
 
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class labelText extends JPanel {
     private JLabel label;
     private JTextField textField;
+    private JComboBox<String> cbx;
     public  labelText(String text,int width,int height)  {
         setLayout(new BorderLayout(5, 5));
         setBackground(new Color(240, 240, 240));
@@ -27,6 +30,28 @@ public class labelText extends JPanel {
         setMaximumSize(new Dimension(500, 60));
     }
 
+    public  labelText(String text,ArrayList<String> lst)  {
+        setLayout(new BorderLayout(5, 5));
+        setBackground(new Color(240, 240, 240));
+
+        label = new JLabel(text);
+        label.setFont(new Font("Jetbrains Mono", Font.PLAIN, 14));
+        label.setForeground(new Color(50, 50, 50));
+
+        cbx = new JComboBox<>();
+        for(String s : lst) cbx.addItem(s);
+        cbx.setFont(new Font("Jetbrains Mono", Font.PLAIN, 14));
+        cbx.setForeground(Color.BLACK);
+        cbx.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+
+        add(label, BorderLayout.NORTH);
+        add(cbx, BorderLayout.CENTER);
+        setMaximumSize(new Dimension(500, 60));
+    }
+
     public void setLabel(JLabel label) {
         this.label = label;
     }
@@ -41,5 +66,13 @@ public class labelText extends JPanel {
 
     public JTextField getTextField() {
         return textField;
+    }
+
+    public JComboBox<String> getCbx() {
+        return cbx;
+    }
+
+    public void setCbx(JComboBox<String> cbx) {
+        this.cbx = cbx;
     }
 }

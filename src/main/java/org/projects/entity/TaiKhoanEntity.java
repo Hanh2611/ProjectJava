@@ -1,28 +1,28 @@
 package org.projects.entity;
 
-public class TaiKhoan {
+public class TaiKhoanEntity {
     private String tenDangNhap;
     private String matKhau;
     private String trangThai;
     private int maNguoiDung;
     private int quyenNguoiDung;
 
-    public TaiKhoan() {}
+    public TaiKhoanEntity() {}
 
-    public TaiKhoan(String tenDangNhap, String matKhau) {
+    public TaiKhoanEntity(String tenDangNhap, String matKhau) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
         trangThai = "hoat_dong";
         maNguoiDung = 0;
         quyenNguoiDung = 0;
     }
-    public TaiKhoan(String tenDangNhap, String matKhau, String trangThai, int maNguoiDung) {
+    public TaiKhoanEntity(String tenDangNhap, String matKhau, String trangThai, int maNguoiDung) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
         this.trangThai = trangThai;
         this.maNguoiDung = maNguoiDung;
     }
-    public TaiKhoan(String tenDangNhap, String matKhau, String trangThai, int maNguoiDung, int quyenNguoiDung) {
+    public TaiKhoanEntity(String tenDangNhap, String matKhau, String trangThai, int maNguoiDung, int quyenNguoiDung) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
         this.trangThai = trangThai;
@@ -60,5 +60,13 @@ public class TaiKhoan {
 
     public void setMaNguoiDung(int maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
+    }
+
+    public int getQuyenNguoiDung() {
+        return quyenNguoiDung;
+    }
+
+    public void setQuyenNguoiDung(int quyenNguoiDung) {
+        this.quyenNguoiDung = quyenNguoiDung;
     }
 }
