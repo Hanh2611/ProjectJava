@@ -1,6 +1,7 @@
 package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.mysql.cj.PreparedQuery;
 import com.mysql.cj.jdbc.integration.c3p0.MysqlConnectionTester;
 import com.mysql.cj.protocol.Resultset;
 import org.projects.Action.NhanVienAction;
@@ -138,7 +139,7 @@ public class NhanVien extends JPanel {
                         BorderFactory.createEmptyBorder(5, 5, 5, 5)
                 )
         );
-        scrollPane.setBorder(border);
+        //scrollPane.setBorder(border);
         // Panel trung tâm
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setBackground(Color.WHITE);
@@ -196,7 +197,7 @@ public class NhanVien extends JPanel {
         String query = "SELECT luong, gioi_tinh FROM nhan_vien WHERE ma_nhan_vien = ?";
 
         try (Connection c = DatabasesConfig.getConnection();
-                PreparedStatement ps = c.prepareStatement(query);) {
+             PreparedStatement ps = c.prepareStatement(query);) {
             ps.setInt(1, ma);
             //System.out.println(ma);
             try (ResultSet rs = ps.executeQuery()) {

@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import org.projects.Action.MainAction;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.Panel.TrangChu;
 import org.projects.GUI.Panel.WestTaskBar;
 import org.projects.GUI.utils.UIUtils;
 

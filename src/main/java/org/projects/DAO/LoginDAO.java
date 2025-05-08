@@ -1,7 +1,7 @@
 package org.projects.DAO;
 
 import org.projects.config.DatabasesConfig;
-import org.projects.entity.TaiKhoan;
+import org.projects.entity.TaiKhoanEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,43 +9,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class LoginDAO implements ChucNangDAO<TaiKhoan> {
+public class LoginDAO implements ChucNangDAO<TaiKhoanEntity> {
 
     @Override
-    public List<TaiKhoan> showlist() {
+    public List<TaiKhoanEntity> showlist() {
         return List.of();
     }
 
     @Override
-    public int them(TaiKhoan add) {
+    public int them(TaiKhoanEntity add) {
         return 0;
     }
 
     @Override
-    public int sua(TaiKhoan fix) {
+    public int sua(TaiKhoanEntity fix) {
         return 0;
     }
 
     @Override
-    public int xoa(TaiKhoan delete) {
+    public int xoa(TaiKhoanEntity delete) {
         return 0;
     }
 
     @Override
-    public TaiKhoan search(int id) {
+    public TaiKhoanEntity search(int id) {
         return null;
     }
 
 
-    public TaiKhoan verifyLogin(TaiKhoan taiKhoan) {
+    public TaiKhoanEntity verifyLogin(TaiKhoanEntity taiKhoanEntity) {
         String query = "select * from tai_khoan where ten_dang_nhap = ? and mat_khau = ?";
         try(Connection connection = DatabasesConfig.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, taiKhoan.getTenDangNhap());
-            preparedStatement.setString(2, taiKhoan.getMatKhau());
+            preparedStatement.setString(1, taiKhoanEntity.getTenDangNhap());
+            preparedStatement.setString(2, taiKhoanEntity.getMatKhau());
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                return new TaiKhoan(
+                return new TaiKhoanEntity(
                         rs.getString("ten_dang_nhap"),
                         rs.getString("mat_khau"),
                         rs.getString("trang_thai"),

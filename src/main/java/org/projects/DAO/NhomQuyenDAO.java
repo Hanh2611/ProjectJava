@@ -110,4 +110,21 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
             return false;
         }
     }
+
+    public static List<String> getDanhsachtennhomquyen() {
+        List<String> result = new ArrayList<>();
+        String query = "select nq.ten_nhom_quyen\n" +
+                "from nhom_quyen nq\n" +
+                "where nq.ten_nhom_quyen = 'Khách' or nq.ten_nhom_quyen = 'Nhân viên'";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement prs = c.prepareStatement(query);
+        ResultSet rs = prs.executeQuery()) {
+            while (rs.next()) {
+                result.add(rs.getString("ten_nhom_quyen"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

@@ -2,10 +2,9 @@ package org.projects.GUI.Panel.KhachHangPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.DAO.ChiTietHoaDonFullDAO;
-import org.projects.GUI.Panel.NhanVienPack.RoundedImageLabel;
+import org.projects.GUI.Panel.HoaDon;
 import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.KhachHangEntity;
-import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -13,20 +12,22 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
-public class DetailKhachHangConsole extends JPanel { ;
-    private String ma, ten , diachi , sdt;
-    public DetailKhachHangConsole() {}
+public class DetailKhachHangConsole extends JPanel {
+    private String ma, ten, diachi, sdt;
     DefaultTableModel tableModel;
+
+    public DetailKhachHangConsole() {}
+
     public void setInfo(KhachHangEntity info) {
         setMa(Integer.toString(info.getMa()));
         setTen(info.getTen());
         setSdt(info.getSdt());
         setDiachi(info.getDiaChi());
     }
+
     public JPanel setupDetailBox_USER() {
         this.setLayout(new GridBagLayout());
         this.setOpaque(true);
@@ -45,10 +46,8 @@ public class DetailKhachHangConsole extends JPanel { ;
         left.setMinimumSize(new Dimension(250, 300));
         left.setMaximumSize(new Dimension(250, 300));
 
-//        String changeImg = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
-//        ImageIcon icon = new ImageIcon(new ImageIcon(changeImg).getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH));
         JLabel imgLabel = new JLabel();
-        FlatSVGIcon flatSVGIcon = new FlatSVGIcon("icon/user.svg" , 250 , 250);
+        FlatSVGIcon flatSVGIcon = new FlatSVGIcon("icon/user.svg", 250, 250);
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imgLabel.setIcon(flatSVGIcon);
         left.add(imgLabel, BorderLayout.CENTER);
@@ -73,18 +72,15 @@ public class DetailKhachHangConsole extends JPanel { ;
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] info = {"Mã khách hàng: ", "Họ và tên: ", "Số điện thoại: ", "Địa chỉ: "};
-        FlatSVGIcon iconIdNV = new FlatSVGIcon("icon/idNV.svg", 20, 20) ;
-        FlatSVGIcon iconNameNV = new FlatSVGIcon("icon/nameNV.svg", 20, 20) ;
-        FlatSVGIcon iconBrithDay = new FlatSVGIcon("icon/brithday.svg", 20, 20);
-        FlatSVGIcon iconEmailNV = new FlatSVGIcon("icon/email.svg", 20, 20) ;
-        FlatSVGIcon iconPhoneNV = new FlatSVGIcon("icon/phone.svg", 20, 20) ;
-        FlatSVGIcon iconphucvuNV = new FlatSVGIcon("icon/phucvu.svg", 20, 20) ;
-        FlatSVGIcon iconSalaryNV = new FlatSVGIcon("icon/money-dollars-svgrepo-com.svg", 20, 20) ;
-        FlatSVGIcon[] iconList = {iconIdNV, iconNameNV,iconPhoneNV,iconphucvuNV};
+        FlatSVGIcon iconIdNV = new FlatSVGIcon("icon/idNV.svg", 20, 20);
+        FlatSVGIcon iconNameNV = new FlatSVGIcon("icon/nameNV.svg", 20, 20);
+        FlatSVGIcon iconPhoneNV = new FlatSVGIcon("icon/phone.svg", 20, 20);
+        FlatSVGIcon iconAddrNV = new FlatSVGIcon("icon/phucvu.svg", 20, 20);
+        FlatSVGIcon[] iconList = {iconIdNV, iconNameNV, iconPhoneNV, iconAddrNV};
+        String[] values = {getMa(), getTen(), getSdt(), getDiachi()};
         int index = 0;
-        String[] values = { getMa(), getTen(), getSdt(), getDiachi()};
         for (String labelText : info) {
-            JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT , 5 , 0));
+            JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
             pan.setBackground(new Color(240, 240, 240));
             JLabel iconLabel = new JLabel(iconList[index]);
             pan.add(iconLabel);
@@ -93,7 +89,7 @@ public class DetailKhachHangConsole extends JPanel { ;
             field.setHorizontalAlignment(SwingConstants.LEFT);
             field.setBackground(new Color(240, 240, 240));
             field.setEditable(false);
-            field.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220,220,220)));
+            field.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
             pan.add(field);
             infoPanel.add(pan);
@@ -101,9 +97,6 @@ public class DetailKhachHangConsole extends JPanel { ;
             index++;
             index %= iconList.length;
         }
-
-//        JPanel genderPanel = getRadioSex(false , true);
-//        infoPanel.add(genderPanel);
 
         right.add(infoPanel, BorderLayout.CENTER);
 
@@ -114,76 +107,106 @@ public class DetailKhachHangConsole extends JPanel { ;
         this.add(right, gbc);
 
         JPanel bothPanel = new JPanel();
-        String[] col = {"Mã SP", "Tên SP", "SL", "Tổng Giá" , "Ngày Lập"};
-        tableModel = new DefaultTableModel(col, 0){
+        bothPanel.setLayout(new BoxLayout(bothPanel, BoxLayout.Y_AXIS));
+
+        String[] summaryCols = {"Mã HD" , "Tổng tiền", "Ngày lập"};
+        tableModel = new DefaultTableModel(summaryCols, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
         JTable table = new JTable(tableModel);
-        table.getColumnModel().getColumn(0).setPreferredWidth(70);
-        table.getColumnModel().getColumn(1).setPreferredWidth(300);
-        table.getColumnModel().getColumn(2).setPreferredWidth(70);
-        table.getColumnModel().getColumn(3).setPreferredWidth(200);
-        table.getColumnModel().getColumn(4).setPreferredWidth(200);
-        JTableHeader header = table.getTableHeader();
-        header.setBackground(new Color(0, 102, 204));
-        header.setForeground(Color.white);
-        header.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
-        header.setPreferredSize(new Dimension(header.getWidth(), 35));
-        bothPanel.setOpaque(true);
-        bothPanel.setPreferredSize(new Dimension(700, 400));
-        table.setBackground(new Color(245, 245, 245));
-        table.setRowHeight(30);
-        table.setShowGrid(true);
-        table.setGridColor(new Color(220, 220, 220));
-        table.setSelectionBackground(new Color(204, 229, 255));
-        table.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 13));
-        table.setIntercellSpacing(new Dimension(0, 0));
-        table.setOpaque(true);
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for(int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
+        setupTableStyle(table);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBackground(Color.WHITE);
-        CompoundBorder border = BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(10, 10, 10, 10),
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.WHITE, 2),
-                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
-                )
-        );
-        scrollPane.setPreferredSize(new Dimension(700, 400));
-        scrollPane.setBorder(border);
-        scrollPane.setBackground(new Color(220, 220, 220));
+        scrollPane.setPreferredSize(new Dimension(700, 200));
         bothPanel.add(scrollPane);
+        DefaultTableModel detailModel = new DefaultTableModel(new String[]{"Tên SP", "SL", "Thành tiền"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable tableDetail = new JTable(detailModel);
+        setupTableStyle(tableDetail);
+        tableDetail.getColumnModel().getColumn(0).setPreferredWidth(400);
+        tableDetail.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableDetail.getColumnModel().getColumn(2).setPreferredWidth(300);
+        JScrollPane scrollPaneDetail = new JScrollPane(tableDetail);
+        scrollPaneDetail.setBackground(Color.WHITE);
+        scrollPaneDetail.setPreferredSize(new Dimension(710, 170));
+        bothPanel.add(scrollPaneDetail);
+
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         this.add(bothPanel, gbc);
+
         ReloadLSmua();
+        table.getSelectionModel().addListSelectionListener(ev -> {
+            if (!ev.getValueIsAdjusting()) {
+                detailModel.setRowCount(0);
+                int r = table.getSelectedRow();
+                if (r >= 0) {
+                    int maHD = (int) tableModel.getValueAt(r, 0);
+                    ChiTietHoaDonFullDAO dao = new ChiTietHoaDonFullDAO();
+                    List<ChiTietHoaDonFullEntity> ds = dao.showListByKhachHang(Integer.parseInt(getMa()));
+                    for (ChiTietHoaDonFullEntity e : ds) {
+                        if (e.getMaHD() == maHD) {
+                            detailModel.addRow(new Object[]{
+                                    e.getTenSP(),
+                                    e.getSoLuong(),
+                                    HoaDon.formatCurrency((long) e.getThanhTien())
+                            });
+                        }
+                    }
+                }
+            }
+        });
+
         return this;
     }
-    public void ReloadLSmua(){
-        ChiTietHoaDonFullDAO dao = new ChiTietHoaDonFullDAO();
-        List<ChiTietHoaDonFullEntity> ds = new ArrayList<>();
-        ds.addAll(dao.showListByKhachHang(Integer.parseInt(getMa())));
 
+    private void setupTableStyle(JTable table) {
+        table.setRowHeight(30);
+        table.setShowGrid(true);
+        table.setGridColor(new Color(220, 220, 220));
+        table.setIntercellSpacing(new Dimension(0, 0));
+        table.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 13));
+        JTableHeader header = table.getTableHeader();
+        header.setBackground(new Color(0, 102, 204));
+        header.setForeground(Color.white);
+        header.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    public void ReloadLSmua() {
+        ChiTietHoaDonFullDAO dao = new ChiTietHoaDonFullDAO();
+        tableModel.setRowCount(0);
+        List<ChiTietHoaDonFullEntity> ds = dao.showListByKhachHang(Integer.parseInt(getMa()));
+        Set<Integer> seen = new HashSet<>();
+        List<ChiTietHoaDonFullEntity> list = new ArrayList<>();
         for (ChiTietHoaDonFullEntity e : ds) {
+            if (seen.add(e.getMaHD())) {
+                list.add(e);
+            }
+        }
+        for (ChiTietHoaDonFullEntity e : list) {
             Object[] row = {
-                    e.getMaSP(),
-                    e.getTenSP(),
-                    e.getSoLuong(),
-                    e.getThanhTien(),
-                    e.getNgayTao()
+                    e.getMaHD(),
+                    HoaDon.formatCurrency((long)e.getTongGiaTri()),
+                    e.getNgayTao(),
             };
             tableModel.addRow(row);
         }
+        list.sort(Comparator.comparingInt(ChiTietHoaDonFullEntity::getMaHD));
     }
 
     public String getMa() {

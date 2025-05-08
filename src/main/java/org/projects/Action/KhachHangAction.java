@@ -34,7 +34,7 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
         String nameButton = e.getActionCommand();
         if(showAddKhachHang != null) {
             if (source.equals(showAddKhachHang.add.getSaveButton())) {
-                System.out.println("save");
+                //System.out.println("save");
                 showAddKhachHang.add.insertData();
                 if(showAddKhachHang.add.getMa().equals("Nhập mã khách hàng")) {
                     JOptionPane.showMessageDialog(null,"Vui lòng nhập mã khách hàng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
@@ -67,10 +67,10 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                     }
                 }
             } else if (source.equals(showAddKhachHang.add.getCancelButton())) {
-                System.out.println("cancel");
+//                System.out.println("cancel");
                 showAddKhachHang.close();
             } else if (source.equals(showAddKhachHang.add.getResetButton())) {
-                System.out.println("reset");
+//                System.out.println("reset");
                 showAddKhachHang.add.resetForm();
             }
         }
@@ -158,10 +158,10 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                             if(info != null){
                                 showFixKhachHang = new ShowFixKhachHang();
                                 showFixKhachHang.fix.setInfo(info);
-                                System.out.println(info.ma);
-                                System.out.println(info.ten);
-                                System.out.println(info.sdt);
-                                System.out.println(info.diaChi);
+//                                System.out.println(info.ma);
+//                                System.out.println(info.ten);
+//                                System.out.println(info.sdt);
+//                                System.out.println(info.diaChi);
                                 showFixKhachHang.Show();
                                 showFixKhachHang.fix.getUpdateButton().addActionListener(this);
                                 showFixKhachHang.fix.getCancelButton().addActionListener(this);

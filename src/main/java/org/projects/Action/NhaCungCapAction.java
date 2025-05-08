@@ -36,10 +36,6 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                     if (ten.isEmpty() || sdt.isEmpty() || email.isEmpty() || dc.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Vui lòng nhâp đầy đủ các giá trị", "thông báo", JOptionPane.ERROR_MESSAGE);
                     }
-                    System.out.println("ten: " + ten);
-                    System.out.println("sdt: " + sdt);
-                    System.out.println("email: " + email);
-                    System.out.println("dc: " + dc);
                     NhaCungCapEntity nccEntity = new NhaCungCapEntity(ten, sdt, email, dc);
                     if (NhaCungCapBUS.them(nccEntity)) {
                         JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -101,13 +97,11 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
     @Override
     public void mousePressed(MouseEvent e) {
         generalFunction c = (generalFunction) e.getSource();
-        System.out.println(c);
         if (ncc != null) {
             for (String name : ncc.getHeader().getHeaderFunc().getHm().keySet()) {
                 generalFunction gf = ncc.getHeader().getHeaderFunc().getHm().get(name);
                 if (c.equals(gf)) {
                     if (name == null && name.trim().isEmpty()) return;
-                    System.out.println("ten cua nut la : " + name);
                     if ("add".equals(name)) {
                         new NhaCungCapDialog(name, ncc);
                     } else {

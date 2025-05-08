@@ -8,11 +8,12 @@ import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.HoaDonEntity;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.event.*;
 import java.util.List;
 
-public class HoaDonAction extends MouseAdapter {
+public class HoaDonAction  extends MouseAdapter implements ActionListener, DocumentListener, ItemListener {
     private HoaDon hoaDon;
     public HoaDonAction(HoaDon hoaDon) {
         this.hoaDon = hoaDon;
@@ -76,5 +77,35 @@ public class HoaDonAction extends MouseAdapter {
         }
         }
 }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        String keyword = e.getItem().toString();
+        String textfield = hoaDon.getHeader().getSearch().getSearchField().getText();
+        hoaDon.loadList(HoaDonBUS.search(keyword,textfield));
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        String keyword = hoaDon.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = e.getDocument().toString();
+        System.out.println(textfield);
+        hoaDon.loadList(HoaDonBUS.search(keyword,textfield));
+    }
 }
 

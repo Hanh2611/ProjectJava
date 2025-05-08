@@ -3,14 +3,23 @@ package org.projects.GUI.Panel.ThongkePack;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.GradientBarPainter;
+import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.projects.BUS.ThongkeTongQuanBUS;
+import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.CardPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,34 +76,11 @@ public class thongkeTongquan extends JPanel {
         centerChart = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
 
         //doanh thu panel
-        doanhthuPanel = new JPanel(new BorderLayout());
-        doanhthuPanel.setBackground(Color.WHITE);
-        doanhthuPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#95a5a6")));
-        DefaultCategoryDataset dataChart = new DefaultCategoryDataset();
-        doanhthutheothang = tktqBUS.getDoanhthu();
-        for(String namthang : doanhthutheothang.keySet()) {
-            dataChart.addValue(doanhthutheothang.get(namthang),"Doanh thu",namthang);
-        }
-        //tao bieu do
-        JFreeChart columnsChart = ChartFactory.createBarChart("Doanh thu theo tháng","năm-tháng","Doanh thu(VNĐ)",dataChart);
-        doanhthuChart = new ChartPanel(columnsChart);
-        doanhthuChart.setPreferredSize(new Dimension(520,300));
-        doanhthuPanel.add(doanhthuChart,BorderLayout.CENTER);
+        doanhthuPanel  = ColumnsChart.createColumnChart2("Doanh thu theo tháng",doanhthuChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getDoanhthu(),520,300);
         centerChart.add(doanhthuPanel);
 
         //top nha cung cap panel
-        topnhacungcapPanel = new JPanel(new BorderLayout());
-        topnhacungcapPanel.setBackground(Color.WHITE);
-        topnhacungcapPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#95a5a6")));
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        topnhacungcap = tktqBUS.getNhacungcapvatonggiatrinhap();
-        for(String tenncc : topnhacungcap.keySet()) {
-            dataset.addValue(topnhacungcap.get(tenncc),"nhà cung cấp",tenncc);
-        }
-        JFreeChart chartNCC = ChartFactory.createBarChart("Top nhà cung cấp","tên nhà cung cấp","Tổng giá trị nhập",dataset);
-        topnhacungcapChart = new ChartPanel(chartNCC);
-        topnhacungcapChart.setPreferredSize(new Dimension(360,300));
-        topnhacungcapPanel.add(topnhacungcapChart,BorderLayout.CENTER);
+        topnhacungcapPanel = ColumnsChart.createColumnChart2("Doanh thu theo tháng",topnhacungcapChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getNhacungcapvatonggiatrinhap(),360,300);
         centerChart.add(topnhacungcapPanel);
         this.add(centerChart,BorderLayout.CENTER);
 
@@ -119,7 +105,7 @@ public class thongkeTongquan extends JPanel {
     private JPanel createPieChart(String title,HashMap<Integer,String> hm,ChartPanel cp) {
             JPanel panel = new JPanel(new BorderLayout());
             panel.setBackground(Color.WHITE);
-            panel.setBorder(BorderFactory.createLineBorder(Color.decode("#95a5a6")));
+            panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         DefaultPieDataset dataPie = new DefaultPieDataset();
         for(Integer key : hm.keySet()) {
@@ -128,7 +114,7 @@ public class thongkeTongquan extends JPanel {
 
         JFreeChart pieChart = ChartFactory.createPieChart(title,dataPie,true,true,false);
         PiePlot plot = (PiePlot) pieChart.getPlot();
-
+        plot.setBackgroundPaint(Color.WHITE);
         for(Integer key : hm.keySet()) {
             String trangthai = hm.get(key);
             if(trangthai.equalsIgnoreCase("da_thanh_toan") || trangthai.equalsIgnoreCase("hoat_dong") || trangthai.equalsIgnoreCase("Đang kinh doanh")) {
@@ -139,6 +125,11 @@ public class thongkeTongquan extends JPanel {
                 plot.setSectionPaint(trangthai,Color.decode("#636e72"));
             }
         }
+        plot.setOutlineVisible(false);
+        plot.setShadowPaint(new Color(150, 150, 150, 80));
+        plot.setSimpleLabels(true);
+        plot.setInteriorGap(0.04);
+
         cp = new ChartPanel(pieChart);
         cp.setPreferredSize(new Dimension(150,200));
         panel.add(cp,BorderLayout.CENTER);

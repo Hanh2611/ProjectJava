@@ -60,7 +60,7 @@ public class AddSanPhamDialog extends JDialog {
 
         // Image preview
         imgPreview = new JLabel();
-        imgPreview.setIcon(new ImageIcon(new ImageIcon(Helper.getProductImagePath("product.jpg")).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH))); // Set default if needed
+        imgPreview.setIcon(new ImageIcon(new ImageIcon(Helper.getProductImagePath("product.jpg")).getImage().getScaledInstance(190, 140, Image.SCALE_SMOOTH))); // Set default if needed
         imgPreview.setPreferredSize(new Dimension(200, 150));
         imgPreview.setHorizontalAlignment(SwingConstants.CENTER);
         imgPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));

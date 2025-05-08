@@ -26,7 +26,7 @@ CREATE TABLE cap_quyen
 
 CREATE TABLE nguoi_dung
 (
-    ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY,
+    ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY auto_increment,
     loai_nguoi_dung ENUM ('nhan_vien_kho', 'khach_hang', 'nhan_vien_ban_hang') NOT NULL,
     ten_nguoi_dung  VARCHAR(50)                                                NOT NULL
 );
@@ -43,13 +43,13 @@ CREATE TABLE tai_khoan
 CREATE TABLE nhan_vien
 (
     ma_nhan_vien  INT         NOT NULL PRIMARY KEY,
-    ma_nguoi_dung INT         NOT NULL,
+    ma_nguoi_dung INT         ,
     ten_nhan_vien VARCHAR(50) NOT NULL,
     email         VARCHAR(50) NOT NULL,
     so_dien_thoai VARCHAR(15) NOT NULL,
     chuc_vu       VARCHAR(50) NOT NULL,
-    luong INT NOT NULL,
-    gioi_tinh INT NOT NULL
+    luong         INT         NOT NULL,
+    gioi_tinh     INT         NOT NULL
 );
 
 CREATE TABLE khach_hang
@@ -67,7 +67,7 @@ CREATE TABLE hoa_don
     ma_nhan_vien  INT,
     ma_khach_hang INT,
     ngay_tao      TIMESTAMP                                 DEFAULT CURRENT_TIMESTAMP,
-    tong_gia_tri  DOUBLE          NOT NULL,
+    tong_gia_tri  DOUBLE NOT NULL,
     trang_thai    ENUM ('chua_thanh_toan', 'da_thanh_toan') DEFAULT 'chua_thanh_toan'
 );
 
@@ -79,12 +79,12 @@ CREATE TABLE danh_muc_san_pham
 
 CREATE TABLE san_pham
 (
-    ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
+     ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
     ten_san_pham VARCHAR(255) NOT NULL,
     phan_loai    INT,
     don_vi       VARCHAR(50),
-    gia_ban      DOUBLE DEFAULT 0,
-    so_luong_ton DOUBLE DEFAULT 0,
+    gia_ban      DOUBLE  DEFAULT 0,
+    so_luong_ton DOUBLE  DEFAULT 0,
     quy_cach     ENUM ('Thùng', 'Chai', 'Túi', 'KG', 'Hộp', 'G', 'Khay'),
     img          VARCHAR(255),
     trang_thai   BOOLEAN DEFAULT TRUE
@@ -232,9 +232,9 @@ VALUES
     (1, 4, 'xoa'),
     (1, 4, 'xem'),
     (1, 5, 'them'),
-    (1,5,'sua'),
-    (1,5,'xoa'),
-    (1,5,'xem'),
+    (1, 5, 'sua'),
+    (1, 5, 'xoa'),
+    (1, 5, 'xem'),
     (1, 6, 'them'),
     (1, 6, 'sua'),
     (1, 6, 'xoa'),
@@ -293,26 +293,30 @@ VALUES ('a', 1, '123', 1, 'hoat_dong'),
        ('hoangnam', 10, 'password555', 2, 'hoat_dong');
 
 INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh)
-VALUES
-    (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1),
-    (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0),
-    (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1),
-    (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1),
-    (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1),
-    (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1);
+VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1),
+       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0),
+       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1),
+       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1),
+       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1),
+       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1);
 
 INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi)
 VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam'),
        (2, 4, 'Phạm Linh H', '0976543210', 'TP. Hồ Chí Minh, Việt Nam'),
        (3, 7, 'Trần Bình I', '0901234567', 'Đà Nẵng, Việt Nam'),
-       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam');
+       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam'),
+       (5, 2, 'Hoàng Anh K', '0987654321', 'Hải Phòng, Việt Nam'),
+       (6, 8, 'Đỗ Thị L', '0941234567', 'Nha Trang, Việt Nam'),
+       (7, 6, 'Vũ Quang M', '0918765432', 'Huế, Việt Nam');
 
 INSERT INTO danh_muc_san_pham (ten_danh_muc)
 VALUES ('Nước giải khát'),
        ('Thịt'),
        ('Gạo, Bột ngọt, Đường'),
        ('Rau, Quả'),
-       ('Sữa, Sữa chua');
+       ('Sữa, Sữa chua'),
+       ('Bánh');
+
 
 INSERT INTO san_pham (ten_san_pham, phan_loai, don_vi, gia_ban, so_luong_ton, quy_cach, img)
 VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'traxanhc2hngchanh360ml.jpg'),
@@ -323,20 +327,70 @@ VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'trax
        ('Gạo thơm Neptune ST25 Extra túi 5kg', 3, '5kg', 123000, 70, 'Túi', 'gothmneptunest25extratui5kg.jpg'),
        ('Xoài keo 1kg', 4, '2kg', 23900, 20, 'KG', 'xoaikeo1kg.jpg'),
        ('Thùng 48 hộp sữa tươi tiệt trùng ít đường TH true MILK 180ml', 5, '48 hộp', 415000, 90, 'Thùng',
-        'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg');
+        'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg'),
+       ('Cà rốt trái từ 150g trở lên', 4, '2kg', 34000, 0, 'KG', 'carottraitu150gtrolen.jpg'),
+       ('Bột ngọt Meizan gói 1kg', 3, '1kg', 69000, 0, 'Túi', 'botngotmeizangoi1kg.jpg'),
+       ('Bột ngọt Meizan gói 400g', 3, '400g', 32000, 0, 'Túi', 'botngotmeizangoi400g.jpg'),
+       ('Bánh bơ trứng Richy Karo gói 270g', 6, '270g', 37000, 0, 'Túi', 'banhbotrungrichykarogoi270g.jpg');
+
+
 
 INSERT INTO hoa_don (ma_hoa_don, ma_nhan_vien, ma_khach_hang, ngay_tao, tong_gia_tri, trang_thai)
 VALUES (1, 1, 1, NOW(), 8000, 'chua_thanh_toan'),
        (2, 2, 2, NOW(), 41000, 'da_thanh_toan'),
        (3, 3, 3, NOW(), 42000, 'chua_thanh_toan'),
-       (4, 4, 4, NOW(), 297000, 'da_thanh_toan');
+       (4, 4, 4, NOW(), 297000, 'da_thanh_toan'),
+       (5, 2, 3, '2025-01-05 10:00:00', 35000, 'da_thanh_toan'),
+       (6, 1, 4, '2025-01-15 14:30:00', 108000, 'da_thanh_toan'),
+       (7, 3, 1, '2025-01-25 09:15:00', 60000, 'da_thanh_toan'),
+       (8, 4, 2, '2025-02-03 11:20:00', 89000, 'da_thanh_toan'),
+       (9, 2, 5, '2025-02-12 16:45:00', 24000, 'da_thanh_toan'),
+       (10, 1, 3, '2025-02-20 13:10:00', 198000, 'da_thanh_toan'),
+       (11, 3, 4, '2023-06-10 08:50:00', 45000, 'da_thanh_toan'),
+       (12, 2, 1, '2023-11-22 15:30:00', 72000, 'da_thanh_toan'),
+       (13, 4, 5, '2023-03-17 12:00:00', 105000, 'da_thanh_toan'),
+       (14, 1, 2, '2022-04-05 10:20:00', 30000, 'da_thanh_toan'),
+       (15, 3, 3, '2022-09-14 17:10:00', 88000, 'da_thanh_toan'),
+       (16, 2, 4, '2022-12-01 11:40:00', 51000, 'da_thanh_toan'),
+       (17, 4, 1, '2021-07-19 09:30:00', 64000, 'da_thanh_toan'),
+       (18, 1, 5, '2021-02-28 14:00:00', 27000, 'da_thanh_toan'),
+       (19, 3, 2, '2021-10-10 16:20:00', 93000, 'da_thanh_toan'),
+       (20, 2, 3, '2020-05-12 13:50:00', 40000, 'da_thanh_toan'),
+       (21, 4, 4, '2020-08-25 10:15:00', 75000, 'da_thanh_toan'),
+       (22, 1, 1, '2020-11-30 15:45:00', 56000, 'da_thanh_toan');
 
 INSERT INTO chi_tiet_hoa_don (ma_san_pham, ma_hoa_don, so_luong, gia_ban, thanh_tien)
 VALUES (1, 1, 1, 8000, 8000),
        (2, 2, 2, 10000, 20000),
        (3, 2, 1, 21000, 21000),
        (3, 3, 2, 21000, 42000),
-       (4, 4, 3, 99000, 297000);
+       (4, 4, 3, 99000, 297000),
+       (2, 5, 1, 15000, 15000),
+       (3, 5, 1, 20000, 20000),
+       (4, 6, 1, 99000, 99000),
+       (1, 6, 1, 9000, 9000),
+       (2, 7, 2, 30000, 60000),
+       (3, 8, 1, 21000, 21000),
+       (4, 8, 1, 68000, 68000),
+       (1, 9, 3, 8000, 24000),
+       (4, 10, 2, 99000, 198000),
+       (2, 11, 3, 15000, 45000),
+       (3, 12, 2, 21000, 42000),
+       (1, 12, 3, 10000, 30000),
+       (4, 13, 1, 99000, 99000),
+       (2, 13, 1, 6000, 6000),
+       (1, 14, 2, 15000, 30000),
+       (3, 15, 1, 21000, 21000),
+       (4, 15, 1, 67000, 67000),
+       (2, 16, 2, 25500, 51000),
+       (1, 17, 2, 12000, 24000),
+       (3, 17, 2, 20000, 40000),
+       (2, 18, 3, 9000, 27000),
+       (4, 19, 1, 93000, 93000),
+       (3, 20, 2, 20000, 40000),
+       (4, 21, 1, 75000, 75000),
+       (1, 22, 2, 10000, 20000),
+       (2, 22, 2, 18000, 36000);
 
 INSERT INTO phieu_nhap (ma_phieu_nhap, ma_nhan_vien, ma_nha_cung_cap, ngay_nhap, tong_gia_tri_nhap)
 VALUES (1, 1, 1, '2025-04-01 08:30:00', 70000),
@@ -358,7 +412,7 @@ VALUES (1, 1),
        (3, 3),
        (4, 3),
        (5, 2),
-       (6, 1),
+       (6, 2),
        (7, 3),
        (8, 2),
        (9, 3),

@@ -97,7 +97,7 @@ public class FixNhanVienConsole extends JPanel {
             JPanel p = new JPanel();
             p.setLayout(new FlowLayout(FlowLayout.LEFT , 5 , 5));
             p.setBackground(new Color(240, 240, 240));
-            p.setPreferredSize(new Dimension(500, 40));
+//            p.setPreferredSize(new Dimension(500, 40));
             JTextField jTextField2 = new JTextField(str[index]);
             jTextField2.setEditable(false);
             JTextField jTextField = new JTextField(s);
@@ -199,14 +199,16 @@ public class FixNhanVienConsole extends JPanel {
         JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
+        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage);
+        FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 210 , 210);
+        JLabel userLabel = new JLabel(user);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
         mainImg.add(button_add_image, BorderLayout.NORTH);
-        mainImg.add(parentImg, BorderLayout.CENTER);
+        mainImg.add(userLabel, BorderLayout.CENTER);
         mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }
@@ -218,22 +220,23 @@ public class FixNhanVienConsole extends JPanel {
             String actionCommand = e.getActionCommand();
 
             if ("ADD IMAGE".equals(actionCommand)) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
-
-                int result = fileChooser.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    java.io.File selectedFile = fileChooser.getSelectedFile();
-                    System.out.println("File được chọn: " + selectedFile.getAbsolutePath());
-                    changeImage = selectedFile.getAbsolutePath();
-                    JPanel newParentImg = getJPanel(changeImage);
-                    mainImg.remove(parentImg);
-                    mainImg.add(newParentImg, BorderLayout.CENTER);
-                    parentImg = newParentImg;
-                    mainImg.revalidate();
-                    mainImg.repaint();
-                }
+//                JFileChooser fileChooser = new JFileChooser();
+//                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
+//
+//                int result = fileChooser.showOpenDialog(null);
+//                if (result == JFileChooser.APPROVE_OPTION) {
+//                    java.io.File selectedFile = fileChooser.getSelectedFile();
+//                    System.out.println("File được chọn: " + selectedFile.getAbsolutePath());
+//                    changeImage = selectedFile.getAbsolutePath();
+//                    JPanel newParentImg = getJPanel(changeImage);
+//                    mainImg.remove(parentImg);
+//                    mainImg.add(newParentImg, BorderLayout.CENTER);
+//                    parentImg = newParentImg;
+//                    mainImg.revalidate();
+//                    mainImg.repaint();
+//                }
+                JOptionPane.showMessageDialog(null, "Chức năng hiện đang bảo trì.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         button_add_image.setBackground(new Color(135, 206, 250));
@@ -245,7 +248,7 @@ public class FixNhanVienConsole extends JPanel {
     private static JPanel getJPanel(String path) {
 //        FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);
         ImageIcon addIcon_user = new ImageIcon(path);
-        Image scale = addIcon_user.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        Image scale = addIcon_user.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
 //        JLabel img = new RoundedImageLabel(addIcon_user , 100 , 100);
         JLabel img = new JLabel(new ImageIcon(scale));
         img.setHorizontalAlignment(SwingConstants.CENTER);

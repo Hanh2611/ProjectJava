@@ -133,7 +133,7 @@ public class KhachHang extends JPanel {
                         BorderFactory.createEmptyBorder(5, 5, 5, 5)
                 )
         );
-        scrollPane.setBorder(border);
+        //scrollPane.setBorder(border);
         // Panel trung tâm
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setBackground(Color.WHITE);

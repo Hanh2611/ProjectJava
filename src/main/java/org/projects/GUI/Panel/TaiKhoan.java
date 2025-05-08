@@ -1,10 +1,10 @@
 package org.projects.GUI.Panel;
 
-import org.projects.BUS.PhanQuyenBUS;
+import org.projects.Action.TaiKhoanAction;
 import org.projects.BUS.TaiKhoanBUS;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
-import org.projects.GUI.utils.Session;
+import org.projects.entity.TaiKhoanEntity;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -19,7 +19,7 @@ import java.util.List;
 //todo: mã người dùng sẽ được tạo tự động rồi lấy cái mã đó để có thể set cho nhân viên
 //todo: trong phần chi tiết ta có tên người dùng(Lấy từ mã người dùng), tên đăng nhập, loại tài khoản, các quyền, trạng thái;
 //todo: (Nhớ dùng regex) trong phần thêm ta sẽ nhập tên đăng nhập, mật khẩu, mã nhân viên (vì trước đó cần có nhân viên nên ta sẽ tạo 1 người dùng, rồi sau đó tạo tài khoản với mã người dùng đó)
-//todo: (Nhớ dùng regex) trong phần sửa thì ta sẽ được quyền sửa mật khẩu, mã người dùng, quyền, trạng thái
+//todo: (Nhớ dùng regex) trong phần sửa thì ta sẽ được quyền sửa mật khẩu, quyền, trạng thái
 //todo: Trong phần quyền mình có thể dùng combobox kết hợp với tìm kiếm để có thể chọn nhóm quyền 1 cách dễ dàng
 //todo: Phần trạng thái cũng sẽ là combobox
 //todo: Xóa thì có thể xóa tài khoản, sau đó xóa người dùng
@@ -30,6 +30,7 @@ public class TaiKhoan extends JPanel{
     private JPanel contentPanel;
     private DefaultTableModel tableModel;
     private String[][] listItemHeader;
+    private TaiKhoanAction tkAction;
     public TaiKhoan() {
         listItemHeader = new String[][]{
                 {"icon/add.svg", "Thêm", "add"},
@@ -38,6 +39,7 @@ public class TaiKhoan extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
+        tkAction = new TaiKhoanAction(this,null);
         this.setBackground(Color.decode("#CAECF7"));
         this.setOpaque(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -47,7 +49,7 @@ public class TaiKhoan extends JPanel{
 
     public void initHeader() {
 //        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--"});
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
+        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","tên đăng nhập","mã người dùng"});
 
         this.add(header);
     }
@@ -88,11 +90,93 @@ public class TaiKhoan extends JPanel{
         mainTable.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        //action
+        for(String name : this.getHeader().getHeaderFunc().getHm().keySet()) {
+            this.getHeader().getHeaderFunc().getHm().get(name).addMouseListener(tkAction);
+        }
+        header.getSearch().getSearchComboBox().addItemListener(tkAction);
+        header.getSearch().getSearchField().getDocument().addDocumentListener(tkAction);
+        header.getSearch().getSearchButton().addActionListener(tkAction);
+
     }
     public void loadDataIntoTable() {
-        List<org.projects.entity.TaiKhoan> listTaiKhoan = TaiKhoanBUS.getListTaiKhoan();
-        for (org.projects.entity.TaiKhoan t : listTaiKhoan) {
+        tableModel.setRowCount(0);
+        List<TaiKhoanEntity> listTaiKhoanEntity = TaiKhoanBUS.getListTaiKhoan();
+        for (TaiKhoanEntity t : listTaiKhoanEntity) {
             tableModel.addRow(new Object[]{TaiKhoanBUS.getTenNguoiDung(t.getMaNguoiDung()), t.getMaNguoiDung(), t.getTenDangNhap(), TaiKhoanBUS.getLoaiNguoiDung(t.getMaNguoiDung()), t.getTrangThai()});
         }
+    }
+
+    public TaiKhoanEntity getSelectedTaiKhoanEntity() {
+        int row = mainTable.getSelectedRow();
+        if(row >= 0) {
+            String tendangnhap = mainTable.getModel().getValueAt(row, 2).toString();
+            List<TaiKhoanEntity> lst = TaiKhoanBUS.getListTaiKhoan();
+            for(TaiKhoanEntity tkEntity : lst) {
+                if(tkEntity.getTenDangNhap().equals(tendangnhap)) return tkEntity;
+            }
+        }
+        return null;
+    }
+
+    public void searchFunction(String key, String word) {
+        key = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        word = this.getHeader().getSearch().getSearchField().getText().trim();
+        if (!key.equals("---") && !word.isEmpty()) {
+            List<TaiKhoanEntity> tks = TaiKhoanBUS.search(key, word);
+            tableModel.setRowCount(0); // Xóa bảng
+            for (TaiKhoanEntity t : tks) {
+                tableModel.addRow(new Object[]{
+                        TaiKhoanBUS.getTenNguoiDung(t.getMaNguoiDung()),
+                        t.getMaNguoiDung(),
+                        t.getTenDangNhap(),
+                        TaiKhoanBUS.getLoaiNguoiDung(t.getMaNguoiDung()),
+                        t.getTrangThai()
+                });
+            }
+        } else {
+            loadDataIntoTable();
+        }
+    }
+
+
+    public headerBar getHeader() {
+        return header;
+    }
+
+    public void setHeader(headerBar header) {
+        this.header = header;
+    }
+
+    public JTable getMainTable() {
+        return mainTable;
+    }
+
+    public void setMainTable(JTable mainTable) {
+        this.mainTable = mainTable;
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
+    }
+
+    public JPanel getContentPanel() {
+        return contentPanel;
+    }
+
+    public void setContentPanel(JPanel contentPanel) {
+        this.contentPanel = contentPanel;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
+    }
+
+    public void setTableModel(DefaultTableModel tableModel) {
+        this.tableModel = tableModel;
     }
 }

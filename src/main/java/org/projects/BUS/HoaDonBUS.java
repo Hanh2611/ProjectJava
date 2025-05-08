@@ -4,6 +4,7 @@ import org.projects.DAO.HoaDonDAO;
 import org.projects.GUI.Panel.HoaDon;
 import org.projects.entity.HoaDonEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HoaDonBUS {
@@ -25,6 +26,44 @@ public class HoaDonBUS {
             }
         }
         return false; // bổ sung return false
+    }
+
+    public static List<HoaDonEntity> search(String keyword, String textField) {
+        listHoaDon = getList();  // Cập nhật lại listPN
+        List<HoaDonEntity> newlist = new ArrayList<>();
+        textField = textField.toLowerCase();
+        switch (keyword.toLowerCase()) {
+            case "tất cả":
+                newlist.addAll(listHoaDon);
+                break;
+            case "mã":
+                for (HoaDonEntity hoaDonEntity : listHoaDon) {
+                    if (String.valueOf(hoaDonEntity.getMaHoaDon()).contains(textField)) {
+                        newlist.add(hoaDonEntity);
+                    }
+                }
+                break;
+            case "tên nhân viên":
+                for (HoaDonEntity hoaDonEntity : listHoaDon) {
+                    if (String.valueOf(hoaDonEntity.getTenNV()).toLowerCase().contains(textField)) {
+                        newlist.add(hoaDonEntity);
+                    }
+                }
+                break;
+            case "tên khách hàng":
+                for (HoaDonEntity hoaDonEntity : listHoaDon) {
+                    if (String.valueOf(hoaDonEntity.getTenKh()).toLowerCase().contains(textField)) {
+                        newlist.add(hoaDonEntity);
+                    }
+                }
+                break;
+            default:
+                System.out.println("không tìm thấy " + keyword + " và " + textField);
+                break;
+        }
+        System.out.println("danh sach ban dau: " + listHoaDon.size());
+        System.out.println("danh sach sau khi tim kiem theo " + keyword + " va " + textField + ": " + newlist.size());
+        return newlist;
     }
 
 }
