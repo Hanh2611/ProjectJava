@@ -34,6 +34,7 @@ public class PhieuNhap extends JPanel {
     private PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS(this); //  Khai báo BUS
     private PhieuNhapEntity phieuNhapEntity;
     private PhieuNhapDAO phieuNhapDAO;
+    private int currentPanel = 0;
 
     public PhieuNhap() {
         String[][] listItemHeader = {
@@ -75,6 +76,9 @@ public class PhieuNhap extends JPanel {
         header.getSearch().getSearchComboBox().addItemListener(actionHandler);
         header.getSearch().getSearchField().getDocument().addDocumentListener(actionHandler);
         header.getSearch().getSearchButton().addActionListener(actionHandler);
+    }
+    public int getCurrentPanel() {
+        return currentPanel;
     }
     public headerBar getHeader() {
         return header;
@@ -160,19 +164,24 @@ public class PhieuNhap extends JPanel {
 
     public void showTrangChinh() {
         cardLayout.show(contentpanel, "trangchinh");
+        currentPanel =0;
     }
 
     public void showThemPN() {
         cardLayout.show(contentpanel, "Them PN");
+        currentPanel = 1;
     }
 
     public void showChiTietPN(List<ChiTietPhieuNhapFullEntity> list) {
         chiTietPN.setData(list); // gọi setData trước khi hiển thị
         cardLayout.show(contentpanel, "ChiTiet PN");
+        currentPanel = 1;
+
     }
     public void showCapNhatPN(List<ChiTietPhieuNhapFullEntity> list) {
         capNhatPN.loadDatatoTablePhieuNhap(list);
-
         cardLayout.show(contentpanel, "CapNhat PN");
+        currentPanel = 1;
+
     }
 }

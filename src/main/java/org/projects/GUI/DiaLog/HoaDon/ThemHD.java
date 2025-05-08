@@ -2,6 +2,7 @@ package org.projects.GUI.DiaLog.HoaDon;
 
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.SanPhamBus;
 import org.projects.DAO.ChiTietHoaDonDAO;
 import org.projects.DAO.HoaDonDAO;
 import org.projects.DAO.KhachHangDAO;
@@ -45,6 +46,7 @@ public class ThemHD extends JPanel {
     FlatSVGIcon icon_themsp,icon_bosp,icon_suasp,icon_dong,icon_tao;
     private HoaDon hoaDon;
     private int maKhachHangDuocChon = -1; // trong class
+    private final SanPhamBus sanPhamBus;
 
 
     public ThemHD(HoaDon hoaDon) {
@@ -56,7 +58,7 @@ public class ThemHD extends JPanel {
         loadDataToTableSanPham();
         loadMaHoaDon();
         loadNgayTao(); // thêm dòng này
-
+        this.sanPhamBus = new SanPhamBus();
     }
 
     public void init() {
@@ -91,7 +93,7 @@ public class ThemHD extends JPanel {
         add(panelLeft);
 
         // Bảng dữ liệu sản phẩm
-        String[] columnNames = {"Mã SP", "Tên SP","Giá bán"};
+        String[] columnNames = {"Mã SP", "Tên SP","Giá bán","Tồn"};
 
             DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -371,14 +373,32 @@ public class ThemHD extends JPanel {
             String maSP = hienthi_masp.getText();
             String tenSP = hienthi_tensp.getText();
             String soLuong = nhapsoluong.getText();
+            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             String giaban = nhapgiaban.getText();
             int soLuongInt = Integer.parseInt(soLuong);
             long giabanformatted = ThemPN.parseTien(giaban);
             long thanhtien = soLuongInt*giabanformatted;
             String thanhtienformatted = ThemPN.formatVND(thanhtien);
             // Kiểm tra nếu các ô không được để trống
-            if ( soLuong.isEmpty() ) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+
+            try {
+                if (soLuongInt <= 0) {
+                    JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            int selectedRow = tableSanPham.getSelectedRow();
+
+            double soluongton = Double.parseDouble(tableModel.getValueAt(selectedRow, 3).toString());
+
+            if (soLuongInt > soluongton) {
+                JOptionPane.showMessageDialog(null, "Số lượng bán vượt quá số lượng tồn!", "Lỗi", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -561,7 +581,13 @@ public class ThemHD extends JPanel {
             ChiTietHoaDonDAO chiTietDAO = new ChiTietHoaDonDAO();
             for (int i = 0; i < modelDanhSachNhap.getRowCount(); i++) {
                 int maSP = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 0).toString());
+                SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
                 int soLuong = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 2).toString());
+                sp.setSoLuongTon(sp.getSoLuongTon() - soLuong);
+                if(sp.getSoLuongTon() == 0){
+                    sp.setTrangThai(false);
+                }
+                sanPhamBus.updateSanPham(sp);
                 double giaBan = ThemPN.parseTien(modelDanhSachNhap.getValueAt(i, 3).toString());
                 double thanhTien = soLuong * giaBan;
                 ChiTietHoaDonEntity chiTiet = new ChiTietHoaDonEntity(maSP, maHD, soLuong, giaBan, thanhTien);
@@ -770,12 +796,15 @@ public class ThemHD extends JPanel {
         model.setRowCount(0); // clear dữ liệu cũ
 
         for (SanPhamEntity sp : list) {
-            String giaFormatted = formatCurrency((long) sp.getGiaBan());
-            model.addRow(new Object[]{
-                    sp.getId(),
-                    sp.getTenSanPham(),
-                    giaFormatted,
-            });
+            if (sp.getSoLuongTon() > 0 && sp.isTrangThai() ) {
+                String giaFormatted = formatCurrency((long) sp.getGiaBan());
+                model.addRow(new Object[]{
+                        sp.getId(),
+                        sp.getTenSanPham(),
+                        giaFormatted,
+                        sp.getSoLuongTon(),
+                });
+            }
         }
     }
 }

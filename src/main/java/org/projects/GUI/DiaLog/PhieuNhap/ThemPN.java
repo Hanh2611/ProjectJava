@@ -360,6 +360,14 @@ public class ThemPN extends JPanel {
             try {
                 int sl = Integer.parseInt(soLuong);
                 long gia = parseTien(giaNhap); // Bỏ định dạng ₫, .
+                if (sl <= 0) {
+                    JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (gia <= 0) {
+                    JOptionPane.showMessageDialog(null, "Giá bán phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 long thanhTien = sl * gia;
 
                 modelDanhSachNhap.addRow(new Object[]{
@@ -593,8 +601,6 @@ public class ThemPN extends JPanel {
             model.addRow(new Object[]{
                     sp.getId(),
                     sp.getTenSanPham(),
-//                    sp.getQuyCach(),
-//                    sp.getDonVi()
             });
         }
         loadNhaCungCapCombobox();

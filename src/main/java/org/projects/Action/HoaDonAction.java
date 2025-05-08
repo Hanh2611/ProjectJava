@@ -23,6 +23,10 @@ public class HoaDonAction  extends MouseAdapter implements ActionListener, Docum
     public void mouseClicked(MouseEvent e) {
         generalFunction func = (generalFunction) e.getSource();
         String action = func.getNameFunction();
+        if (hoaDon.getCurrentPanel() != 0) {
+            JOptionPane.showMessageDialog(null, "Vui lòng quay lại màn hình chính để thực hiện thao tác.");
+            return;
+        }
         switch (action) {
             case "add":
                 hoaDon.showThemHD();
