@@ -169,5 +169,8 @@ public class KhachHang extends JPanel {
             loadList(lst);
         } else reloadDAO();
     }
+    public JTable getTable(){
+        return table;
+    }
 }
 

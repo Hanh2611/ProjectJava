@@ -1,20 +1,17 @@
 package org.projects.GUI.Panel.NhanVienPack;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-//import org.projects.BUS.MainBUS;
 import org.projects.Action.NhanVienAction;
-import org.projects.BUS.NhanVienBus;
-import org.projects.GUI.Components.handleComponents;
-
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
@@ -26,6 +23,8 @@ public class AddNhanVienConsole extends JPanel {
     private JButton reset, save, cancel;
     private NhanVienAction action;
     private boolean isResettingComboBox = false;
+    private static String avatar;
+
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
     public ArrayList<JTextField> listAdd;
@@ -69,8 +68,8 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập mã nhân viên", "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại" , "Nhập lương nhân viên"};
-        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
+        String[] list = {"Nhập mã nhân viên" , "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại" , "Nhập lương nhân viên"};
+        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí", "Giám đốc"};
         listAdd = new ArrayList<>();
         comboBox = new JComboBox<>(items);
         for (String s : list) {
@@ -166,9 +165,13 @@ public class AddNhanVienConsole extends JPanel {
         setTen(listAdd.get(1).getText().trim());
         setEmail(listAdd.get(2).getText().trim());
         setSdt(listAdd.get(3).getText().trim());
-        setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
+        if(listAdd.get(4).getText().trim().equals("Nhập lương nhân viên")){
+            setLuong(0);
+        }else setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
         setChuc_vu((String)comboBox.getSelectedItem());
         setGioitinh(chiTietUserConsole.isGioitinh());
+        System.out.println(getAvatar());
+        setAvatar(getAvatar());
     }
 
     public JPanel mainIMG() {
@@ -180,44 +183,62 @@ public class AddNhanVienConsole extends JPanel {
         JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
+        changeImage = Objects.requireNonNull(getClass().getResource("/Img/product/product.jpg")).getPath();
         parentImg = new JPanel();
-        parentImg = getJPanel(changeImage);
-        FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 210 , 210);
-        JLabel userLabel = new JLabel(user);
+        parentImg = getJPanel(changeImage , 220 , 150);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
         mainImg.add(button_add_image, BorderLayout.NORTH);
-        mainImg.add(userLabel, BorderLayout.CENTER);
+        mainImg.add(parentImg, BorderLayout.CENTER);
         mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }
 
-    private static JButton getJButton() {
+    public static String uploadToCloudinary(File file) {
+        try {
+            Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                    "cloud_name", "dmw5hl35v",
+                    "api_key", "186529119916437",
+                    "api_secret", "Tb2U6kR2RHvEaPmRqgRo1bYHfvQ"
+            ));
+            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+            return (String) uploadResult.get("secure_url");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public JButton getJButton() {
         JButton button_add_image = new JButton("ADD IMAGE");
         button_add_image.addActionListener(e -> {
-            JComponent source = (JComponent) e.getSource();
-            String actionCommand = e.getActionCommand();
-
-            if ("ADD IMAGE".equals(actionCommand)) {
-//                JFileChooser fileChooser = new JFileChooser();
-//                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-//                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
-//
-//                int result = fileChooser.showOpenDialog(null);
-//                if (result == JFileChooser.APPROVE_OPTION) {
-//                    java.io.File selectedFile = fileChooser.getSelectedFile();
-//                    System.out.println("File được chọn: " + selectedFile.getAbsolutePath());
-//                    changeImage = selectedFile.getAbsolutePath();
-//                    JPanel newParentImg = getJPanel(changeImage);
-//                    mainImg.remove(parentImg);
-//                    mainImg.add(newParentImg, BorderLayout.CENTER);
-//                    parentImg = newParentImg;
-//                    mainImg.revalidate();
-//                    mainImg.repaint();
-//                }
-                JOptionPane.showMessageDialog(null, "Chức năng hiện đang bảo trì.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            if ("ADD IMAGE".equals(e.getActionCommand())) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    if (selectedFile != null && selectedFile.exists()) {
+                        String imageUrl = uploadToCloudinary(selectedFile);
+                        if (imageUrl != null) {
+                            //System.out.println("Link ảnh cloud: " + imageUrl);
+                            setAvatar(imageUrl);
+                            changeImage = imageUrl;
+                            JPanel newParentImg = getJPanel(changeImage , 220 , 150);
+                            mainImg.remove(parentImg);
+                            mainImg.add(newParentImg, BorderLayout.CENTER);
+                            parentImg = newParentImg;
+                            mainImg.revalidate();
+                            mainImg.repaint();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Upload ảnh thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "File không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         });
         button_add_image.setBackground(new Color(135, 206, 250));
@@ -226,19 +247,27 @@ public class AddNhanVienConsole extends JPanel {
         return button_add_image;
     }
 
-    private static JPanel getJPanel(String path) {
-//        FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);
-        ImageIcon addIcon_user = new ImageIcon(path);
-        Image scale = addIcon_user.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
-//        JLabel img = new RoundedImageLabel(addIcon_user , 100 , 100);
-        JLabel img = new JLabel(new ImageIcon(scale));
-        img.setHorizontalAlignment(SwingConstants.CENTER);
-        img.setOpaque(true);
+    public static JPanel getJPanel(String path , int height , int vertical) {
         JPanel parentImg = new JPanel();
         parentImg.setOpaque(true);
-        parentImg.setPreferredSize(new Dimension(500, 150));
-        parentImg.setMinimumSize(new Dimension(500, 150));
-        parentImg.setMaximumSize(new Dimension(500, 150));
+        parentImg.setPreferredSize(new Dimension(500, vertical));
+        parentImg.setMinimumSize(new Dimension(500, vertical));
+        parentImg.setMaximumSize(new Dimension(500, vertical));
+        JLabel img = null;
+        try {
+            ImageIcon addIcon_user;
+            if (path != null && (path.startsWith("http://") || path.startsWith("https://"))) {
+                addIcon_user = new ImageIcon(new java.net.URL(path));
+            } else {
+                addIcon_user = new ImageIcon(path);
+            }
+            Image scale = addIcon_user.getImage().getScaledInstance(220, height, Image.SCALE_SMOOTH);
+            img = new JLabel(new ImageIcon(scale));
+        } catch (Exception e) {
+            img = new JLabel("Không thể load ảnh");
+        }
+        img.setHorizontalAlignment(SwingConstants.CENTER);
+        img.setOpaque(true);
         parentImg.add(img);
         return parentImg;
     }
@@ -288,12 +317,12 @@ public class AddNhanVienConsole extends JPanel {
         genderPanel = getRadioSex(true, true);
         genderPanel.repaint();
         genderPanel.revalidate();
-        //changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
+        changeImage = Objects.requireNonNull(getClass().getResource("/Img/product/product.jpg")).getPath();
         isResettingComboBox = false;
-        //JPanel newParentImg = getJPanel(changeImage);
-        //mainImg.remove(parentImg);
-        //mainImg.add(newParentImg, BorderLayout.CENTER);
-        //parentImg = newParentImg;
+        JPanel newParentImg = getJPanel(changeImage , 220 , 150);
+        mainImg.remove(parentImg);
+        mainImg.add(newParentImg, BorderLayout.CENTER);
+        parentImg = newParentImg;
         mainImg.revalidate();
         mainImg.repaint();
     }
@@ -352,5 +381,13 @@ public class AddNhanVienConsole extends JPanel {
 
     public void setGioitinh(boolean gioitinh) {
         this.gioitinh = gioitinh;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public  void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

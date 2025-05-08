@@ -194,22 +194,23 @@ public class NhanVien extends JPanel {
         String chucVu = table.getValueAt(row,4).toString();
         int luong = 0;
         boolean gioi_tinh = true;
-        String query = "SELECT luong, gioi_tinh FROM nhan_vien WHERE ma_nhan_vien = ?";
+        String avatar = null;
+        String query = "SELECT luong, gioi_tinh , avatar FROM nhan_vien WHERE ma_nhan_vien = ?";
 
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement ps = c.prepareStatement(query);) {
             ps.setInt(1, ma);
-            //System.out.println(ma);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     luong = rs.getInt("luong");
                     gioi_tinh = rs.getBoolean("gioi_tinh");
+                    avatar = rs.getString("avatar");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new NhanVienEntity(ma,ten,email,sdt,chucVu , luong , gioi_tinh);
+        return new NhanVienEntity(ma,ten,email,sdt,chucVu , luong , gioi_tinh , avatar);
     }
 
     public void searchfunction(String keyword,String textfield) {
@@ -219,6 +220,9 @@ public class NhanVien extends JPanel {
             List<NhanVienEntity> lst = NhanVienBus.search(keyword,textfield);
             loadList(lst);
         } else reloadDAO();
+    }
+    public JTable getTable(){
+        return table;
     }
 }
 

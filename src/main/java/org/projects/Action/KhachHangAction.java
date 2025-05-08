@@ -8,6 +8,7 @@ import org.projects.GUI.DiaLog.KhachHang.ShowDelKhachHang;
 import org.projects.GUI.DiaLog.KhachHang.ShowDeltailKhachHang;
 import org.projects.GUI.DiaLog.KhachHang.ShowFixKhachHang;
 import org.projects.GUI.Panel.KhachHangPack.KhachHang;
+import org.projects.GUI.utils.ExportExcel;
 import org.projects.entity.KhachHangEntity;
 
 import javax.swing.*;
@@ -147,6 +148,16 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                         showAddKhachHang.add.getResetButton().addActionListener(this);
                         showAddKhachHang.add.getSaveButton().addActionListener(this);
                         showAddKhachHang.add.getCancelButton().addActionListener(this);
+                    }else if("excel".equals(name)){
+                        JFileChooser fileChooser = new JFileChooser();
+                        int result = fileChooser.showSaveDialog(null);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            String path = fileChooser.getSelectedFile().getAbsolutePath();
+                            if (!path.endsWith(".xlsx")) {
+                                path += ".xlsx";
+                            }
+                            ExportExcel.exportToExcel(kh.getTable(), path); // thay myJTable bằng JTable của bạn
+                        }
                     }else{
                         KhachHangEntity info = kh.getRow();
                         if(info == null){

@@ -109,7 +109,7 @@ public class DetailKhachHangConsole extends JPanel {
         JPanel bothPanel = new JPanel();
         bothPanel.setLayout(new BoxLayout(bothPanel, BoxLayout.Y_AXIS));
 
-        String[] summaryCols = {"Mã HD" , "Tổng tiền", "Ngày lập"};
+        String[] summaryCols = {"Mã HD" , "Tổng tiền", "Ngày lập" , "Tình trạng"};
         tableModel = new DefaultTableModel(summaryCols, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {

@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ChiTietUserConsole extends JPanel { ;
-    private String ma, ten , email , sdt , chucvu;
+    private String ma, ten , email , sdt , chucvu , avatar;
     private static boolean gioitinh;
     private int luong;
     public ChiTietUserConsole() {
@@ -20,6 +20,7 @@ public class ChiTietUserConsole extends JPanel { ;
         setChucvu(info.getChucvu());
         setLuong(info.getLuong());
         setGioitinh(info.getGioitinh());
+        setAvatar(info.getAvatar());
     }
     public JPanel setupDetailBox_USER() {
         this.setLayout(new GridBagLayout());
@@ -32,20 +33,35 @@ public class ChiTietUserConsole extends JPanel { ;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Panel bên trái chứa ảnh
-        JPanel left = new JPanel(new BorderLayout());
+        JPanel left = new JPanel(new GridBagLayout());
         left.setOpaque(true);
         left.setBackground(new Color(240, 240, 240));
         left.setPreferredSize(new Dimension(250, 400));
         left.setMinimumSize(new Dimension(250, 400));
         left.setMaximumSize(new Dimension(250, 400));
-//       String changeImg = Objects.requireNonNull(getClass().getResource("/Img/user.jpg")).getPath();
-//       ImageIcon icon = new ImageIcon(new ImageIcon(changeImg).getImage().getScaledInstance( 250, 300, Image.SCALE_SMOOTH));
-        JLabel imgLabel = new JLabel();
-        FlatSVGIcon flatSVGIcon = new FlatSVGIcon("icon/user.svg" , 250 , 250);
-        imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        imgLabel.setIcon(flatSVGIcon);
-        left.add(imgLabel, BorderLayout.CENTER);
+
+        JLabel imgLabel;
+        FlatSVGIcon flatSVGIcon;
+        JPanel panel;
+        GridBagConstraints gbcImg = new GridBagConstraints();
+        gbcImg.gridx = 0;
+        gbcImg.gridy = 0;
+        gbcImg.weightx = 1.0;
+        gbcImg.weighty = 1.0;
+        gbcImg.anchor = GridBagConstraints.CENTER;
+        gbcImg.fill = GridBagConstraints.NONE;
+
+        System.out.println(getAvatar());
+        if(getAvatar() != null) {
+            panel = AddNhanVienConsole.getJPanel(getAvatar() , 350 , 350);
+            left.add(panel, gbcImg);
+        } else {
+            imgLabel = new JLabel();
+            flatSVGIcon = new FlatSVGIcon("icon/user.svg" , 250 , 250);
+            imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            imgLabel.setIcon(flatSVGIcon);
+            left.add(imgLabel, gbcImg);
+        }
 
         gbc.gridx = 0;
         gbc.weightx = 0.4;
@@ -203,5 +219,13 @@ public class ChiTietUserConsole extends JPanel { ;
 
     public int getLuong() {
         return luong;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

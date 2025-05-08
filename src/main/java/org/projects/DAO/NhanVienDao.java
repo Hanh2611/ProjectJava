@@ -41,7 +41,7 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
 
     @Override
     public int them(NhanVienEntity add) {
-        String query = "insert into nhan_vien(ma_nhan_vien , ten_nhan_vien , email, so_dien_thoai , chuc_vu, luong , gioi_tinh) values(?,?,?,?,?,?,?);";
+        String query = "insert into nhan_vien(ma_nhan_vien , ten_nhan_vien , email, so_dien_thoai , chuc_vu, luong , gioi_tinh , avatar) values(?,?,?,?,?,?,?,?);";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);)
         {
@@ -52,14 +52,7 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
            ps.setString(5 , add.getChucvu());
            ps.setInt(6, add.getLuong());
            ps.setBoolean(7,add.getGioitinh());
-//            System.out.println("Chuẩn bị insert:");
-//            System.out.println("Mã NV: " + add.getMaNhanVien());
-//            System.out.println("Tên: " + add.getTenNhanVien());
-//            System.out.println("Email: " + add.getEmailNhanVien());
-//            System.out.println("SĐT: " + add.getSdtNhanVien());
-//            System.out.println("Chức vụ: " + add.getChucvu());
-//            System.out.println("Lương: " + add.getLuong());
-//            System.out.println("Giới tính: " + add.getGioitinh());
+           ps.setString(8, add.getAvatar());
            return ps.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -69,7 +62,7 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
 
     @Override
     public int sua(NhanVienEntity fix) {
-        String query = "update nhan_vien set ten_nhan_vien = ?,email = ?,so_dien_thoai = ?,chuc_vu = ? , luong = ? , gioi_tinh = ? where ma_nhan_vien= ?";
+        String query = "update nhan_vien set ten_nhan_vien = ?,email = ?,so_dien_thoai = ?,chuc_vu = ? , luong = ? , gioi_tinh = ? , avatar = ? where ma_nhan_vien= ?";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query))  {
             ps.setString(1,fix.getTenNhanVien());
@@ -78,7 +71,8 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
             ps.setString(4,fix.getChucvu());
             ps.setInt(5,fix.getLuong());
             ps.setBoolean(6,fix.getGioitinh());
-            ps.setInt(7,fix.getMaNhanVien());
+            ps.setString(7,fix.getAvatar());
+            ps.setInt(8,fix.getMaNhanVien());
             return ps.executeUpdate();
         } catch(Exception e) {
             e.printStackTrace();
