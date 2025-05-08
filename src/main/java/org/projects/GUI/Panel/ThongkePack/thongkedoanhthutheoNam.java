@@ -61,7 +61,7 @@ public class thongkedoanhthutheoNam extends JPanel {
 
 
         tablePanel = new JPanel(new GridLayout(1,1));
-        String[] cols = new String[]{"Năm","Tổng tiền","Tổng chi phí nhập trong tháng","lợi nhuận"};
+        String[] cols = new String[]{"Năm","Tổng tiền","Chi phí nhập","lợi nhuận"};
         doanhthutheonamTableModel = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -108,9 +108,9 @@ public class thongkedoanhthutheoNam extends JPanel {
         for(ThongkeDoanhThuEntity tkdtE : lst){
             doanhthutheonamTableModel.addRow(new Object[]{
                     tkdtE.getNam(),
-                    tkdtE.getTongtienhoadon(),
-                    tkdtE.getTongchiphinhaptrongthang(),
-                    tkdtE.getLoinhuan()
+                    tkdtE.getTongtienhoadonformat(),
+                    tkdtE.getTongchiphinhaptrongthangformat(),
+                    tkdtE.getLoinhuanformat()
             });
         }
     }

@@ -70,6 +70,7 @@ public class ThongKeDoanhThuDAO {
             prs.setString(2, to);
             ResultSet rs = prs.executeQuery();
             while(rs.next()) {
+
                 lst.add(new ThongkeDoanhThuEntity(rs.getInt("ma_hoa_don"),rs.getString("ten_khach_hang"),rs.getString("ngay"),rs.getDouble("tong_hoa_don")));
             }
         } catch (Exception e) {
@@ -200,7 +201,7 @@ public class ThongKeDoanhThuDAO {
                 "       YEAR(hd.ngay_tao) AS nam,\n" +
                 "       SUM(hd.tong_gia_tri) AS tong_hoa_don,\n" +
                 "       ANY_VALUE(IFNULL(pn.tong_chi_phi_nhap_trong_thang,0)) as tong_chi_phi_nhap_trong_thang,\n" +
-                "        (SUM(hd.tong_gia_tri) - ANY_VALUE(IFNULL(pn.tong_chi_phi_nhap_trong_thang,0) +  (select SUM(luong) from nhan_vien) )) as loi_nhuan\n" +
+                "        (SUM(hd.tong_gia_tri) - ANY_VALUE(IFNULL(pn.tong_chi_phi_nhap_trong_thang,0) +  (select SUM(luong) from nhan_vien where chuc_vu = 'Giám Đốc'))) as loi_nhuan\n" +
                 "from hoa_don hd\n" +
                 "left join (\n" +
                 "    select MONTH(ngay_nhap) as thang_nhap,\n" +

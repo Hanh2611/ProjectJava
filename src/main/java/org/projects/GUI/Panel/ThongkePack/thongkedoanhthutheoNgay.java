@@ -116,7 +116,7 @@ public class thongkedoanhthutheoNgay extends JPanel {
                     tkdtE.getMahoadon(),
                     tkdtE.getTenkhachhang(),
                     tkdtE.getNgaytaodon(),
-                    tkdtE.getTongtienhoadon()
+                    tkdtE.getTongtienhoadonformat()
             });
         }
     }

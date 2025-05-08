@@ -72,7 +72,7 @@ public class thongkedoanhthutheoThang extends JPanel {
         thangChartPanel.add(columnsChartPanel);
 
         tablePanel = new JPanel(new GridLayout(1,1));
-        String[] cols = new String[]{"Tháng","Năm","Tổng tiền","Tổng chi phí nhập trong tháng","lợi nhuận"};
+        String[] cols = new String[]{"Tháng","Năm","Tổng tiền","chi phí nhập","lợi nhuận"};
         doanhthutheothangTableModel = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -121,9 +121,9 @@ public class thongkedoanhthutheoThang extends JPanel {
             doanhthutheothangTableModel.addRow(new Object[]{
                     tkdtE.getThang(),
                     tkdtE.getNam(),
-                    tkdtE.getTongtienhoadon(),
-                    tkdtE.getTongchiphinhaptrongthang(),
-                    tkdtE.getLoinhuan()
+                    tkdtE.getTongtienhoadonformat(),
+                    tkdtE.getTongchiphinhaptrongthangformat(),
+                    tkdtE.getLoinhuanformat()
             });
         }
     }
