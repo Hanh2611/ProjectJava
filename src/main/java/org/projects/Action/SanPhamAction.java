@@ -233,7 +233,6 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                         case "delete" -> {
                             int choice = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
                             if(choice == JOptionPane.YES_OPTION){
-                                System.out.println(HoaDonBUS.isExistedInHoaDon(sanPhamEntity.getId()));
                                 if(PhieuNhapBUS.isExistedInPhieuNhap(sanPhamEntity.getId()) || HoaDonBUS.isExistedInHoaDon(sanPhamEntity.getId())){
                                     int confirm = JOptionPane.showConfirmDialog(null, "Bạn có muốn khoá sản phẩm này?", "Không thể xóa sản phẩm này vì đã có hóa đơn hoặc phiếu nhập liên quan", JOptionPane.YES_NO_OPTION);
                                     if(confirm == JOptionPane.YES_OPTION){
