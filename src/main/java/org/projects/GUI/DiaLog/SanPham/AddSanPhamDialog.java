@@ -9,6 +9,7 @@ import org.projects.entity.DanhMucSanPhamEntity;
 import org.projects.entity.Enum.QuyCach;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -144,7 +145,7 @@ public class AddSanPhamDialog extends JDialog {
     private void uploadImage() {
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             setSelectedFile(fileChooser.getSelectedFile());
@@ -248,6 +249,26 @@ public class AddSanPhamDialog extends JDialog {
 
     public File getSelectedFile() {
         return selectedFile;
+    }
+
+    public SanPhamAction getSanPhamAction() {
+        return sanPhamAction;
+    }
+
+    public JButton getUploadBtn() {
+        return uploadBtn;
+    }
+
+    public void setUploadBtn(JButton uploadBtn) {
+        this.uploadBtn = uploadBtn;
+    }
+
+    public JButton getBtnAddPhanLoai() {
+        return btnAddPhanLoai;
+    }
+
+    public void setBtnAddPhanLoai(JButton btnAddPhanLoai) {
+        this.btnAddPhanLoai = btnAddPhanLoai;
     }
 
     public void setSelectedFile(File selectedFile) {
