@@ -288,12 +288,12 @@ public class AddNhanVienConsole extends JPanel {
         genderPanel = getRadioSex(true, true);
         genderPanel.repaint();
         genderPanel.revalidate();
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
+        //changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
         isResettingComboBox = false;
-        JPanel newParentImg = getJPanel(changeImage);
-        mainImg.remove(parentImg);
-        mainImg.add(newParentImg, BorderLayout.CENTER);
-        parentImg = newParentImg;
+        //JPanel newParentImg = getJPanel(changeImage);
+        //mainImg.remove(parentImg);
+        //mainImg.add(newParentImg, BorderLayout.CENTER);
+        //parentImg = newParentImg;
         mainImg.revalidate();
         mainImg.repaint();
     }

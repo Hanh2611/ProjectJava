@@ -1,12 +1,14 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.PhieuNhapAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.PhieuNhapBUS;
 import org.projects.DAO.PhieuNhapDAO;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.PhieuNhap.CapNhatPN;
 import org.projects.GUI.DiaLog.PhieuNhap.ChiTietPN;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
+import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ChiTietPhieuNhapFullEntity;
 import org.projects.entity.PhieuNhapEntity;
@@ -42,8 +44,8 @@ public class PhieuNhap extends JPanel {
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-//        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"---","mã","tên","địa chỉ"});
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên NCC"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"---","mã","tên","địa chỉ"});
+//        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên NCC"});
         this.add(header);
         init();
         reloadDAO();

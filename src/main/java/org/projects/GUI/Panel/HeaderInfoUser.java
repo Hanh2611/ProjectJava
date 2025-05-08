@@ -4,16 +4,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.utils.Session;
+import org.projects.config.DatabasesConfig;
 
 public class HeaderInfoUser extends JPanel {
     private JLabel iconUser;
@@ -27,6 +30,26 @@ public class HeaderInfoUser extends JPanel {
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         setVisible(true);
     }
+    public String getTenNguoiDung(int maNguoiDung) {
+        String tenNguoiDung = null;
+        String query = "SELECT ten_nguoi_dung FROM nguoi_dung WHERE ma_nguoi_dung = ?";
+
+        try (Connection conn = DatabasesConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, maNguoiDung);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                tenNguoiDung = rs.getString("ten_nguoi_dung");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tenNguoiDung;
+    }
     private void init() {
         this.setLayout(null);
         //icon user
@@ -38,17 +61,19 @@ public class HeaderInfoUser extends JPanel {
         this.add(iconUser);
 
         //ten nguoi dung + chuc vu
-        tenNguoiDung = new JLabel("Tên người dùng");
-        tenNguoiDung.setBounds(95, 20, 200, 40);
+        int id = Session.curUser.getMaNguoiDung();
+        String user = getTenNguoiDung(id);
+        tenNguoiDung = new JLabel(user);
+        tenNguoiDung.setBounds(95, 35, 200, 40);
         tenNguoiDung.setFont(new Font("JetBrains Mono",Font.BOLD,13));
         tenNguoiDung.setForeground(Color.BLACK);
         this.add(tenNguoiDung);
 
-        chucVu = new JLabel("Chức vụ");
-        chucVu.setBounds(95, 40, 200, 40);
-        chucVu.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
-        chucVu.setForeground(Color.BLACK);
-        this.add(chucVu);
+//        chucVu = new JLabel("Chức vụ");
+//        chucVu.setBounds(95, 40, 200, 40);
+//        chucVu.setFont(new Font("JetBrains Mono",Font.PLAIN,12));
+//        chucVu.setForeground(Color.BLACK);
+//        this.add(chucVu);
         
     }
 }

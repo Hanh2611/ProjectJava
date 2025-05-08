@@ -1,9 +1,11 @@
 package org.projects.GUI.Panel;
 
 import org.projects.Action.TaiKhoanAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.TaiKhoanBUS;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
+import org.projects.GUI.utils.Session;
 import org.projects.entity.TaiKhoanEntity;
 
 import javax.swing.*;
@@ -48,8 +50,8 @@ public class TaiKhoan extends JPanel{
     }
 
     public void initHeader() {
-//        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--"});
-        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","tên đăng nhập","mã người dùng"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--"});
+//        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","tên đăng nhập","mã người dùng"});
 
         this.add(header);
     }
