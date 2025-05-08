@@ -66,4 +66,7 @@ public class HoaDonBUS {
         return newlist;
     }
 
+    public static boolean isExistedInHoaDon(int spId){
+        return hoaDonDAO.isExistedInHoaDon(spId);
+    }
 }

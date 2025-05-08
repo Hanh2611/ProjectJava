@@ -1,6 +1,8 @@
 package org.projects.Action;
 
 import org.projects.BUS.DanhMucSanPhamBus;
+import org.projects.BUS.HoaDonBUS;
+import org.projects.BUS.PhieuNhapBUS;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.SanPham.AddSanPhamDialog;
@@ -229,18 +231,30 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             return;
                         }
                         case "delete" -> {
-                            int choice = JOptionPane.showConfirmDialog(updateSanPhamDialog, "Bạn có chắc muốn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
-                            //TODO: Kiểm tra nếu sản phẩm đã có trong 1 hóa đơn bất kì thì không thể xóa
+                            int choice = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
                             if(choice == JOptionPane.YES_OPTION){
-                                if(sanPhamBus.deleteSanPham(sanPhamEntity)){
-                                    try {
-                                        Files.delete(new File(Helper.getProductImagePath(sanPhamEntity.getHinhAnh())).toPath());
-                                    } catch (IOException ex) {
-                                        ex.printStackTrace();
+                                System.out.println(HoaDonBUS.isExistedInHoaDon(sanPhamEntity.getId()));
+                                if(PhieuNhapBUS.isExistedInPhieuNhap(sanPhamEntity.getId()) || HoaDonBUS.isExistedInHoaDon(sanPhamEntity.getId())){
+                                    int confirm = JOptionPane.showConfirmDialog(null, "Bạn có muốn khoá sản phẩm này?", "Không thể xóa sản phẩm này vì đã có hóa đơn hoặc phiếu nhập liên quan", JOptionPane.YES_NO_OPTION);
+                                    if(confirm == JOptionPane.YES_OPTION){
+                                        sanPhamEntity.setTrangThai(false);
+                                        if(sanPhamBus.updateSanPham(sanPhamEntity)){
+                                            JOptionPane.showMessageDialog(null, "Khóa sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Khóa sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                        }
                                     }
-                                    JOptionPane.showMessageDialog(null, "Xóa sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                                 } else {
-                                    JOptionPane.showMessageDialog(null, "Xóa sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                    if(sanPhamBus.deleteSanPham(sanPhamEntity)){
+//                                    try {
+//                                        Files.delete(new File(Helper.getProductImagePath(sanPhamEntity.getHinhAnh())).toPath());
+//                                    } catch (IOException ex) {
+//                                        ex.printStackTrace();
+//                                    }
+                                        JOptionPane.showMessageDialog(null, "Xóa sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Xóa sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                    }
                                 }
                             }
                             return;
