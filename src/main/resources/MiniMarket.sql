@@ -49,7 +49,8 @@ CREATE TABLE nhan_vien
     so_dien_thoai VARCHAR(15) NOT NULL,
     chuc_vu       VARCHAR(50) NOT NULL,
     luong         INT         NOT NULL,
-    gioi_tinh     INT         NOT NULL
+    gioi_tinh     INT         NOT NULL,
+    avatar        VARCHAR(255)
 );
 
 CREATE TABLE khach_hang
@@ -58,7 +59,8 @@ CREATE TABLE khach_hang
     ma_nguoi_dung  INT,
     ten_khach_hang VARCHAR(50) NOT NULL,
     so_dien_thoai  VARCHAR(15) NOT NULL,
-    dia_chi        VARCHAR(50) NOT NULL
+    dia_chi        VARCHAR(50) NOT NULL,
+    avatar         VARCHAR(255)
 );
 
 CREATE TABLE hoa_don
@@ -292,22 +294,22 @@ VALUES ('a', 1, '123', 1, 'hoat_dong'),
        ('lanhha', 9, 'password444', 3, 'hoat_dong'),
        ('hoangnam', 10, 'password555', 2, 'hoat_dong');
 
-INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh)
-VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1),
-       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0),
-       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1),
-       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1),
-       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1),
-       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1);
+INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh , avatar)
+VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1 , 'https://res.cloudinary.com/dmw5hl35v/image/upload/v1746715122/z6578188841594_4fc3c5a58a2114e5f38790fd3309d17e_wnte5i.jpg'),
+       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0 , null),
+       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1 , null),
+       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1,  null),
+       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1 , null),
+       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1 , null);
 
-INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi)
-VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam'),
-       (2, 4, 'Phạm Linh H', '0976543210', 'TP. Hồ Chí Minh, Việt Nam'),
-       (3, 7, 'Trần Bình I', '0901234567', 'Đà Nẵng, Việt Nam'),
-       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam'),
-       (5, 2, 'Hoàng Anh K', '0987654321', 'Hải Phòng, Việt Nam'),
-       (6, 8, 'Đỗ Thị L', '0941234567', 'Nha Trang, Việt Nam'),
-       (7, 6, 'Vũ Quang M', '0918765432', 'Huế, Việt Nam');
+INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi , avatar)
+VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam' ,NULL),
+       (2, 4, 'Phạm Linh H', '0976543210', 'TP. Hồ Chí Minh, Việt Nam' , null),
+       (3, 7, 'Trần Bình I', '0901234567', 'Đà Nẵng, Việt Nam' , null),
+       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam' , null),
+       (5, 3, 'Hoàng Anh K', '0987654321', 'Hải Phòng, Việt Nam' , null),
+       (6, 9, 'Đỗ Thị L', '0941234567', 'Nha Trang, Việt Nam' , null),
+       (7, 7, 'Vũ Quang M', '0918765432', 'Huế, Việt Nam' , null);
 
 INSERT INTO danh_muc_san_pham (ten_danh_muc)
 VALUES ('Nước giải khát'),

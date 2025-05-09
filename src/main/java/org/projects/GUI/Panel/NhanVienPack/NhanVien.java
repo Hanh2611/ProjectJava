@@ -117,7 +117,7 @@ public class NhanVien extends JPanel {
                 {"icon/excel.svg", "Xuất excel", "Excel"}
         };
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
-        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---"}));
+        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhanVien") - 1) , new String[]{"---" , "mã" , "tên" , "chức vụ"}));
 //        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---", "mã" , "tên", "chức vụ"});
 //        this.add(header);
         header = (headerBar) this.getComponent(0);

@@ -167,7 +167,8 @@ public class AddNhanVienConsole extends JPanel {
         setSdt(listAdd.get(3).getText().trim());
         if(listAdd.get(4).getText().trim().equals("Nhập lương nhân viên")){
             setLuong(0);
-        }else setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
+        }else if(Long.parseLong(listAdd.get(4).getText().trim()) > Integer.MAX_VALUE) setLuong(Integer.MAX_VALUE);
+        else setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
         setChuc_vu((String)comboBox.getSelectedItem());
         setGioitinh(chiTietUserConsole.isGioitinh());
         System.out.println(getAvatar());
@@ -183,7 +184,7 @@ public class AddNhanVienConsole extends JPanel {
         JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/product/product.jpg")).getPath();
+        changeImage = Objects.requireNonNull(getClass().getResource("/Img/upload.png")).getPath();
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage , 220 , 150);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
@@ -317,7 +318,7 @@ public class AddNhanVienConsole extends JPanel {
         genderPanel = getRadioSex(true, true);
         genderPanel.repaint();
         genderPanel.revalidate();
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/product/product.jpg")).getPath();
+        changeImage = Objects.requireNonNull(getClass().getResource("/Img/upload.png")).getPath();
         isResettingComboBox = false;
         JPanel newParentImg = getJPanel(changeImage , 220 , 150);
         mainImg.remove(parentImg);

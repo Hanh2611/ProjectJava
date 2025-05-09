@@ -5,6 +5,7 @@ public class NhanVienEntity {
     private int maNhanVien , luong ;
     private boolean gioitinh;
     private String chucvu , avatar;
+    private boolean is_delete;
     public NhanVienEntity() {}
     public NhanVienEntity(int ma , String ten , String email , String sdt , String chucvu){
         maNhanVien = ma;
@@ -66,5 +67,11 @@ public class NhanVienEntity {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+    public void setIs_delete(boolean is_delete) {
+        this.is_delete = is_delete;
+    }
+    public boolean isIs_delete() {
+        return is_delete;
     }
 }

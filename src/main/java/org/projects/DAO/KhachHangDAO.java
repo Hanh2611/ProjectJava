@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
-
     @Override
     public List<KhachHangEntity> showlist() {
         List<KhachHangEntity> list = new ArrayList<>();
@@ -21,7 +20,7 @@ public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
             PreparedStatement ps = c.prepareStatement(query);
             ResultSet rs = ps.executeQuery()) {
             while(rs.next()) {
-                KhachHangEntity khe = new KhachHangEntity(rs.getInt("ma_khach_hang"), rs.getString("ten_khach_hang"), rs.getString("so_dien_thoai"), rs.getString("dia_chi"));
+                KhachHangEntity khe = new KhachHangEntity(rs.getInt("ma_khach_hang"), rs.getString("ten_khach_hang"), rs.getString("so_dien_thoai"), rs.getString("dia_chi") , rs.getString("avatar"));
                 list.add(khe);
             }
         }catch(Exception e){
@@ -32,7 +31,7 @@ public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
 
     @Override
     public int them(KhachHangEntity add) {
-        String query = "insert into khach_hang values(?,?,?,?,?);";
+        String query = "insert into khach_hang values(?,?,?,?,?,?);";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);){
             ps.setInt(1 , add.getMa());
@@ -40,6 +39,7 @@ public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
             ps.setString(3 , add.getTen());
             ps.setString(4 , add.getSdt());
             ps.setString(5 , add.getDiaChi());
+            ps.setString(6 , add.getAvatar());
             return ps.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -49,13 +49,14 @@ public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
 
     @Override
     public int sua(KhachHangEntity fix) {
-        String query = "update khach_hang set ten_khach_hang = ? , so_dien_thoai = ? , dia_chi = ? where ma_khach_hang = ?";
+        String query = "update khach_hang set ten_khach_hang = ? , so_dien_thoai = ? , dia_chi = ? , avatar = ? where ma_khach_hang = ?";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);){
             ps.setString(1 , fix.getTen());
             ps.setString(2 , fix.getSdt());
             ps.setString(3 , fix.getDiaChi());
-            ps.setInt(4 , fix.getMa());
+            ps.setString(4 , fix.getAvatar());
+            ps.setInt(5 , fix.getMa());
             return ps.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();

@@ -35,7 +35,7 @@ public class HeaderInfoUser extends JPanel {
         String query = "SELECT ten_nguoi_dung FROM nguoi_dung WHERE ma_nguoi_dung = ?";
 
         try (Connection conn = DatabasesConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+             PreparedStatement ps = conn.prepareStatement(query))   {
 
             ps.setInt(1, maNguoiDung);
             ResultSet rs = ps.executeQuery();

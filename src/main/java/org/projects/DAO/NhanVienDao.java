@@ -17,7 +17,7 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
     @Override
     public List<NhanVienEntity> showlist() {
         List<NhanVienEntity> list = new ArrayList<>();
-        String query = "SELECT * FROM nhan_vien;";
+        String query = "SELECT * FROM nhan_vien WHERE is_delete = 0";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);
             ResultSet rs = ps.executeQuery()) {
@@ -120,6 +120,58 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
             prs.setInt(1,manguoidung);
             prs.setInt(2,manv);
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean hidden_delete(NhanVienEntity delete) {
+        String queryNhanVien = "UPDATE nhan_vien SET is_delete = 1 WHERE ma_nhan_vien = ?";
+        String queryNguoiDung = "UPDATE nguoi_dung SET is_delete = 1 WHERE ma_nguoi_dung = ?";
+        String queryTaiKhoan = "UPDATE tai_khoan SET is_delete = 1, trang_thai = 'da_khoa' WHERE ma_nguoi_dung = ?";
+        try (Connection c = DatabasesConfig.getConnection()) {
+            c.setAutoCommit(false); // Bắt đầu transaction
+
+            try {
+                // Lấy ma_nguoi_dung từ nhan_vien
+                String queryGetMaNguoiDung = "SELECT ma_nguoi_dung FROM nhan_vien WHERE ma_nhan_vien = ?";
+                int maNguoiDung;
+
+                try (PreparedStatement ps = c.prepareStatement(queryGetMaNguoiDung)) {
+                    ps.setInt(1, delete.getMaNhanVien());
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        maNguoiDung = rs.getInt("ma_nguoi_dung");
+                    } else {
+                        throw new Exception("Không tìm thấy nhân viên");
+                    }
+                }
+
+                // Thực hiện xóa
+                try (PreparedStatement psNhanVien = c.prepareStatement(queryNhanVien);
+                     PreparedStatement psNguoiDung = c.prepareStatement(queryNguoiDung);
+                     PreparedStatement psTaiKhoan = c.prepareStatement(queryTaiKhoan)) {
+
+                    psNhanVien.setInt(1, delete.getMaNhanVien());
+                    psNguoiDung.setInt(1, maNguoiDung);
+                    psTaiKhoan.setInt(1, maNguoiDung);
+
+                    psNhanVien.executeUpdate();
+                    psNguoiDung.executeUpdate();
+                    psTaiKhoan.executeUpdate();
+
+                    c.commit(); // Commit transaction
+                    return true;
+                }
+
+            } catch (Exception e) {
+                c.rollback(); // Rollback nếu có lỗi
+                e.printStackTrace();
+                return false;
+            } finally {
+                c.setAutoCommit(true); // Reset auto commit
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

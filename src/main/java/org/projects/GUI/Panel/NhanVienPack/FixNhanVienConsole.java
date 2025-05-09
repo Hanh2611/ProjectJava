@@ -258,7 +258,7 @@ public class FixNhanVienConsole extends JPanel {
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
         if(getAvatar() == null) {
-            changeImage = Objects.requireNonNull(getClass().getResource("/Img/product/product.jpg")).getPath();
+            changeImage = Objects.requireNonNull(getClass().getResource("/Img/upload.png")).getPath();
         }else changeImage = getAvatar();
         parentImg = new JPanel();
         parentImg = getJPanel(changeImage , 220 , 150);
