@@ -123,4 +123,22 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
     public HoaDonEntity search(int id) {
         return null;
     }
+
+    public boolean isExistedInHoaDon(int spId){
+        String sql = """
+                    SELECT 1
+                    FROM chi_tiet_hoa_don cthd
+                    WHERE cthd.ma_san_pham = ?
+                    LIMIT 1
+                    """;
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, spId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

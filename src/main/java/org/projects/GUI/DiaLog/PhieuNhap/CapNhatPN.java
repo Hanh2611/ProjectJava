@@ -321,6 +321,14 @@ public class CapNhatPN extends JPanel {
             }
             int sl = Integer.parseInt(soLuong);
             long gia = ThemPN.parseTien(giaNhap); // Bỏ định dạng ₫, .
+            if (sl <= 0) {
+                JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (gia <= 0) {
+                JOptionPane.showMessageDialog(null, "Giá bán phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             long thanhTien = sl * gia;
             // Thêm vào bảng danh sách nhập hàng
             modelDanhSachNhap.addRow(new Object[]{maSP, tenSP, soLuong, giaNhap,ThemPN.formatVND(thanhTien)});

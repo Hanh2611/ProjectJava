@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
@@ -29,7 +31,7 @@ public class CapNhatHD extends JPanel {
     JLabel masp, tensp, soluong, giaban, lblQuyCach, lblKhachHang, maPN, nvNhap,
             ncc, lblTongTien, txtTongTien, lblNgayTao;
     JPanel panelLeft, panelright;
-    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP, btnThemKH,btnSuaSP;
+    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP, btnThemKH,btnSuaSP, btnThanhToan;
     JTable tableSanPham, danhSachSanPhamNhap;
     DefaultTableModel modelDanhSachNhap;
     JTableHeader header, headerdanhSachSanPhamNhap;
@@ -82,7 +84,7 @@ public class CapNhatHD extends JPanel {
         add(panelLeft);
 
         // Bảng dữ liệu sản phẩm
-        String[] columnNames = {"Mã SP", "Tên SP","Giá bán"};
+        String[] columnNames = {"Mã SP", "Tên SP","Giá bán","Tồn"};
 
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -281,7 +283,27 @@ public class CapNhatHD extends JPanel {
         btnHuyBo.setForeground(Color.WHITE);
         btnHuyBo.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
+        btnThanhToan = new JButton("Thanh toán ngay");
+        btnThanhToan.setBounds(10, 600, 190, 35);
+        btnThanhToan.setBackground(Color.BLUE);
+        btnThanhToan.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnThanhToan.setForeground(Color.WHITE);
+        btnThanhToan.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
+        btnThanhToan.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Xác nhận thanh toán",
+                        "Xác nhận",
+                        JOptionPane.YES_NO_OPTION
+                );
+            }
+        });
+
+        panelright.add(btnThanhToan);
         panelright.add(btnHuyBo);
         panelright.add(btnNhapHang);
         // Thêm vào sau khi tạo bảng sản phẩm
@@ -298,7 +320,7 @@ public class CapNhatHD extends JPanel {
             }
         });
         // 🆕 Tạo bảng chứa danh sách sản phẩm đã chọn
-        String[] columnNamesNhap = {"Mã SP", "Tên SP", "Số lượng", "Giá bán"};
+        String[] columnNamesNhap = {"Mã SP", "Tên SP", "Số lượng", "Giá bán","Thành tiền"};
          modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -331,10 +353,19 @@ public class CapNhatHD extends JPanel {
             String maSP = hienthi_masp.getText();
             String tenSP = hienthi_tensp.getText();
             String soLuong = nhapsoluong.getText();
+            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             String giaban = nhapgiaban.getText();
             // Kiểm tra nếu các ô không được để trống
-            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty() || giaban.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+            int soLuongInt = Integer.parseInt(soLuong);
+            long giabanformatted = ThemPN.parseTien(giaban);
+            long thanhtien = soLuongInt*giabanformatted;
+            String thanhtienformatted = ThemPN.formatVND(thanhtien);
+
+            if (soLuongInt <= 0) {
+                JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -747,12 +778,15 @@ public class CapNhatHD extends JPanel {
         model.setRowCount(0); // clear dữ liệu cũ
 
         for (SanPhamEntity sp : list) {
-            String giaFormatted = formatCurrency((long) sp.getGiaBan());
-            model.addRow(new Object[]{
-                    sp.getId(),
-                    sp.getTenSanPham(),
-                    giaFormatted,
-            });
+            if (sp.getSoLuongTon() > 0 && sp.isTrangThai() ) {
+                String giaFormatted = formatCurrency((long) sp.getGiaBan());
+                model.addRow(new Object[]{
+                        sp.getId(),
+                        sp.getTenSanPham(),
+                        giaFormatted,
+                        sp.getSoLuongTon(),
+                });
+            }
         }
     }
     private ImageIcon createIconFromSVG(String svgFilePath) {
