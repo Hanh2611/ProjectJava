@@ -103,9 +103,10 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
             maNhomQuyen = 3;
         }
         QuyenNguoiDungDAO.ganquyengnuoidung(manguoidung, maNhomQuyen);
-       if( NhanVienDao.updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(manv,manguoidung)) {
-           NhanVienBus.getList();
-       }
+        int tmp = NhanVienDao.updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(manv,manguoidung);
+        System.out.println(tmp);
+        System.out.println(manguoidung);
+        NhanVienBus.getList();
         System.out.println("ma nv: " + manv);
         System.out.println("manguoidung: " + manguoidung);
         TaiKhoanEntity tkEntity = new TaiKhoanEntity(tendangnhap, matkhau);

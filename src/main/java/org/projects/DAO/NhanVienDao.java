@@ -4,11 +4,13 @@ import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.config.DatabasesConfig;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
+import org.projects.entity.NhomQuyen;
 
 import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,18 +119,18 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
         return null;
     }
 
-    public static boolean updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(int manguoidung,int manv) {
-        String query = "update nhan_vien\n" +
-                "set ma_nguoi_dung = ?\n" +
-                "where ma_nhan_vien = ?";
-        try(Connection c = DatabasesConfig.getConnection();
-        PreparedStatement prs = c.prepareStatement(query);) {
-            prs.setInt(1,manguoidung);
-            prs.setInt(2,manv);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    public static int updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(int manguoidung,int manv) {
+        int result = 0;
+        String query = "update nhan_vien set ma_nguoi_dung = ? where ma_nhan_vien = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, manguoidung);
+            statement.setInt(2, manv);
+            System.out.println(manguoidung + " " + manv);
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+        return result;
     }
 }

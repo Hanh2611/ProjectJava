@@ -463,3 +463,6 @@ SELECT *
 FROM nhom_quyen;
 SELECT *
 FROM cap_quyen;
+select * from nguoi_dung;
+SELECT *
+FROM nhan_vien;
