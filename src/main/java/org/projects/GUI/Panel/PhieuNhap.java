@@ -19,8 +19,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PhieuNhap extends JPanel {
@@ -49,6 +47,7 @@ public class PhieuNhap extends JPanel {
 //        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên NCC"});
         this.add(header);
         init();
+        showTrangChinh();
         reloadDAO();
     }
 
