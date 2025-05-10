@@ -16,12 +16,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
 import static org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole.addPlaceholderStyle;
+import static org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole.uploadToCloudinary;
 import static org.projects.GUI.Panel.NhanVienPack.ChiTietUserConsole.getRadioSex;
 
 public class FixKhachHang extends JPanel {
@@ -33,6 +35,7 @@ public class FixKhachHang extends JPanel {
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
     public ArrayList<JTextField> listAdd;
+    public String avatar;
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
     private String ma , ten , diachi , std;
@@ -44,12 +47,14 @@ public class FixKhachHang extends JPanel {
         setTen(listAdd.get(1).getText().trim());
         setStd(listAdd.get(2).getText().trim());
         setDiachi(listAdd.get(3).getText().trim());
+        setAvatar(getAvatar());
     }
     public void setInfo(KhachHangEntity info) {
         setMa(Integer.toString(info.getMa()));
         setTen(info.getTen());
         setStd(info.getSdt());
         setDiachi(info.getDiaChi());
+        setAvatar(info.getAvatar());
     }
     public JPanel initComponents() {
         this.setLayout(new GridBagLayout());
@@ -156,44 +161,49 @@ public class FixKhachHang extends JPanel {
         JButton button_add_image = getJButton();
         SwingUtilities.invokeLater(button_add_image::requestFocusInWindow);
         mainImg.setLayout(new BorderLayout(5, 5));
-        changeImage = Objects.requireNonNull(getClass().getResource("/Img/user.png")).getPath();
+        if(getAvatar() == null){
+            changeImage = Objects.requireNonNull(getClass().getResource("/Img/upload.png")).getPath();
+        }else changeImage = getAvatar();
         parentImg = new JPanel();
-        parentImg = getJPanel(changeImage);
-        FlatSVGIcon user = new FlatSVGIcon("icon/user.svg" , 210 , 210);
-        JLabel userLabel = new JLabel(user);
+        parentImg = getJPanel(changeImage , 220 , 150);
         FlatSVGIcon addIcon = new FlatSVGIcon("icon/add-folder.svg", 20, 20);
         JLabel label = new JLabel(addIcon);
         button_add_image.add(label);
         mainImg.add(button_add_image, BorderLayout.NORTH);
-        mainImg.add(userLabel, BorderLayout.CENTER);
+        mainImg.add(parentImg, BorderLayout.CENTER);
         mainImg.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
         return mainImg;
     }
 
-    private static JButton getJButton() {
+    public JButton getJButton() {
         JButton button_add_image = new JButton("ADD IMAGE");
         button_add_image.addActionListener(e -> {
-            JComponent source = (JComponent) e.getSource();
-            String actionCommand = e.getActionCommand();
-
-            if ("ADD IMAGE".equals(actionCommand)) {
-//                JFileChooser fileChooser = new JFileChooser();
-//                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-//                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
-//
-//                int result = fileChooser.showOpenDialog(null);
-//                if (result == JFileChooser.APPROVE_OPTION) {
-//                    java.io.File selectedFile = fileChooser.getSelectedFile();
-//                    System.out.println("File được chọn: " + selectedFile.getAbsolutePath());
-//                    changeImage = selectedFile.getAbsolutePath();
-//                    JPanel newParentImg = getJPanel(changeImage);
-//                    mainImg.remove(parentImg);
-//                    mainImg.add(newParentImg, BorderLayout.CENTER);
-//                    parentImg = newParentImg;
-//                    mainImg.revalidate();
-//                    mainImg.repaint();
-//                }
-                JOptionPane.showMessageDialog(null, "Chức năng hiện đang bảo trì.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            if ("ADD IMAGE".equals(e.getActionCommand())) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Ảnh (JPG, PNG, GIF)", "jpg", "png", "gif"));
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    if (selectedFile != null && selectedFile.exists()) {
+                        String imageUrl = uploadToCloudinary(selectedFile);
+                        if (imageUrl != null) {
+                            //System.out.println("Link ảnh cloud: " + imageUrl);
+                            setAvatar(imageUrl);
+                            changeImage = imageUrl;
+                            JPanel newParentImg = getJPanel(changeImage , 220 , 150);
+                            mainImg.remove(parentImg);
+                            mainImg.add(newParentImg, BorderLayout.CENTER);
+                            parentImg = newParentImg;
+                            mainImg.revalidate();
+                            mainImg.repaint();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Upload ảnh thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "File không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         });
         button_add_image.setBackground(new Color(135, 206, 250));
@@ -202,19 +212,27 @@ public class FixKhachHang extends JPanel {
         return button_add_image;
     }
 
-    private static JPanel getJPanel(String path) {
-//        FlatSVGIcon addIcon_user = new FlatSVGIcon(image, 200, 200);
-        ImageIcon addIcon_user = new ImageIcon(path);
-        Image scale = addIcon_user.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
-//        JLabel img = new RoundedImageLabel(addIcon_user , 100 , 100);
-        JLabel img = new JLabel(new ImageIcon(scale));
-        img.setHorizontalAlignment(SwingConstants.CENTER);
-        img.setOpaque(true);
+    public static JPanel getJPanel(String path , int height , int vertical) {
         JPanel parentImg = new JPanel();
         parentImg.setOpaque(true);
-        parentImg.setPreferredSize(new Dimension(500, 150));
-        parentImg.setMinimumSize(new Dimension(500, 150));
-        parentImg.setMaximumSize(new Dimension(500, 150));
+        parentImg.setPreferredSize(new Dimension(500, vertical));
+        parentImg.setMinimumSize(new Dimension(500, vertical));
+        parentImg.setMaximumSize(new Dimension(500, vertical));
+        JLabel img = null;
+        try {
+            ImageIcon addIcon_user;
+            if (path != null && (path.startsWith("http://") || path.startsWith("https://"))) {
+                addIcon_user = new ImageIcon(new java.net.URL(path));
+            } else {
+                addIcon_user = new ImageIcon(path);
+            }
+            Image scale = addIcon_user.getImage().getScaledInstance(220, height, Image.SCALE_SMOOTH);
+            img = new JLabel(new ImageIcon(scale));
+        } catch (Exception e) {
+            img = new JLabel("Không thể load ảnh");
+        }
+        img.setHorizontalAlignment(SwingConstants.CENTER);
+        img.setOpaque(true);
         parentImg.add(img);
         return parentImg;
     }
@@ -257,5 +275,13 @@ public class FixKhachHang extends JPanel {
 
     public void setDiachi(String diachi) {
         this.diachi = diachi;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 }

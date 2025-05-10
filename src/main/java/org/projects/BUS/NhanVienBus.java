@@ -44,7 +44,7 @@ public class NhanVienBus {
 
     public boolean xoa(NhanVienEntity nhanVienEntity) {
         if(nv != null) {
-            if(nvDao.xoa(nhanVienEntity) > 0) {
+            if(nvDao.hidden_delete(nhanVienEntity)) {
                 nv.reloadDAO();
                 return true;
             }

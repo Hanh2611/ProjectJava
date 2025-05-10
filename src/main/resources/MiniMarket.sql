@@ -28,7 +28,8 @@ CREATE TABLE nguoi_dung
 (
     ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY auto_increment,
     loai_nguoi_dung ENUM ('nhan_vien_kho', 'khach_hang', 'nhan_vien_ban_hang') NOT NULL,
-    ten_nguoi_dung  VARCHAR(50)                                                NOT NULL
+    ten_nguoi_dung  VARCHAR(50)                                                NOT NULL,
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE tai_khoan
@@ -37,7 +38,8 @@ CREATE TABLE tai_khoan
     ma_nguoi_dung    INT         NOT NULL,
     mat_khau         VARCHAR(50) NOT NULL,
     quyen_nguoi_dung INT         NOT NULL,
-    trang_thai       ENUM ('hoat_dong', 'da_khoa') DEFAULT 'hoat_dong'
+    trang_thai       ENUM ('hoat_dong', 'da_khoa') DEFAULT 'hoat_dong',
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE nhan_vien
@@ -49,7 +51,9 @@ CREATE TABLE nhan_vien
     so_dien_thoai VARCHAR(15) NOT NULL,
     chuc_vu       VARCHAR(50) NOT NULL,
     luong         INT         NOT NULL,
-    gioi_tinh     INT         NOT NULL
+    gioi_tinh     INT         NOT NULL,
+    avatar        VARCHAR(255),
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE khach_hang
@@ -58,7 +62,9 @@ CREATE TABLE khach_hang
     ma_nguoi_dung  INT,
     ten_khach_hang VARCHAR(50) NOT NULL,
     so_dien_thoai  VARCHAR(15) NOT NULL,
-    dia_chi        VARCHAR(50) NOT NULL
+    dia_chi        VARCHAR(50) NOT NULL,
+    avatar         VARCHAR(255),
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE hoa_don
@@ -79,7 +85,7 @@ CREATE TABLE danh_muc_san_pham
 
 CREATE TABLE san_pham
 (
-     ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
+    ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
     ten_san_pham VARCHAR(255) NOT NULL,
     phan_loai    INT,
     don_vi       VARCHAR(50),
@@ -170,7 +176,37 @@ VALUES (1, 'Công ty Thực phẩm Tươi Sống FreshFood', '0912000111', 'fres
        (19, 'Xưởng sản xuất Đồ hộp ViệtCan', '0900333222', 'vietcan.canned@gmail.com',
         'Lô B1, KCN Long Thành, Đồng Nai'),
        (20, 'Nhà cung cấp Đồ uống tinh khiết AquaPure', '0922113344', 'aquapure.water@email.com',
-        '15 Cách Mạng Tháng 8, Hà Nội');
+        '15 Cách Mạng Tháng 8, Hà Nội'),
+       (21, 'Siêu thị Hàng nhập khẩu GlobalMart', '0988111222', 'globalmart.shop@gmail.com',
+        '50 Trần Hưng Đạo, TP.HCM'),
+       (22, 'Công ty Đồ ăn nhanh FastBite', '0911333444', 'fastbite.food@yahoo.com', '120 Lê Văn Sỹ, TP.HCM'),
+       (23, 'Nhà cung cấp Hạt điều CashewKing', '0933444555', 'cashewking.vn@email.com', 'KCN Nhơn Trạch, Đồng Nai'),
+       (24, 'Nhà máy Mì ăn liền QuickNoodles', '0977888999', 'quicknoodles.foods@outlook.com', 'KCN Vĩnh Lộc, TP.HCM'),
+       (25, 'Xưởng sản xuất Trà thảo mộc HerbalTea', '0988222333', 'herbaltea.natural@gmail.com',
+        '88 Phan Đình Phùng, Đà Nẵng'),
+       (26, 'Công ty Sản xuất Đường mía SweetSugar', '0911555777', 'sweetsugar.refined@email.com',
+        'Số 6, Quang Trung, Hà Nội'),
+       (27, 'Cửa hàng Đồ khô và Hạt dinh dưỡng NutriStore', '0966555777', 'nutristore.vn@gmail.com',
+        '12 Nguyễn Đình Chiểu, Hà Nội'),
+       (28, 'Công ty Bột mì và Ngũ cốc FlourMill', '0933666777', 'flourmill.foods@email.com', 'KCN Biên Hòa, Đồng Nai'),
+       (29, 'Nhà máy Sản xuất Gia vị SFlavor', '0955111222', 'sflavor.spices@outlook.com',
+        'Lô 8, KCN Bình Dương, Bình Dương'),
+       (30, 'Công ty Nông sản Xanh FreshAgro', '0999888777', 'freshagro.vn@gmail.com', 'Nông trại Đông Anh, Hà Nội'),
+       (31, 'Nhà cung cấp Thực phẩm Đông lạnh ColdPack', '0933222111', 'coldpack.frozen@email.com',
+        'KCN Tân Thuận, TP.HCM'),
+       (32, 'Cửa hàng Rau hữu cơ OrganicFarm', '0909888777', 'organicfarm.vn@gmail.com', 'Nông trại Gia Lâm, Hà Nội'),
+       (33, 'Nhà máy Sản xuất Đồ hộp TinCan', '0922000111', 'tincan.foods@email.com', 'Lô C2, KCN Long Hậu, Long An'),
+       (34, 'Công ty Cà phê Việt BeansKing', '0988222666', 'beansking.coffee@outlook.com', '110 Điện Biên Phủ, TP.HCM'),
+       (35, 'Nhà cung cấp Sữa hạt NutriMilk', '0912333444', 'nutrimilk.dairy@gmail.com', 'KCN Mỹ Phước, Bình Dương'),
+       (36, 'Công ty Thịt nguội và Xúc xích SausageLand', '0933666888', 'sausageland.food@email.com',
+        'KCN Hóc Môn, TP.HCM'),
+       (37, 'Xưởng sản xuất Đồ ăn nhanh QuickBites', '0955777888', 'quickbites.fastfood@gmail.com',
+        'Lô D3, KCN Trà Nóc, Cần Thơ'),
+       (38, 'Công ty Đồ uống từ Lúa mạch BarleyDrink', '0977444555', 'barleydrink.brewery@outlook.com',
+        'KCN Tân An, Long An'),
+       (39, 'Nhà cung cấp Dầu thực vật PureOil', '0966333555', 'pureoil.vn@gmail.com', 'Cụm CN Đức Hòa, Long An'),
+       (40, 'Cửa hàng Gạo và Nông sản Việt RiceHouse', '0905222333', 'ricehouse.agro@email.com',
+        'Số 20, Hùng Vương, Hà Nội');
 
 INSERT INTO danh_muc_quan_ly (ma_danh_muc_quan_ly, ten_danh_muc_quan_ly)
 VALUES (1, 'NhanVien'),
@@ -239,46 +275,46 @@ VALUES
     -- Khách hàng chỉ có thể xem đơn hàng của họ
     (3, 4, 'xem');
 
-INSERT INTO nguoi_dung (ma_nguoi_dung, loai_nguoi_dung, ten_nguoi_dung)
-VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An'),
-       (2, 'nhan_vien_ban_hang', 'Tran Binh'),
-       (3, 'khach_hang', 'Le Van'),
-       (4, 'khach_hang', 'Pham Duong'),
-       (5, 'nhan_vien_kho', 'Hoang Em'),
-       (6, 'nhan_vien_ban_hang', 'Matthe Ao'),
-       (7, 'khach_hang', 'Viet Anh'),
-       (8, 'nhan_vien_kho', 'Duong Hoang'),
-       (9, 'khach_hang', 'Lan Ha'),
-       (10, 'nhan_vien_ban_hang', 'Hoang Nam');
+INSERT INTO nguoi_dung (ma_nguoi_dung, loai_nguoi_dung, ten_nguoi_dung , is_delete)
+VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An' , false),
+       (2, 'nhan_vien_ban_hang', 'Tran Binh' ,false),
+       (3, 'khach_hang', 'Le Van' , false),
+       (4, 'khach_hang', 'Pham Duong' , false),
+       (5, 'nhan_vien_kho', 'Hoang Em' , false),
+       (6, 'nhan_vien_ban_hang', 'Matthe Ao' , false),
+       (7, 'khach_hang', 'Viet Anh' , false),
+       (8, 'nhan_vien_kho', 'Duong Hoang' ,false),
+       (9, 'khach_hang', 'Lan Ha' ,false),
+       (10, 'nhan_vien_ban_hang', 'Hoang Nam' , false);
 
-INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai)
-VALUES ('a', 1, '123', 1, 'hoat_dong'),
-       ('tranbinh', 2, 'password456', 2, 'da_khoa'),
-       ('levan', 3, 'password789', 3, 'hoat_dong'),
-       ('phamduong', 4, 'password000', 3, 'hoat_dong'),
-       ('hoangem', 5, 'password999', 2, 'hoat_dong'),
-       ('mattheao', 6, 'password111', 1, 'hoat_dong'),
-       ('vietanh', 7, 'password222', 3, 'hoat_dong'),
-       ('duonghoang', 8, 'password333', 2, 'da_khoa'),
-       ('lanhha', 9, 'password444', 3, 'hoat_dong'),
-       ('hoangnam', 10, 'password555', 2, 'hoat_dong');
+INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai , is_delete)
+VALUES ('a', 1, '123', 1, 'hoat_dong', false),
+       ('tranbinh', 2, 'password456', 2, 'da_khoa', false),
+       ('levan', 3, 'password789', 3, 'hoat_dong' , false),
+       ('phamduong', 4, 'password000', 3, 'hoat_dong' , false),
+       ('hoangem', 5, 'password999', 2, 'hoat_dong' , false),
+       ('mattheao', 6, 'password111', 1, 'hoat_dong' , false),
+       ('vietanh', 7, 'password222', 3, 'hoat_dong' , false),
+       ('duonghoang', 8, 'password333', 2, 'da_khoa' , false),
+       ('lanhha', 9, 'password444', 3, 'hoat_dong' , false),
+       ('hoangnam', 10, 'password555', 2, 'hoat_dong' , false);
 
-INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh)
-VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1),
-       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 5000000, 0),
-       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Nhân viên Kế toán', 8000000, 1),
-       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 6000000, 1),
-       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Nhân viên kho', 2000000, 1),
-       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên bán hàng', 5000000, 1);
+INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh , avatar , is_delete)
+VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1 , 'https://res.cloudinary.com/dmw5hl35v/image/upload/v1746715122/z6578188841594_4fc3c5a58a2114e5f38790fd3309d17e_wnte5i.jpg' , false),
+       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0 , null , false),
+       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1 , null , false),
+       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1,  null , false),
+       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1 , null , false),
+       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1 , null , false);
 
-INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi)
-VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam'),
-       (2, 4, 'Phạm Linh H', '0976543210', 'TP. Hồ Chí Minh, Việt Nam'),
-       (3, 7, 'Trần Bình I', '0901234567', 'Đà Nẵng, Việt Nam'),
-       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam'),
-       (5, 2, 'Hoàng Anh K', '0987654321', 'Hải Phòng, Việt Nam'),
-       (6, 8, 'Đỗ Thị L', '0941234567', 'Nha Trang, Việt Nam'),
-       (7, 6, 'Vũ Quang M', '0918765432', 'Huế, Việt Nam');
+INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi , avatar , is_delete)
+VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam' ,NULL , false),
+       (2, 4, 'Phạm Linh H', '0976543210', 'TP. Hồ Chí Minh, Việt Nam' , null, false),
+       (3, 7, 'Trần Bình I', '0901234567', 'Đà Nẵng, Việt Nam' , null , false),
+       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam' , null , false),
+       (5, 3, 'Hoàng Anh K', '0987654321', 'Hải Phòng, Việt Nam' , null , false),
+       (6, 9, 'Đỗ Thị L', '0941234567', 'Nha Trang, Việt Nam' , null, false),
+       (7, 7, 'Vũ Quang M', '0918765432', 'Huế, Việt Nam' , null , false);
 
 INSERT INTO danh_muc_san_pham (ten_danh_muc)
 VALUES ('Nước giải khát'),
@@ -306,234 +342,62 @@ VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'trax
 
 
 
--- Dữ liệu năm 2025
 INSERT INTO hoa_don (ma_hoa_don, ma_nhan_vien, ma_khach_hang, ngay_tao, tong_gia_tri, trang_thai)
--- Tháng 5/2025 (NOW())
-VALUES (1, 1, 1, NOW(), 80000000, 'chua_thanh_toan'),
-       (2, 2, 2, NOW(), 40000000, 'da_thanh_toan'),
+VALUES (1, 1, 1, NOW(), 8000, 'chua_thanh_toan'),
+       (2, 2, 2, NOW(), 41000, 'da_thanh_toan'),
        (3, 3, 3, NOW(), 42000, 'chua_thanh_toan'),
        (4, 4, 4, NOW(), 297000, 'da_thanh_toan'),
-
--- Tháng 1/2025
        (5, 2, 3, '2025-01-05 10:00:00', 35000, 'da_thanh_toan'),
        (6, 1, 4, '2025-01-15 14:30:00', 108000, 'da_thanh_toan'),
        (7, 3, 1, '2025-01-25 09:15:00', 60000, 'da_thanh_toan'),
-
--- Tháng 2/2025
        (8, 4, 2, '2025-02-03 11:20:00', 89000, 'da_thanh_toan'),
        (9, 2, 5, '2025-02-12 16:45:00', 24000, 'da_thanh_toan'),
        (10, 1, 3, '2025-02-20 13:10:00', 198000, 'da_thanh_toan'),
-
--- Dữ liệu năm 2023
--- Tháng 6/2023
        (11, 3, 4, '2023-06-10 08:50:00', 45000, 'da_thanh_toan'),
-
--- Tháng 11/2023
        (12, 2, 1, '2023-11-22 15:30:00', 72000, 'da_thanh_toan'),
-
--- Tháng 3/2023
        (13, 4, 5, '2023-03-17 12:00:00', 105000, 'da_thanh_toan'),
-
--- Dữ liệu năm 2022
--- Tháng 4/2022
        (14, 1, 2, '2022-04-05 10:20:00', 30000, 'da_thanh_toan'),
-
--- Tháng 9/2022
        (15, 3, 3, '2022-09-14 17:10:00', 88000, 'da_thanh_toan'),
-
--- Tháng 12/2022
        (16, 2, 4, '2022-12-01 11:40:00', 51000, 'da_thanh_toan'),
-
--- Dữ liệu năm 2021
--- Tháng 7/2021
        (17, 4, 1, '2021-07-19 09:30:00', 64000, 'da_thanh_toan'),
-
--- Tháng 2/2021
        (18, 1, 5, '2021-02-28 14:00:00', 27000, 'da_thanh_toan'),
-
--- Tháng 10/2021
        (19, 3, 2, '2021-10-10 16:20:00', 93000, 'da_thanh_toan'),
-
--- Dữ liệu năm 2020
--- Tháng 5/2020
        (20, 2, 3, '2020-05-12 13:50:00', 40000, 'da_thanh_toan'),
-       (26, 1, 2, '2020-05-18 10:30:00', 420000, 'da_thanh_toan'),
-       (27, 3, 4, '2020-05-22 14:45:00', 480000, 'da_thanh_toan'),
-       (28, 2, 5, '2020-05-29 16:10:00', 510000, 'da_thanh_toan'),
-
--- Tháng 6/2020
-       (23, 1, 3, '2020-06-15 14:00:00', 150000, 'da_thanh_toan'),
-       (29, 4, 1, '2020-06-05 09:20:00', 450000, 'da_thanh_toan'),
-       (30, 3, 3, '2020-06-12 13:15:00', 470000, 'da_thanh_toan'),
-       (31, 2, 2, '2020-06-28 17:00:00', 550000, 'da_thanh_toan'),
-
--- Tháng 8/2020
        (21, 4, 4, '2020-08-25 10:15:00', 75000, 'da_thanh_toan'),
-       (32, 1, 5, '2020-08-01 11:30:00', 430000, 'da_thanh_toan'),
-       (33, 4, 3, '2020-08-10 15:45:00', 490000, 'da_thanh_toan'),
-       (34, 2, 1, '2020-08-22 08:50:00', 520000, 'da_thanh_toan'),
-
--- Tháng 9/2020
-       (24, 2, 2, '2020-09-10 09:30:00', 220000, 'da_thanh_toan'),
-       (35, 3, 4, '2020-09-05 10:05:00', 460000, 'da_thanh_toan'),
-       (36, 1, 2, '2020-09-15 14:40:00', 530000, 'da_thanh_toan'),
-       (37, 4, 1, '2020-09-28 12:20:00', 490000, 'da_thanh_toan'),
-
-
--- Tháng 11/2020
-       (22, 1, 1, '2020-11-30 15:45:00', 56000, 'da_thanh_toan'),
-       (38, 2, 5, '2020-11-02 13:10:00', 410000, 'da_thanh_toan'),
-       (39, 3, 2, '2020-11-14 09:45:00', 460000, 'da_thanh_toan'),
-       (40, 1, 4, '2020-11-25 18:00:00', 500000, 'da_thanh_toan'),
-
--- Tháng 12/2020
-       (25, 4, 4, '2020-12-05 16:20:00', 180000, 'da_thanh_toan'),
-       (41, 4, 3, '2020-12-10 10:30:00', 440000, 'da_thanh_toan'),
-       (42, 2, 2, '2020-12-18 14:20:00', 480000, 'da_thanh_toan'),
-       (43, 3, 1, '2020-12-29 16:00:00', 520000, 'da_thanh_toan');
-
-
+       (22, 1, 1, '2020-11-30 15:45:00', 56000, 'da_thanh_toan');
 
 INSERT INTO chi_tiet_hoa_don (ma_san_pham, ma_hoa_don, so_luong, gia_ban, thanh_tien)
-VALUES
-    (1, 1, 10000, 8000, 800000),
-
-    (2, 2, 4000, 10000, 20000),
-
-    (3, 2, 1, 21000, 21000),
-
-    (3, 3, 2, 21000, 42000),
-
-    (4, 4, 3, 99000, 297000),
-
-    (2, 5, 1, 15000, 15000),
-
-    (3, 5, 1, 20000, 20000),
-
-    (4, 6, 1, 99000, 99000),
-
-    (1, 6, 1, 9000, 9000),
-
-    (2, 7, 2, 30000, 60000),
-
-    (3, 8, 1, 21000, 21000),
-
-    (4, 8, 1, 68000, 68000),
-
-    (1, 9, 3, 8000, 24000),
-
-    (4, 10, 2, 99000, 198000),
-
-    (2, 11, 3, 15000, 45000),
-
-    (3, 12, 2, 21000, 42000),
-
-    (1, 12, 3, 10000, 30000),
-
-    (4, 13, 1, 99000, 99000),
-
-    (2, 13, 1, 6000, 6000),
-
-    (1, 14, 2, 15000, 30000),
-
-    (3, 15, 1, 21000, 21000),
-
-    (4, 15, 1, 67000, 67000),
-
-    (2, 16, 2, 25500, 51000),
-
-    (1, 17, 2, 12000, 24000),
-
-    (3, 17, 2, 20000, 40000),
-
-    (2, 18, 3, 9000, 27000),
-
-    (4, 19, 1, 93000, 93000),
-
-    (3, 20, 2, 20000, 40000),
-    (4,20,10,99000,990000),
-    (5,20,5,119000,595000),
-
-    (4, 21, 1, 75000, 75000),
-
-    (1, 22, 2, 10000, 20000),
-    (2, 22, 2, 18000, 36000),
-
-    (8, 23, 1, 50000, 50000),
-    (9, 23, 2, 25000, 50000),
-    (10, 23, 3, 20000, 50000),
-
-    (7, 24, 2, 40000, 80000),
-    (3, 24, 3, 35000, 70000),
-    (2, 24, 4, 35000, 70000),
-
-    (4, 25, 1, 60000, 60000),
-    (5, 25, 3, 30000, 60000),
-    (6, 25, 5, 30000, 60000),
-
-    (1, 26, 4, 50000, 200000),
-    (2, 26, 2, 60000, 120000),
-    (3, 26, 2, 50000, 100000),
-
-    (4, 27, 3, 40000, 120000),
-    (5, 27, 4, 60000, 240000),
-    (6, 27, 2, 60000, 120000),
-
-    (7, 28, 3, 80000, 240000),
-    (8, 28, 3, 90000, 270000),
-
-    (9, 29, 3, 50000, 150000),
-    (10, 29, 2, 75000, 150000),
-    (1, 29, 3, 50000, 150000),
-
-    (2, 30, 5, 40000, 200000),
-    (3, 30, 3, 40000, 120000),
-    (4, 30, 3, 50000, 150000),
-
-    (5, 31, 5, 60000, 300000),
-    (6, 31, 2, 100000, 200000),
-    (7, 31, 1, 50000, 50000),
-
-    (8, 32, 2, 100000, 200000),
-    (9, 32, 2, 80000, 160000),
-    (10, 32, 1, 70000, 70000),
-
-    (1, 33, 2, 120000, 240000),
-    (2, 33, 3, 50000, 150000),
-    (3, 33, 2, 50000, 100000),
-
-    (4, 34, 2, 130000, 260000),
-    (5, 34, 4, 65000, 260000),
-
-    (6, 35, 4, 60000, 240000),
-    (7, 35, 4, 55000, 220000),
-
-    (8, 36, 5, 60000, 300000),
-    (9, 36, 2, 70000, 140000),
-    (10, 36, 1, 90000, 90000),
-
-    (1, 37, 4, 80000, 320000),
-    (2, 37, 2, 85000, 170000),
-
-    (3, 38, 2, 70000, 140000),
-    (4, 38, 3, 90000, 270000),
-
-    (5, 39, 4, 60000, 240000),
-    (6, 39, 4, 55000, 220000),
-
-    (7, 40, 5, 80000, 400000),
-    (8, 40, 2, 50000, 100000),
-
-    (9, 41, 4, 70000, 280000),
-    (10, 41, 2, 80000, 160000),
-
-    (1, 42, 3, 100000, 300000),
-    (2, 42, 3, 60000, 180000),
-
-    (3, 43, 2, 120000, 240000),
-    (4, 43, 2, 140000, 280000);
-
-
+VALUES (1, 1, 1, 8000, 8000),
+       (2, 2, 2, 10000, 20000),
+       (3, 2, 1, 21000, 21000),
+       (3, 3, 2, 21000, 42000),
+       (4, 4, 3, 99000, 297000),
+       (2, 5, 1, 15000, 15000),
+       (3, 5, 1, 20000, 20000),
+       (4, 6, 1, 99000, 99000),
+       (1, 6, 1, 9000, 9000),
+       (2, 7, 2, 30000, 60000),
+       (3, 8, 1, 21000, 21000),
+       (4, 8, 1, 68000, 68000),
+       (1, 9, 3, 8000, 24000),
+       (4, 10, 2, 99000, 198000),
+       (2, 11, 3, 15000, 45000),
+       (3, 12, 2, 21000, 42000),
+       (1, 12, 3, 10000, 30000),
+       (4, 13, 1, 99000, 99000),
+       (2, 13, 1, 6000, 6000),
+       (1, 14, 2, 15000, 30000),
+       (3, 15, 1, 21000, 21000),
+       (4, 15, 1, 67000, 67000),
+       (2, 16, 2, 25500, 51000),
+       (1, 17, 2, 12000, 24000),
+       (3, 17, 2, 20000, 40000),
+       (2, 18, 3, 9000, 27000),
+       (4, 19, 1, 93000, 93000),
+       (3, 20, 2, 20000, 40000),
+       (4, 21, 1, 75000, 75000),
+       (1, 22, 2, 10000, 20000),
+       (2, 22, 2, 18000, 36000);
 
 INSERT INTO phieu_nhap (ma_phieu_nhap, ma_nhan_vien, ma_nha_cung_cap, ngay_nhap, tong_gia_tri_nhap)
 VALUES (1, 1, 1, '2025-04-01 08:30:00', 70000),
@@ -611,3 +475,8 @@ SELECT *
 FROM nhom_quyen;
 SELECT *
 FROM cap_quyen;
+#update nhan_vien set ma_nguoi_dung = 13 where ma_nhan_vien = 9;
+Select * from nhan_vien;
+Select * from tai_khoan;
+select * from nguoi_dung;
+select * from khach_hang;
