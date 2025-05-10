@@ -8,6 +8,8 @@ import org.projects.GUI.DiaLog.KhachHang.ShowDelKhachHang;
 import org.projects.GUI.DiaLog.KhachHang.ShowDeltailKhachHang;
 import org.projects.GUI.DiaLog.KhachHang.ShowFixKhachHang;
 import org.projects.GUI.Panel.KhachHangPack.KhachHang;
+import org.projects.GUI.utils.ExportExcel;
+import org.projects.GUI.utils.InputValid;
 import org.projects.entity.KhachHangEntity;
 
 import javax.swing.*;
@@ -32,32 +34,36 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
     public void actionPerformed(ActionEvent e) {
         JComponent source = (JComponent) e.getSource();
         String nameButton = e.getActionCommand();
+        String sql = "select ma_khach_hang from khach_hang where ma_khach_hang = ?";
         if(showAddKhachHang != null) {
             if (source.equals(showAddKhachHang.add.getSaveButton())) {
                 //System.out.println("save");
                 showAddKhachHang.add.insertData();
-                if(showAddKhachHang.add.getMa().equals("Nhập mã khách hàng")) {
+                if(InputValid.checkRong_addPlace("Nhập mã khách hàng" , showAddKhachHang.add.getMa())) {
                     JOptionPane.showMessageDialog(null,"Vui lòng nhập mã khách hàng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
-                }else if(!showAddKhachHang.add.getMa().matches("\\d+")){
-                    JOptionPane.showMessageDialog(null,"Mã nhân viên chỉ nhận giá trị số nguyên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                }else if(InputValid.checkSameId(Integer.parseInt(showAddKhachHang.add.getMa()) , sql)){
+                    JOptionPane.showMessageDialog(null,"Mã khách hàng bị trùng vui lòng nhập mã khách hàng khác" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
+                }else if(!InputValid.checkMaNhanVien(showAddKhachHang.add.getMa())){
+                    JOptionPane.showMessageDialog(null,"Mã khách hàng chỉ nhận giá trị số nguyên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
                 }
-                else if(showAddKhachHang.add.getTen().equals("Nhập họ và tên")) {
+                else if(InputValid.checkRong_addPlace("Nhập họ và tên" , showAddKhachHang.add.getTen())) {
                     JOptionPane.showMessageDialog(null,"Vui lòng nhập tên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(1).requestFocusInWindow();
                 }else if(showAddKhachHang.add.getSdt().equals("Nhập số điện thoại")) {
                     JOptionPane.showMessageDialog(null,"Vui lòng nhập số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(2).requestFocusInWindow();
-                }else if(!showAddKhachHang.add.getSdt().matches("0\\d{9}")){
+                }else if(!InputValid.checkSoDienThoai(showAddKhachHang.add.getSdt())){
                     JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(2).requestFocusInWindow();
-                }else if(showAddKhachHang.add.getDiachi().equals("Nhập địa chỉ")) {
+                }else if(InputValid.checkRong_addPlace("Nhập địa chỉ" , showAddKhachHang.add.getDiachi())) {
                     JOptionPane.showMessageDialog(null,"Vui lòng nhập địa chỉ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(3).requestFocusInWindow();
                 }else {
                     KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showAddKhachHang.add.getMa()), showAddKhachHang.add.getTen()
-                            , showAddKhachHang.add.getSdt(), showAddKhachHang.add.getDiachi());
+                            , showAddKhachHang.add.getSdt(), showAddKhachHang.add.getDiachi() , showAddKhachHang.add.getAvatar());
                     if (bus.them(khe)) {
                         JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
                         kh.loadList(bus.getList());
@@ -83,6 +89,7 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                 KhachHangEntity khe = kh.getRow();
                 if(bus.xoa(khe)){
                     JOptionPane.showMessageDialog(null , "Đã xóa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
+                    kh.loadList(bus.getList());
                 }else{
                     JOptionPane.showMessageDialog(null , "Xóa thất bại" , "thông báo" , JOptionPane.ERROR_MESSAGE);
                 }
@@ -110,7 +117,7 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                     showFixKhachHang.fix.listAdd.get(3).requestFocusInWindow();
                 }else{
                     KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showFixKhachHang.fix.getMa()), showFixKhachHang.fix.getTen()
-                            ,showFixKhachHang.fix.getStd(), showFixKhachHang.fix.getDiachi());
+                            ,showFixKhachHang.fix.getStd(), showFixKhachHang.fix.getDiachi() , showFixKhachHang.fix.getAvatar());
                     if(bus.sua(khe)){
                         JOptionPane.showMessageDialog(null , "Đã sửa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
                         showFixKhachHang.close();
@@ -120,11 +127,13 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                 }
             }
         }
-        JButton refresh = kh.getHeader().getSearch().getSearchButton();
-        if(source instanceof JButton && source.equals(refresh)) {
-            kh.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
-            kh.getHeader().getSearch().getSearchField().setText("");
-            this.kh.searchfunction(kh.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),kh.getHeader().getSearch().getSearchField().getText());
+        if(kh != null) {
+            JButton refresh = kh.getHeader().getSearch().getSearchButton();
+            if(source instanceof JButton && source.equals(refresh)) {
+                kh.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
+                kh.getHeader().getSearch().getSearchField().setText("");
+                this.kh.searchfunction(kh.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),kh.getHeader().getSearch().getSearchField().getText());
+            }
         }
     }
 
@@ -147,6 +156,16 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                         showAddKhachHang.add.getResetButton().addActionListener(this);
                         showAddKhachHang.add.getSaveButton().addActionListener(this);
                         showAddKhachHang.add.getCancelButton().addActionListener(this);
+                    }else if("excel".equals(name)){
+                        JFileChooser fileChooser = new JFileChooser();
+                        int result = fileChooser.showSaveDialog(null);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            String path = fileChooser.getSelectedFile().getAbsolutePath();
+                            if (!path.endsWith(".xlsx")) {
+                                path += ".xlsx";
+                            }
+                            ExportExcel.exportToExcel(kh.getTable(), path); // thay myJTable bằng JTable của bạn
+                        }
                     }else{
                         KhachHangEntity info = kh.getRow();
                         if(info == null){

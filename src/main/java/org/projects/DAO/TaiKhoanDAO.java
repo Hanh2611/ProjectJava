@@ -18,7 +18,7 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
     @Override
     public List<TaiKhoanEntity> showlist() {
         List<TaiKhoanEntity> result = new ArrayList<TaiKhoanEntity>();
-        String query = "select * from tai_khoan";
+        String query = "select * from tai_khoan where is_delete = 0";
         try (Connection connection = DatabasesConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -34,7 +34,7 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
 
         @Override
         public int them(TaiKhoanEntity add) {
-            String query = "insert into tai_khoan (ten_dang_nhap,ma_nguoi_dung,mat_khau,quyen_nguoi_dung,trang_thai) values(?,?,?,?,?)";
+            String query = "insert into tai_khoan (ten_dang_nhap,ma_nguoi_dung,mat_khau,quyen_nguoi_dung,trang_thai,is_delete) values(?,?,?,?,?,?)";
             try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement prs = c.prepareStatement(query);) {
                 prs.setString(1,add.getTenDangNhap());
@@ -43,6 +43,7 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
                 System.out.println(add.getQuyenNguoiDung());
                 prs.setInt(4,add.getQuyenNguoiDung());
                 prs.setString(5,add.getTrangThai());
+                prs.setBoolean(6 , false);
                 return prs.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();

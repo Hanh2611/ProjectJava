@@ -3,10 +3,12 @@ package org.projects.GUI.Panel.KhachHangPack;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.DAO.ChiTietHoaDonFullDAO;
 import org.projects.GUI.Panel.HoaDon;
+import org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole;
 import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.KhachHangEntity;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +20,7 @@ import java.util.List;
 public class DetailKhachHangConsole extends JPanel {
     private String ma, ten, diachi, sdt;
     DefaultTableModel tableModel;
-
+    private String avatar ;
     public DetailKhachHangConsole() {}
 
     public void setInfo(KhachHangEntity info) {
@@ -26,6 +28,7 @@ public class DetailKhachHangConsole extends JPanel {
         setTen(info.getTen());
         setSdt(info.getSdt());
         setDiachi(info.getDiaChi());
+        setAvatar(info.getAvatar());
     }
 
     public JPanel setupDetailBox_USER() {
@@ -46,11 +49,20 @@ public class DetailKhachHangConsole extends JPanel {
         left.setMinimumSize(new Dimension(250, 300));
         left.setMaximumSize(new Dimension(250, 300));
 
-        JLabel imgLabel = new JLabel();
-        FlatSVGIcon flatSVGIcon = new FlatSVGIcon("icon/user.svg", 250, 250);
-        imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        imgLabel.setIcon(flatSVGIcon);
-        left.add(imgLabel, BorderLayout.CENTER);
+        JLabel imgLabel;
+        FlatSVGIcon flatSVGIcon;
+        JPanel panel;
+        System.out.println(getAvatar());
+        if(getAvatar() != null) {
+            panel = AddNhanVienConsole.getJPanel(getAvatar() , 250 , 250);
+            left.add(panel, BorderLayout.CENTER);
+        } else {
+            imgLabel = new JLabel();
+            flatSVGIcon = new FlatSVGIcon("icon/user.svg" , 250 , 250);
+            imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            imgLabel.setIcon(flatSVGIcon);
+            left.add(imgLabel, BorderLayout.CENTER);
+        }
 
         gbc.gridx = 0;
         gbc.weightx = 0.4;
@@ -239,5 +251,12 @@ public class DetailKhachHangConsole extends JPanel {
 
     public void setSdt(String sdt) {
         this.sdt = sdt;
+    }
+
+    public void setAvatar(String avatar){
+        this.avatar = avatar;
+    }
+    public String getAvatar(){
+        return avatar;
     }
 }
