@@ -45,7 +45,7 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
                 }else if(InputValid.checkSameId(Integer.parseInt(showAddKhachHang.add.getMa()) , sql)){
                     JOptionPane.showMessageDialog(null,"Mã khách hàng bị trùng vui lòng nhập mã khách hàng khác" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
-                }else if(!InputValid.checkMaNhanVien(showAddKhachHang.add.getMa())){
+                }else if(!InputValid.checkMa(showAddKhachHang.add.getMa())){
                     JOptionPane.showMessageDialog(null,"Mã khách hàng chỉ nhận giá trị số nguyên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
                 }

@@ -108,11 +108,12 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
         String query = "update nhan_vien\n" +
                 "set ma_nguoi_dung = ?\n" +
                 "where ma_nhan_vien = ?";
+        System.out.println(manguoidung + " " + manv);
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement prs = c.prepareStatement(query);) {
             prs.setInt(1,manguoidung);
             prs.setInt(2,manv);
-            return true;
+            return prs.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

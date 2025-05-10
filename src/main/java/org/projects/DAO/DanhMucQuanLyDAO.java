@@ -93,6 +93,31 @@ public class DanhMucQuanLyDAO implements ChucNangDAO<DanhMucQuanLy> {
         return result;
     }
 
+    public List<Integer> getDanhMucQuanLyByMaNhomQuyen(int maNhomQuyen) {
+        System.out.println(maNhomQuyen);
+        List<Integer> result = new ArrayList<>();
+        String query = "SELECT * " +
+                "FROM danh_muc_quan_ly " +
+                "WHERE EXISTS ( " +
+                "    SELECT * " +
+                "    FROM cap_quyen " +
+                "    WHERE danh_muc_quan_ly.ma_danh_muc_quan_ly = cap_quyen.ma_danh_muc_quan_ly " +
+                "    AND cap_quyen.ma_nhom_quyen = ? " +
+                ")";
+        try (Connection conection = DatabasesConfig.getConnection();
+             PreparedStatement statement = conection.prepareStatement(query);) {
+            statement.setInt(1, maNhomQuyen);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getInt("ma_danh_muc_quan_ly"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result;
+    }
+
     public List<List<String>> quyenHanhDong(List<Integer> maNhomQuyen) {
         List<List<String>> result = new ArrayList<>();
         for (int i = 0; i < 9; i++) {

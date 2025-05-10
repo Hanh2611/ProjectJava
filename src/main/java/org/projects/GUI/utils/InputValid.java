@@ -1,8 +1,6 @@
 package org.projects.GUI.utils;
 
-import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.config.DatabasesConfig;
-import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -36,10 +34,10 @@ public class InputValid {
     public static boolean checkRong_addPlace(String addplace, String key) {
         return key == null || key.trim().isEmpty() || key.equals(addplace);
     }
-    public static boolean checkMaNhanVien(String ma) {
+    public static boolean checkMa(String ma) {
         return ma != null && ma.matches(MA_HOP_LE_REGEX);
     }
-    public static boolean checkEmailNhanVien(String email) {
+    public static boolean checkEmail(String email) {
         return email != null && email.matches(EMAIL_HOP_LE_REGEX);
     }
     public static boolean checkSoDienThoai(String sdt) {
@@ -61,7 +59,7 @@ public class InputValid {
         String luongText = textField.getText().trim();
 
         if (luongText.isEmpty() || luongText.equals("Nhập lương nhân viên")) {
-            InputValid.clearError(index, errorLabels , listAdd , true);
+            InputValid.showError(index,"Vui lòng điền số lương", errorLabels , listAdd , false);
             return;
         }
 
@@ -85,8 +83,8 @@ public class InputValid {
             errorLabels.get(index).setVisible(true);
             errorLabels.get(index).revalidate();
             errorLabels.get(index).repaint();
-            errorLabels.get(index).getParent().revalidate();
-            errorLabels.get(index).getParent().repaint();
+            //errorLabels.get(index).getParent().revalidate();
+            //errorLabels.get(index).getParent().repaint();
             setErrorBorder(listAdd.get(index) , full);
         }
     }
@@ -97,8 +95,8 @@ public class InputValid {
             errorLabels.get(index).setVisible(false);
             errorLabels.get(index).revalidate();
             errorLabels.get(index).repaint();
-            errorLabels.get(index).getParent().revalidate();
-            errorLabels.get(index).getParent().repaint();
+            //errorLabels.get(index).getParent().revalidate();
+            //errorLabels.get(index).getParent().repaint();
             setNormalBorder(listAdd.get(index) , full);
         }
     }

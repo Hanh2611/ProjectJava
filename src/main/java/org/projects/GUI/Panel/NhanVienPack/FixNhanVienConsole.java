@@ -2,9 +2,12 @@ package org.projects.GUI.Panel.NhanVienPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.NhanVienAction;
+import org.projects.GUI.utils.InputValid;
 import org.projects.entity.NhanVienEntity;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -88,6 +91,7 @@ public class FixNhanVienConsole extends JPanel {
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
         String [] str = {"Mã NV: ", "Tên: ", "Email: ", "Sdt: ", "Lương: "};
         listAdd = new ArrayList<>();
+        errorLabels = new ArrayList<>();
         comboBox = new JComboBox<>(items);
         int index = 0;
         for (int i = 0 ; i < list.length ; i++) {
@@ -97,8 +101,9 @@ public class FixNhanVienConsole extends JPanel {
             JTextField jTextField2 = new JTextField(str[index]);
             jTextField2.setEditable(false);
             JTextField jTextField = new JTextField(list[i]);
+            jTextField.setName(list[i]);
             if(index == 0){
-                jTextField.setEditable(false);
+                jTextField.setEnabled(false);
             }
             jTextField.setPreferredSize(new Dimension(220, 40));
             jTextField2.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
@@ -109,22 +114,42 @@ public class FixNhanVienConsole extends JPanel {
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             jTextField2.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             JPanel errorPanel = new JPanel();
-            errorPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+            errorPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
             JLabel errorLabel = new JLabel("");
             errorLabel.setForeground(Color.RED);
             errorLabel.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
             errorLabels.add(errorLabel);
-            errorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
             errorPanel.setBackground(new Color(240, 240, 240));
             final int value = i;
             jTextField.addFocusListener(new NhanVienAction(jTextField , value , listAdd , errorLabels));
             p.add(jTextField2);
             p.add(jTextField);
+            errorPanel.add(errorLabel);
             mainInfo.add(p);
+            mainInfo.add(errorPanel);
             mainInfo.add(Box.createVerticalStrut(5));
             listAdd.add(jTextField);
             index++;
+            jTextField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateField(jTextField, value);
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    validateField(jTextField, value);
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    validateField(jTextField, value);
+                }
+                private void validateField(JTextField textField, int index) {
+                    if (index == 4) {
+                        InputValid.validateLuongInput(textField, index, errorLabels, listAdd);
+                    } else {
+                        InputValid.clearError(index, errorLabels, listAdd, false);
+                    }
+                }
+            });
         }
         comboBox.setSelectedItem(getChucvu());
         comboBox.setRenderer(new DefaultListCellRenderer() {

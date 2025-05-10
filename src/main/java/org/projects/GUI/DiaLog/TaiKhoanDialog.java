@@ -1,9 +1,11 @@
 package org.projects.GUI.DiaLog;
 
 import org.projects.Action.TaiKhoanAction;
+import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.TaiKhoanBUS;
 import org.projects.DAO.NhomQuyenDAO;
 import org.projects.GUI.Components.ButtonEditStyle;
+import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.TaiKhoan;
@@ -19,16 +21,18 @@ public class TaiKhoanDialog extends JDialog {
     private TaiKhoanEntity tkEntity;
     private String tkType;
 
-    private JPanel center;
+    private PanelBorderRadius center;
     private labelText tendangnhap;
     private labelText matkhau;
     private labelText manhanvien;
     private labelText quyen;
     private labelText trangthai;
-
-    private JPanel bottom;
+    private JPanel header;
+    private JPanel content;
+    private PanelBorderRadius right;
     private JButton add;
     private JButton cancel;
+    private JLabel title;
 
     private TaiKhoanAction tkAction;
     private mainTransition ts = new mainTransition();
@@ -41,30 +45,54 @@ public class TaiKhoanDialog extends JDialog {
 
         this.setTitle(setType());
         this.setLocationRelativeTo(null);
-        this.setLayout(new BorderLayout());
-        this.getContentPane().setBackground(new Color(240, 240, 240));
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        this.getContentPane().setBackground(Color.decode("#dff0f5"));
+//        this.setBackground(new Color(255, 255, 255));
 
         init();
         getEdit(tkType);
-        ts.showZoomIn(this, 600, 400);
+        ts.showZoomIn(this, 900, 600);
     }
 
     private void init() {
-        center = new JPanel(new GridLayout(3, 1, 10, 10));
+        content = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        content.setPreferredSize(new Dimension(900, 540));
+        content.setBackground(Color.decode("#dff0f5"));
+
+        right = new PanelBorderRadius();
+        right.setBackgroundColor(new Color(52, 152, 219));
+        right.setPreferredSize(new Dimension(400, 480));
+
+        header = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        title = new JLabel();
+        title.setFont(new Font("Tahoma", Font.BOLD, 20));
+        title.setForeground(new Color(255, 255, 255));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setVerticalAlignment(SwingConstants.CENTER);
+        title.setPreferredSize(new Dimension(600, 50));
+        header.add(title);
+        header.setOpaque(true);
+        header.setBackground(new Color(52, 152, 219));
+        header.setPreferredSize(new Dimension(900, 60));
+
+        center = new PanelBorderRadius();
+        center.setPreferredSize(new Dimension(460, 480));
+        center.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         center.setBorder(new EmptyBorder(20, 20, 20, 20));
         center.setBackground(new Color(240, 240, 240));
 
-        bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        bottom.setBackground(new Color(240, 240, 240));
+        add = ButtonEditStyle.styleButton(typeButton(getTKType()), new Color(52, 152, 219), Color.WHITE);
+        add.setPreferredSize(new Dimension(420, 55));
+        add.setBorder(new EmptyBorder(15, 15, 15, 15));
+        cancel = ButtonEditStyle.styleButton("Thoát", new Color(231, 76, 60), Color.WHITE);
+        cancel.setPreferredSize(new Dimension(420, 55));
+        cancel.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        add = new ButtonEditStyle(typeButton(getTKType()), new Color(52, 152, 219), Color.WHITE,100,30);
-        cancel = new ButtonEditStyle("Thoát", new Color(231, 76, 60), Color.WHITE,100,30);
+        content.add(right);
+        content.add(center);
 
-        bottom.add(add);
-        bottom.add(cancel);
-
-        this.add(center, BorderLayout.CENTER);
-        this.add(bottom, BorderLayout.SOUTH);
+        this.add(header);
+        this.add(content);
 
         // Gắn action
         add.addActionListener(tkAction);
@@ -113,16 +141,34 @@ public class TaiKhoanDialog extends JDialog {
     }
 
     private void initAdd() {
+        title.setText("TẠO TÀI KHOẢN");
         tendangnhap = new labelText("Tên đăng nhập", 30, 5);
+        tendangnhap.setOpaque(true);
+        tendangnhap.setBackground(new Color(255, 255, 255));
+        tendangnhap.setPreferredSize(new Dimension(420, 70));
         matkhau = new labelText("Mật khẩu", 30, 5);
+        matkhau.setOpaque(true);
+        matkhau.setBackground(new Color(255, 255, 255));
+        matkhau.setPreferredSize(new Dimension(420, 70));
         manhanvien = new labelText("Mã nhân viên", (ArrayList<String>) TaiKhoanBUS.laydanhsachnv());
+        manhanvien.setOpaque(true);
+        manhanvien.setBackground(new Color(255, 255, 255));
+        manhanvien.setPreferredSize(new Dimension(420, 70));
+        quyen = new labelText("Quyền tài khoản", (ArrayList<String>) PhanQuyenBUS.getTenNhomQuyen());
+        quyen.setOpaque(true);
+        quyen.setBackground(new Color(255, 255, 255));
+        quyen.setPreferredSize(new Dimension(420, 70));
 
         center.add(tendangnhap);
         center.add(matkhau);
         center.add(manhanvien);
+        center.add(quyen);
+        center.add(add);
+        center.add(cancel);
     }
 
     private void initUpdate() {
+        title.setText("CHỈNH SỬA TÀI KHOẢN");
         matkhau = new labelText("Mật khẩu", 30, 5);
 
         quyen = new labelText("Quyền", (ArrayList<String>) NhomQuyenDAO.getDanhsachtennhomquyen());
@@ -141,6 +187,7 @@ public class TaiKhoanDialog extends JDialog {
     }
 
     private void initDetail() {
+        title.setText("CHI TIẾT TÀI KHOẢN");
         tendangnhap = new labelText("Tên đăng nhập", 30, 5);
         labelText tenNguoiDung = new labelText("Tên người dùng", 30, 5);
         labelText loaiTaiKhoan = new labelText("Loại tài khoản", 30, 5);
@@ -183,7 +230,7 @@ public class TaiKhoanDialog extends JDialog {
         return center;
     }
 
-    public void setCenter(JPanel center) {
+    public void setCenter(PanelBorderRadius center) {
         this.center = center;
     }
 
@@ -217,14 +264,6 @@ public class TaiKhoanDialog extends JDialog {
 
     public void setTrangthai(labelText trangthai) {
         this.trangthai = trangthai;
-    }
-
-    public JPanel getBottom() {
-        return bottom;
-    }
-
-    public void setBottom(JPanel bottom) {
-        this.bottom = bottom;
     }
 
     public JButton getAdd() {
