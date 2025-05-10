@@ -695,7 +695,7 @@ public class ThemHD extends JPanel {
                 int soLuong = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 2).toString());
                 sp.setSoLuongTon(sp.getSoLuongTon() - soLuong);
                 if(sp.getSoLuongTon() == 0){
-                    sp.setTrangThai(false);
+                    sp.setHetHang(true);
                 }
                 sanPhamBus.updateSanPham(sp);
                 double giaBan = ThemPN.parseTien(modelDanhSachNhap.getValueAt(i, 3).toString());

@@ -4,7 +4,7 @@ public class NguoiDungEntity {
     private int maNguoiDung;
     private String loaiNguoiDung;
     private String tenNguoiDung;
-
+    private boolean is_delete;
     public NguoiDungEntity() {
         loaiNguoiDung = "khach_hang";
     }
@@ -14,9 +14,10 @@ public class NguoiDungEntity {
         loaiNguoiDung = "khach_hang";
     }
 
-    public NguoiDungEntity(int maNguoiDung, String loaiNguoiDung) {
+    public NguoiDungEntity(int maNguoiDung, String loaiNguoiDung ) {
         this.maNguoiDung = maNguoiDung;
         this.loaiNguoiDung = loaiNguoiDung;
+        this.is_delete = false;
     }
 
 
@@ -42,5 +43,12 @@ public class NguoiDungEntity {
 
     public void setTenNguoiDung(String tenNguoiDung) {
         this.tenNguoiDung = tenNguoiDung;
+    }
+
+    public void setIs_delete(boolean is_delete) {
+        this.is_delete = is_delete;
+    }
+    public boolean isIs_delete() {
+        return is_delete;
     }
 }

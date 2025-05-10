@@ -10,6 +10,7 @@ import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.utils.Session;
+import org.projects.config.DatabasesConfig;
 import org.projects.entity.KhachHangEntity;
 import org.projects.entity.NhanVienEntity;
 
@@ -21,6 +22,9 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -110,7 +114,7 @@ public class KhachHang extends JPanel {
         String[] quyen = new String[]{"add", "update", "delete", "detail"};
 //        addHeader(this, listItemHeader, quyen);
 //        add(new headerBar(listItemHeader, new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---" , "mã" , "tên" , "địa chỉ"}));
-        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("KhachHang") - 1) , new String[]{"---"}));
+        add(new headerBar(listItemHeader , Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("KhachHang") - 1) , new String[]{"---" , "mã" , "tên" , "địa chỉ"}));
         header = (headerBar) this.getComponent(0);
         for(String key : header.getHeaderFunc().getHm().keySet()){
             header.getHeaderFunc().getHm().get(key).addMouseListener(khachHangAction);
@@ -158,7 +162,20 @@ public class KhachHang extends JPanel {
         String ten = table.getValueAt(row,1).toString();
         String sdt = table.getValueAt(row,2).toString();
         String diachi = table.getValueAt(row,3).toString();
-        return new KhachHangEntity(ma , ten ,sdt, diachi);
+        String avatar = null;
+        String sql = "Select avatar from khach_hang where ma_khach_hang = ?";
+        try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql)){
+            ps.setInt(1, ma);
+            try(ResultSet rs = ps.executeQuery()) {
+                if(rs.next()) {
+                    avatar = rs.getString("avatar");
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new KhachHangEntity(ma , ten ,sdt, diachi , avatar);
     }
 
     public void searchfunction(String keyword,String textfield) {
@@ -168,6 +185,9 @@ public class KhachHang extends JPanel {
             List<KhachHangEntity> lst = KhachHangBUS.search(keyword,textfield);
             loadList(lst);
         } else reloadDAO();
+    }
+    public JTable getTable(){
+        return table;
     }
 }
 

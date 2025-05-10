@@ -1,13 +1,23 @@
 package org.projects.entity;
 
 public class KhachHangEntity {
-    public String ten , diaChi , sdt;
+    public String ten , diaChi , sdt , avatar;
     public int ma;
+    public boolean is_delete;
     public KhachHangEntity(int ma,  String ten , String sdt, String diaChi){
         this.ma = ma;
         this.ten = ten;
         this.sdt = sdt;
         this.diaChi = diaChi;
+    }
+
+    public KhachHangEntity(int ma , String ten , String sdt, String diaChi, String avatar){
+        this.ma = ma;
+        this.ten = ten;
+        this.sdt = sdt;
+        this.diaChi = diaChi;
+        this.avatar = avatar;
+        this.is_delete = false;
     }
 
     public String getTen() {
@@ -40,5 +50,12 @@ public class KhachHangEntity {
 
     public void setMa(int ma) {
         this.ma = ma;
+    }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 }

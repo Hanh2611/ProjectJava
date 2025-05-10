@@ -9,6 +9,8 @@ import org.projects.GUI.DiaLog.Nhanvien.ShowFixNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.DeleteNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
+import org.projects.GUI.utils.ExportExcel;
+import org.projects.GUI.utils.InputValid;
 import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhanVienEntity;
 
@@ -16,20 +18,35 @@ import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
-public class NhanVienAction implements ActionListener  , MouseListener , ItemListener, KeyListener, DocumentListener {
+public class NhanVienAction extends FocusAdapter implements ActionListener, MouseListener, ItemListener, KeyListener, DocumentListener {
     private NhanVien nv;
     private ShowAddNhanVienConsole show_add_nv;
     private ShowDeleteNhanVienConsole show_del_nv;
     private ShowChiTietNhanVienConsole show_detail_nv;
     private ShowFixNhanVienConsole show_fix_nv;
     static NhanVienBus bus;
-    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$";
+    String sql = "SELECT ma_nhan_vien FROM nhan_vien WHERE ma_nhan_vien = ?";
+    private JTextField textField;
+    private int fieldIndex;
+    private ArrayList<JTextField> listAdd;
+    private ArrayList<JLabel> errorLabels;
+
     public NhanVienAction(NhanVien nv) {
         this.nv = nv;
         bus = new NhanVienBus(nv);
     }
+
+    public NhanVienAction(JTextField textField, int fieldIndex, ArrayList<JTextField> listAdd, ArrayList<JLabel> errorLabels) {
+        this.textField = textField;
+        this.fieldIndex = fieldIndex;
+        this.listAdd = listAdd;
+        this.errorLabels = errorLabels;
+    }
+
     public NhanVienAction(){}
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -38,37 +55,12 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
         if(show_add_nv != null) {
             if (source.equals(show_add_nv.add.getSaveButton())) {
                 show_add_nv.add.insertData();
-                if(show_add_nv.add.getMa().equals("Nhập mã nhân viên")) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp mã nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(0).requestFocusInWindow();
-                }else if(!show_add_nv.add.getMa().matches("\\d+")){
-                    JOptionPane.showMessageDialog(null,"Mã nhân viên chỉ nhận giá trị số nguyên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(0).requestFocusInWindow();
-                }
-                else if(show_add_nv.add.getTen().equals("Nhập họ và tên")) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp họ tên nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(1).requestFocusInWindow();
-                }else if(show_add_nv.add.getEmail().equals("Nhập Email")) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập email" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(2).requestFocusInWindow();
-                }else if(!show_add_nv.add.getEmail().matches(emailRegex)) {
-                    JOptionPane.showMessageDialog(null,"Email không đúng định dạng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(2).requestFocusInWindow();
-                }else if(show_add_nv.add.getSdt().equals("Nhập số điện thoại")) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(3).requestFocusInWindow();
-                }else if(!show_add_nv.add.getSdt().matches("0\\d{9}")){
-                    JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(3).requestFocusInWindow();
-                }else if(show_add_nv.add.comboBox.getSelectedIndex() == 0) {
+                if(show_add_nv.add.comboBox.getSelectedIndex() == 0){
                     JOptionPane.showMessageDialog(null,"Vui lòng chọn chức vụ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.comboBox.requestFocusInWindow();
-                }else if((show_add_nv.add.getLuong() < 0 || show_add_nv.add.getLuong() > 1e9)) {
-                    JOptionPane.showMessageDialog(null,"Lương chỉ nằm trong khoảng [1-9] và chỉ chứa số" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_add_nv.add.listAdd.get(4).requestFocusInWindow();
-                } else {
+                }else {
                     NhanVienEntity nve = new NhanVienEntity(Integer.parseInt(show_add_nv.add.getMa()), show_add_nv.add.getTen()
-                            , show_add_nv.add.getEmail(), show_add_nv.add.getSdt(), show_add_nv.add.getChuc_vu() , show_add_nv.add.getLuong() , show_add_nv.add.getGioitinh());
+                            , show_add_nv.add.getEmail(), show_add_nv.add.getSdt(), show_add_nv.add.getChuc_vu(), show_add_nv.add.getLuong(), show_add_nv.add.getGioitinh(), show_add_nv.add.getAvatar());
                     if (bus.them(nve)) {
                         JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
                         nv.loadList(bus.getList());
@@ -90,6 +82,7 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
                 NhanVienEntity nve = nv.getRow();
                 if(bus.xoa(nve)){
                     JOptionPane.showMessageDialog(null , "Đã xóa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
+                    nv.loadList(bus.getList());
                 }else{
                     JOptionPane.showMessageDialog(null , "Xóa thất bại" , "thông báo" , JOptionPane.ERROR_MESSAGE);
                 }
@@ -101,27 +94,12 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
                 show_fix_nv.close();
             }else if (source.equals(show_fix_nv.fix.getUpdateButton())){
                 show_fix_nv.fix.insertData();
-                if(show_fix_nv.fix.getTen().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp tên nhân viên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_fix_nv.fix.listAdd.get(1).requestFocusInWindow();
-                }else if(show_fix_nv.fix.getEmail().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp email" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_fix_nv.fix.listAdd.get(2).requestFocusInWindow();
-                }else if(show_fix_nv.fix.getStd().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhâp số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_fix_nv.fix.listAdd.get(3).requestFocusInWindow();
-                }else if(!show_fix_nv.fix.getStd().matches("0\\d{9}")){
-                    JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_fix_nv.fix.listAdd.get(3).requestFocusInWindow();
-                }else if(show_fix_nv.fix.comboBox.getSelectedIndex() == 0) {
+                if(show_fix_nv.fix.comboBox.getSelectedIndex() == 0) {
                     JOptionPane.showMessageDialog(null,"Vui lòng chọn chức vụ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_fix_nv.fix.comboBox.requestFocusInWindow();
-                }else if(show_fix_nv.fix.getLuong() < 0 || show_fix_nv.fix.getLuong() > 1e9){
-                    JOptionPane.showMessageDialog(null,"Lương chỉ nằm trong khoảng [1-9] và chỉ chứa số" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    show_fix_nv.fix.listAdd.get(4).requestFocusInWindow();
-                } else{
+                }else{
                     NhanVienEntity nve = new NhanVienEntity(Integer.parseInt(show_fix_nv.fix.getMa()), show_fix_nv.fix.getTen()
-                            , show_fix_nv.fix.getEmail(), show_fix_nv.fix.getStd(), show_fix_nv.fix.getChucvu() , show_fix_nv.fix.getLuong(), show_fix_nv.fix.getGioitinh());
+                            , show_fix_nv.fix.getEmail(), show_fix_nv.fix.getStd(), show_fix_nv.fix.getChucvu() , show_fix_nv.fix.getLuong(), show_fix_nv.fix.getGioitinh() , show_fix_nv.fix.getAvatar());
                     if(bus.sua(nve)){
                         JOptionPane.showMessageDialog(null , "Đã sửa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
                         nv.loadList(bus.getList());
@@ -160,6 +138,16 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
                         show_add_nv.add.getResetButton().addActionListener(this);
                         show_add_nv.add.getSaveButton().addActionListener(this);
                         show_add_nv.add.getCancelButton().addActionListener(this);
+                    }else if("excel".equals(name)){
+                        JFileChooser fileChooser = new JFileChooser();
+                        int result = fileChooser.showSaveDialog(null);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            String path = fileChooser.getSelectedFile().getAbsolutePath();
+                            if (!path.endsWith(".xlsx")) {
+                                path += ".xlsx";
+                            }
+                            ExportExcel.exportToExcel(nv.getTable(), path);
+                        }
                     }else{
                         NhanVienEntity info = nv.getRow();
                         if(info == null){
@@ -255,4 +243,64 @@ public class NhanVienAction implements ActionListener  , MouseListener , ItemLis
     public void changedUpdate(DocumentEvent e) {
         doSearch();
     }
+
+
+    // xu li focus
+    public void checkMaNhanVienALL(JTextField textField, int index) {
+        if (InputValid.checkRong_addPlace(textField.getName(), textField.getText())) {
+            InputValid.showError(index, "Vui lòng nhập mã nhân viên" , errorLabels , listAdd , false);
+        } else if (!InputValid.checkMaNhanVien(textField.getText())) {
+            InputValid.showError(index, "Mã nhân viên chỉ nhận giá trị số nguyên",errorLabels , listAdd , false);
+        } else if (InputValid.checkSameId(Integer.parseInt(textField.getText()), sql)) {
+            InputValid.showError(index, "Mã nhân viên bị trùng" , errorLabels , listAdd ,false);
+        } else {
+            InputValid.clearError(index , errorLabels , listAdd , false);
+        }
+    }
+
+    public void checkEmailNhanVienALL(JTextField textField, int index) {
+        if (InputValid.checkRong_addPlace(textField.getName(), textField.getText())) {
+            InputValid.showError(index, "Vui lòng nhập email" , errorLabels , listAdd , false);
+        } else if (!InputValid.checkEmailNhanVien(textField.getText())) {
+            InputValid.showError(index, "Email không đúng định dạng" ,errorLabels , listAdd , false);
+        } else {
+            InputValid.clearError(index , errorLabels , listAdd , false);
+        }
+    }
+
+    public void checkSDTNhanVienALL(JTextField textField, int index) {
+        if (InputValid.checkRong_addPlace(textField.getName(), textField.getText())) {
+            InputValid.showError(index, "Vui lòng nhập số điện thoại" , errorLabels, listAdd , false);
+        } else if (!InputValid.checkSoDienThoai(textField.getText())) {
+            InputValid.showError(index, "Số điện thoại không hợp lệ" , errorLabels , listAdd , false);
+        } else {
+            InputValid.clearError(index , errorLabels , listAdd, false);
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        JTextField source = (JTextField) e.getSource();
+        int index = listAdd.indexOf(source);
+        //System.out.println(source.getText());
+        switch (source.getName()) {
+            case "Nhập mã nhân viên":
+                checkMaNhanVienALL(source, index);
+                break;
+            case "Nhập Email":
+                checkEmailNhanVienALL(source, index);
+                break;
+            case "Nhập số điện thoại":
+                checkSDTNhanVienALL(source, index);
+                break;
+            default:
+                if (InputValid.checkRong_addPlace(source.getName(), source.getText())) {
+                    InputValid.showError(index, "Vui lòng " + source.getName().toLowerCase() , errorLabels , listAdd , false);
+                } else {
+                    InputValid.clearError(index , errorLabels , listAdd , false);
+                }
+                break;
+        }
+    }
+
 }

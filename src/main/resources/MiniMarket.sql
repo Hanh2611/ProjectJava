@@ -28,7 +28,8 @@ CREATE TABLE nguoi_dung
 (
     ma_nguoi_dung   INT                                                        NOT NULL PRIMARY KEY auto_increment,
     loai_nguoi_dung ENUM ('nhan_vien_kho', 'khach_hang', 'nhan_vien_ban_hang') NOT NULL,
-    ten_nguoi_dung  VARCHAR(50)                                                NOT NULL
+    ten_nguoi_dung  VARCHAR(50)                                                NOT NULL,
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE tai_khoan
@@ -37,7 +38,8 @@ CREATE TABLE tai_khoan
     ma_nguoi_dung    INT         NOT NULL,
     mat_khau         VARCHAR(50) NOT NULL,
     quyen_nguoi_dung INT         NOT NULL,
-    trang_thai       ENUM ('hoat_dong', 'da_khoa') DEFAULT 'hoat_dong'
+    trang_thai       ENUM ('hoat_dong', 'da_khoa') DEFAULT 'hoat_dong',
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE nhan_vien
@@ -49,7 +51,9 @@ CREATE TABLE nhan_vien
     so_dien_thoai VARCHAR(15) NOT NULL,
     chuc_vu       VARCHAR(50) NOT NULL,
     luong         INT         NOT NULL,
-    gioi_tinh     INT         NOT NULL
+    gioi_tinh     INT         NOT NULL,
+    avatar        VARCHAR(255),
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE khach_hang
@@ -58,7 +62,9 @@ CREATE TABLE khach_hang
     ma_nguoi_dung  INT,
     ten_khach_hang VARCHAR(50) NOT NULL,
     so_dien_thoai  VARCHAR(15) NOT NULL,
-    dia_chi        VARCHAR(50) NOT NULL
+    dia_chi        VARCHAR(50) NOT NULL,
+    avatar         VARCHAR(255),
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE hoa_don
@@ -79,7 +85,7 @@ CREATE TABLE danh_muc_san_pham
 
 CREATE TABLE san_pham
 (
-     ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
+    ma_san_pham  INT PRIMARY KEY AUTO_INCREMENT,
     ten_san_pham VARCHAR(255) NOT NULL,
     phan_loai    INT,
     don_vi       VARCHAR(50),
@@ -87,6 +93,7 @@ CREATE TABLE san_pham
     so_luong_ton DOUBLE  DEFAULT 0,
     quy_cach     ENUM ('Thùng', 'Chai', 'Túi', 'KG', 'Hộp', 'G', 'Khay'),
     img          VARCHAR(255),
+    het_hang     BOOLEAN DEFAULT TRUE,
     trang_thai   BOOLEAN DEFAULT TRUE
 );
 
@@ -268,46 +275,46 @@ VALUES
     -- Khách hàng chỉ có thể xem đơn hàng của họ
     (3, 4, 'xem');
 
-INSERT INTO nguoi_dung (ma_nguoi_dung, loai_nguoi_dung, ten_nguoi_dung)
-VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An'),
-       (2, 'nhan_vien_ban_hang', 'Tran Binh'),
-       (3, 'khach_hang', 'Le Van'),
-       (4, 'khach_hang', 'Pham Duong'),
-       (5, 'nhan_vien_kho', 'Hoang Em'),
-       (6, 'nhan_vien_ban_hang', 'Matthe Ao'),
-       (7, 'khach_hang', 'Viet Anh'),
-       (8, 'nhan_vien_kho', 'Duong Hoang'),
-       (9, 'khach_hang', 'Lan Ha'),
-       (10, 'nhan_vien_ban_hang', 'Hoang Nam');
+INSERT INTO nguoi_dung (ma_nguoi_dung, loai_nguoi_dung, ten_nguoi_dung , is_delete)
+VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An' , false),
+       (2, 'nhan_vien_ban_hang', 'Tran Binh' ,false),
+       (3, 'khach_hang', 'Le Van' , false),
+       (4, 'khach_hang', 'Pham Duong' , false),
+       (5, 'nhan_vien_kho', 'Hoang Em' , false),
+       (6, 'nhan_vien_ban_hang', 'Matthe Ao' , false),
+       (7, 'khach_hang', 'Viet Anh' , false),
+       (8, 'nhan_vien_kho', 'Duong Hoang' ,false),
+       (9, 'khach_hang', 'Lan Ha' ,false),
+       (10, 'nhan_vien_ban_hang', 'Hoang Nam' , false);
 
-INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai)
-VALUES ('a', 1, '123', 1, 'hoat_dong'),
-       ('tranbinh', 2, 'password456', 2, 'da_khoa'),
-       ('levan', 3, 'password789', 3, 'hoat_dong'),
-       ('phamduong', 4, 'password000', 3, 'hoat_dong'),
-       ('hoangem', 5, 'password999', 2, 'hoat_dong'),
-       ('mattheao', 6, 'password111', 1, 'hoat_dong'),
-       ('vietanh', 7, 'password222', 3, 'hoat_dong'),
-       ('duonghoang', 8, 'password333', 2, 'da_khoa'),
-       ('lanhha', 9, 'password444', 3, 'hoat_dong'),
-       ('hoangnam', 10, 'password555', 2, 'hoat_dong');
+INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai , is_delete)
+VALUES ('a', 1, '123', 1, 'hoat_dong', false),
+       ('tranbinh', 2, 'password456', 2, 'da_khoa', false),
+       ('levan', 3, 'password789', 3, 'hoat_dong' , false),
+       ('phamduong', 4, 'password000', 3, 'hoat_dong' , false),
+       ('hoangem', 5, 'password999', 2, 'hoat_dong' , false),
+       ('mattheao', 6, 'password111', 1, 'hoat_dong' , false),
+       ('vietanh', 7, 'password222', 3, 'hoat_dong' , false),
+       ('duonghoang', 8, 'password333', 2, 'da_khoa' , false),
+       ('lanhha', 9, 'password444', 3, 'hoat_dong' , false),
+       ('hoangnam', 10, 'password555', 2, 'hoat_dong' , false);
 
-INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh)
-VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1),
-       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0),
-       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1),
-       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1),
-       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1),
-       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1);
+INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh , avatar , is_delete)
+VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1 , 'https://res.cloudinary.com/dmw5hl35v/image/upload/v1746715122/z6578188841594_4fc3c5a58a2114e5f38790fd3309d17e_wnte5i.jpg' , false),
+       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0 , null , false),
+       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1 , null , false),
+       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1,  null , false),
+       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1 , null , false),
+       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1 , null , false);
 
-INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi)
-VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam'),
-       (2, 4, 'Phạm Linh H', '0976543210', 'TP. Hồ Chí Minh, Việt Nam'),
-       (3, 7, 'Trần Bình I', '0901234567', 'Đà Nẵng, Việt Nam'),
-       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam'),
-       (5, 2, 'Hoàng Anh K', '0987654321', 'Hải Phòng, Việt Nam'),
-       (6, 8, 'Đỗ Thị L', '0941234567', 'Nha Trang, Việt Nam'),
-       (7, 6, 'Vũ Quang M', '0918765432', 'Huế, Việt Nam');
+INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi , avatar , is_delete)
+VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam' ,NULL , false),
+       (2, 4, 'Phạm Linh H', '0976543210', 'TP. Hồ Chí Minh, Việt Nam' , null, false),
+       (3, 7, 'Trần Bình I', '0901234567', 'Đà Nẵng, Việt Nam' , null , false),
+       (4, 9, 'Nguyễn Minh J', '0935678910', 'Cần Thơ, Việt Nam' , null , false),
+       (5, 3, 'Hoàng Anh K', '0987654321', 'Hải Phòng, Việt Nam' , null , false),
+       (6, 9, 'Đỗ Thị L', '0941234567', 'Nha Trang, Việt Nam' , null, false),
+       (7, 7, 'Vũ Quang M', '0918765432', 'Huế, Việt Nam' , null , false);
 
 INSERT INTO danh_muc_san_pham (ten_danh_muc)
 VALUES ('Nước giải khát'),
@@ -318,20 +325,20 @@ VALUES ('Nước giải khát'),
        ('Bánh');
 
 
-INSERT INTO san_pham (ten_san_pham, phan_loai, don_vi, gia_ban, so_luong_ton, quy_cach, img)
-VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'traxanhc2hngchanh360ml.jpg'),
-       ('Trà xanh C2 hương chanh 500ml', 1, '500ml', 10000, 100, 'Chai', 'traxanhc2hngchanh500ml.jpg'),
-       ('Nước ngọt Coca Cola nguyên bản chai 1.5l', 1, '1.5l', 21000, 200, 'Chai', 'ncngtcocacolanguyenbnchai15l.jpg'),
-       ('Beefsteak bò Úc 200g', 2, '200g', 99000, 50, 'Khay', 'beefsteakbouc200g.jpg'),
-       ('Ba chỉ bò Úc đông lạnh Mr.T khay 300g', 2, '300g', 119000, 50, 'Hộp', 'bachbouconglnhmrtkhay300g.jpg'),
-       ('Gạo thơm Neptune ST25 Extra túi 5kg', 3, '5kg', 123000, 70, 'Túi', 'gothmneptunest25extratui5kg.jpg'),
-       ('Xoài keo 1kg', 4, '2kg', 23900, 20, 'KG', 'xoaikeo1kg.jpg'),
+INSERT INTO san_pham (ten_san_pham, phan_loai, don_vi, gia_ban, so_luong_ton, quy_cach, img, het_hang)
+VALUES ('Trà xanh C2 hương chanh 360ml', 1, '360ml', 8000, 100, 'Chai', 'traxanhc2hngchanh360ml.jpg', 0),
+       ('Trà xanh C2 hương chanh 500ml', 1, '500ml', 10000, 100, 'Chai', 'traxanhc2hngchanh500ml.jpg', 0),
+       ('Nước ngọt Coca Cola nguyên bản chai 1.5l', 1, '1.5l', 21000, 200, 'Chai', 'ncngtcocacolanguyenbnchai15l.jpg', 0),
+       ('Beefsteak bò Úc 200g', 2, '200g', 99000, 50, 'Khay', 'beefsteakbouc200g.jpg', 0),
+       ('Ba chỉ bò Úc đông lạnh Mr.T khay 300g', 2, '300g', 119000, 50, 'Hộp', 'bachbouconglnhmrtkhay300g.jpg', 0),
+       ('Gạo thơm Neptune ST25 Extra túi 5kg', 3, '5kg', 123000, 70, 'Túi', 'gothmneptunest25extratui5kg.jpg', 0),
+       ('Xoài keo 1kg', 4, '2kg', 23900, 20, 'KG', 'xoaikeo1kg.jpg', 0),
        ('Thùng 48 hộp sữa tươi tiệt trùng ít đường TH true MILK 180ml', 5, '48 hộp', 415000, 90, 'Thùng',
-        'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg'),
-       ('Cà rốt trái từ 150g trở lên', 4, '2kg', 34000, 0, 'KG', 'carottraitu150gtrolen.jpg'),
-       ('Bột ngọt Meizan gói 1kg', 3, '1kg', 69000, 0, 'Túi', 'botngotmeizangoi1kg.jpg'),
-       ('Bột ngọt Meizan gói 400g', 3, '400g', 32000, 0, 'Túi', 'botngotmeizangoi400g.jpg'),
-       ('Bánh bơ trứng Richy Karo gói 270g', 6, '270g', 37000, 0, 'Túi', 'banhbotrungrichykarogoi270g.jpg');
+        'thung48hopsuatuoitiettrungituongthtruemilk180ml.jpg', 0),
+       ('Cà rốt trái từ 150g trở lên', 4, '2kg', 34000, 0, 'KG', 'carottraitu150gtrolen.jpg', 1),
+       ('Bột ngọt Meizan gói 1kg', 3, '1kg', 69000, 0, 'Túi', 'botngotmeizangoi1kg.jpg', 1),
+       ('Bột ngọt Meizan gói 400g', 3, '400g', 32000, 0, 'Túi', 'botngotmeizangoi400g.jpg', 1),
+       ('Bánh bơ trứng Richy Karo gói 270g', 6, '270g', 37000, 0, 'Túi', 'banhbotrungrichykarogoi270g.jpg', 1);
 
 
 
@@ -468,3 +475,8 @@ SELECT *
 FROM nhom_quyen;
 SELECT *
 FROM cap_quyen;
+#update nhan_vien set ma_nguoi_dung = 13 where ma_nhan_vien = 9;
+Select * from nhan_vien;
+Select * from tai_khoan;
+select * from nguoi_dung;
+select * from khach_hang;

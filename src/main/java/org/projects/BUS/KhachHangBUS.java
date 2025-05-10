@@ -46,7 +46,7 @@ public class KhachHangBUS {
 
     public boolean xoa(KhachHangEntity khachHangEntity) {
         if(khachHang != null) {
-            if(khDao.xoa(khachHangEntity) > 0) {
+            if(khDao.delete(khachHangEntity)) {
                 khachHang.reloadDAO();
                 return true;
             }
