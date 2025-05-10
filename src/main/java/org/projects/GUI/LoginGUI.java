@@ -140,10 +140,9 @@ public class LoginGUI extends JFrame {
 
         //button dang nhap
         dangNhapButton = new ButtonEditStyle("Đăng nhập",MainColor,Color.WHITE,310,40);
+        dangNhapButton.setBounds(60, 340, 310, 40);
 
         panel.add(dangNhapButton);
-
-
     }
     public static  void setupPasswordToggle(JPasswordField pf, JButton showBtn, JButton hideBtn) {
         hideBtn.setVisible(true);
