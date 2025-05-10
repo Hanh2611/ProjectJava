@@ -119,18 +119,39 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
         return null;
     }
 
-    public static int updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(int manguoidung,int manv) {
-        int result = 0;
-        String query = "update nhan_vien set ma_nguoi_dung = ? where ma_nhan_vien = ?";
-        try (Connection connection = DatabasesConfig.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, manguoidung);
-            statement.setInt(2, manv);
-            System.out.println(manguoidung + " " + manv);
-            result = statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//    public static int updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(int manguoidung,int manv) {
+//        int result = 0;
+//        String query = "update nhan_vien set ma_nguoi_dung = ? where ma_nhan_vien = ?";
+//        try (Connection connection = DatabasesConfig.getConnection();
+//             PreparedStatement statement = connection.prepareStatement(query)) {
+//            statement.setInt(1, manguoidung);
+//            statement.setInt(2, manv);
+//            result = statement.executeUpdate();
+//            return result;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+public static int updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(int manguoidung, int manv) {
+    int result = 0;
+    String query = "UPDATE nhan_vien SET ma_nguoi_dung = ? WHERE ma_nhan_vien = ?";
+
+    try (Connection connection = DatabasesConfig.getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        System.out.println("Update nhân viên có mã: " + manv + " => mã người dùng: " + manguoidung);
+
+        statement.setInt(1, manguoidung);
+        statement.setInt(2, manv);
+
+        result = statement.executeUpdate();
+        System.out.println("Số dòng bị ảnh hưởng: " + result);
+
         return result;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return 0;
     }
+}
+
 }

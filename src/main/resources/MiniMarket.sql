@@ -461,7 +461,6 @@ ALTER TABLE phieu_nhap
 ALTER TABLE chi_tiet_phieu_nhap
     ADD CONSTRAINT FOREIGN KEY (ma_phieu_nhap) REFERENCES phieu_nhap (ma_phieu_nhap),
     ADD CONSTRAINT FOREIGN KEY (ma_san_pham) REFERENCES san_pham (ma_san_pham);
-
 -- Kiểm tra dữ liệu
 SELECT *
 FROM quyen_nguoi_dung;
@@ -472,3 +471,12 @@ FROM cap_quyen;
 select * from nguoi_dung;
 SELECT *
 FROM nhan_vien;
+select *
+from tai_khoan;
+
+SELECT *
+FROM danh_muc_quan_ly WHERE EXISTS (
+                SELECT *
+                FROM cap_quyen
+                WHERE danh_muc_quan_ly.ma_danh_muc_quan_ly = cap_quyen.ma_danh_muc_quan_ly
+                AND cap_quyen.ma_nhom_quyen = 1)

@@ -114,8 +114,7 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
     public static List<String> getDanhsachtennhomquyen() {
         List<String> result = new ArrayList<>();
         String query = "select nq.ten_nhom_quyen\n" +
-                "from nhom_quyen nq\n" +
-                "where nq.ten_nhom_quyen = 'Khách' or nq.ten_nhom_quyen = 'Nhân viên'";
+                "from nhom_quyen nq\n";
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement prs = c.prepareStatement(query);
         ResultSet rs = prs.executeQuery()) {
@@ -126,5 +125,21 @@ public class NhomQuyenDAO implements ChucNangDAO<NhomQuyen> {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static int getMaNhomQuyen(String tenNhomQuyen) {
+        int maNhomQuyen = -1;
+        String query = "select nq.ma_nhom_quyen from nhom_quyen nq where ten_nhom_quyen = ?";
+        try (Connection connection = DatabasesConfig.getConnection();
+        PreparedStatement prs = connection.prepareStatement(query);) {
+            prs.setString(1, tenNhomQuyen);
+            ResultSet resultSet = prs.executeQuery();
+            if (resultSet.next()) {
+              maNhomQuyen = resultSet.getInt("ma_nhom_quyen");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maNhomQuyen;
     }
 }

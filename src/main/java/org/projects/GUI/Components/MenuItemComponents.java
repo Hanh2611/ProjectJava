@@ -18,7 +18,7 @@ import javax.swing.border.Border;
 
 import org.projects.GUI.MainGUI;
 
-public class MenuItemComponents extends JPanel{
+public class MenuItemComponents extends JPanel {
     private String iconn;
     private String name;
     private JLabel namePanel;
