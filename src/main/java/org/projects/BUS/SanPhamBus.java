@@ -10,15 +10,9 @@ import java.util.List;
 
 public class SanPhamBus {
 
-    private SanPham sanPham;
     private final SanPhamDAO sanPhamDao;
 
     public SanPhamBus() {
-        this.sanPhamDao = new SanPhamDAO();
-    }
-
-    public SanPhamBus(SanPham sanPham) {
-        this.sanPham = sanPham;
         this.sanPhamDao = new SanPhamDAO();
     }
 
@@ -68,7 +62,6 @@ public class SanPhamBus {
 
     public boolean addSanPham(SanPhamEntity sanPhamEntity) {
         if(sanPhamDao.them(sanPhamEntity) > 0) {
-            sanPham.reloadDAO();
             return true;
         } else {
             return false;
@@ -77,7 +70,6 @@ public class SanPhamBus {
 
     public boolean updateSanPham(SanPhamEntity sanPhamEntity) {
         if(sanPhamDao.sua(sanPhamEntity) > 0) {
-            sanPham.reloadDAO();
             return true;
         } else {
             return false;
@@ -86,7 +78,6 @@ public class SanPhamBus {
 
     public boolean deleteSanPham(SanPhamEntity sanPhamEntity) {
         if(sanPhamDao.xoa(sanPhamEntity) > 0) {
-            sanPham.reloadDAO();
             return true;
         } else {
             return false;

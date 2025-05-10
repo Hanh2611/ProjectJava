@@ -150,4 +150,22 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
         return list;
     }
 
+    public boolean isExistedInPhieuNhap(int spId){
+            String sql = """
+                    SELECT 1
+                    FROM chi_tiet_phieu_nhap ctpn
+                    WHERE ctpn.ma_san_pham = ?
+                    LIMIT 1
+                    """;
+            try (Connection c = DatabasesConfig.getConnection();
+                PreparedStatement ps = c.prepareStatement(sql)) {
+                ps.setInt(1, spId);
+                ResultSet rs = ps.executeQuery();
+                return rs.next();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return false;
+    }
+
 }

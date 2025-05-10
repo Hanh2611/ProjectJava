@@ -13,6 +13,7 @@ import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Panel.HeaderTrangChu;
 import org.projects.GUI.utils.Helper;
 import org.projects.entity.DanhMucSanPhamEntity;
+import org.projects.entity.Enum.QuyCach;
 import org.projects.entity.SanPhamEntity;
 
 public class TrangChuDemo extends JFrame {
@@ -173,17 +174,27 @@ public class TrangChuDemo extends JFrame {
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             nameLabel.setPreferredSize(new Dimension(150, 60));
 
-            JLabel priceLabel = new JLabel(Helper.formatPrice(sp.getGiaBan()));
-            priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            priceLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
-            priceLabel.setForeground(Color.RED);
 
             productPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             productPanel.add(imageLabel);
             productPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             productPanel.add(nameLabel);
             productPanel.add(Box.createVerticalGlue());
-            productPanel.add(priceLabel);
+            if(sp.isHetHang()) {
+                JLabel outOfStockLabel = new JLabel("Hết hàng");
+                outOfStockLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                outOfStockLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
+                outOfStockLabel.setForeground(Color.RED);
+                productPanel.add(outOfStockLabel);
+            } else {
+                JLabel priceLabel = new JLabel((sp.getQuyCach().equals(QuyCach.KG) || sp.getQuyCach().equals(QuyCach.G))?
+                        Helper.formatPrice(sp.getGiaBan()) + "/" + sp.getQuyCach().getValue():
+                        Helper.formatPrice(sp.getGiaBan()) + "/" + sp.getQuyCach().getValue() + "/" + sp.getDonVi());
+                priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                priceLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
+                priceLabel.setForeground(Color.RED);
+                productPanel.add(priceLabel);
+            }
             productPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
             productsGridPanel.add(productPanel);

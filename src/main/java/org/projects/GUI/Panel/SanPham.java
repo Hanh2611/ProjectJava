@@ -21,9 +21,10 @@ public class SanPham extends JPanel{
     private headerBar header;
     private DefaultTableModel model;
     private JTable table;
+    private List<SanPhamEntity> spList;
     private final SanPhamAction sanPhamAction = new SanPhamAction(this);
 
-    private final SanPhamBus sanPhamBus = new SanPhamBus(this);
+    private final SanPhamBus sanPhamBus = new SanPhamBus();
 
     public SanPham() {
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -43,13 +44,14 @@ public class SanPham extends JPanel{
                 {"icon/trash.svg", "Xóa", "delete"},
                 {"icon/details.svg", "Chi tiết", "detail"}
         };
-        String[] listCbBox = new String[]{"---", "Mã", "Tên", "Phân loại"};
+        String[] listCbBox = new String[]{"Tên", "Mã", "Phân loại"};
         this.table = new JTable();
+        table.getTableHeader().setReorderingAllowed(false);
         header = new headerBar(listItemHeader,  Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("SanPham") - 1), listCbBox);
 //        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),listCbBox);
 
-        String[] columns = {"Mã", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Trạng thái"};
-        int[] columnWidthPercentage = {2, 8, 35, 20, 15, 20};
+        String[] columns = {"Mã", "Hình ảnh", "Tên", "Phân loại", "Giá bán", "Tinh trạng hàng", "Trạng thái"};
+        int[] columnWidthPercentage = {2, 8, 35, 20, 15, 10, 10};
 
         model = new DefaultTableModel() {
             @Override
@@ -72,9 +74,11 @@ public class SanPham extends JPanel{
             table.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        sorter.setComparator(0,Comparator.comparingInt(o -> Integer.parseInt(o.toString())));
         sorter.setComparator(2, Comparator.comparing(String::toString));
-        sorter.setComparator(4, Comparator.comparingDouble(o -> Double.parseDouble(o.toString())));
+        sorter.setComparator(4, Comparator.comparingDouble(o -> Double.parseDouble(o.toString().split("/")[0].replaceAll("đ", ""))));
         table.setRowSorter(sorter);
+        table.setDragEnabled(false);
         table.setRowHeight(60);
         table.setDefaultEditor(Object.class, null);
         table.setPreferredScrollableViewportSize(new Dimension(900, 650));
@@ -115,23 +119,17 @@ public class SanPham extends JPanel{
                     (sanPhamEntity.getQuyCach().equals(QuyCach.KG) || sanPhamEntity.getQuyCach().equals(QuyCach.G))?
                             Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getQuyCach().getValue():
                             Helper.formatPrice(sanPhamEntity.getGiaBan()) + "/" + sanPhamEntity.getQuyCach().getValue() + "/" + sanPhamEntity.getDonVi(),
-                    sanPhamEntity.isTrangThai() ? "Đang kinh doanh" : "Ngừng kinh doanh",
+                    sanPhamEntity.isHetHang() ? "Hết hàng" : "Còn hàng",
+                    sanPhamEntity.isTrangThai() ? "Đang bán" : "Ngừng bán"
                 });
             }
         }
     }
 
     public void reloadDAO() {
-        List<SanPhamEntity> listSanPham = sanPhamBus.getAllSanPham();
-        loadList(listSanPham);
+        this.spList = sanPhamBus.getAllSanPham();
+        this.loadList(spList);
     }
-
-    private SanPhamEntity getSanPhamEntity() {
-        int row = table.getSelectedRow();
-        if (row == -1) return null;
-        int id = (int) table.getValueAt(row, 0);
-        return sanPhamBus.getSanPhamById(id);
-    };
 
     public SanPhamEntity getSelectedRow() {
         int row = table.getSelectedRow();

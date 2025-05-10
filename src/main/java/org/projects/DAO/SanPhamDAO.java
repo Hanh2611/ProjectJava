@@ -34,6 +34,7 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
                                                      rs.getDouble("so_luong_ton"),
                                                      QuyCach.fromValue(rs.getString("quy_cach")),
                                                      rs.getString("img"),
+                                                     rs.getBoolean("het_hang"),
                                                      rs.getBoolean("trang_thai"));
                 list.add(sp);
             }
@@ -64,6 +65,7 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
                                                      rs.getDouble("so_luong_ton"),
                                                      QuyCach.fromValue(rs.getString("quy_cach")),
                                                      rs.getString("img"),
+                                                     rs.getBoolean("het_hang"),
                                                      rs.getBoolean("trang_thai"));
                 list.add(sp);
             }
@@ -92,6 +94,7 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
                                          rs.getDouble("so_luong_ton"),
                                          QuyCach.fromValue(rs.getString("quy_cach")),
                                          rs.getString("img"),
+                                         rs.getBoolean("het_hang"),
                                          rs.getBoolean("trang_thai"));
             }
         } catch (Exception e) {
@@ -129,6 +132,7 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
                                                      rs.getDouble("so_luong_ton"),
                                                      QuyCach.fromValue(rs.getString("quy_cach")),
                                                      rs.getString("img"),
+                                                     rs.getBoolean("het_hang"),
                                                      rs.getBoolean("trang_thai"));
                 list.add(sp);
             }
@@ -165,7 +169,7 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
     public int sua(SanPhamEntity sanPhamEntity) {
         String query = """
             UPDATE san_pham
-            SET ten_san_pham = ?, phan_loai = ?, don_vi = ?, gia_ban = ?, so_luong_ton = ?, quy_cach = ?, img = ?, trang_thai = ?
+            SET ten_san_pham = ?, phan_loai = ?, don_vi = ?, gia_ban = ?, so_luong_ton = ?, quy_cach = ?, img = ?, het_hang = ?, trang_thai = ?
             WHERE ma_san_pham = ?
         """;
         try (Connection c = DatabasesConfig.getConnection();
@@ -177,8 +181,9 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
             ps.setDouble(5, sanPhamEntity.getSoLuongTon());
             ps.setString(6, sanPhamEntity.getQuyCach().toString());
             ps.setString(7, sanPhamEntity.getHinhAnh());
-            ps.setBoolean(8, sanPhamEntity.isTrangThai());
-            ps.setInt(9, sanPhamEntity.getId());
+            ps.setBoolean(8, sanPhamEntity.isHetHang());
+            ps.setBoolean(9, sanPhamEntity.isTrangThai());
+            ps.setInt(10, sanPhamEntity.getId());
             return ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,6 +234,7 @@ public class SanPhamDAO implements ChucNangDAO<SanPhamEntity> {
                                                      rs.getDouble("so_luong_ton"),
                                                      QuyCach.fromValue(rs.getString("quy_cach")),
                                                      rs.getString("img"),
+                                                     rs.getBoolean("het_hang"),
                                                      rs.getBoolean("trang_thai"));
                 list.add(sp);
             }

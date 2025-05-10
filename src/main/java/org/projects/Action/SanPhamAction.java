@@ -1,6 +1,8 @@
 package org.projects.Action;
 
 import org.projects.BUS.DanhMucSanPhamBus;
+import org.projects.BUS.HoaDonBUS;
+import org.projects.BUS.PhieuNhapBUS;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.SanPham.AddSanPhamDialog;
@@ -14,6 +16,7 @@ import org.projects.entity.Enum.QuyCach;
 import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -22,6 +25,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class SanPhamAction implements ActionListener, MouseListener, ItemListener, KeyListener {
+    private Timer debounceTimer;
+    private final int DEBOUNCE_DELAY = 300;
 
     private final SanPham sanPham;
     private AddSanPhamDialog addSanPhamDialog;
@@ -33,28 +38,28 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
     public SanPhamAction(SanPham sanPham) {
         this.sanPham = sanPham;
-        this.sanPhamBus = new SanPhamBus(sanPham);
+        this.sanPhamBus = new SanPhamBus();
         this.danhMucSanPhamBus = new DanhMucSanPhamBus();
     }
 
     public SanPhamAction(SanPham sanPham, AddSanPhamDialog addSanPhamDialog) {
         this.sanPham = sanPham;
         this.addSanPhamDialog = addSanPhamDialog;
-        this.sanPhamBus = new SanPhamBus(sanPham);
+        this.sanPhamBus = new SanPhamBus();
         this.danhMucSanPhamBus = new DanhMucSanPhamBus();
     }
 
     public SanPhamAction(SanPham sanPham, UpdateSanPhamDialog updateSanPhamDialog) {
         this.sanPham = sanPham;
         this.updateSanPhamDialog = updateSanPhamDialog;
-        this.sanPhamBus = new SanPhamBus(sanPham);
+        this.sanPhamBus = new SanPhamBus();
         this.danhMucSanPhamBus = new DanhMucSanPhamBus();
     }
 
     public SanPhamAction(SanPham sanPham, DetailSanPhamDialog detailSanPhamDialog) {
         this.sanPham = sanPham;
         this.detailSanPhamDialog = detailSanPhamDialog;
-        this.sanPhamBus = new SanPhamBus(sanPham);
+        this.sanPhamBus = new SanPhamBus();
         this.danhMucSanPhamBus = new DanhMucSanPhamBus();
     }
 
@@ -74,17 +79,27 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
         if(sanPham != null) {
             if((addSanPhamDialog != null || updateSanPhamDialog != null) && c instanceof JButton){
                 if("Thêm".equals(namebtn)) {
+                    Border redBorder = BorderFactory.createLineBorder(Color.RED, 2);
                     if(addSanPhamDialog.getSelectedFile() == null) {
+                        addSanPhamDialog.getUploadBtn().setBorder(redBorder);
                         JOptionPane.showMessageDialog(addSanPhamDialog, "Vui lòng chọn hình ảnh", "thông báo", JOptionPane.ERROR_MESSAGE);
-                    } else if(addSanPhamDialog.getTenSanPhamField().getTextField().getText().trim().equals("")){
+                    } else if(addSanPhamDialog.getTenSanPhamField().getTextField().getText().trim().isEmpty()){
+                        addSanPhamDialog.getTenSanPhamField().getTextField().setBorder(redBorder);
+                        addSanPhamDialog.getTenSanPhamField().getTextField().requestFocus();
                         JOptionPane.showMessageDialog(addSanPhamDialog, "Vui lòng nhập tên sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
-                    } else if(addSanPhamDialog.getGiaBanField().getTextField().getText().trim().equals("")){
+                    } else if(addSanPhamDialog.getGiaBanField().getTextField().getText().trim().isEmpty()){
+                        addSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
+                        addSanPhamDialog.getGiaBanField().getTextField().requestFocus();
                         JOptionPane.showMessageDialog(addSanPhamDialog, "Vui lòng nhập giá sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
-                    } else if(addSanPhamDialog.getDonViField().getTextField().getText().trim().equals("")){
+                    } else if(addSanPhamDialog.getDonViField().getTextField().getText().trim().isEmpty()){
+                        addSanPhamDialog.getDonViField().getTextField().setBorder(redBorder);
+                        addSanPhamDialog.getDonViField().getTextField().requestFocus();
                         JOptionPane.showMessageDialog(addSanPhamDialog, "Vui lòng nhập đơn vị sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
                     } else if(addSanPhamDialog.getQuyCachField().getSelectedItem() == null) {
+                        addSanPhamDialog.getQuyCachField().setBorder(redBorder);
                         JOptionPane.showMessageDialog(addSanPhamDialog, "Vui lòng chọn quy cách sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
                     } else if(addSanPhamDialog.getPhanLoaiField().getSelectedItem() == null) {
+                        addSanPhamDialog.getPhanLoaiField().setBorder(redBorder);
                         JOptionPane.showMessageDialog(addSanPhamDialog, "Vui lòng chọn phân loại sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
                     } else {
                         String ten = addSanPhamDialog.getTenSanPhamField().getTextField().getText().trim();
@@ -97,6 +112,8 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                         File destinationFile = new File(Helper.imageBasePath, newFileName);
 
                         if (!isDouble(gia)) {
+                            addSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
+                            addSanPhamDialog.getGiaBanField().getTextField().requestFocus();
                             JOptionPane.showMessageDialog(addSanPhamDialog, "Giá không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
@@ -120,43 +137,64 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             JOptionPane.showMessageDialog(addSanPhamDialog, "Thêm sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
                         }
                     }
+                    sanPham.reloadDAO();
                     return;
                 }
                 if ("Lưu".equals(namebtn)) {
                     int choice = JOptionPane.showConfirmDialog(updateSanPhamDialog, "Bạn có muốn lưu thay đổi không?", "Thông báo", JOptionPane.YES_NO_OPTION);
                     if (choice == JOptionPane.YES_OPTION) {
-                        if(updateSanPhamDialog.getSelectedFile() == null) {
+                        Border redBorder = BorderFactory.createLineBorder(Color.RED, 2);
+                        if (updateSanPhamDialog.getSelectedFile() == null) {
+                            updateSanPhamDialog.getUploadBtn().setBorder(redBorder);
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng chọn hình ảnh", "thông báo", JOptionPane.ERROR_MESSAGE);
-                        } else if(updateSanPhamDialog.getTenSanPhamField().getTextField().getText().trim().equals("")){
+                        } else if (updateSanPhamDialog.getTenSanPhamField().getTextField().getText().trim().isEmpty()) {
+                            updateSanPhamDialog.getTenSanPhamField().getTextField().setBorder(redBorder);
+                            updateSanPhamDialog.getTenSanPhamField().getTextField().requestFocus();
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng nhập tên sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
-                        } else if(updateSanPhamDialog.getGiaBanField().getTextField().getText().trim().equals("")){
+                        } else if (updateSanPhamDialog.getGiaBanField().getTextField().getText().trim().isEmpty()) {
+                            updateSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
+                            updateSanPhamDialog.getGiaBanField().getTextField().requestFocus();
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng nhập giá sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
-                        } else if(updateSanPhamDialog.getDonViField().getTextField().getText().trim().equals("")){
+                        } else if (updateSanPhamDialog.getDonViField().getTextField().getText().trim().isEmpty()) {
+                            updateSanPhamDialog.getDonViField().getTextField().setBorder(redBorder);
+                            updateSanPhamDialog.getDonViField().getTextField().requestFocus();
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng nhập đơn vị sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
-                        } else if(updateSanPhamDialog.getQuyCachField().getSelectedItem() == null) {
+                        } else if (updateSanPhamDialog.getQuyCachField().getSelectedItem() == null) {
+                            updateSanPhamDialog.getQuyCachField().setBorder(redBorder);
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng chọn quy cách sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
-                        } else if(updateSanPhamDialog.getPhanLoaiField().getSelectedItem() == null) {
+                        }
+                        if (updateSanPhamDialog.getSoLuongTonField().getTextField().getText().trim().isEmpty()) {
+                            updateSanPhamDialog.getSoLuongTonField().getTextField().setBorder(redBorder);
+                            updateSanPhamDialog.getSoLuongTonField().getTextField().requestFocus();
+                            JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng nhập số lượng tồn", "thông báo", JOptionPane.ERROR_MESSAGE);
+                        } else if (updateSanPhamDialog.getPhanLoaiField().getSelectedItem() == null) {
+                            updateSanPhamDialog.getPhanLoaiField().setBorder(redBorder);
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng chọn phân loại sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
                         } else {
                             int id = updateSanPhamDialog.getSanPhamEntity().getId();
                             String ten = updateSanPhamDialog.getTenSanPhamField().getTextField().getText().trim();
-                            String phanLoai = updateSanPhamDialog.getPhanLoaiField().getSelectedItem().toString();
+                            String phanLoai = updateSanPhamDialog.getPhanLoaiField().getSelectedItem().toString().trim();
                             String donVi = updateSanPhamDialog.getDonViField().getTextField().getText().trim();
                             String gia = updateSanPhamDialog.getGiaBanField().getTextField().getText().trim();
                             String soLuongTon = updateSanPhamDialog.getSoLuongTonField().getTextField().getText().trim();
                             String quyCach = updateSanPhamDialog.getQuyCachField().getSelectedItem().toString();
                             boolean trangThai = updateSanPhamDialog.getIsAvailable().isSelected();
+                            boolean hetHang = updateSanPhamDialog.getIsOutOfStock().isSelected();
                             File hinhAnh = updateSanPhamDialog.getSelectedFile();
                             String oldFileName = HashName.convertToSlug(updateSanPhamDialog.getSanPhamEntity().getTenSanPham()) + HashName.getFileExtension(updateSanPhamDialog.getSanPhamEntity().getHinhAnh());
                             String newFileName = HashName.convertToSlug(ten) + HashName.getFileExtension(hinhAnh.getName());
                             File destinationFile = new File(Helper.getProductImagePath(newFileName));
 
-                            if (!isDouble(soLuongTon)) {
-                                JOptionPane.showMessageDialog(updateSanPhamDialog, "Số lượng tồn không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                            if (!isDouble(soLuongTon) || Double.parseDouble(soLuongTon) < 0) {
+                                updateSanPhamDialog.getSoLuongTonField().getTextField().setBorder(redBorder);
+                                updateSanPhamDialog.getSoLuongTonField().getTextField().requestFocus();
+                                JOptionPane.showMessageDialog(updateSanPhamDialog, "Số lượng tồn không được âm", "Thông báo", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
                             if (!isDouble(gia)) {
+                                updateSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
+                                updateSanPhamDialog.getGiaBanField().getTextField().requestFocus();
                                 JOptionPane.showMessageDialog(updateSanPhamDialog, "Giá không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
@@ -174,25 +212,26 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
                             int idDanhMuc = danhMucSanPhamBus.getIdDanhMuc(phanLoai);
                             DanhMucSanPhamEntity danhMucSanPhamEntity = new DanhMucSanPhamEntity(idDanhMuc, phanLoai);
-                            this.sanPhamEntity = new SanPhamEntity(id, ten, danhMucSanPhamEntity, donVi, Double.parseDouble(gia), Double.parseDouble(soLuongTon), QuyCach.fromValue(quyCach), newFileName, trangThai);
+                            this.sanPhamEntity = new SanPhamEntity(id, ten, danhMucSanPhamEntity, donVi, Double.parseDouble(gia), Double.parseDouble(soLuongTon), QuyCach.fromValue(quyCach), newFileName, hetHang, trangThai);
+                            this.sanPhamEntity.setHetHang(Double.parseDouble(soLuongTon) == 0);
+                            this.sanPhamEntity.setHetHang(hetHang);
 
                             if (sanPhamBus.updateSanPham(sanPhamEntity)) {
                                 JOptionPane.showMessageDialog(updateSanPhamDialog, "Cập nhật sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                                updateSanPhamDialog.dispose();
                             } else {
                                 JOptionPane.showMessageDialog(updateSanPhamDialog, "Cập nhật sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
                             }
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(updateSanPhamDialog, "Đã hoàn tác việc cập nhật", "Thông báo", JOptionPane.ERROR_MESSAGE);
-                        updateSanPhamDialog.dispose();
                     }
+                    updateSanPhamDialog.dispose();
+                    sanPham.reloadDAO();
                     return;
                 }
             }
         }
         JButton refresh = sanPham.getHeader().getSearch().getSearchButton();
         if(c instanceof JButton && c.equals(refresh)) {
+            sanPham.loadList(sanPhamBus.getAllSanPham());
             sanPham.getHeader().getSearch().getSearchField().setText("");
         }
     }
@@ -229,20 +268,32 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             return;
                         }
                         case "delete" -> {
-                            int choice = JOptionPane.showConfirmDialog(updateSanPhamDialog, "Bạn có chắc muốn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
-                            //TODO: Kiểm tra nếu sản phẩm đã có trong 1 hóa đơn bất kì thì không thể xóa
+                            int choice = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
                             if(choice == JOptionPane.YES_OPTION){
-                                if(sanPhamBus.deleteSanPham(sanPhamEntity)){
-                                    try {
-                                        Files.delete(new File(Helper.getProductImagePath(sanPhamEntity.getHinhAnh())).toPath());
-                                    } catch (IOException ex) {
-                                        ex.printStackTrace();
+                                if(PhieuNhapBUS.isExistedInPhieuNhap(sanPhamEntity.getId()) || HoaDonBUS.isExistedInHoaDon(sanPhamEntity.getId())){
+                                    int confirm = JOptionPane.showConfirmDialog(null, "Bạn có muốn khoá sản phẩm này?", "Không thể xóa sản phẩm này vì đã có hóa đơn hoặc phiếu nhập liên quan", JOptionPane.YES_NO_OPTION);
+                                    if(confirm == JOptionPane.YES_OPTION){
+                                        sanPhamEntity.setTrangThai(false);
+                                        if(sanPhamBus.updateSanPham(sanPhamEntity)){
+                                            JOptionPane.showMessageDialog(null, "Khóa sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Khóa sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                        }
                                     }
-                                    JOptionPane.showMessageDialog(null, "Xóa sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                                 } else {
-                                    JOptionPane.showMessageDialog(null, "Xóa sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                    if(sanPhamBus.deleteSanPham(sanPhamEntity)){
+//                                    try {
+//                                        Files.delete(new File(Helper.getProductImagePath(sanPhamEntity.getHinhAnh())).toPath());
+//                                    } catch (IOException ex) {
+//                                        ex.printStackTrace();
+//                                    }
+                                        JOptionPane.showMessageDialog(null, "Xóa sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Xóa sản phẩm thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                    }
                                 }
                             }
+                            sanPham.reloadDAO();
                             return;
                         }
                     }
@@ -281,10 +332,13 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
     @Override
     public void keyTyped(KeyEvent e) {
         if (e.getSource() instanceof JTextField textField) {
-            String text = textField.getText();
-            System.out.println(text);
-            String selectedItem = (String) sanPham.getHeader().getSearch().getSearchComboBox().getSelectedItem();
-            sanPham.loadList(sanPhamBus.searchSanPham(selectedItem, text));
+            debounceTimer = new Timer(DEBOUNCE_DELAY, event -> {
+                String keyword = sanPham.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+                String textfield = textField.getText();
+                sanPham.loadList(sanPhamBus.searchSanPham(keyword, textfield));
+            });
+            debounceTimer.setRepeats(false);
+            debounceTimer.start();
         }
     }
 
