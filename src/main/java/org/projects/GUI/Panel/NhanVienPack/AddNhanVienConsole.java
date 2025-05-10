@@ -4,9 +4,14 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.NhanVienAction;
+import org.projects.GUI.utils.InputValid;
+
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
@@ -24,7 +29,7 @@ public class AddNhanVienConsole extends JPanel {
     private NhanVienAction action;
     private boolean isResettingComboBox = false;
     private static String avatar;
-
+    private ArrayList<JLabel> errorLabels;
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
     public ArrayList<JTextField> listAdd;
@@ -69,21 +74,59 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
         String[] list = {"Nhập mã nhân viên" , "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại" , "Nhập lương nhân viên"};
-        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí", "Giám đốc"};
+        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Nhân viên kho"};
         listAdd = new ArrayList<>();
+        errorLabels = new ArrayList<>();
         comboBox = new JComboBox<>(items);
-        for (String s : list) {
-            JTextField jTextField = new JTextField(s);
-            addPlaceholderStyle(jTextField, s);
-            jTextField.setName(s);
+        for (int i = 0 ; i < list.length ; i++) {
+            JTextField jTextField = new JTextField(list[i]);
+            addPlaceholderStyle(jTextField, list[i]);
+            jTextField.setName(list[i]);
             jTextField.setBackground(new Color(240, 240, 240));
             jTextField.setForeground(new Color(192, 192, 192));
             jTextField.setFont(new Font("JETBRAINS MONO", Font.ITALIC, 14));
             jTextField.setMaximumSize(new Dimension(500, 40));
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+
+            JPanel errorPanel = new JPanel();
+            errorPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+            JLabel errorLabel = new JLabel("");
+            errorLabel.setForeground(Color.RED);
+            errorLabel.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            errorLabels.add(errorLabel);
+            errorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            errorPanel.setBackground(new Color(240, 240, 240));
+            final int index = i;
+            jTextField.addFocusListener(new NhanVienAction(jTextField , index , listAdd , errorLabels));
+            errorPanel.add(errorLabel);
             mainInfo.add(jTextField);
+            mainInfo.add(errorPanel);
             mainInfo.add(Box.createVerticalStrut(5));
             listAdd.add(jTextField);
+            jTextField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    if (jTextField.getName().equals("Nhập lương nhân viên")) {
+                        InputValid.validateLuongInput(jTextField, index , errorLabels , listAdd);
+                    } else {
+                        InputValid.clearError(index, errorLabels , listAdd , false);
+                    }
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    if (jTextField.getName().equals("Nhập lương nhân viên")) {
+                        InputValid.validateLuongInput(jTextField, index , errorLabels , listAdd);
+                    } else {
+                        InputValid.clearError(index, errorLabels , listAdd , false);
+                    }
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    if (jTextField.getName().equals("Nhập lương nhân viên")) {
+                        InputValid.validateLuongInput(jTextField, index , errorLabels , listAdd);
+                    } else {
+                        InputValid.clearError(index, errorLabels , listAdd , false);
+                    }
+                }
+            });
         }
 
         comboBox.setRenderer(new DefaultListCellRenderer() {
@@ -306,6 +349,24 @@ public class AddNhanVienConsole extends JPanel {
 
     public JButton getResetButton() {
         return reset;
+    }
+
+    public void showError(int index, String message) {
+        if (index >= 0 && index < errorLabels.size()) {
+            errorLabels.get(index).setText(message);
+            errorLabels.get(index).setVisible(true);
+            errorLabels.get(index).revalidate();
+            errorLabels.get(index).repaint();
+        }
+    }
+
+    private void clearError(int index) {
+        if (index >= 0 && index < errorLabels.size()) {
+            errorLabels.get(index).setText("");
+            errorLabels.get(index).setVisible(false);
+            errorLabels.get(index).revalidate();
+            errorLabels.get(index).repaint();
+        }
     }
 
     public void resetForm() {

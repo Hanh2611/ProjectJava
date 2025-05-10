@@ -33,7 +33,7 @@ public class HeaderInfoUser extends JPanel {
     public String getTenNguoiDung(int maNguoiDung) {
         String tenNguoiDung = null;
         String query = "SELECT ten_nguoi_dung FROM nguoi_dung WHERE ma_nguoi_dung = ?";
-
+        System.out.println(maNguoiDung);
         try (Connection conn = DatabasesConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(query))   {
 
@@ -42,6 +42,7 @@ public class HeaderInfoUser extends JPanel {
 
             if (rs.next()) {
                 tenNguoiDung = rs.getString("ten_nguoi_dung");
+                System.out.println(tenNguoiDung);
             }
 
         } catch (SQLException e) {

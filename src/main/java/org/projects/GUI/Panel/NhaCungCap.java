@@ -60,7 +60,7 @@ public class NhaCungCap extends JPanel{
         };
         nameTableModel.setColumnIdentifiers(new String[]{"Mã nhà cung cấp","tên nhà cung cấp","số điện thoại","email","địa chỉ"});
         nccTabel = new JTable();
-        nccTabel.setSelectionBackground(new Color(184, 207, 255));
+        nccTabel.setSelectionBackground(new Color(204, 229, 255));
         nccTabel.setSelectionForeground(Color.BLACK);
         nccTabel.setRowHeight(40);
         nccTabel.setFont(new Font("Jetbrains Mono", Font.PLAIN, 12));
@@ -76,13 +76,13 @@ public class NhaCungCap extends JPanel{
 
         JTableHeader titleTableheader = nccTabel.getTableHeader();
         titleTableheader.setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
-        titleTableheader.setBackground(new Color(100, 149, 237));
+        titleTableheader.setBackground(new Color(0, 102, 204));
         titleTableheader.setForeground(Color.WHITE);
         titleTableheader.setPreferredSize(new Dimension(titleTableheader.getWidth(), 40));
         titleTableheader.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
 
         scrollData = new JScrollPane(nccTabel);
-        scrollData.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        //scrollData.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 

@@ -3,6 +3,7 @@ package org.projects.entity;
 public class KhachHangEntity {
     public String ten , diaChi , sdt , avatar;
     public int ma;
+    public boolean is_delete;
     public KhachHangEntity(int ma,  String ten , String sdt, String diaChi){
         this.ma = ma;
         this.ten = ten;
@@ -16,6 +17,7 @@ public class KhachHangEntity {
         this.sdt = sdt;
         this.diaChi = diaChi;
         this.avatar = avatar;
+        this.is_delete = false;
     }
 
     public String getTen() {

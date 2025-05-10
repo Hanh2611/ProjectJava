@@ -27,7 +27,7 @@ public class FixNhanVienConsole extends JPanel {
     public ArrayList<JTextField> listAdd;
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
-
+    public ArrayList<JLabel> errorLabels;
     private String ma , ten , email , std , chucvu;
     private int luong ;
     private boolean gioitinh;
@@ -90,13 +90,13 @@ public class FixNhanVienConsole extends JPanel {
         listAdd = new ArrayList<>();
         comboBox = new JComboBox<>(items);
         int index = 0;
-        for (String s : list) {
+        for (int i = 0 ; i < list.length ; i++) {
             JPanel p = new JPanel();
             p.setLayout(new FlowLayout(FlowLayout.LEFT , 5 , 5));
             p.setBackground(new Color(240, 240, 240));
             JTextField jTextField2 = new JTextField(str[index]);
             jTextField2.setEditable(false);
-            JTextField jTextField = new JTextField(s);
+            JTextField jTextField = new JTextField(list[i]);
             if(index == 0){
                 jTextField.setEditable(false);
             }
@@ -108,6 +108,17 @@ public class FixNhanVienConsole extends JPanel {
             jTextField2.setPreferredSize(new Dimension(100, 40));
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             jTextField2.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+            JPanel errorPanel = new JPanel();
+            errorPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+            JLabel errorLabel = new JLabel("");
+            errorLabel.setForeground(Color.RED);
+            errorLabel.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            errorLabels.add(errorLabel);
+            errorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            errorPanel.setBackground(new Color(240, 240, 240));
+            final int value = i;
+            jTextField.addFocusListener(new NhanVienAction(jTextField , value , listAdd , errorLabels));
             p.add(jTextField2);
             p.add(jTextField);
             mainInfo.add(p);

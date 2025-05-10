@@ -41,7 +41,7 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
 
     @Override
     public int them(NhanVienEntity add) {
-        String query = "insert into nhan_vien(ma_nhan_vien , ten_nhan_vien , email, so_dien_thoai , chuc_vu, luong , gioi_tinh , avatar) values(?,?,?,?,?,?,?,?);";
+        String query = "insert into nhan_vien(ma_nhan_vien , ten_nhan_vien , email, so_dien_thoai , chuc_vu, luong , gioi_tinh , avatar , is_delete) values(?,?,?,?,?,?,?,?,?);";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);)
         {
@@ -53,6 +53,7 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
            ps.setInt(6, add.getLuong());
            ps.setBoolean(7,add.getGioitinh());
            ps.setString(8, add.getAvatar());
+           ps.setBoolean(9 , false);
            return ps.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -82,20 +83,12 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
 
     @Override
     public int xoa(NhanVienEntity delete) {
-        String query = "delete from nhan_vien where ma_nhan_vien= ?";
-        try(Connection c = DatabasesConfig.getConnection();
-            PreparedStatement ps = c.prepareStatement(query);) {
-            ps.setInt(1,delete.getMaNhanVien());
-            return ps.executeUpdate();
-        }catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
+        return 0;
     }
 
     @Override
     public NhanVienEntity search(int id) {
-        String query = "select * from nhan_vien where ma_nhan_vien= ?";
+        String query = "select * from nhan_vien where ma_nhan_vien= ? and is_delete = 0";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);) {
             ps.setInt(1,id);
@@ -125,12 +118,14 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
             return false;
         }
     }
-    public static boolean hidden_delete(NhanVienEntity delete) {
+
+    public boolean hidden_delete(NhanVienEntity delete) {
         String queryNhanVien = "UPDATE nhan_vien SET is_delete = 1 WHERE ma_nhan_vien = ?";
         String queryNguoiDung = "UPDATE nguoi_dung SET is_delete = 1 WHERE ma_nguoi_dung = ?";
-        String queryTaiKhoan = "UPDATE tai_khoan SET is_delete = 1, trang_thai = 'da_khoa' WHERE ma_nguoi_dung = ?";
+        String queryTaiKhoan = "UPDATE tai_khoan SET is_delete = 1 WHERE ma_nguoi_dung = ?";
+        String queryXoaCung = "DELETE FROM nhan_vien WHERE ma_nhan_vien = ?";
         try (Connection c = DatabasesConfig.getConnection()) {
-            c.setAutoCommit(false); // Bắt đầu transaction
+            c.setAutoCommit(false);
 
             try {
                 // Lấy ma_nguoi_dung từ nhan_vien
@@ -142,6 +137,24 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
                     ResultSet rs = ps.executeQuery();
                     if (rs.next()) {
                         maNguoiDung = rs.getInt("ma_nguoi_dung");
+                        if (maNguoiDung == 0) {
+                            //throw new Exception("Nhân viên chưa có tài khoản");
+                            try(Connection connection = DatabasesConfig.getConnection();
+                                PreparedStatement pre = connection.prepareStatement(queryXoaCung);) {
+                                pre.setInt(1,delete.getMaNhanVien());
+                                int res = pre.executeUpdate();
+                                if(res > 0){
+                                    c.commit();
+                                    return true;
+                                }else{
+                                    c.rollback();
+                                    return false;
+                                }
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                                return false;
+                            }
+                        }
                     } else {
                         throw new Exception("Không tìm thấy nhân viên");
                     }
@@ -156,20 +169,25 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
                     psNguoiDung.setInt(1, maNguoiDung);
                     psTaiKhoan.setInt(1, maNguoiDung);
 
-                    psNhanVien.executeUpdate();
-                    psNguoiDung.executeUpdate();
-                    psTaiKhoan.executeUpdate();
+                    int resultNhanVien = psNhanVien.executeUpdate();
+                    int resultNguoiDung = psNguoiDung.executeUpdate();
+                    int resultTaiKhoan = psTaiKhoan.executeUpdate();
 
-                    c.commit(); // Commit transaction
-                    return true;
+                    if (resultNhanVien > 0 && resultNguoiDung > 0 && resultTaiKhoan > 0) {
+                        c.commit();
+                        return true;
+                    } else {
+                        c.rollback();
+                        return false;
+                    }
                 }
 
             } catch (Exception e) {
-                c.rollback(); // Rollback nếu có lỗi
+                c.rollback();
                 e.printStackTrace();
                 return false;
             } finally {
-                c.setAutoCommit(true); // Reset auto commit
+                c.setAutoCommit(true);
             }
 
         } catch (Exception e) {

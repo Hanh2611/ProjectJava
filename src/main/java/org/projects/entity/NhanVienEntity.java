@@ -32,6 +32,7 @@ public class NhanVienEntity {
         this.luong = luong;
         this.gioitinh = gioitinh;
         this.avatar = avatar;
+        this.is_delete = false;
     }
     public int getMaNhanVien() {
         return maNhanVien;
@@ -71,7 +72,7 @@ public class NhanVienEntity {
     public void setIs_delete(boolean is_delete) {
         this.is_delete = is_delete;
     }
-    public boolean isIs_delete() {
+    public boolean getIs_delete() {
         return is_delete;
     }
 }
