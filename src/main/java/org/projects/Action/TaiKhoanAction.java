@@ -91,7 +91,8 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
             JOptionPane.showMessageDialog(null, "Thêm người dùng thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        NhanVienDao.updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(manguoidung,manv);
+        boolean tmp = NhanVienDao.updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(manguoidung, manv);
+        System.out.println(tmp);
         NhanVienBus.getList();
         TaiKhoanEntity tkEntity = new TaiKhoanEntity(tendangnhap, matkhau);
         tkEntity.setMaNguoiDung(manguoidung);
