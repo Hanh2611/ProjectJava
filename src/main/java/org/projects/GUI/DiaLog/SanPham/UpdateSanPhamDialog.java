@@ -2,6 +2,8 @@ package org.projects.GUI.DiaLog.SanPham;
 
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
+import org.projects.GUI.Components.NumberOnlyFilter;
+import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
 import org.projects.GUI.utils.Helper;
@@ -11,6 +13,7 @@ import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -27,14 +30,14 @@ public class UpdateSanPhamDialog extends JDialog {
     private JButton uploadBtn, lamMoiBtn, huyBtn, luuBtn;
     private JFileChooser fileChooser;
     private File selectedFile;
-    private JRadioButton isAvailable, isNotAvailable;
+    private JRadioButton isAvailable, isNotAvailable, isOutOfStock, isInStock;
 
     public UpdateSanPhamDialog(SanPham sanPham, SanPhamEntity sanPhamEntity) {
         this.sanPham = sanPham;
         this.sanPhamEntity = sanPhamEntity;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Cập nhật sản phẩm");
-        setSize(450, 700);
+        setSize(450, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
@@ -87,6 +90,9 @@ public class UpdateSanPhamDialog extends JDialog {
         donViField.getTextField().setText(sanPhamEntity.getDonVi());
         soLuongTonField.getTextField().setText(String.valueOf(sanPhamEntity.getSoLuongTon()));
 
+        ((AbstractDocument) giaBanField.getTextField().getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) soLuongTonField.getTextField().getDocument()).setDocumentFilter(new OnlyDigitFilter());
+
         content.add(tenSanPhamField);
         content.add(giaBanField);
         content.add(donViField);
@@ -121,6 +127,19 @@ public class UpdateSanPhamDialog extends JDialog {
         phanLoaiField.setSelectedItem(sanPhamEntity.getPhanLoai().getTenDanhMuc());
         phanLoaiPanel.add(phanLoaiField);
         content.add(phanLoaiPanel);
+
+        //Radio - Hết hàng
+        JPanel stockStatusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        isOutOfStock = new JRadioButton("Hết hàng");
+        isInStock = new JRadioButton("Còn hàng");
+        isOutOfStock.setSelected(sanPhamEntity.isHetHang());
+        isInStock.setSelected(!sanPhamEntity.isHetHang());
+        ButtonGroup stockButtonGroup = new ButtonGroup();
+        stockButtonGroup.add(isInStock);
+        stockButtonGroup.add(isOutOfStock);
+        stockStatusPanel.add(isInStock);
+        stockStatusPanel.add(isOutOfStock);
+        content.add(stockStatusPanel);
 
         // Radio - Trạng thái
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
@@ -308,6 +327,22 @@ public class UpdateSanPhamDialog extends JDialog {
 
     public void setSelectedFile(File selectedFile) {
         this.selectedFile = selectedFile;
+    }
+
+    public void setIsInStock(JRadioButton isInStock) {
+        this.isInStock = isInStock;
+    }
+
+    public JRadioButton getIsOutOfStock() {
+        return isOutOfStock;
+    }
+
+    public void setIsOutOfStock(JRadioButton isOutOfStock) {
+        this.isOutOfStock = isOutOfStock;
+    }
+
+    public JRadioButton getIsInStock() {
+        return isInStock;
     }
 
     public JRadioButton getIsAvailable() {

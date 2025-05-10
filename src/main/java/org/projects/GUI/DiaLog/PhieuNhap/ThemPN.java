@@ -2,6 +2,7 @@ package org.projects.GUI.DiaLog.PhieuNhap;
 
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.SanPhamBus;
 import org.projects.DAO.ChiTietPhieuNhapDAO;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.PhieuNhapDAO;
@@ -47,10 +48,12 @@ public class ThemPN extends JPanel {
     private PhieuNhap phieuNhap;
     private SanPhamEntity sanPhamEntity;
     private Map<String, NhaCungCapEntity> nccMap = new HashMap<>();
+    private final SanPhamBus sanPhamBus;
 
 
     public ThemPN(PhieuNhap phieuNhap) {
         setPreferredSize(new Dimension(940, 650));
+        this.sanPhamBus = new SanPhamBus();
         setOpaque(false);
         setLayout(null);
         this.phieuNhap = phieuNhap;
@@ -360,6 +363,14 @@ public class ThemPN extends JPanel {
             try {
                 int sl = Integer.parseInt(soLuong);
                 long gia = parseTien(giaNhap); // Bỏ định dạng ₫, .
+                if (sl <= 0) {
+                    JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (gia <= 0) {
+                    JOptionPane.showMessageDialog(null, "Giá bán phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 long thanhTien = sl * gia;
 
                 modelDanhSachNhap.addRow(new Object[]{
@@ -559,6 +570,12 @@ public class ThemPN extends JPanel {
                         String giaNhapStr = modelDanhSachNhap.getValueAt(i, 3).toString();
                         double gianhap = parseTien(giaNhapStr); // Xử lý giống như tổng tiền
                         double thanhtien = soluong * gianhap;
+                        SanPhamEntity sp = sanPhamBus.getSanPhamById(masp);
+                        sp.setSoLuongTon(sp.getSoLuongTon() + soluong);
+                        if(sp.getSoLuongTon() > 0){
+                            sp.setHetHang(false);
+                        }
+                        sanPhamBus.updateSanPham(sp);
                         ChiTietPhieuNhapEntity ct = new ChiTietPhieuNhapEntity(maPN, masp, soluong, gianhap, thanhtien);
                         chiTietPhieuNhapDAO.them(ct);
                     }
@@ -593,8 +610,6 @@ public class ThemPN extends JPanel {
             model.addRow(new Object[]{
                     sp.getId(),
                     sp.getTenSanPham(),
-//                    sp.getQuyCach(),
-//                    sp.getDonVi()
             });
         }
         loadNhaCungCapCombobox();

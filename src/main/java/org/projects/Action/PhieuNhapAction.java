@@ -28,6 +28,10 @@ public class PhieuNhapAction extends MouseAdapter implements ActionListener, Doc
     public void mouseClicked(MouseEvent e) {
         generalFunction func = (generalFunction) e.getSource();
         String action = func.getNameFunction();
+        if (panel.getCurrentPanel() != 0) {
+            JOptionPane.showMessageDialog(null, "Vui lòng quay lại màn hình chính để thực hiện thao tác.");
+            return;
+        }
         switch (action) {
             case "add":
                 panel.showThemPN();
@@ -47,6 +51,7 @@ public class PhieuNhapAction extends MouseAdapter implements ActionListener, Doc
                 }
                 break;
             case "delete":
+
                 JTable table1 = panel.getTable();
                 int selectedRow1 = table1.getSelectedRow();
                 if(selectedRow1 != -1) {

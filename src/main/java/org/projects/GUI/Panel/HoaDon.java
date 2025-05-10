@@ -35,6 +35,8 @@ public class HoaDon extends JPanel{
     private HoaDonBUS hoaDonBUS = new HoaDonBUS(this);
     private CapNhatHD capNhatHD;
     private ChiTietHD chiTietHD;
+    private int currentPanel = 0;
+
 
     public HoaDon() {
         String[][] listItemHeader = {
@@ -121,6 +123,9 @@ public class HoaDon extends JPanel{
     public headerBar getHeader() {
         return header;
     }
+    public int getCurrentPanel() {
+        return currentPanel;
+    }
     public void searchfunction(String keyword,String textfield) {
         keyword = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
         textfield = this.getHeader().getSearch().getSearchField().getText();
@@ -159,15 +164,21 @@ private void customizeTable() {
     public void showSuaHD(List <ChiTietHoaDonFullEntity> list){
         capNhatHD.loadDatatoTableHoaDon(list);
         cardLayout.show(contentPanel, "Capnhat HD");
+        currentPanel = 1;
+
     }
     public void showChiTietHD(List<ChiTietHoaDonFullEntity> list){
         chiTietHD.setData(list);
         cardLayout.show(contentPanel, "chiTietHD");
+        currentPanel = 1;
+
     }
     public JTable getTable() {
         return table;
     }
     public void showTrangChinh(){
         cardLayout.show(contentPanel, "trangchinh");
+        currentPanel =0;
+
     }
 }

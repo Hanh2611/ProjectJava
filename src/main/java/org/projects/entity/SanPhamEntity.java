@@ -12,11 +12,11 @@ public class SanPhamEntity {
     private double soLuongTon;
     private QuyCach quyCach;
     private String hinhAnh;
+    private boolean hetHang;
     private boolean trangThai;
 
     public SanPhamEntity() {
     }
-
 
     public SanPhamEntity(String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, QuyCach quyCach, String hinhAnh) {
         this.tenSanPham = tenSanPham;
@@ -29,7 +29,7 @@ public class SanPhamEntity {
         this.trangThai = true;
     }
 
-    public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, QuyCach quyCach, String hinhAnh, boolean trangThai) {
+    public SanPhamEntity(int id, String tenSanPham, DanhMucSanPhamEntity phanLoai, String donVi, double giaBan, double soLuongTon, QuyCach quyCach, String hinhAnh, boolean hetHang, boolean trangThai) {
         this.id = id;
         this.tenSanPham = tenSanPham;
         this.phanLoai = phanLoai;
@@ -38,6 +38,7 @@ public class SanPhamEntity {
         this.soLuongTon = soLuongTon;
         this.quyCach = quyCach;
         this.hinhAnh = hinhAnh;
+        this.hetHang = hetHang;
         this.trangThai = trangThai;
     }
 
@@ -101,7 +102,19 @@ public class SanPhamEntity {
         this.hinhAnh = hinhAnh;
     }
 
-    public boolean isTrangThai() { return trangThai; }
+    public boolean isHetHang() {
+        return hetHang;
+    }
 
-    public void setTrangThai(boolean trangThai) { this.trangThai = trangThai; }
+    public void setHetHang(boolean hetHang) {
+        this.hetHang = hetHang;
+    }
+
+    public boolean isTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(boolean trangThai) {
+        this.trangThai = trangThai;
+    }
 }

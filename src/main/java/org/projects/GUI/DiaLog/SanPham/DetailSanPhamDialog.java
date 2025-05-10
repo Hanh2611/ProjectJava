@@ -23,14 +23,14 @@ public class DetailSanPhamDialog extends JDialog {
     private labelText tenSanPhamField, donViField, giaBanField, soLuongTonField;
     private JComboBox<String> quyCachField, phanLoaiField;
     private JButton dongBtn;
-    private JRadioButton isAvailable, isNotAvailable;
+    private JRadioButton isAvailable, isNotAvailable, isInStock, isOutOfStock;
 
     public DetailSanPhamDialog(SanPham sanPham, SanPhamEntity sanPhamEntity) {
         this.sanPham = sanPham;
         this.sanPhamEntity = sanPhamEntity;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Chi tiết sản phẩm");
-        setSize(450, 700);
+        setSize(450, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
@@ -91,7 +91,7 @@ public class DetailSanPhamDialog extends JDialog {
         JLabel quyCachLabel = new JLabel("Quy cách");
         quyCachLabel.setPreferredSize(new Dimension(450, 20));
         quyCachPanel.add(quyCachLabel);
-        java.util.List<String> listQuyCach = Arrays.stream(QuyCach.values())
+        List<String> listQuyCach = Arrays.stream(QuyCach.values())
                 .map(QuyCach::getValue)
                 .toList();
         quyCachField = new JComboBox<>(listQuyCach.toArray(new String[0]));
@@ -117,6 +117,21 @@ public class DetailSanPhamDialog extends JDialog {
         phanLoaiPanel.add(phanLoaiField);
         content.add(phanLoaiPanel);
 
+        //Radio - Hết hàng
+        JPanel stockStatusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        isOutOfStock = new JRadioButton("Hết hàng");
+        isInStock = new JRadioButton("Còn hàng");
+        isOutOfStock.setSelected(sanPhamEntity.isHetHang());
+        isInStock.setSelected(!sanPhamEntity.isHetHang());
+        isOutOfStock.setEnabled(false);
+        isInStock.setEnabled(false);
+        ButtonGroup stockButtonGroup = new ButtonGroup();
+        stockButtonGroup.add(isInStock);
+        stockButtonGroup.add(isOutOfStock);
+        stockStatusPanel.add(isInStock);
+        stockStatusPanel.add(isOutOfStock);
+        content.add(stockStatusPanel);
+
         // Radio - Trạng thái
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         isAvailable = new JRadioButton("Kích hoạt");
@@ -130,6 +145,7 @@ public class DetailSanPhamDialog extends JDialog {
         buttonGroup.add(isNotAvailable);
         statusPanel.add(isAvailable);
         statusPanel.add(isNotAvailable);
+
         content.add(statusPanel);
 
         // Buttons
