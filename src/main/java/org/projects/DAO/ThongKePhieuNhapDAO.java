@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -169,6 +170,31 @@ public class ThongKePhieuNhapDAO {
         }
         return lst;
     }
-
-
+    public static Date layngaynhapnhonhat() {
+        String query = "select min(pn.ngay_nhap) as ngay\n" +
+                "from phieu_nhap pn";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement prs = c.prepareStatement(query);
+        ResultSet rs = prs.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDate("ngay");
+            }
+        } catch (Exception e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static Date layngayhientai() {
+        String query = "select date(now()) as ngayhientai";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement prs = c.prepareStatement(query);
+        ResultSet rs = prs.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDate("ngayhientai");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

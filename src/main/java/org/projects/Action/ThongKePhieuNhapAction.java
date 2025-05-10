@@ -1,6 +1,7 @@
 package org.projects.Action;
 
 import org.projects.BUS.ThongKePhieuNhapBUS;
+import org.projects.DAO.ThongKePhieuNhapDAO;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Chart.PieChart;
 import org.projects.GUI.Panel.ThongkePack.thongkePhieunhap;
@@ -31,8 +32,8 @@ public class ThongKePhieuNhapAction implements ActionListener, ItemListener {
             updateChartandTable();
             tkpn.loadList(tkpnBUS.getListtheonhieutieuchi(from,to,tenncc,tennv));
         } else if(e.getSource() == tkpn.getResetbtn()) {
-            tkpn.getDateFrom().setDate(null);
-            tkpn.getDateTo().setDate(null);
+            tkpn.getDateFrom().setDate(ThongKePhieuNhapDAO.layngaynhapnhonhat());
+            tkpn.getDateTo().setDate(ThongKePhieuNhapDAO.layngayhientai());
             tkpn.getNccBox().setSelectedIndex(0);
             tkpn.getNvBox().setSelectedIndex(0);
             updateChartandTable();

@@ -27,6 +27,8 @@ public class ThongKeDoanhThuTheoThangAction implements ActionListener, ItemListe
             tkdtTheoThang.getCbxthang().setSelectedItem("Tất cả");
             tkdtTheoThang.getCbxnam().setSelectedItem("2025");
             updateChartAndTableMonth();
+        } else if(e.getSource() == tkdtTheoThang.getTongquan()) {
+
         }
     }
 

@@ -31,6 +31,8 @@
             this.setBackground(new Color(240, 240, 240));
             this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
             this.init();
+            hienthiPanel(listbtn.get(0));
+            changeColorButton(listbtn.get(0));
         }
         private void init() {
             headerPanel = new JPanel(new BorderLayout());
@@ -103,6 +105,7 @@
                 centerPanel.repaint();
             }
         }
+
 
 
         public JPanel getHeaderPanel() {

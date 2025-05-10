@@ -3,6 +3,7 @@ package org.projects.GUI.Chart;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -12,6 +13,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
 
@@ -67,6 +69,8 @@ public class ColumnsChart {
         chart.setBackgroundPaint(Color.WHITE);
         chart.setAntiAlias(true);
         CategoryPlot plot = chart.getCategoryPlot();
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
         plot.setBackgroundPaint(new Color(250, 250, 255));      // nền dịu
         plot.setOutlineVisible(false);
         plot.setRangeGridlinesVisible(true);

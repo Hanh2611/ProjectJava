@@ -23,6 +23,7 @@ public class thongkedoanhthutheoThang extends JPanel {
     private JComboBox<String> cbxnam;
     private JButton thongke;
     private JButton reset;
+    private JButton tongquan;
 
     private JPanel center;
     private JPanel columnsChartPanel;
@@ -54,12 +55,17 @@ public class thongkedoanhthutheoThang extends JPanel {
         reset = handleComponents.createButton("Làm mới",100,30);
         reset.setBackground(Color.decode("#1e90ff"));
         reset.setForeground(Color.WHITE);
+
+        tongquan = handleComponents.createButton("Tổng quan",100,30);
+        tongquan.setBackground(Color.decode("#2ed573"));
+        tongquan.setForeground(Color.WHITE);
         header.add(thang);
         header.add(cbxthang);
         header.add(nam);
         header.add(cbxnam);
         header.add(thongke);
         header.add(reset);
+        header.add(tongquan);
         this.add(header, BorderLayout.NORTH);
 
         //center
@@ -113,6 +119,7 @@ public class thongkedoanhthutheoThang extends JPanel {
         cbxnam.addItemListener(tkdtAction);
         thongke.addActionListener(tkdtAction);
         reset.addActionListener(tkdtAction);
+        tongquan.addActionListener(tkdtAction);
     }
 
     public void loadlist(List<ThongkeDoanhThuEntity> lst) {
@@ -250,4 +257,13 @@ public class thongkedoanhthutheoThang extends JPanel {
     public void setThangChartPanel(JPanel thangChartPanel) {
         this.thangChartPanel = thangChartPanel;
     }
+
+    public JButton getTongquan() {
+        return tongquan;
+    }
+
+    public void setTongquan(JButton tongquan) {
+        this.tongquan = tongquan;
+    }
+
 }

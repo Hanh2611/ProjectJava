@@ -174,19 +174,28 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-
+        String keyword = ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = ncc.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---")) {
+            ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
+        }
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-
+        String keyword = ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = ncc.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---")) {
+            ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
+        }
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
         String keyword = ncc.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
-        String textfield = e.getDocument().toString();
-        System.out.println(textfield);
-        ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
+        String textfield = ncc.getHeader().getSearch().getSearchField().getText();
+        if(!keyword.equals("---")) {
+            ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
+        }
     }
 }

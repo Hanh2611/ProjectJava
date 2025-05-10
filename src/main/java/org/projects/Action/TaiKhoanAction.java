@@ -103,9 +103,6 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
             maNhomQuyen = 3;
         }
         QuyenNguoiDungDAO.ganquyengnuoidung(manguoidung, maNhomQuyen);
-       if( NhanVienDao.updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(manv,manguoidung)) {
-           NhanVienBus.getList();
-       }
         System.out.println("ma nv: " + manv);
         System.out.println("manguoidung: " + manguoidung);
         TaiKhoanEntity tkEntity = new TaiKhoanEntity(tendangnhap, matkhau);
@@ -113,8 +110,10 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
         int quyennguoidung = QuyenNguoiDungDAO.getMaquyennguoidung(manguoidung);
         System.out.println("quyennguoidung: " + quyennguoidung);
         tkEntity.setQuyenNguoiDung(quyennguoidung);
+
         if (TaiKhoanBUS.themtaikhoan(tkEntity)) {
             JOptionPane.showMessageDialog(null, "Thêm tài khoản thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            NhanVienDao.updateThemMaNguoiDungChoNhanVienSauKhiTaoTaiKhoan(manv,manguoidung);
             tk.loadDataIntoTable();
         }
     }
