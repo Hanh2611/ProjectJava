@@ -1,6 +1,7 @@
 package org.projects.GUI;
 
 import org.projects.Action.LoginAction;
+import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.FocusListenerUtils;
 
@@ -138,11 +139,8 @@ public class LoginGUI extends JFrame {
         setupPasswordToggle(matKhauField, iconOpenEye, iconCloseEye);
 
         //button dang nhap
-        dangNhapButton = new JButton("Đăng nhập");
-        dangNhapButton.setFont(new Font("JetBrains Mono", Font.PLAIN, 28));
-        dangNhapButton.setForeground(Color.WHITE);
-        dangNhapButton.setBackground(MainColor);
-        dangNhapButton.setBounds(60, 340, 310, 40);
+        dangNhapButton = new ButtonEditStyle("Đăng nhập",MainColor,Color.WHITE,310,40);
+
         panel.add(dangNhapButton);
 
 

@@ -5,6 +5,7 @@ import org.projects.Action.ThongKeDoanhThuTheoNgayAction;
 import org.projects.Action.ThongKeDoanhThuTheoThangAction;
 import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
+import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
@@ -23,7 +24,6 @@ public class thongkedoanhthutheoThang extends JPanel {
     private JComboBox<String> cbxnam;
     private JButton thongke;
     private JButton reset;
-    private JButton tongquan;
 
     private JPanel center;
     private JPanel columnsChartPanel;
@@ -49,23 +49,15 @@ public class thongkedoanhthutheoThang extends JPanel {
         nam = handleComponents.setLabelText("Năm:");
         cbxnam = new JComboBox<>(new String[]{"2020","2021","2022","2023","2024","2025"});
         cbxnam.setSelectedItem("2025");
-        thongke = handleComponents.createButton("Thống kê",100,30);
-        thongke.setBackground(Color.decode("#2ed573"));
-        thongke.setForeground(Color.WHITE);
-        reset = handleComponents.createButton("Làm mới",100,30);
-        reset.setBackground(Color.decode("#1e90ff"));
-        reset.setForeground(Color.WHITE);
+        thongke = new ButtonEditStyle("Thống kê",Color.decode("#2ed573"),Color.WHITE,100,30);
+        reset = new ButtonEditStyle("Làm mới",Color.decode("#1e90ff"),Color.WHITE,100,30);
 
-        tongquan = handleComponents.createButton("Tổng quan",100,30);
-        tongquan.setBackground(Color.decode("#2ed573"));
-        tongquan.setForeground(Color.WHITE);
-        header.add(thang);
         header.add(cbxthang);
         header.add(nam);
         header.add(cbxnam);
         header.add(thongke);
         header.add(reset);
-        header.add(tongquan);
+
         this.add(header, BorderLayout.NORTH);
 
         //center
@@ -119,7 +111,7 @@ public class thongkedoanhthutheoThang extends JPanel {
         cbxnam.addItemListener(tkdtAction);
         thongke.addActionListener(tkdtAction);
         reset.addActionListener(tkdtAction);
-        tongquan.addActionListener(tkdtAction);
+
     }
 
     public void loadlist(List<ThongkeDoanhThuEntity> lst) {
@@ -258,12 +250,5 @@ public class thongkedoanhthutheoThang extends JPanel {
         this.thangChartPanel = thangChartPanel;
     }
 
-    public JButton getTongquan() {
-        return tongquan;
-    }
-
-    public void setTongquan(JButton tongquan) {
-        this.tongquan = tongquan;
-    }
 
 }

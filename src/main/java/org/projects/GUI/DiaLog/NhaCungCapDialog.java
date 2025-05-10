@@ -55,8 +55,8 @@ public class NhaCungCapDialog extends JDialog {
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10,10));
         bottomPanel.setBackground(new Color(240, 240, 240));
 
-        chucnangBTN = ButtonEditStyle.styleButton(typeButton(getNccType()),new Color(52,152,219),Color.WHITE);
-        thoatBTN = ButtonEditStyle.styleButton("Thoát",new Color(231,76,60),Color.WHITE);
+        chucnangBTN = new ButtonEditStyle(typeButton(getNccType()),new Color(52,152,219),Color.WHITE,100,30);
+        thoatBTN = new ButtonEditStyle("Thoát",new Color(231,76,60),Color.WHITE,100,30);
 
         bottomPanel.add(chucnangBTN);
         bottomPanel.add(thoatBTN);

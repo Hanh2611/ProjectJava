@@ -57,8 +57,8 @@ public class TaiKhoanDialog extends JDialog {
         bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         bottom.setBackground(new Color(240, 240, 240));
 
-        add = ButtonEditStyle.styleButton(typeButton(getTKType()), new Color(52, 152, 219), Color.WHITE);
-        cancel = ButtonEditStyle.styleButton("Thoát", new Color(231, 76, 60), Color.WHITE);
+        add = new ButtonEditStyle(typeButton(getTKType()), new Color(52, 152, 219), Color.WHITE,100,30);
+        cancel = new ButtonEditStyle("Thoát", new Color(231, 76, 60), Color.WHITE,100,30);
 
         bottom.add(add);
         bottom.add(cancel);

@@ -13,6 +13,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.projects.Action.ThongKeSanPhamAction;
 import org.projects.BUS.ThongKeSanPhamBUS;
 import org.projects.GUI.Chart.PieChart;
+import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.ThongKeSanPhamEntity;
 
@@ -79,9 +80,7 @@ public class thongkeSanpham extends JPanel {
             danhmucsanphamComboBox.addItem(i);
         }
         danhmucsanphamComboBox.setSelectedItem("Tất cả");
-        btnExcel = handleComponents.createButton("Xuất Excel",80,30);
-        btnExcel.setForeground(Color.WHITE);
-        btnExcel.setBackground(Color.decode("#2ecc71"));
+        btnExcel = new ButtonEditStyle("Xuất Excel",Color.decode("#2ecc71"),Color.WHITE,100,30);
         headerBottom.add(danhmucsanphamComboBox);
         headerBottom.add(btnExcel);
         bottomPanel.add(headerBottom, BorderLayout.NORTH);
