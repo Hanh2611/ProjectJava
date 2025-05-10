@@ -1,11 +1,13 @@
 package org.projects.GUI.Components.header;
 
+import org.projects.GUI.Components.PanelBorderRadius;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.HashMap;
 
-public class headerFunction extends JPanel {
+public class headerFunction extends PanelBorderRadius {
     private generalFunction gl;
     private HashMap<String,generalFunction> hm = new HashMap<>();
     public headerFunction(Dimension parentSize, String[][] listItemHeader, List<String> listAction) {

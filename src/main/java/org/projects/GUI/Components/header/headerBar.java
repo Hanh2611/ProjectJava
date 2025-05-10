@@ -2,8 +2,9 @@ package org.projects.GUI.Components.header;
 
 import java.awt.*;
 import java.util.List;
+import org.projects.GUI.Components.PanelBorderRadius;
 
-public class headerBar extends javax.swing.JPanel {
+public class headerBar extends PanelBorderRadius {
     private headerFunction headerFunc;
     private headerSearch search;
     public headerBar(String[][] listItemHeader, List<String> listAction, String[] listcombobox) {
@@ -25,4 +26,5 @@ public class headerBar extends javax.swing.JPanel {
         return headerFunc;
     }
     public headerSearch getSearch() {return search;}
+
 }
