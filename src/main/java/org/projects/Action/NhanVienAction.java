@@ -6,19 +6,14 @@ import org.projects.GUI.DiaLog.Nhanvien.ShowAddNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowChiTietNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowDeleteNhanVienConsole;
 import org.projects.GUI.DiaLog.Nhanvien.ShowFixNhanVienConsole;
-import org.projects.GUI.Panel.NhanVienPack.AddNhanVienConsole;
-import org.projects.GUI.Panel.NhanVienPack.DeleteNhanVienConsole;
 import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.GUI.utils.ExportExcel;
 import org.projects.GUI.utils.InputValid;
-import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhanVienEntity;
 
-import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -55,7 +50,11 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
         if(show_add_nv != null) {
             if (source.equals(show_add_nv.add.getSaveButton())) {
                 show_add_nv.add.insertData();
-                if(show_add_nv.add.comboBox.getSelectedIndex() == 0){
+                if(!AC()){
+                    JOptionPane.showMessageDialog(null,"Vui lòng kiểm tra" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                else if(show_add_nv.add.comboBox.getSelectedIndex() == 0){
                     JOptionPane.showMessageDialog(null,"Vui lòng chọn chức vụ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_add_nv.add.comboBox.requestFocusInWindow();
                 }else {
@@ -94,7 +93,11 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                 show_fix_nv.close();
             }else if (source.equals(show_fix_nv.fix.getUpdateButton())){
                 show_fix_nv.fix.insertData();
-                if(show_fix_nv.fix.comboBox.getSelectedIndex() == 0) {
+                if(!AC()){
+                    JOptionPane.showMessageDialog(null,"Vui lòng kiểm tra" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                else if(show_fix_nv.fix.comboBox.getSelectedIndex() == 0) {
                     JOptionPane.showMessageDialog(null,"Vui lòng chọn chức vụ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     show_fix_nv.fix.comboBox.requestFocusInWindow();
                 }else{
@@ -247,9 +250,9 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
 
     // xu li focus
     public void checkMaNhanVienALL(JTextField textField, int index) {
-        if (InputValid.checkRong_addPlace(textField.getName(), textField.getText())) {
+        if (InputValid.checkRong_addPlace("Nhập mã nhân viên", textField.getText())) {
             InputValid.showError(index, "Vui lòng nhập mã nhân viên" , errorLabels , listAdd , false);
-        } else if (!InputValid.checkMaNhanVien(textField.getText())) {
+        } else if (!InputValid.checkMa(textField.getText())) {
             InputValid.showError(index, "Mã nhân viên chỉ nhận giá trị số nguyên",errorLabels , listAdd , false);
         } else if (InputValid.checkSameId(Integer.parseInt(textField.getText()), sql)) {
             InputValid.showError(index, "Mã nhân viên bị trùng" , errorLabels , listAdd ,false);
@@ -259,9 +262,9 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
     }
 
     public void checkEmailNhanVienALL(JTextField textField, int index) {
-        if (InputValid.checkRong_addPlace(textField.getName(), textField.getText())) {
+        if (InputValid.checkRong_addPlace("Nhập Email", textField.getText())) {
             InputValid.showError(index, "Vui lòng nhập email" , errorLabels , listAdd , false);
-        } else if (!InputValid.checkEmailNhanVien(textField.getText())) {
+        } else if (!InputValid.checkEmail(textField.getText())) {
             InputValid.showError(index, "Email không đúng định dạng" ,errorLabels , listAdd , false);
         } else {
             InputValid.clearError(index , errorLabels , listAdd , false);
@@ -269,7 +272,7 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
     }
 
     public void checkSDTNhanVienALL(JTextField textField, int index) {
-        if (InputValid.checkRong_addPlace(textField.getName(), textField.getText())) {
+        if (InputValid.checkRong_addPlace("Nhập số điện thoại", textField.getText())) {
             InputValid.showError(index, "Vui lòng nhập số điện thoại" , errorLabels, listAdd , false);
         } else if (!InputValid.checkSoDienThoai(textField.getText())) {
             InputValid.showError(index, "Số điện thoại không hợp lệ" , errorLabels , listAdd , false);
@@ -278,29 +281,105 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
         }
     }
 
+    public void checkTenNhanVien(JTextField textField, int index) {
+        if (InputValid.checkRong_addPlace("Nhập họ và tên", textField.getText())) {
+            InputValid.showError(index, "Vui lòng nhập tên nhân viên" , errorLabels, listAdd , false);
+        }else InputValid.clearError(index , errorLabels , listAdd , false);
+    }
+
     @Override
     public void focusLost(FocusEvent e) {
         JTextField source = (JTextField) e.getSource();
         int index = listAdd.indexOf(source);
-        //System.out.println(source.getText());
-        switch (source.getName()) {
-            case "Nhập mã nhân viên":
+        switch (index) {
+            case 0:
                 checkMaNhanVienALL(source, index);
                 break;
-            case "Nhập Email":
+            case 1:
+                checkTenNhanVien(source , index);
+                break;
+            case 2:
                 checkEmailNhanVienALL(source, index);
                 break;
-            case "Nhập số điện thoại":
+            case 3:
                 checkSDTNhanVienALL(source, index);
+                break;
+            case 4:
+                InputValid.validateLuongInput(source, index, errorLabels, listAdd);
                 break;
             default:
                 if (InputValid.checkRong_addPlace(source.getName(), source.getText())) {
-                    InputValid.showError(index, "Vui lòng " + source.getName().toLowerCase() , errorLabels , listAdd , false);
+                    InputValid.showError(index, "Vui lòng nhập thông tin", errorLabels, listAdd, false);
                 } else {
-                    InputValid.clearError(index , errorLabels , listAdd , false);
+                    InputValid.clearError(index, errorLabels, listAdd, false);
                 }
                 break;
         }
     }
 
+    public boolean AC() {
+        boolean ok = true;
+        if(listAdd == null) return false;
+        System.out.println(listAdd.size());
+        for (int i = 0; i < listAdd.size(); i++) {
+            JTextField tf = listAdd.get(i);
+            switch (i) {
+                case 0:
+                    if (InputValid.checkRong_addPlace("Nhập mã nhân viên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập mã nhân viên" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else if (!InputValid.checkMa(tf.getText())) {
+                        InputValid.showError(i, "Mã nhân viên chỉ nhận giá trị số nguyên" , errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 1:
+                    if (InputValid.checkRong_addPlace("Nhập họ và tên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập tên nhân viên" , errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 2:
+                    if (InputValid.checkRong_addPlace("Nhập Email", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập email" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else if (!InputValid.checkEmail(tf.getText())) {
+                        InputValid.showError(i, "Email không đúng định dạng" , errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 3:
+                    if (InputValid.checkRong_addPlace("Nhập số điện thoại", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập số điện thoại" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else if (!InputValid.checkSoDienThoai(tf.getText())) {
+                        InputValid.showError(i, "Số điện thoại không hợp lệ", errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 4:
+                    String luongText = tf.getText().trim();
+                    if (InputValid.checkRong_addPlace("Nhập lương nhân viên", luongText)) {
+                        InputValid.showError(i, "Vui lòng nhập lương nhân viên" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else {
+                        try {
+                            long luong = Long.parseLong(luongText);
+                            if (luong < 1000) {
+                                InputValid.showError(i, "Lương phải lớn hơn hoặc bằng 1,000" , errorLabels , listAdd , false);
+                                ok = false;
+                            } else if (luong > Integer.MAX_VALUE) {
+                                InputValid.showError(i, "Lương vượt quá giới hạn cho phép" , errorLabels , listAdd , false);
+                                ok = false;
+                            }
+                        } catch (NumberFormatException e) {
+                            InputValid.showError(i, "Lương phải là số nguyên" , errorLabels , listAdd , false);
+                            ok = false;
+                        }
+                    }
+                    break;
+            }
+        }
+        return ok;
+    }
 }
