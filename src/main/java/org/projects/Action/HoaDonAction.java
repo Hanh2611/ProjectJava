@@ -2,10 +2,14 @@ package org.projects.Action;
 
 import org.projects.BUS.ChiTietHoaDonFullBUS;
 import org.projects.BUS.HoaDonBUS;
+import org.projects.BUS.SanPhamBus;
+import org.projects.DAO.ChiTietHoaDonDAO;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Panel.HoaDon;
+import org.projects.entity.ChiTietHoaDonEntity;
 import org.projects.entity.ChiTietHoaDonFullEntity;
 import org.projects.entity.HoaDonEntity;
+import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -15,8 +19,12 @@ import java.util.List;
 
 public class HoaDonAction  extends MouseAdapter implements ActionListener, DocumentListener, ItemListener {
     private HoaDon hoaDon;
+    private final SanPhamBus sanPhamBus;
+
     public HoaDonAction(HoaDon hoaDon) {
         this.hoaDon = hoaDon;
+        this.sanPhamBus = new SanPhamBus();
+
     }
 
     @Override
@@ -53,6 +61,21 @@ public class HoaDonAction  extends MouseAdapter implements ActionListener, Docum
                             JOptionPane.YES_NO_OPTION
                     );
                     if (confirm == JOptionPane.YES_OPTION) {
+                        ChiTietHoaDonDAO chiTietHoaDonDAO = new ChiTietHoaDonDAO(); // Giả sử DAO này đã được định nghĩa
+                        List<ChiTietHoaDonEntity> dsCT = chiTietHoaDonDAO.getChiTietByMaHoaDon(maHD);
+                        for (ChiTietHoaDonEntity ct : dsCT) {
+                            int maSP = ct.getMaSP();
+                            int soLuong = ct.getSoLuong();
+                            // Lấy sản phẩm từ sanPhamBus
+                            SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
+                            // Với hóa đơn bán, khi hủy hóa đơn, số lượng sản phẩm bán được hoàn trả lại vào kho
+                            sp.setSoLuongTon(sp.getSoLuongTon() + soLuong);
+                            // Nếu còn hàng, cập nhật trạng thái sản phẩm
+                            if (sp.getSoLuongTon() > 0) {
+                                sp.setHetHang(false);
+                            }
+                            sanPhamBus.updateSanPham(sp);
+                        }
                         HoaDonEntity hd = new HoaDonEntity();
                         hd.setMaHoaDon(maHD);
                         boolean result = HoaDonBUS.xoa(hd);

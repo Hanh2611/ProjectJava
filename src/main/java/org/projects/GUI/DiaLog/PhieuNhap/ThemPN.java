@@ -654,6 +654,7 @@ public class ThemPN extends JPanel {
                         String giaNhapStr = modelDanhSachNhap.getValueAt(i, 3).toString();
                         double gianhap = parseTien(giaNhapStr); // Xử lý giống như tổng tiền
                         double thanhtien = soluong * gianhap;
+
                         SanPhamEntity sp = sanPhamBus.getSanPhamById(masp);
                         sp.setSoLuongTon(sp.getSoLuongTon() + soluong);
                         if(sp.getSoLuongTon() > 0){
@@ -741,17 +742,10 @@ public class ThemPN extends JPanel {
         }
     }
 
-    private void loadMaPhieuNhap(){
+    private void loadMaPhieuNhap() {
         PhieuNhapDAO dao = new PhieuNhapDAO();
-        List<PhieuNhapEntity> list = dao.showlist();
-        int max = 1;
-        for(PhieuNhapEntity sp : list){
-            if(sp.getMaPN() > max){
-                max = sp.getMaPN();
-            }
-        }
-        max = max +1 ;
-        nhapMaPN.setText(String.valueOf(max));
+        int maxMaPN = dao.getMaxMaPN();
+        nhapMaPN.setText(String.valueOf(maxMaPN + 1));
     }
 
     private void updateTotal(DefaultTableModel model, JLabel txtTongTien) {

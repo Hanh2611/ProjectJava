@@ -158,11 +158,13 @@ private void customizeTable() {
     }
 
     public void showThemHD(){
+        themHD.resetForm();
         cardLayout.show(contentPanel, "themHD");
         themHD.loadDataToTableSanPham(); // GỌI LẠI HÀM CẬP NHẬT DANH SÁCH SẢN PHẨM
 
     }
     public void showSuaHD(List <ChiTietHoaDonFullEntity> list){
+        capNhatHD.resetForm();
         capNhatHD.loadDatatoTableHoaDon(list);
         cardLayout.show(contentPanel, "Capnhat HD");
         currentPanel = 1;
