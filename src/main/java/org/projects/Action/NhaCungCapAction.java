@@ -4,6 +4,7 @@ import org.projects.BUS.NhaCungCapBUS;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.DiaLog.NhaCungCapDialog;
 import org.projects.GUI.Panel.NhaCungCap;
+import org.projects.GUI.utils.InputValid;
 import org.projects.entity.NhaCungCapEntity;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class NhaCungCapAction implements ActionListener, MouseListener,ItemListener, DocumentListener {
     private NhaCungCap ncc;
@@ -33,13 +35,13 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                     String sdt = nccDialog.getSodienthoaiNCC().getTextField().getText().trim();
                     String email = nccDialog.getEmailNCC().getTextField().getText().trim();
                     String dc = nccDialog.getDiachiNCC().getTextField().getText().trim();
-                    if (ten.isEmpty() || sdt.isEmpty() || email.isEmpty() || dc.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Vui lòng nhâp đầy đủ các giá trị", "thông báo", JOptionPane.ERROR_MESSAGE);
+
+                    if(!validInput(ten,sdt,email,dc)) {
+                        return;
                     }
                     NhaCungCapEntity nccEntity = new NhaCungCapEntity(ten, sdt, email, dc);
                     if (NhaCungCapBUS.them(nccEntity)) {
                         JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
-//                        ncc.loadList(NhaCungCapBUS.getList());
                         nccDialog.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
@@ -57,13 +59,12 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                         nccEntity.setEmailNCC(nccDialog.getEmailNCC().getTextField().getText().trim());
                         nccEntity.setDiaChiNCC(nccDialog.getDiachiNCC().getTextField().getText().trim());
 
-                        if (nccEntity.getTenNCC().isEmpty() || nccEntity.getSoDienThoaiNCC().isEmpty() || nccEntity.getEmailNCC().isEmpty() || nccEntity.getDiaCHiNCC().isEmpty()) {
-                            JOptionPane.showMessageDialog(null, "Vui lòng cập nhật đầy đủ thông tin", "thông báo", JOptionPane.ERROR_MESSAGE);
+                        if(!validInput(nccEntity.getTenNCC(),nccEntity.getSoDienThoaiNCC(),nccEntity.getEmailNCC(),nccEntity.getDiaCHiNCC())) {
+                            return;
                         }
                         NhaCungCapEntity newnccEntity = new NhaCungCapEntity(nccEntity.getMaNCC(), nccEntity.getTenNCC(), nccEntity.getSoDienThoaiNCC(), nccEntity.getEmailNCC(), nccEntity.getDiaCHiNCC());
                         if (NhaCungCapBUS.sua(newnccEntity)) {
                             JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//                            ncc.loadList(NhaCungCapBUS.getList());
                             nccDialog.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Cập nhật thông tin Thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
@@ -198,13 +199,37 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
         }
     }
 
-    public boolean validInput() {
-        boolean isComplete = false;
-        String tenncc  = nccDialog.getTenNCC().getTextField().getText().trim();
-        String sdtncc = nccDialog.getSodienthoaiNCC().getTextField().getText().trim();
-        String emailncc = nccDialog.getEmailNCC().getTextField().getText().trim();
-        String diachincc = nccDialog.getDiachiNCC().getTextField().getText().trim();
+    public boolean validInput(String tenncc,String sdtncc,String emailncc,String diachincc) {
+        boolean isComplete = true;
 
-        if()
+        if(!InputValid.tenHopLe(tenncc)) {
+            InputValid.showError(0,"Tên không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+            isComplete = false;
+        } else {
+            InputValid.clearError(0,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+        }
+
+        if(!InputValid.checkSoDienThoai(sdtncc)) {
+            InputValid.showError(1,"Số điện thoại không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+            isComplete = false;
+        } else {
+            InputValid.clearError(1,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+        }
+
+        if(!InputValid.checkEmail(emailncc)) {
+            InputValid.showError(2,"Email không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+            isComplete = false;
+        } else {
+            InputValid.clearError(2,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+        }
+
+        if(!InputValid.diachiHople(diachincc)) {
+            InputValid.showError(3,"Địa chỉ không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+            isComplete = false;
+        } else {
+            InputValid.clearError(3,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
+        }
+
+        return isComplete;
     }
 }

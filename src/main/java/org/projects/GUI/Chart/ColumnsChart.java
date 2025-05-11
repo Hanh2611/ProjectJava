@@ -10,6 +10,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.projects.GUI.Components.PanelBorderRadius;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,8 @@ public class ColumnsChart {
     ChartPanel chartPanel;
     HashMap<String,Integer> hm;
     public static JPanel createColumnsChart(String title, ChartPanel chartPanel, String xAxisLabel, String yAxisLabel, HashMap<String,Integer> hm,int width,int height) {
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new PanelBorderRadius();
+        panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         panel.setBackground(Color.WHITE);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -52,14 +54,19 @@ public class ColumnsChart {
         renderer.setDefaultToolTipGenerator(new StandardCategoryToolTipGenerator());
         plot.setRenderer(renderer);
         chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(width, height));
-        panel.add(chartPanel, BorderLayout.CENTER);
+        chartPanel.setPreferredSize(new Dimension(width-20, height-20));
+        chartPanel.setOpaque(false);
+
+        JPanel panelcon = new JPanel(new BorderLayout());
+        panelcon.setOpaque(false);
+        panelcon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelcon.add(chartPanel, BorderLayout.CENTER);
         return panel;
     }
 
     public static JPanel createColumnChart2(String title, ChartPanel chartPanel, String xAxisLabel, String yAxisLabel, HashMap<String,Double> hm,int width,int height) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JPanel panel = new PanelBorderRadius();
+        panel.setLayout(new BorderLayout());
         panel.setBackground(Color.WHITE);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(String key : hm.keySet()) {
@@ -90,8 +97,15 @@ public class ColumnsChart {
         renderer.setDefaultToolTipGenerator(new StandardCategoryToolTipGenerator());
         plot.setRenderer(renderer);
         chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(width, height));
-        panel.add(chartPanel, BorderLayout.CENTER);
+        chartPanel.setPreferredSize(new Dimension(width-20, height-20));
+        chartPanel.setOpaque(false);
+
+        JPanel panelcon = new JPanel(new BorderLayout());
+        panelcon.setOpaque(false);
+        panelcon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelcon.add(chartPanel, BorderLayout.CENTER);
+
+        panel.add(panelcon, BorderLayout.CENTER);
         return panel;
     }
 

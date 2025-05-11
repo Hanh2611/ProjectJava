@@ -18,13 +18,14 @@ public class labelText extends JPanel {
         label.setFont(new Font("Jetbrains Mono", Font.PLAIN, 14));
         label.setForeground(new Color(50, 50, 50));
 
-        textField = new JTextField(columns);
+        textField = new JTextField(width);
         textField.setFont(new Font("Jetbrains Mono", Font.PLAIN, 14));
         textField.setForeground(Color.BLACK);
-        textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
+//        textField.setBorder(BorderFactory.createCompoundBorder(
+//                BorderFactory.createLineBorder(new Color(200, 200, 200)),
+//                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+//        ));
+        textField.setPreferredSize(new Dimension(400, 30));
 
         errorLabel = new JLabel(" ");
         errorLabel.setForeground(Color.RED);
@@ -33,7 +34,6 @@ public class labelText extends JPanel {
         add(label, BorderLayout.NORTH);
         add(textField, BorderLayout.CENTER);
         add(errorLabel, BorderLayout.SOUTH);
-        setMaximumSize(new Dimension(500, 60));
     }
 
     public  labelText(String text,ArrayList<String> lst)  {

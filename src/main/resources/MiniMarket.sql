@@ -109,7 +109,7 @@ CREATE TABLE chi_tiet_hoa_don
 
 CREATE TABLE nha_cung_cap
 (
-    ma_nha_cung_cap      INT PRIMARY KEY,
+    ma_nha_cung_cap      INT PRIMARY KEY auto_increment,
     ten_nha_cung_cap     VARCHAR(50) NOT NULL,
     so_dien_thoai        VARCHAR(15) NOT NULL,
     email                VARCHAR(50) NOT NULL,

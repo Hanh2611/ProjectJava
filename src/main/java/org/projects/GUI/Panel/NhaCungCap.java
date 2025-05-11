@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -34,6 +35,8 @@ public class NhaCungCap extends JPanel{
     private NhaCungCapEntity nhaCungCapEntity;
 
     public NhaCungCap() {
+        this.setLayout(new BorderLayout());
+        this.setBorder(new EmptyBorder(10,10,10,10));
         String[][] listItemHeader = {
                 {"icon/add.svg", "Thêm", "add"},
                 {"icon/content-writing.svg", "Sửa", "update"},
@@ -43,10 +46,10 @@ public class NhaCungCap extends JPanel{
         header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("NhaCungCap") - 1),new String[]{"---","mã","tên","địa chỉ"});
 //        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","mã","tên","địa chỉ"});
 
-
-        this.add(header);
+        this.add(header,BorderLayout.NORTH);
         centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setPreferredSize(new Dimension(940,1000));
+        centerPanel.setBorder(new EmptyBorder(10,0,0,0));
+        centerPanel.setPreferredSize(new Dimension(940,700));
         this.init();
         reloadDAO();
     }
@@ -61,13 +64,13 @@ public class NhaCungCap extends JPanel{
         };
         nameTableModel.setColumnIdentifiers(new String[]{"Mã nhà cung cấp","tên nhà cung cấp","số điện thoại","email","địa chỉ"});
         nccTabel = new JTable();
-        nccTabel.setSelectionBackground(new Color(204, 229, 255));
-        nccTabel.setSelectionForeground(Color.BLACK);
+        nccTabel.setGridColor(Color.decode("#CAECF7"));
         nccTabel.setRowHeight(40);
+        nccTabel.setShowGrid(false);
+        nccTabel.setGridColor(Color.decode("#CAECF7"));
+        nccTabel.getTableHeader().setReorderingAllowed(false);
         nccTabel.setFont(new Font("Jetbrains Mono", Font.PLAIN, 12));
-        nccTabel.setGridColor(new Color(200,200,200));
-        nccTabel.setShowGrid(true);
-        nccTabel.setIntercellSpacing(new Dimension(5, 5)); //padding của mỗi ô
+//        nccTabel.setIntercellSpacing(new Dimension(5, 5)); //padding của mỗi ô
         nccTabel.setModel(nameTableModel);
         listRenderTable = new DefaultTableCellRenderer();
         listRenderTable.setHorizontalAlignment(JLabel.CENTER);
@@ -84,7 +87,7 @@ public class NhaCungCap extends JPanel{
 
         scrollData = new JScrollPane(nccTabel);
         centerPanel.add(scrollData, BorderLayout.CENTER);
-        this.add(centerPanel);
+        this.add(centerPanel,BorderLayout.CENTER);
 
         //su kien cac nut
         for(String name : header.getHeaderFunc().getHm().keySet()) {

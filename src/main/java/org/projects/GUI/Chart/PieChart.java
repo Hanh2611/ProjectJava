@@ -5,6 +5,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
+import org.projects.GUI.Components.PanelBorderRadius;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ public class PieChart {
     String title;
     ChartPanel chartPanel;
     public static JPanel createPieChart(String title, ChartPanel chartPanel, HashMap<String,Integer> hm,int width,int height) {
-        JPanel panel = new JPanel();
+        JPanel panel = new PanelBorderRadius();
         panel.setLayout(new GridLayout(1,1));
         panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         panel.setBackground(Color.WHITE);
