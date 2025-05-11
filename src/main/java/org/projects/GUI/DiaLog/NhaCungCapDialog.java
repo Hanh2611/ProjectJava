@@ -10,6 +10,8 @@ import org.projects.GUI.Components.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NhaCungCapDialog extends JDialog {
     private NhaCungCap ncc;
@@ -23,12 +25,16 @@ public class NhaCungCapDialog extends JDialog {
     private JButton thoatBTN;
     private NhaCungCapAction nccAction;
     private mainTransition ts = new mainTransition();
+    private List<String> listErrorLabel;
+    private List<String> listTextField;
 
     private JPanel centerPanel,bottomPanel;
     public NhaCungCapDialog(String nccType,NhaCungCap ncc) {
         this.ncc = ncc;
         this.nccType = nccType;
         nccAction = new NhaCungCapAction(ncc, this);
+        listErrorLabel = new ArrayList<>();
+        listTextField = new ArrayList<>();
         this.setTitle(this.setType());
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
@@ -46,6 +52,16 @@ public class NhaCungCapDialog extends JDialog {
         sodienthoaiNCC = new labelText("số điện thoại ",30,5);
         emailNCC = new labelText("email",30,5);
         diachiNCC = new labelText("địa chỉ ",30,5);
+
+        listTextField.add(tenNCC.getTextField().getText());
+        listTextField.add(sodienthoaiNCC.getTextField().getText());
+        listTextField.add(emailNCC.getTextField().getText());
+        listTextField.add(diachiNCC.getTextField().getText());
+
+        listErrorLabel.add(tenNCC.getErrorLabel().getText());
+        listErrorLabel.add(sodienthoaiNCC.getErrorLabel().getText());
+        listErrorLabel.add(emailNCC.getErrorLabel().getText());
+        listErrorLabel.add(diachiNCC.getErrorLabel().getText());
 
         centerPanel.add(tenNCC);
         centerPanel.add(sodienthoaiNCC);

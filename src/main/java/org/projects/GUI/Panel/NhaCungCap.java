@@ -4,6 +4,7 @@ import org.projects.Action.NhaCungCapAction;
 import org.projects.BUS.NhaCungCapBUS;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.NhaCungCapDAO;
+import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.header.headerSearch;
 import org.projects.GUI.Components.layoutCompoment;
@@ -82,7 +83,6 @@ public class NhaCungCap extends JPanel{
         titleTableheader.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
 
         scrollData = new JScrollPane(nccTabel);
-        //scrollData.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         centerPanel.add(scrollData, BorderLayout.CENTER);
         this.add(centerPanel);
 

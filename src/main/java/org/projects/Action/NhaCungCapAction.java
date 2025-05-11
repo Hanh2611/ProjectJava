@@ -120,7 +120,6 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Xóa nhà cung cấp thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
                                 }
-//                                ncc.loadList(NhaCungCapBUS.getList());
                             }
                         }
                     }
@@ -197,5 +196,15 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
         if(!keyword.equals("---")) {
             ncc.loadList(NhaCungCapBUS.search(keyword,textfield));
         }
+    }
+
+    public boolean validInput() {
+        boolean isComplete = false;
+        String tenncc  = nccDialog.getTenNCC().getTextField().getText().trim();
+        String sdtncc = nccDialog.getSodienthoaiNCC().getTextField().getText().trim();
+        String emailncc = nccDialog.getEmailNCC().getTextField().getText().trim();
+        String diachincc = nccDialog.getDiachiNCC().getTextField().getText().trim();
+
+        if()
     }
 }
