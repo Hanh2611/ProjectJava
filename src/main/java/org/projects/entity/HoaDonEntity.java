@@ -11,6 +11,7 @@ public class HoaDonEntity {
     private String trangThai;
     private String tenNV;
     private String tenKh;
+    private boolean isDelete;
 
     public HoaDonEntity(int maHoaDon, String tenNV,String tenKh, Timestamp ngayTao, double tongGiaTri, String trangThai) {
         this.maHoaDon = maHoaDon;
@@ -19,7 +20,6 @@ public class HoaDonEntity {
         this.ngayTao = ngayTao;
         this.tongGiaTri = tongGiaTri;
         this.trangThai = trangThai;
-
     }
     public HoaDonEntity() {}
     public int getMaHoaDon() {
@@ -70,6 +70,13 @@ public class HoaDonEntity {
 
     public void setTenKh(String tenKh) {
         this.tenKh = tenKh;
+    }
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean isDelete) {
+        this.isDelete = isDelete;
     }
 
 }

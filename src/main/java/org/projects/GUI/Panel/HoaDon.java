@@ -19,14 +19,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 public class HoaDon extends JPanel{
     private headerBar header;
-    private JPanel contentPanel,main,themHD;
+    private JPanel contentPanel,main;
+    private ThemHD themHD;
     private DefaultTableModel tableModel;
     private CardLayout cardLayout;
     private JTable table;
@@ -160,12 +159,14 @@ private void customizeTable() {
 
     public void showThemHD(){
         cardLayout.show(contentPanel, "themHD");
+        themHD.loadDataToTableSanPham(); // GỌI LẠI HÀM CẬP NHẬT DANH SÁCH SẢN PHẨM
+
     }
     public void showSuaHD(List <ChiTietHoaDonFullEntity> list){
         capNhatHD.loadDatatoTableHoaDon(list);
         cardLayout.show(contentPanel, "Capnhat HD");
         currentPanel = 1;
-
+        capNhatHD.loadDataToTableSanPham();
     }
     public void showChiTietHD(List<ChiTietHoaDonFullEntity> list){
         chiTietHD.setData(list);

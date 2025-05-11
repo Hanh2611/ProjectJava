@@ -24,7 +24,9 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
                 "JOIN \n" +
                 "    nhan_vien nv ON hd.ma_nhan_vien = nv.ma_nhan_vien\n" +
                 "JOIN \n" +
-                "    khach_hang kh ON hd.ma_khach_hang = kh.ma_khach_hang";
+                "    khach_hang kh ON hd.ma_khach_hang = kh.ma_khach_hang\n" +
+                "WHERE \n" +
+                "    hd.is_delete = 0";
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement ps = c.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -36,7 +38,7 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
                         rs.getString("ten_khach_hang"),
                         rs.getTimestamp("ngay_tao"),
                         rs.getDouble("tong_gia_tri"),
-                        rs.getString("trang_thai") // ✅ thêm trạng thái ở đây
+                        rs.getString("trang_thai")
                 );
                 list.add(hd);
             }
@@ -100,22 +102,18 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
 
     @Override
     public int xoa(HoaDonEntity delete) {
-        String queryChiTiet = "DELETE FROM chi_tiet_hoa_don WHERE ma_hoa_don = ?";
-        String queryHoaDon = "DELETE FROM hoa_don WHERE ma_hoa_don = ?";
+        String query = "UPDATE hoa_don SET is_delete = 1 WHERE ma_hoa_don = ?";
+
         try (Connection c = DatabasesConfig.getConnection();
-             PreparedStatement psChiTiet = c.prepareStatement(queryChiTiet);
-             PreparedStatement psHoaDon = c.prepareStatement(queryHoaDon)) {
+             PreparedStatement ps = c.prepareStatement(query)) {
 
-            // Xóa chi tiết hóa đơn trước
-            psChiTiet.setInt(1, delete.getMaHoaDon());
-            psChiTiet.executeUpdate();
+            ps.setInt(1, delete.getMaHoaDon());
+            return ps.executeUpdate(); // trả về 1 nếu thành công
 
-            // Sau đó mới xóa hóa đơn
-            psHoaDon.setInt(1, delete.getMaHoaDon());
-            return psHoaDon.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return 0;
     }
 
