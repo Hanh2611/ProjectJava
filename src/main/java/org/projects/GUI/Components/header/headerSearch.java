@@ -1,12 +1,13 @@
 package org.projects.GUI.Components.header;
 
+import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.FocusListenerUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class headerSearch extends javax.swing.JPanel {
+public class headerSearch extends PanelBorderRadius {
     private JTextField searchField;
     private JButton searchButton;
     private JComboBox<String> searchComboBox;

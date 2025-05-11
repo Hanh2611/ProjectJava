@@ -40,6 +40,7 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
                 prs.setString(1,add.getTenDangNhap());
                 prs.setInt(2,add.getMaNguoiDung());
                 prs.setString(3,add.getMatKhau());
+                System.out.println(add.getQuyenNguoiDung());
                 prs.setInt(4,add.getQuyenNguoiDung());
                 prs.setString(5,add.getTrangThai());
                 prs.setBoolean(6 , false);
@@ -216,6 +217,25 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
             e.printStackTrace();
             return false;
         }
+    }
+    public static TaiKhoanEntity getTaiKhoanByTenDangNhap(String tenDangNhap) {
+        String query = "select * from tai_khoan where ten_dang_nhap = ?";
+        TaiKhoanEntity taiKhoan = new TaiKhoanEntity();
+        try (Connection c = DatabasesConfig.getConnection();
+        PreparedStatement prs = c.prepareStatement(query);) {
+            prs.setString(1, tenDangNhap);
+            taiKhoan.setTenDangNhap(tenDangNhap);
+            ResultSet rs = prs.executeQuery();
+            if (rs.next()) {
+                taiKhoan.setMaNguoiDung(rs.getInt("ma_nguoi_dung"));
+                taiKhoan.setMatKhau(rs.getString("mat_khau"));
+                taiKhoan.setTrangThai(rs.getString("trang_thai"));
+                taiKhoan.setQuyenNguoiDung(rs.getInt("quyen_nguoi_dung"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return taiKhoan;
     }
 
 }

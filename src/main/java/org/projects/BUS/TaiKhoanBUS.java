@@ -92,4 +92,8 @@ public class TaiKhoanBUS {
         }
         return lst;
     }
+
+    public static TaiKhoanEntity getTaiKhoan(String tenDangNhap) {
+        return TaiKhoanDAO.getTaiKhoanByTenDangNhap(tenDangNhap);
+    }
 }

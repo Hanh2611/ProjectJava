@@ -39,13 +39,28 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
         return list;
     }
 
+    public int getMaxMaNhanVien() {
+        String query = "SELECT MAX(ma_nhan_vien) FROM nhan_vien";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     @Override
     public int them(NhanVienEntity add) {
         String query = "insert into nhan_vien(ma_nhan_vien , ten_nhan_vien , email, so_dien_thoai , chuc_vu, luong , gioi_tinh , avatar , is_delete) values(?,?,?,?,?,?,?,?,?);";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);)
         {
-           ps.setInt(1 , add.getMaNhanVien());
+            int newMaNhanVien = getMaxMaNhanVien() + 1;
+           ps.setInt(1 , newMaNhanVien);
            ps.setString(2 , add.getTenNhanVien());
            ps.setString(3 , add.getEmailNhanVien());
            ps.setString(4 , add.getSdtNhanVien());
@@ -108,11 +123,12 @@ public class NhanVienDao implements ChucNangDAO<NhanVienEntity> {
         String query = "update nhan_vien\n" +
                 "set ma_nguoi_dung = ?\n" +
                 "where ma_nhan_vien = ?";
+        System.out.println(manguoidung + " " + manv);
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement prs = c.prepareStatement(query);) {
             prs.setInt(1,manguoidung);
             prs.setInt(2,manv);
-            return true;
+            return prs.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

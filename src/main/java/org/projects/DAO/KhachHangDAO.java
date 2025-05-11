@@ -34,7 +34,8 @@ public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
         String query = "insert into khach_hang values(?,?,?,?,?,?,?);";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);){
-            ps.setInt(1 , add.getMa());
+            int newMa = getMaxKhachHang() + 1;
+            ps.setInt(1 , newMa);
             ps.setInt(2 , 10);
             ps.setString(3 , add.getTen());
             ps.setString(4 , add.getSdt());
@@ -171,5 +172,18 @@ public class KhachHangDAO implements ChucNangDAO<KhachHangEntity> {
             e.printStackTrace();
             return false;
         }
+    }
+    public int getMaxKhachHang() {
+        String query = "SELECT MAX(ma_khach_hang) FROM khach_hang";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

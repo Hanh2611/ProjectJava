@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.Components.MenuItemComponents;
+import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
 import org.projects.GUI.Panel.KhachHangPack.KhachHang;
@@ -19,9 +20,10 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
-public class ListItem extends JPanel{
+public class ListItem extends JPanel {
     private static final Logger log = LogManager.getLogger(ListItem.class);
     private List<MenuItemComponents> list;
     private HashMap<String,JPanel> mapItem;
@@ -62,13 +64,12 @@ public class ListItem extends JPanel{
         mapItem.put("NhaCungCap", new NhaCungCap());
         mapItem.put("PhanQuyen", new PhanQuyen());
         mapItem.put("ThongKe", new ThongKe());
-
         for(String[] it : listItemTaskbar) {
             String iconPath = it[0];
             String name = it[1];
             String namePanel = it[2];
             int id = PhanQuyenBUS.getMaDanhMuc(it[2]);
-            if (Session.maDanhMucQuyen == null || (!Session.maDanhMucQuyen.contains(id) && it[2] != "TrangChu" && it[2] != "DangXuat")) {
+            if (Session.maDanhMucQuyen == null || (!Session.maDanhMucQuyen.contains(id) && !Objects.equals(it[2], "TrangChu") && !Objects.equals(it[2], "DangXuat"))) {
                 continue;
             }
             MenuItemComponents c = new MenuItemComponents(iconPath, name, namePanel, mainGui);
