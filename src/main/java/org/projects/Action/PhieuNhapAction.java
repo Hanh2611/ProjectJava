@@ -2,12 +2,16 @@ package org.projects.Action;
 
 import org.projects.BUS.ChiTietPhieuNhapFullEntityBUS;
 import org.projects.BUS.PhieuNhapBUS;
+import org.projects.BUS.SanPhamBus;
+import org.projects.DAO.ChiTietPhieuNhapDAO;
 import org.projects.GUI.Components.header.generalFunction;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.PhieuNhap.ChiTietPN;
 import org.projects.GUI.Panel.PhieuNhap;
+import org.projects.entity.ChiTietPhieuNhapEntity;
 import org.projects.entity.ChiTietPhieuNhapFullEntity;
 import org.projects.entity.PhieuNhapEntity;
+import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -20,9 +24,12 @@ public class PhieuNhapAction extends MouseAdapter implements ActionListener, Doc
     private PhieuNhapEntity phieuNhapEntity;
     private ChiTietPN chiTietPN;
     private headerBar header;
+    private final SanPhamBus sanPhamBus;
+
 
     public PhieuNhapAction(PhieuNhap panel) {
         this.panel = panel;
+        this.sanPhamBus = new SanPhamBus();
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -63,6 +70,24 @@ public class PhieuNhapAction extends MouseAdapter implements ActionListener, Doc
                             JOptionPane.YES_NO_OPTION
                     );
                     if (confirm == JOptionPane.YES_OPTION) {
+                        ChiTietPhieuNhapDAO ctDAO = new ChiTietPhieuNhapDAO();
+                        List<ChiTietPhieuNhapEntity> dsCT = ctDAO.getChiTietByMaPhieuNhap(maPN);
+
+                        for (ChiTietPhieuNhapEntity ct : dsCT) {
+                            int maSP = ct.getMaSP();
+                            int soLuong = ct.getSoLuong();
+
+                            SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
+                            sp.setSoLuongTon(sp.getSoLuongTon() - soLuong);
+
+                            if (sp.getSoLuongTon() <= 0) {
+                                sp.setSoLuongTon(0);
+                                sp.setHetHang(true);
+                            }
+
+                            sanPhamBus.updateSanPham(sp);
+                        }
+
                         PhieuNhapEntity pn = new PhieuNhapEntity();
                         pn.setMaPN(maPN);
                         boolean result = PhieuNhapBUS.xoa(pn);

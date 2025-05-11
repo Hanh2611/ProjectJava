@@ -654,6 +654,7 @@ public class ThemPN extends JPanel {
                         String giaNhapStr = modelDanhSachNhap.getValueAt(i, 3).toString();
                         double gianhap = parseTien(giaNhapStr); // Xử lý giống như tổng tiền
                         double thanhtien = soluong * gianhap;
+
                         SanPhamEntity sp = sanPhamBus.getSanPhamById(masp);
                         sp.setSoLuongTon(sp.getSoLuongTon() + soluong);
                         if(sp.getSoLuongTon() > 0){

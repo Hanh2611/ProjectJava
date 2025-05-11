@@ -1,6 +1,7 @@
 package org.projects.GUI.DiaLog.HoaDon;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.SanPhamBus;
 import org.projects.DAO.ChiTietHoaDonDAO;
 import org.projects.DAO.HoaDonDAO;
 import org.projects.DAO.KhachHangDAO;
@@ -40,12 +41,14 @@ public class CapNhatHD extends JPanel {
     private HoaDon hoaDon;
     private int maKhachHangDuocChon = -1; // trong class
     private Map<String, KhachHangEntity> khMap = new HashMap<>();
+    private final SanPhamBus sanPhamBus;
 
 
     public CapNhatHD(HoaDon hoaDon) {
         setPreferredSize(new Dimension(940, 650));
         setOpaque(false);
         setLayout(null);
+        sanPhamBus = new SanPhamBus();
         this.hoaDon = hoaDon;
         init();
         loadDataToTableSanPham();
@@ -476,8 +479,7 @@ public class CapNhatHD extends JPanel {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 hoaDon.showTrangChinh(); // Gọi hàm trong MainFrame
-                modelDanhSachNhap.setRowCount(0);
-                updateTotal(modelDanhSachNhap, txtTongTien);
+                resetForm();
             }
         });
         btnSuaSP.addActionListener(e -> {
@@ -661,6 +663,7 @@ public class CapNhatHD extends JPanel {
             hoaDonEntity.setTrangThai("chua_thanh_toan");
 
             HoaDonDAO hoaDonDAO = new HoaDonDAO();
+
             ChiTietHoaDonDAO chiTietDAO = new ChiTietHoaDonDAO();
 
             // Cập nhật thông tin hóa đơn
@@ -670,6 +673,13 @@ public class CapNhatHD extends JPanel {
                 return;
             }
 
+            List<ChiTietHoaDonEntity> danhSachCu = chiTietDAO.getChiTietByMaHoaDon(maHD);
+            for (ChiTietHoaDonEntity ct : danhSachCu) {
+                SanPhamEntity sp = sanPhamBus.getSanPhamById(ct.getMaSP());
+                sp.setSoLuongTon(sp.getSoLuongTon() + ct.getSoLuong()); // hoàn lại số lượng cũ
+                if (sp.getSoLuongTon() > 0) sp.setHetHang(false);
+                sanPhamBus.updateSanPham(sp);
+            }
             // Xóa chi tiết hóa đơn cũ
             chiTietDAO.xoaTatCaTheoMaHD(maHD);
             // Thêm lại chi tiết hóa đơn mới
@@ -678,7 +688,10 @@ public class CapNhatHD extends JPanel {
                 int soLuong = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 2).toString());
                 double giaBan = ThemPN.parseTien(modelDanhSachNhap.getValueAt(i, 3).toString());
                 double thanhTien = soLuong * giaBan;
-
+                SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
+                sp.setSoLuongTon(sp.getSoLuongTon() - soLuong); // trừ số lượng mới
+                if(sp.getSoLuongTon() == 0) sp.setHetHang(true);
+                sanPhamBus.updateSanPham(sp);
                 ChiTietHoaDonEntity chiTiet = new ChiTietHoaDonEntity(maSP, maHD, soLuong, giaBan, thanhTien);
                 chiTietDAO.them(chiTiet);
             }
@@ -698,7 +711,21 @@ public class CapNhatHD extends JPanel {
 
         panelright.add(nvNhap);
     }
-
+    public void resetForm(){
+        hienthi_masp.setText("");
+        hienthi_tensp.setText("");
+        nhapsoluong.setText("");
+        nhapgiaban.setText("");
+        txtSoLuongTon.setText("");
+        txtKhachHang.setText("");
+        hienthi_masp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        hienthi_tensp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        nhapgiaban.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        txtSoLuongTon.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        modelDanhSachNhap.setRowCount(0);
+        updateTotal(modelDanhSachNhap, txtTongTien);
+    }
     private void showChonKhachHangDialog() {
         JDialog dialog = new JDialog((Frame) null, "Chọn Khách Hàng", true);
         dialog.setSize(500, 350);

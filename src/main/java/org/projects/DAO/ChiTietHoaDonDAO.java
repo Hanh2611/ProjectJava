@@ -5,7 +5,9 @@ import org.projects.entity.ChiTietHoaDonEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietHoaDonDAO implements ChucNangDAO<ChiTietHoaDonEntity>  {
@@ -80,5 +82,31 @@ public class ChiTietHoaDonDAO implements ChucNangDAO<ChiTietHoaDonEntity>  {
     @Override
     public ChiTietHoaDonEntity search(int id) {
         return null;
+    }
+
+    public List<ChiTietHoaDonEntity> getChiTietByMaHoaDon(int maHoaDon) {
+        List<ChiTietHoaDonEntity> list = new ArrayList<>();
+        String query = "SELECT * FROM chi_tiet_hoa_don WHERE ma_hoa_don = ?";
+
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+
+            ps.setInt(1, maHoaDon);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ChiTietHoaDonEntity ct = new ChiTietHoaDonEntity();
+                    ct.setMaSP(rs.getInt("ma_san_pham"));
+                    ct.setMaHD(rs.getInt("ma_hoa_don"));
+                    ct.setSoLuong(rs.getInt("so_luong"));
+                    ct.setGiaBan(rs.getDouble("gia_ban"));
+                    ct.setThanhTien(rs.getDouble("thanh_tien"));
+                    list.add(ct);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 }

@@ -13,6 +13,7 @@ public class ChiTietHoaDonEntity {
         this.giaBan = giaBan;
         this.thanhTien = thanhTien;
     }
+    public ChiTietHoaDonEntity(){}
     public int getMaSP() {
         return maSP;
 

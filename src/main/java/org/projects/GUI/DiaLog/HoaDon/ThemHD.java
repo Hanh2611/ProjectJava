@@ -42,6 +42,7 @@ public class ThemHD extends JPanel {
     JTableHeader header, headerdanhSachSanPhamNhap;
     JScrollPane scrollPane, scrollPaneNhap;
     FlatSVGIcon icon_themsp,icon_bosp,icon_suasp,icon_dong,icon_tao;
+    DefaultTableModel modelDanhSachNhap;
     private HoaDon hoaDon;
     private int maKhachHangDuocChon = -1; // trong class
     private final SanPhamBus sanPhamBus;
@@ -348,7 +349,7 @@ public class ThemHD extends JPanel {
         });
         // 🆕 Tạo bảng chứa danh sách sản phẩm đã chọn
         String[] columnNamesNhap = {"Mã SP", "Tên SP", "Số lượng", "Giá bán","Thành tiền"};
-        DefaultTableModel modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
+        modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -511,20 +512,8 @@ public class ThemHD extends JPanel {
             );
 
             if (confirm == JOptionPane.YES_OPTION) {
-                hienthi_masp.setText("");
-                hienthi_tensp.setText("");
-                nhapsoluong.setText("");
-                nhapgiaban.setText("");
-                txtSoLuongTon.setText("");
-                txtKhachHang.setText("");
-                hienthi_masp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                hienthi_tensp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapgiaban.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                txtSoLuongTon.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
                 hoaDon.showTrangChinh(); // Gọi hàm trong MainFrame
-                modelDanhSachNhap.setRowCount(0);
-                updateTotal(modelDanhSachNhap, txtTongTien);
+                resetForm();
             }
         });
         btnSuaSP.addActionListener(e -> {
@@ -886,6 +875,21 @@ public class ThemHD extends JPanel {
         dialog.setVisible(true);
     }
 
+    public void resetForm(){
+        hienthi_masp.setText("");
+        hienthi_tensp.setText("");
+        nhapsoluong.setText("");
+        nhapgiaban.setText("");
+        txtSoLuongTon.setText("");
+        txtKhachHang.setText("");
+        hienthi_masp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        hienthi_tensp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        nhapgiaban.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        txtSoLuongTon.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        modelDanhSachNhap.setRowCount(0);
+        updateTotal(modelDanhSachNhap, txtTongTien);
+    }
 
 
     private void updateTotal(DefaultTableModel model, JLabel txtTongTien) {
