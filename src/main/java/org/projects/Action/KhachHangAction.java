@@ -16,18 +16,29 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.*;
+import java.util.ArrayList;
 
-public class KhachHangAction implements ActionListener  , MouseListener, ItemListener, KeyListener, DocumentListener {
+public class KhachHangAction extends FocusAdapter implements ActionListener  , MouseListener, ItemListener, KeyListener, DocumentListener {
     private KhachHang kh;
     private ShowAddKhachHang showAddKhachHang;
     private ShowFixKhachHang showFixKhachHang;
     private ShowDeltailKhachHang showDeltailKhachHang;
     private ShowDelKhachHang showDelKhachHang;
     KhachHangBUS bus;
-    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    public JTextField textField;
+    public int fieldIndex;
+    public ArrayList<JTextField> listAdd;
+    public ArrayList<JLabel> errorLabels;
+
     public KhachHangAction(KhachHang kh) {
         this.kh = kh;
         bus = new KhachHangBUS(kh);
+    }
+    public KhachHangAction(JTextField textField, int fieldIndex, ArrayList<JTextField> listAdd, ArrayList<JLabel> errorLabels) {
+        this.textField = textField;
+        this.fieldIndex = fieldIndex;
+        this.listAdd = listAdd;
+        this.errorLabels = errorLabels;
     }
     public KhachHangAction(){}
     @Override
@@ -37,40 +48,18 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
         String sql = "select ma_khach_hang from khach_hang where ma_khach_hang = ?";
         if(showAddKhachHang != null) {
             if (source.equals(showAddKhachHang.add.getSaveButton())) {
-                //System.out.println("save");
-                showAddKhachHang.add.insertData();
-                if(InputValid.checkRong_addPlace("Nhập mã khách hàng" , showAddKhachHang.add.getMa())) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập mã khách hàng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
-                }else if(InputValid.checkSameId(Integer.parseInt(showAddKhachHang.add.getMa()) , sql)){
-                    JOptionPane.showMessageDialog(null,"Mã khách hàng bị trùng vui lòng nhập mã khách hàng khác" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
-                }else if(!InputValid.checkMa(showAddKhachHang.add.getMa())){
-                    JOptionPane.showMessageDialog(null,"Mã khách hàng chỉ nhận giá trị số nguyên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showAddKhachHang.add.listAdd.get(0).requestFocusInWindow();
+                if(!showAddKhachHang.add.checkValid()){
+                    JOptionPane.showMessageDialog(null,"Vui lòng kiểm tra lại thông tin" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-                else if(InputValid.checkRong_addPlace("Nhập họ và tên" , showAddKhachHang.add.getTen())) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập tên" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showAddKhachHang.add.listAdd.get(1).requestFocusInWindow();
-                }else if(showAddKhachHang.add.getSdt().equals("Nhập số điện thoại")) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showAddKhachHang.add.listAdd.get(2).requestFocusInWindow();
-                }else if(!InputValid.checkSoDienThoai(showAddKhachHang.add.getSdt())){
-                    JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showAddKhachHang.add.listAdd.get(2).requestFocusInWindow();
-                }else if(InputValid.checkRong_addPlace("Nhập địa chỉ" , showAddKhachHang.add.getDiachi())) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập địa chỉ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showAddKhachHang.add.listAdd.get(3).requestFocusInWindow();
+                KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showAddKhachHang.add.getMa()), showAddKhachHang.add.getTen()
+                        , showAddKhachHang.add.getSdt(), showAddKhachHang.add.getDiachi() , showAddKhachHang.add.getAvatar());
+                if (bus.them(khe)) {
+                    JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    kh.loadList(bus.getList());
+                    showAddKhachHang.close();
                 }else {
-                    KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showAddKhachHang.add.getMa()), showAddKhachHang.add.getTen()
-                            , showAddKhachHang.add.getSdt(), showAddKhachHang.add.getDiachi() , showAddKhachHang.add.getAvatar());
-                    if (bus.them(khe)) {
-                        JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
-                        kh.loadList(bus.getList());
-                        showAddKhachHang.close();
-                    }else {
-                        JOptionPane.showMessageDialog(null, "Thêm khách hàng thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
-                    }
+                    JOptionPane.showMessageDialog(null, "Thêm khách hàng thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
                 }
             } else if (source.equals(showAddKhachHang.add.getCancelButton())) {
 //                System.out.println("cancel");
@@ -103,19 +92,10 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
             }else if (source.equals(showFixKhachHang.fix.getUpdateButton())){
 //                System.out.println("fix ok update");
                 showFixKhachHang.fix.insertData();
-                if(showFixKhachHang.fix.getTen().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập tên khách hàng" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showFixKhachHang.fix.listAdd.get(1).requestFocusInWindow();
-                }else if(showFixKhachHang.fix.getStd().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập số điện thoại" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showFixKhachHang.fix.listAdd.get(2).requestFocusInWindow();
-                }else if(!showFixKhachHang.fix.getStd().matches("0\\d{9}")){
-                    JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showFixKhachHang.fix.listAdd.get(2).requestFocusInWindow();
-                }else if(showFixKhachHang.fix.getDiachi().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"Vui lòng nhập địa chỉ" ,"thông báo", JOptionPane.ERROR_MESSAGE);
-                    showFixKhachHang.fix.listAdd.get(3).requestFocusInWindow();
-                }else{
+                if(!showFixKhachHang.fix.checkValid()){
+                    JOptionPane.showMessageDialog(null,"Vui lòng kiểm tra lại thông tin" ,"thông báo", JOptionPane.ERROR_MESSAGE);
+                }
+                else{
                     KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showFixKhachHang.fix.getMa()), showFixKhachHang.fix.getTen()
                             ,showFixKhachHang.fix.getStd(), showFixKhachHang.fix.getDiachi() , showFixKhachHang.fix.getAvatar());
                     if(bus.sua(khe)){
@@ -268,5 +248,50 @@ public class KhachHangAction implements ActionListener  , MouseListener, ItemLis
     @Override
     public void changedUpdate(DocumentEvent e) {
         doSearch();
+    }
+
+    public void checkTen(JTextField textField, int index) {
+        if (InputValid.checkRong_addPlace("Nhập họ và tên", textField.getText())) {
+            InputValid.showError(index, "Vui lòng nhập tên khách hàng" , errorLabels, listAdd , false);
+        }else InputValid.clearError(index , errorLabels , listAdd , false);
+    }
+
+    public void checkSDT(JTextField textField, int index) {
+        if (InputValid.checkRong_addPlace("Nhập số điện thoại", textField.getText())) {
+            InputValid.showError(index, "Vui lòng nhập số điện thoại" , errorLabels, listAdd , false);
+        } else if (!InputValid.checkSoDienThoai(textField.getText())) {
+            InputValid.showError(index, "Số điện thoại không hợp lệ" , errorLabels , listAdd , false);
+        } else {
+            InputValid.clearError(index , errorLabels , listAdd, false);
+        }
+    }
+    public void checkDiaChi(JTextField textField, int index) {
+        if (InputValid.checkRong_addPlace("Nhập địa chỉ", textField.getText())) {
+            InputValid.showError(index, "Vui lòng nhập địa chỉ khách hàng" , errorLabels, listAdd , false);
+        }else InputValid.clearError(index , errorLabels , listAdd , false);
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        JTextField source = (JTextField) e.getSource();
+        int index = listAdd.indexOf(source);
+        switch (index) {
+            case 1:
+                checkTen(source , index);
+                break;
+            case 2:
+                checkSDT(source, index);
+                break;
+            case 3:
+                checkDiaChi(source, index);
+                break;
+            default:
+                if (InputValid.checkRong_addPlace(source.getName(), source.getText())) {
+                    InputValid.showError(index, "Vui lòng nhập thông tin", errorLabels, listAdd, false);
+                } else {
+                    InputValid.clearError(index, errorLabels, listAdd, false);
+                }
+                break;
+        }
     }
 }

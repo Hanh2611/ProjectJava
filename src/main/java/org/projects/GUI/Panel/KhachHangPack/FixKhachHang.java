@@ -6,6 +6,7 @@ import org.projects.Action.KhachHangAction;
 import org.projects.Action.NhanVienAction;
 import org.projects.BUS.NhanVienBus;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.utils.InputValid;
 import org.projects.entity.KhachHangEntity;
 import org.projects.entity.NhanVienEntity;
 
@@ -39,6 +40,7 @@ public class FixKhachHang extends JPanel {
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
     private String ma , ten , diachi , std;
+    public ArrayList<JLabel> errorLabels;
     public FixKhachHang() {
 //        initComponents();
     }
@@ -90,6 +92,8 @@ public class FixKhachHang extends JPanel {
 //        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
         String [] str = {"Mã KH: ", "Tên: ", "Sdt: ", "Địa chỉ: "};
         listAdd = new ArrayList<>();
+        errorLabels = new ArrayList<>();
+
 //        comboBox = new JComboBox<>(items);
         for (int index = 0; index < list.length; index++) {
             String s = list[index];
@@ -106,7 +110,7 @@ public class FixKhachHang extends JPanel {
             jTextFieldLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             JTextField jTextFieldValue = new JTextField(s);
             if(index == 0){
-                jTextFieldValue.setEditable(false);
+                jTextFieldValue.setEnabled(false);
             }
             //jTextFieldValue.setHorizontalAlignment(JTextField.CENTER);
             jTextFieldValue.setFont(new Font("JETBRAINS MONO", Font.BOLD, 14));
@@ -115,8 +119,18 @@ public class FixKhachHang extends JPanel {
             jTextFieldValue.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             p.add(jTextFieldLabel , BorderLayout.WEST);
             p.add(jTextFieldValue , BorderLayout.CENTER);
-
             mainInfo.add(p);
+            JPanel errorPanel = new JPanel();
+            errorPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            JLabel errorLabel = new JLabel("");
+            errorLabel.setForeground(Color.RED);
+            errorLabel.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            errorLabels.add(errorLabel);
+            errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            errorPanel.setBackground(new Color(240, 240, 240));
+            jTextFieldValue.addFocusListener(new KhachHangAction(jTextFieldValue , index , listAdd , errorLabels));
+            errorPanel.add(errorLabel);
+            mainInfo.add(errorPanel);
             mainInfo.add(Box.createVerticalStrut(5));
             listAdd.add(jTextFieldValue);
         }
@@ -283,5 +297,40 @@ public class FixKhachHang extends JPanel {
 
     public String getAvatar() {
         return avatar;
+    }
+    public boolean checkValid() {
+        boolean ok = true;
+        if(listAdd == null) {
+            System.out.println("listAdd is null");
+            return false;
+        }
+        //System.out.println(listAdd.size());
+        for (int i = 0; i < listAdd.size(); i++) {
+            JTextField tf = listAdd.get(i);
+            switch (i) {
+                case 1:
+                    if (InputValid.checkRong_addPlace("Nhập họ và tên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập tên nhân viên", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 2:
+                    if (InputValid.checkRong_addPlace("Nhập số điện thoại", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập số điện thoại", errorLabels, listAdd, false);
+                        ok = false;
+                    } else if (!InputValid.checkSoDienThoai(tf.getText())) {
+                        InputValid.showError(i, "Số điện thoại không hợp lệ", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 3:
+                    if (InputValid.checkRong_addPlace("Nhập địa chỉ", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập địa chỉ", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+            }
+        }
+        return ok;
     }
 }

@@ -2,6 +2,10 @@ package org.projects.GUI.Panel.KhachHangPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.KhachHangAction;
+import org.projects.Action.NhanVienAction;
+import org.projects.DAO.KhachHangDAO;
+import org.projects.GUI.utils.InputValid;
+
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
@@ -29,10 +33,12 @@ public class AddKhachHangConsole extends JPanel {
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
     public ArrayList<JTextField> listAdd;
+    public ArrayList<JLabel> errorLabels;
     public String avatar;
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
     private String ma ,ten , sdt , diachi;
+    KhachHangDAO dao = new KhachHangDAO();
     public AddKhachHangConsole() {
         initComponents();
     }
@@ -66,20 +72,40 @@ public class AddKhachHangConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập mã khách hàng", "Nhập họ và tên" ,"Nhập số điện thoại", "Nhập địa chỉ"};
+        String[] list = {"Nhập họ và tên" ,"Nhập số điện thoại", "Nhập địa chỉ"};
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
         listAdd = new ArrayList<>();
+        errorLabels = new ArrayList<>();
         comboBox = new JComboBox<>(items);
-        for (String s : list) {
-            JTextField jTextField = new JTextField(s);
-            addPlaceholderStyle(jTextField, s);
-            jTextField.setName(s);
+        int newMaNhanVien = dao.getMaxKhachHang() + 1;
+        JTextField maNhanVienField = new JTextField(String.valueOf(newMaNhanVien));
+        maNhanVienField.setVisible(false);
+        listAdd.add(maNhanVienField);
+        JLabel maNhanVienError = new JLabel("");
+        maNhanVienError.setVisible(false);
+        errorLabels.add(maNhanVienError);
+        for (int i = 0 ; i < list.length ; i++) {
+            JTextField jTextField = new JTextField(list[i]);
+            addPlaceholderStyle(jTextField, list[i]);
+            jTextField.setName(list[i]);
             jTextField.setBackground(new Color(240, 240, 240));
             jTextField.setForeground(new Color(192, 192, 192));
             jTextField.setFont(new Font("JETBRAINS MONO", Font.ITALIC, 14));
             jTextField.setMaximumSize(new Dimension(500, 40));
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+            JPanel errorPanel = new JPanel();
+            errorPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+            JLabel errorLabel = new JLabel("");
+            errorLabel.setForeground(Color.RED);
+            errorLabel.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
+            errorLabels.add(errorLabel);
+            errorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            errorPanel.setBackground(new Color(240, 240, 240));
+            final int index = i;
+            jTextField.addFocusListener(new KhachHangAction(jTextField , index , listAdd , errorLabels));
+            errorPanel.add(errorLabel);
             mainInfo.add(jTextField);
+            mainInfo.add(errorPanel);
             mainInfo.add(Box.createVerticalStrut(5));
             listAdd.add(jTextField);
         }
@@ -285,9 +311,13 @@ public class AddKhachHangConsole extends JPanel {
     }
 
     public void resetForm() {
+        for(JLabel label : errorLabels) {
+            label.setText("");
+        }
         for (JTextField textField : listAdd) {
             textField.setText(textField.getName());
             textField.setForeground(new Color(192, 192, 192));
+            InputValid.resetBorder(textField , false);
         }
         isResettingComboBox = true;
         comboBox.setSelectedIndex(0);
@@ -342,5 +372,40 @@ public class AddKhachHangConsole extends JPanel {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+    public boolean checkValid() {
+        boolean ok = true;
+        if(listAdd == null) {
+            System.out.println("listAdd is null");
+            return false;
+        }
+        //System.out.println(listAdd.size());
+        for (int i = 0; i < listAdd.size(); i++) {
+            JTextField tf = listAdd.get(i);
+            switch (i) {
+                case 1:
+                    if (InputValid.checkRong_addPlace("Nhập họ và tên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập tên khách hàng", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 2:
+                    if (InputValid.checkRong_addPlace("Nhập số điện thoại", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập số điện thoại", errorLabels, listAdd, false);
+                        ok = false;
+                    } else if (!InputValid.checkSoDienThoai(tf.getText())) {
+                        InputValid.showError(i, "Số điện thoại không hợp lệ", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 3:
+                    if (InputValid.checkRong_addPlace("Nhập địa chỉ", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập địa chỉ", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+            }
+        }
+        return ok;
     }
 }

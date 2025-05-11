@@ -15,7 +15,7 @@ public class InputValid {
     private static final String TEN_NGUOI_DUNG_REGEX = "^[a-zA-ZÀ-ỹ\\s]{3,50}$";
     private static final String TEN_HOP_LE_REGEX = "^[a-zA-ZÀ-ỹ_\\s]{3,50}$"; // có _
     private static final String MA_HOP_LE_REGEX = "\\d+";
-    private static final String EMAIL_HOP_LE_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$";
+    private static final String EMAIL_HOP_LE_REGEX = "^[A-Za-z0-9+_.-]+@gmail+\\.com$";
     private static final String SO_DIEN_THOAI_HOP_LE_REGEX = "0\\d{9}";
 
 
@@ -121,5 +121,13 @@ public class InputValid {
         }
     }
 
-
+    public static void resetBorder(JTextField textField , boolean full) {
+        if(full){
+            Border normalBorder = BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(220, 220, 220));
+            textField.setBorder(normalBorder);
+        }else{
+            Border normalBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(220, 220, 220));
+            textField.setBorder(normalBorder);
+        }
+    }
 }
