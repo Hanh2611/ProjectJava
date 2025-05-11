@@ -725,18 +725,13 @@ public class ThemHD extends JPanel {
     private void loadMaHoaDon() {
         int manv = Session.curUser.getMaNguoiDung();
         String tennv = Session.curUser.getTenDangNhap();
-        nhapNVNhap.setText(String.valueOf(manv));      // chuyển int → String
-        tennvnhap.setText(tennv);
+        nhapNVNhap.setText(String.valueOf(manv)); // Hiển thị mã nhân viên
+        tennvnhap.setText(tennv);                 // Hiển thị tên nhân viên
+
         HoaDonDAO dao = new HoaDonDAO();
-        List<HoaDonEntity> list = dao.showlist();
-        int max = 0;
-        for (HoaDonEntity hd : list) {
-            if (hd.getMaHoaDon() > max) {
-                max = hd.getMaHoaDon();
-            }
-        }
-        int nextMaHD = max + 1;
-        nhapMaPN.setText(String.valueOf(nextMaHD));
+        int maxMaHD = dao.getMaxMaHoaDon(); // Lấy mã hóa đơn lớn nhất từ DB
+        int nextMaHD = maxMaHD + 1;
+        nhapMaPN.setText(String.valueOf(nextMaHD)); // Gán vào ô nhập mã
     }
     private void loadNgayTao() {
         LocalDateTime now = LocalDateTime.now();

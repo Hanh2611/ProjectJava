@@ -158,5 +158,18 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
             }
             return false;
     }
+    public int getMaxMaPN() {
+        String sql = "SELECT MAX(ma_phieu_nhap) AS maxMaPN FROM phieu_nhap";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("maxMaPN");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 }
