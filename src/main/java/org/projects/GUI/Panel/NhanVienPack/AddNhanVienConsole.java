@@ -32,6 +32,7 @@ public class AddNhanVienConsole extends JPanel {
     private ArrayList<JLabel> errorLabels;
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
+    public boolean isReseting = false;
     public ArrayList<JTextField> listAdd;
     GridBagConstraints c = new GridBagConstraints();
     GridBagConstraints f = new GridBagConstraints();
@@ -39,6 +40,7 @@ public class AddNhanVienConsole extends JPanel {
     private String ten , email , sdt , chuc_vu;
     private int luong ;
     private boolean gioitinh;
+    public ArrayList<String> default_list;
     NhanVienDao dao = new NhanVienDao();
     ChiTietUserConsole chiTietUserConsole = new ChiTietUserConsole();
     public AddNhanVienConsole() {
@@ -78,6 +80,7 @@ public class AddNhanVienConsole extends JPanel {
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Nhân viên kho"};
         listAdd = new ArrayList<>();
         errorLabels = new ArrayList<>();
+        default_list = new ArrayList<>();
         comboBox = new JComboBox<>(items);
         int newMaNhanVien = dao.getMaxMaNhanVien() + 1;
         JTextField maNhanVienField = new JTextField(String.valueOf(newMaNhanVien));
@@ -86,6 +89,7 @@ public class AddNhanVienConsole extends JPanel {
         JLabel maNhanVienError = new JLabel("");
         maNhanVienError.setVisible(false);
         errorLabels.add(maNhanVienError);
+        default_list.add(String.valueOf(newMaNhanVien));
         for (int i = 1 ; i < list.length ; i++) {
             JTextField jTextField = new JTextField(list[i]);
             addPlaceholderStyle(jTextField, list[i]);
@@ -97,7 +101,7 @@ public class AddNhanVienConsole extends JPanel {
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
             JPanel errorPanel = new JPanel();
             errorPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
+            default_list.add(list[i]);
             JLabel errorLabel = new JLabel("");
             errorLabel.setForeground(Color.RED);
             errorLabel.setFont(new Font("JETBRAINS MONO", Font.PLAIN, 12));
@@ -111,29 +115,36 @@ public class AddNhanVienConsole extends JPanel {
             mainInfo.add(errorPanel);
             mainInfo.add(Box.createVerticalStrut(5));
             listAdd.add(jTextField);
-            jTextField.getDocument().addDocumentListener(new DocumentListener() {
-                public void changedUpdate(DocumentEvent e) {
-                    if (jTextField.getName().equals("Nhập lương nhân viên")) {
-                        InputValid.validateLuongInput(jTextField, index , errorLabels , listAdd);
-                    } else {
-                        InputValid.clearError(index, errorLabels , listAdd , false);
+            if(index == 4) {
+                jTextField.getDocument().addDocumentListener(new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        if (isReseting) return;
+                        if (jTextField.getName().equals("Nhập lương nhân viên")) {
+                            InputValid.validateLuongInput(jTextField, index, errorLabels, listAdd);
+                        } else {
+                            InputValid.clearError(index, errorLabels, listAdd, false);
+                        }
                     }
-                }
-                public void removeUpdate(DocumentEvent e) {
-                    if (jTextField.getName().equals("Nhập lương nhân viên")) {
-                        InputValid.validateLuongInput(jTextField, index , errorLabels , listAdd);
-                    } else {
-                        InputValid.clearError(index, errorLabels , listAdd , false);
+
+                    public void removeUpdate(DocumentEvent e) {
+                        if (isReseting) return;
+                        if (jTextField.getName().equals("Nhập lương nhân viên")) {
+                            InputValid.validateLuongInput(jTextField, index, errorLabels, listAdd);
+                        } else {
+                            InputValid.clearError(index, errorLabels, listAdd, false);
+                        }
                     }
-                }
-                public void insertUpdate(DocumentEvent e) {
-                    if (jTextField.getName().equals("Nhập lương nhân viên")) {
-                        InputValid.validateLuongInput(jTextField, index , errorLabels , listAdd);
-                    } else {
-                        InputValid.clearError(index, errorLabels , listAdd , false);
+
+                    public void insertUpdate(DocumentEvent e) {
+                        if (isReseting) return;
+                        if (jTextField.getName().equals("Nhập lương nhân viên")) {
+                            InputValid.validateLuongInput(jTextField, index, errorLabels, listAdd);
+                        } else {
+                            InputValid.clearError(index, errorLabels, listAdd, false);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         comboBox.setRenderer(new DefaultListCellRenderer() {
@@ -358,32 +369,17 @@ public class AddNhanVienConsole extends JPanel {
         return reset;
     }
 
-    public void showError(int index, String message) {
-        if (index >= 0 && index < errorLabels.size()) {
-            errorLabels.get(index).setText(message);
-            errorLabels.get(index).setVisible(true);
-            errorLabels.get(index).revalidate();
-            errorLabels.get(index).repaint();
-        }
-    }
-
-    private void clearError(int index) {
-        if (index >= 0 && index < errorLabels.size()) {
-            errorLabels.get(index).setText("");
-            errorLabels.get(index).setVisible(false);
-            errorLabels.get(index).revalidate();
-            errorLabels.get(index).repaint();
-        }
-    }
-
     public void resetForm() {
+        isReseting = true;
         for(JLabel label : errorLabels) {
             label.setText("");
-            label.setForeground(Color.lightGray);
         }
+        int i = 0;
         for (JTextField textField : listAdd) {
-            textField.setText(textField.getName());
-            InputValid.resetBorder(textField , false);
+            textField.setText(default_list.get(i));
+            //System.out.println(default_list.get(i));
+            i++;
+            InputValid.resetBorder(textField, false);
             textField.setForeground(new Color(192, 192, 192));
         }
         isResettingComboBox = true;
@@ -393,12 +389,13 @@ public class AddNhanVienConsole extends JPanel {
         genderPanel.revalidate();
         changeImage = Objects.requireNonNull(getClass().getResource("/Img/upload.png")).getPath();
         isResettingComboBox = false;
-        JPanel newParentImg = getJPanel(changeImage , 220 , 150);
+        JPanel newParentImg = getJPanel(changeImage, 220, 150);
         mainImg.remove(parentImg);
         mainImg.add(newParentImg, BorderLayout.CENTER);
         parentImg = newParentImg;
         mainImg.revalidate();
         mainImg.repaint();
+        isReseting = false;
     }
 
     public String getMa() {
@@ -468,28 +465,20 @@ public class AddNhanVienConsole extends JPanel {
     public boolean checkVaildALL() {
         boolean ok = true;
         if(listAdd == null) {
-            System.out.println("listAdd is null");
+            //System.out.println("listAdd is null");
             return false;
         }
         //System.out.println(listAdd.size());
         for (int i = 0; i < listAdd.size(); i++) {
             JTextField tf = listAdd.get(i);
-            System.out.println(tf.getText());
+            //System.out.println(tf.getText());
             switch (i) {
-                case 0:
-                    if (InputValid.checkRong_addPlace("Nhập mã nhân viên", tf.getText())) {
-                        InputValid.showError(i, "Vui lòng nhập mã nhân viên" , errorLabels , listAdd , false);
-                        ok = false;
-                    } else if (!InputValid.checkMa(tf.getText())) {
-                        InputValid.showError(i, "Mã nhân viên chỉ nhận giá trị số nguyên" , errorLabels , listAdd , false);
-                        ok = false;
-                    }
-                    break;
                 case 1:
                     if (InputValid.checkRong_addPlace("Nhập họ và tên", tf.getText())) {
                         InputValid.showError(i, "Vui lòng nhập tên nhân viên" , errorLabels , listAdd , false);
                         ok = false;
                     }
+//                    System.out.println("lỗi");
                     break;
                 case 2:
                     if (InputValid.checkRong_addPlace("Nhập Email", tf.getText())) {
@@ -499,6 +488,7 @@ public class AddNhanVienConsole extends JPanel {
                         InputValid.showError(i, "Email không đúng định dạng" , errorLabels , listAdd , false);
                         ok = false;
                     }
+//                    System.out.println("lỗi");
                     break;
                 case 3:
                     if (InputValid.checkRong_addPlace("Nhập số điện thoại", tf.getText())) {

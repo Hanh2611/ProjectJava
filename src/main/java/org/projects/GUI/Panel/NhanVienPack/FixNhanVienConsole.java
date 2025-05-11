@@ -25,7 +25,6 @@ public class FixNhanVienConsole extends JPanel {
     private boolean isResettingComboBox = false;
     public JComboBox<String> comboBox;
     public JPanel genderPanel;
-
     ChiTietUserConsole chiTietUserConsole = new ChiTietUserConsole();
     public ArrayList<JTextField> listAdd;
     GridBagConstraints c = new GridBagConstraints();
@@ -41,7 +40,10 @@ public class FixNhanVienConsole extends JPanel {
         setTen(listAdd.get(1).getText().trim());
         setEmail(listAdd.get(2).getText().trim());
         setStd(listAdd.get(3).getText().trim());
-        setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
+        if(listAdd.get(4).getText().trim().equals("")){
+            setLuong(0);
+        }else if(Long.parseLong(listAdd.get(4).getText().trim()) > Integer.MAX_VALUE) setLuong(Integer.MAX_VALUE);
+        else setLuong(Integer.parseInt(listAdd.get(4).getText().trim()));
         setChucvu((String)comboBox.getSelectedItem());
         setGioitinh(chiTietUserConsole.isGioitinh());
         System.out.println(getAvatar());
@@ -132,24 +134,32 @@ public class FixNhanVienConsole extends JPanel {
             mainInfo.add(Box.createVerticalStrut(5));
             listAdd.add(jTextField);
             index++;
-            jTextField.getDocument().addDocumentListener(new DocumentListener() {
-                public void changedUpdate(DocumentEvent e) {
-                    validateField(jTextField, value);
-                }
-                public void removeUpdate(DocumentEvent e) {
-                    validateField(jTextField, value);
-                }
-                public void insertUpdate(DocumentEvent e) {
-                    validateField(jTextField, value);
-                }
-                private void validateField(JTextField textField, int index) {
-                    if (index == 4) {
-                        InputValid.validateLuongInput(textField, index, errorLabels, listAdd);
-                    } else {
-                        InputValid.clearError(index, errorLabels, listAdd, false);
+            if(i == 4) {
+                jTextField.getDocument().addDocumentListener(new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        validateField(jTextField, value);
+                        InputValid.resetBorder(jTextField, false);
                     }
-                }
-            });
+
+                    public void removeUpdate(DocumentEvent e) {
+                        validateField(jTextField, value);
+                        InputValid.resetBorder(jTextField, false);
+                    }
+
+                    public void insertUpdate(DocumentEvent e) {
+                        validateField(jTextField, value);
+                        InputValid.resetBorder(jTextField, false);
+                    }
+
+                    private void validateField(JTextField textField, int index) {
+                        if (index == 4) {
+                            InputValid.validateLuongInput(textField, index, errorLabels, listAdd);
+                        } else {
+                            InputValid.clearError(index, errorLabels, listAdd, false);
+                        }
+                    }
+                });
+            }
         }
         comboBox.setSelectedItem(getChucvu());
         comboBox.setRenderer(new DefaultListCellRenderer() {
