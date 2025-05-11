@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.NhanVienAction;
+import org.projects.DAO.NhanVienDao;
 import org.projects.GUI.utils.InputValid;
 
 import javax.swing.*;
@@ -11,7 +12,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
@@ -39,6 +39,7 @@ public class AddNhanVienConsole extends JPanel {
     private String ten , email , sdt , chuc_vu;
     private int luong ;
     private boolean gioitinh;
+    NhanVienDao dao = new NhanVienDao();
     ChiTietUserConsole chiTietUserConsole = new ChiTietUserConsole();
     public AddNhanVienConsole() {
         initComponents();
@@ -73,12 +74,19 @@ public class AddNhanVienConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập mã nhân viên" , "Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại" , "Nhập lương nhân viên"};
+        String[] list = {"Nhập mã nhân viên","Nhập họ và tên", "Nhập Email" ,"Nhập số điện thoại" , "Nhập lương nhân viên"};
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Nhân viên kho"};
         listAdd = new ArrayList<>();
         errorLabels = new ArrayList<>();
         comboBox = new JComboBox<>(items);
-        for (int i = 0 ; i < list.length ; i++) {
+        int newMaNhanVien = dao.getMaxMaNhanVien() + 1;
+        JTextField maNhanVienField = new JTextField(String.valueOf(newMaNhanVien));
+        maNhanVienField.setVisible(false);
+        listAdd.add(maNhanVienField);
+        JLabel maNhanVienError = new JLabel("");
+        maNhanVienError.setVisible(false);
+        errorLabels.add(maNhanVienError);
+        for (int i = 1 ; i < list.length ; i++) {
             JTextField jTextField = new JTextField(list[i]);
             addPlaceholderStyle(jTextField, list[i]);
             jTextField.setName(list[i]);
@@ -87,7 +95,6 @@ public class AddNhanVienConsole extends JPanel {
             jTextField.setFont(new Font("JETBRAINS MONO", Font.ITALIC, 14));
             jTextField.setMaximumSize(new Dimension(500, 40));
             jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
-
             JPanel errorPanel = new JPanel();
             errorPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
@@ -370,8 +377,13 @@ public class AddNhanVienConsole extends JPanel {
     }
 
     public void resetForm() {
+        for(JLabel label : errorLabels) {
+            label.setText("");
+            label.setForeground(Color.lightGray);
+        }
         for (JTextField textField : listAdd) {
             textField.setText(textField.getName());
+            InputValid.resetBorder(textField , false);
             textField.setForeground(new Color(192, 192, 192));
         }
         isResettingComboBox = true;
@@ -451,5 +463,75 @@ public class AddNhanVienConsole extends JPanel {
 
     public  void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public boolean checkVaildALL() {
+        boolean ok = true;
+        if(listAdd == null) {
+            System.out.println("listAdd is null");
+            return false;
+        }
+        //System.out.println(listAdd.size());
+        for (int i = 0; i < listAdd.size(); i++) {
+            JTextField tf = listAdd.get(i);
+            System.out.println(tf.getText());
+            switch (i) {
+                case 0:
+                    if (InputValid.checkRong_addPlace("Nhập mã nhân viên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập mã nhân viên" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else if (!InputValid.checkMa(tf.getText())) {
+                        InputValid.showError(i, "Mã nhân viên chỉ nhận giá trị số nguyên" , errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 1:
+                    if (InputValid.checkRong_addPlace("Nhập họ và tên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập tên nhân viên" , errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 2:
+                    if (InputValid.checkRong_addPlace("Nhập Email", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập email" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else if (!InputValid.checkEmail(tf.getText())) {
+                        InputValid.showError(i, "Email không đúng định dạng" , errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 3:
+                    if (InputValid.checkRong_addPlace("Nhập số điện thoại", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập số điện thoại" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else if (!InputValid.checkSoDienThoai(tf.getText())) {
+                        InputValid.showError(i, "Số điện thoại không hợp lệ", errorLabels , listAdd , false);
+                        ok = false;
+                    }
+                    break;
+                case 4:
+                    String luongText = tf.getText().trim();
+                    if (InputValid.checkRong_addPlace("Nhập lương nhân viên", luongText)) {
+                        InputValid.showError(i, "Vui lòng nhập lương nhân viên" , errorLabels , listAdd , false);
+                        ok = false;
+                    } else {
+                        try {
+                            long luong = Long.parseLong(luongText);
+                            if (luong < 1000) {
+                                InputValid.showError(i, "Lương phải lớn hơn hoặc bằng 1,000" , errorLabels , listAdd , false);
+                                ok = false;
+                            } else if (luong > Integer.MAX_VALUE) {
+                                InputValid.showError(i, "Lương vượt quá giới hạn cho phép" , errorLabels , listAdd , false);
+                                ok = false;
+                            }
+                        } catch (NumberFormatException e) {
+                            InputValid.showError(i, "Lương phải là số nguyên" , errorLabels , listAdd , false);
+                            ok = false;
+                        }
+                    }
+                    break;
+            }
+        }
+        return ok;
     }
 }

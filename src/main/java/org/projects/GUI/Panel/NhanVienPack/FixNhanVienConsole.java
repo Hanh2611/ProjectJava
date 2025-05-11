@@ -88,7 +88,7 @@ public class FixNhanVienConsole extends JPanel {
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
         String[] list = {getMa() , getTen() , getEmail() , getStd() , Integer.toString(getLuong())};
-        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
+        String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Nhân viên kho",};
         String [] str = {"Mã NV: ", "Tên: ", "Email: ", "Sdt: ", "Lương: "};
         listAdd = new ArrayList<>();
         errorLabels = new ArrayList<>();
@@ -377,5 +377,75 @@ public class FixNhanVienConsole extends JPanel {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public boolean checkVaildALL() {
+        boolean ok = true;
+        if(listAdd == null) {
+            System.out.println("listAdd is null");
+            return false;
+        }
+        System.out.println(listAdd.size());
+        for (int i = 0; i < listAdd.size(); i++) {
+            JTextField tf = listAdd.get(i);
+            System.out.println(tf.getText());
+            switch (i) {
+                case 0:
+                    if (InputValid.checkRong_addPlace("Nhập mã nhân viên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập mã nhân viên", errorLabels, listAdd, false);
+                        ok = false;
+                    } else if (!InputValid.checkMa(tf.getText())) {
+                        InputValid.showError(i, "Mã nhân viên chỉ nhận giá trị số nguyên", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 1:
+                    if (InputValid.checkRong_addPlace("Nhập họ và tên", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập tên nhân viên", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 2:
+                    if (InputValid.checkRong_addPlace("Nhập Email", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập email", errorLabels, listAdd, false);
+                        ok = false;
+                    } else if (!InputValid.checkEmail(tf.getText())) {
+                        InputValid.showError(i, "Email không đúng định dạng", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 3:
+                    if (InputValid.checkRong_addPlace("Nhập số điện thoại", tf.getText())) {
+                        InputValid.showError(i, "Vui lòng nhập số điện thoại", errorLabels, listAdd, false);
+                        ok = false;
+                    } else if (!InputValid.checkSoDienThoai(tf.getText())) {
+                        InputValid.showError(i, "Số điện thoại không hợp lệ", errorLabels, listAdd, false);
+                        ok = false;
+                    }
+                    break;
+                case 4:
+                    String luongText = tf.getText().trim();
+                    if (InputValid.checkRong_addPlace("Nhập lương nhân viên", luongText)) {
+                        InputValid.showError(i, "Vui lòng nhập lương nhân viên", errorLabels, listAdd, false);
+                        ok = false;
+                    } else {
+                        try {
+                            long luong = Long.parseLong(luongText);
+                            if (luong < 1000) {
+                                InputValid.showError(i, "Lương phải lớn hơn hoặc bằng 1,000", errorLabels, listAdd, false);
+                                ok = false;
+                            } else if (luong > Integer.MAX_VALUE) {
+                                InputValid.showError(i, "Lương vượt quá giới hạn cho phép", errorLabels, listAdd, false);
+                                ok = false;
+                            }
+                        } catch (NumberFormatException e) {
+                            InputValid.showError(i, "Lương phải là số nguyên", errorLabels, listAdd, false);
+                            ok = false;
+                        }
+                    }
+                    break;
+            }
+        }
+        return ok;
     }
 }
