@@ -19,13 +19,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PhieuNhap extends JPanel {
     private headerBar header;
-    private JPanel themPN;
+    private ThemPN themPN;
     private CapNhatPN capNhatPN;
     private ChiTietPN chiTietPN;
     private JPanel contentpanel;
@@ -49,6 +47,7 @@ public class PhieuNhap extends JPanel {
 //        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"Tất cả","Mã","Tên nhân viên","Tên NCC"});
         this.add(header);
         init();
+        showTrangChinh();
         reloadDAO();
     }
 
@@ -170,8 +169,10 @@ public class PhieuNhap extends JPanel {
     }
 
     public void showThemPN() {
+        themPN.resetForm();
         cardLayout.show(contentpanel, "Them PN");
         currentPanel = 1;
+        themPN.loadDataToTableSanPham();
     }
 
     public void showChiTietPN(List<ChiTietPhieuNhapFullEntity> list) {
@@ -181,9 +182,11 @@ public class PhieuNhap extends JPanel {
 
     }
     public void showCapNhatPN(List<ChiTietPhieuNhapFullEntity> list) {
+        capNhatPN.resetForm();
         capNhatPN.loadDatatoTablePhieuNhap(list);
         cardLayout.show(contentpanel, "CapNhat PN");
         currentPanel = 1;
+        capNhatPN.loadDataToTableSanPham();
 
     }
 }

@@ -12,11 +12,13 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
         @Override
         public List<PhieuNhapEntity> showlist() {
             List<PhieuNhapEntity> list = new ArrayList<>();
-            String query = "SELECT pn.ma_phieu_nhap, nv.ten_nhan_vien, ncc.ten_nha_cung_cap,\n" +
-                    "       pn.ngay_nhap, pn.tong_gia_tri_nhap\n" +
-                    "FROM phieu_nhap pn\n" +
-                    "JOIN nhan_vien nv ON pn.ma_nhan_vien = nv.ma_nhan_vien\n" +
-                    "JOIN nha_cung_cap ncc ON pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap;";
+            String query = "SELECT pn.ma_phieu_nhap, nv.ten_nhan_vien, ncc.ten_nha_cung_cap, " +
+                    "pn.ngay_nhap, pn.tong_gia_tri_nhap " +
+                    "FROM phieu_nhap pn " +
+                    "JOIN nhan_vien nv ON pn.ma_nhan_vien = nv.ma_nhan_vien " +
+                    "JOIN nha_cung_cap ncc ON pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap " +
+                    "WHERE pn.is_delete = 0;"; // Chỉ lấy bản ghi chưa bị xóa mềm
+
             try (Connection c = DatabasesConfig.getConnection();
                  PreparedStatement ps = c.prepareStatement(query);
                  ResultSet rs = ps.executeQuery()) {
@@ -28,7 +30,7 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
                     pn.setTenNCC(rs.getString("ten_nha_cung_cap"));
                     pn.setNgayNhap(rs.getTimestamp("ngay_nhap"));
                     pn.setTongGiaTri(rs.getDouble("tong_gia_tri_nhap"));
-                    list.add(pn);
+                list.add(pn);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -75,26 +77,15 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
 
     @Override
     public int xoa(PhieuNhapEntity pn) {
-        String deleteChiTiet = "DELETE FROM chi_tiet_phieu_nhap WHERE ma_phieu_nhap = ?;";
-        String deletePhieu = "DELETE FROM phieu_nhap WHERE ma_phieu_nhap = ?;";
+        // Xóa mềm: chỉ update is_delete = 1
+        String softDelete = "UPDATE phieu_nhap SET is_delete = 1 WHERE ma_phieu_nhap = ?";
 
-        try (Connection c = DatabasesConfig.getConnection()) {
-            c.setAutoCommit(false); // Bắt đầu transaction
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(softDelete)) {
 
-            // Xóa chi tiết trước
-            try (PreparedStatement psChiTiet = c.prepareStatement(deleteChiTiet)) {
-                psChiTiet.setInt(1, pn.getMaPN());
-                psChiTiet.executeUpdate();
-            }
+            ps.setInt(1, pn.getMaPN());
+            return ps.executeUpdate();
 
-            // Xóa phiếu nhập
-            try (PreparedStatement psPhieu = c.prepareStatement(deletePhieu)) {
-                psPhieu.setInt(1, pn.getMaPN());
-                int rowsAffected = psPhieu.executeUpdate();
-
-                c.commit(); // Hoàn tất transaction
-                return rowsAffected;
-            }
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

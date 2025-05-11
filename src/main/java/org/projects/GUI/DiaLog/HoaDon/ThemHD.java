@@ -22,9 +22,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,11 +33,11 @@ import java.util.regex.Pattern;
 
 public class ThemHD extends JPanel {
     JTextField timKiem, hienthi_masp, hienthi_tensp, nhapsoluong, nhapgiaban,
-            txtQuyCach, txtKhachHang, nhapMaPN, nhapNVNhap,txtNgayTao,tennvnhap;
-    JLabel masp, tensp, soluong, giaban, lblQuyCach, lblKhachHang, maPN, nvNhap,
-            ncc, lblTongTien, txtTongTien, lblNgayTao;
+            txtQuyCach, txtKhachHang, nhapMaPN, nhapNVNhap,txtNgayTao,tennvnhap,txtSoLuongTon;
+    JLabel lblTitle,masp, tensp, soluong, giaban, lblQuyCach, lblKhachHang, maPN, nvNhap,
+            ncc, lblTongTien, txtTongTien, lblNgayTao,lblSoLuongTon;
     JPanel panelLeft, panelright;
-    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP, btnThemKH,btnSuaSP;
+    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP, btnThemKH,btnSuaSP,btnThanhToan;
     JTable tableSanPham, danhSachSanPhamNhap;
     JTableHeader header, headerdanhSachSanPhamNhap;
     JScrollPane scrollPane, scrollPaneNhap;
@@ -62,10 +60,18 @@ public class ThemHD extends JPanel {
     }
 
     public void init() {
+        lblTitle = new JLabel("Hóa đơn / Tạo mới hóa đơn");
+        lblTitle.setFont(new Font("JETBRAINS MONO", Font.BOLD, 17));
+        lblTitle.setForeground(Color.BLACK);
+        lblTitle.setBounds(30,10,500,30);
 
+        JSeparator separator = new JSeparator();
+        separator.setForeground(Color.BLUE); // Cùng màu với tiêu đề
+        separator.setPreferredSize(new Dimension(690, 1)); // Chiều dài và độ dày
+        separator.setBounds(20,40,690,10);
         // Ô tìm kiếm sản phẩm
         timKiem = new JTextField("Tìm kiếm mã sản phẩm, tên sản phẩm");
-        timKiem.setBounds(15, 15, 430, 30);
+        timKiem.setBounds(15, 55, 430, 30);
         timKiem.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -84,7 +90,8 @@ public class ThemHD extends JPanel {
             }
         });
         add(timKiem);
-
+        add(lblTitle);
+        add(separator);
         // Panel bên trái
         panelLeft = new JPanel();
         panelLeft.setLayout(null);
@@ -128,7 +135,7 @@ public class ThemHD extends JPanel {
             tableSanPham.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
         scrollPane = new JScrollPane(tableSanPham);
-        scrollPane.setBounds(10, 50, 430, 300);
+        scrollPane.setBounds(10, 90, 430, 250);
         panelLeft.add(scrollPane);
 
         themSP = new JButton("Thêm Sản Phẩm");
@@ -167,55 +174,64 @@ public class ThemHD extends JPanel {
 
 
         masp = new JLabel("Mã Sản phẩm");
-        masp.setBounds(450, 20, 100, 25);
+        masp.setBounds(450, 75, 100, 25);
         hienthi_masp = new JTextField();
-        hienthi_masp.setBounds(450, 50, 265, 30);
+        hienthi_masp.setBounds(450, 105, 265, 30);
         hienthi_masp.setEditable(false);
         panelLeft.add(masp);
         panelLeft.add(hienthi_masp);
 
         tensp = new JLabel("Tên sản phẩm");
-        tensp.setBounds(450, 80, 100, 25);
+        tensp.setBounds(450, 145, 100, 25);
         hienthi_tensp = new JTextField();
-        hienthi_tensp.setBounds(450, 110, 265, 30);
+        hienthi_tensp.setBounds(450, 170, 265, 30);
         hienthi_tensp.setEditable(false);
         panelLeft.add(tensp);
         panelLeft.add(hienthi_tensp);
 
         giaban = new JLabel("Giá bán");
-        giaban.setBounds(450, 150, 100, 30);
+        giaban.setBounds(450, 210, 100, 30);
         nhapgiaban = new JTextField();
-        nhapgiaban.setBounds(450, 180, 265, 30);
+        nhapgiaban.setBounds(450, 240, 130, 30);
         nhapgiaban.setEditable(false);
         panelLeft.add(giaban);
         panelLeft.add(nhapgiaban);
 
+        lblSoLuongTon = new JLabel("Số lượng tồn");
+        lblSoLuongTon.setBounds(590,210, 100, 30);
+        txtSoLuongTon = new JTextField();
+        txtSoLuongTon.setBounds(590,240, 130, 30);
+        txtSoLuongTon.setEditable(false);
+        panelLeft.add(lblSoLuongTon);
+        panelLeft.add(txtSoLuongTon);
 
         soluong = new JLabel("Số lượng");
-        soluong.setBounds(450, 215, 100, 30);
+        soluong.setBounds(450, 275, 100, 30);
         nhapsoluong = new JTextField();
-        nhapsoluong.setBounds(450, 245, 265, 30);
+        nhapsoluong.setBounds(450, 305, 265, 30);
         panelLeft.add(soluong);
         panelLeft.add(nhapsoluong);
         ((AbstractDocument) nhapsoluong.getDocument()).setDocumentFilter(new OnlyDigitFilter());
 
 
         lblKhachHang = new JLabel("Khách hàng");
-        lblKhachHang.setBounds(450, 280, 100, 30);
+        lblKhachHang.setBounds(10, 330, 100, 30);
         txtKhachHang = new JTextField();
-        txtKhachHang.setBounds(450, 310, 190, 30);
+        txtKhachHang.setBounds(10, 360, 140, 30);
         txtKhachHang.setEditable(false);
 
         btnThemKH = new JButton("+");
-        btnThemKH.setBounds(650, 310, 65, 30);
-        panelLeft.add(btnThemKH);
-        panelLeft.add(lblKhachHang);
-        panelLeft.add(txtKhachHang);
+        btnThemKH.setBounds(155, 360, 35, 30);
+
 
         panelright = new JPanel();
         panelright.setBounds(735, 5, 210, 655);
         panelright.setBackground(Color.WHITE);
         panelright.setLayout(null);
+
+        panelright.add(btnThemKH);
+        panelright.add(lblKhachHang);
+        panelright.add(txtKhachHang);
         add(panelright);
         // Thông tin phiếu nhập
         // Thông tin phiếu nhập
@@ -292,7 +308,27 @@ public class ThemHD extends JPanel {
         btnHuyBo.setForeground(Color.WHITE);
         btnHuyBo.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
+        btnThanhToan = new JButton("Thanh toán ngay");
+        btnThanhToan.setBounds(10, 600, 190, 35);
+        btnThanhToan.setBackground(Color.BLUE);
+        btnThanhToan.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnThanhToan.setForeground(Color.WHITE);
+        btnThanhToan.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
+        btnThanhToan.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Xác nhận thanh toán",
+                        "Xác nhận",
+                        JOptionPane.YES_NO_OPTION
+                );
+            }
+        });
+
+        panelright.add(btnThanhToan);
         panelright.add(btnHuyBo);
         panelright.add(btnNhapHang);
         // Thêm vào sau khi tạo bảng sản phẩm
@@ -302,9 +338,11 @@ public class ThemHD extends JPanel {
                 String maSP = tableModel.getValueAt(selectedRow, 0).toString();
                 String tenSP = (String) tableModel.getValueAt(selectedRow, 1);
                 String giaban = tableModel.getValueAt(selectedRow, 2).toString();
+                String soluongton = tableModel.getValueAt(selectedRow, 3).toString();
                 hienthi_masp.setText(maSP);
                 hienthi_tensp.setText(tenSP);
                 nhapgiaban.setText(giaban);
+                txtSoLuongTon.setText(soluongton);
 
             }
         });
@@ -372,38 +410,63 @@ public class ThemHD extends JPanel {
         themSP.addActionListener(e -> {
             String maSP = hienthi_masp.getText();
             String tenSP = hienthi_tensp.getText();
+            String giaban = nhapgiaban.getText();
             String soLuong = nhapsoluong.getText();
-            if (maSP.isEmpty() || tenSP.isEmpty() || soLuong.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+            String soluongton = txtSoLuongTon.getText();
+            if (maSP.isEmpty() || tenSP.isEmpty() || giaban.isEmpty() || soluongton.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm","Lỗi", JOptionPane.WARNING_MESSAGE);
+                hienthi_masp.setBorder(BorderFactory.createLineBorder(Color.RED));
+                hienthi_tensp.setBorder(BorderFactory.createLineBorder(Color.RED));
+                nhapgiaban.setBorder(BorderFactory.createLineBorder(Color.RED));
+                txtSoLuongTon.setBorder(BorderFactory.createLineBorder(Color.RED));
                 return;
             }
-            String giaban = nhapgiaban.getText();
+            else{
+                hienthi_masp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                hienthi_tensp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                nhapgiaban.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                txtSoLuongTon.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+            }
+            if(soLuong.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng","Lỗi", JOptionPane.WARNING_MESSAGE);
+                nhapsoluong.setBorder(BorderFactory.createLineBorder(Color.RED));
+                return;
+            }
+            else{
+                nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+            }
+
             int soLuongInt = Integer.parseInt(soLuong);
+            double soLuongTonInt = Double.parseDouble(soluongton);;
+            if(soLuongInt <= 0){
+                JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0","Lỗi", JOptionPane.WARNING_MESSAGE);
+                nhapsoluong.setBorder(BorderFactory.createLineBorder(Color.RED));
+                return;
+            }else{
+                nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+            }
+
+            if(soLuongInt > soLuongTonInt){
+                JOptionPane.showMessageDialog(null, "Số lượng bán vượt quá tồn trong kho","Lỗi", JOptionPane.WARNING_MESSAGE);
+                nhapsoluong.setBorder(BorderFactory.createLineBorder(Color.RED));
+                return;
+            }
+            else{
+                nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
+            }
             long giabanformatted = ThemPN.parseTien(giaban);
             long thanhtien = soLuongInt*giabanformatted;
             String thanhtienformatted = ThemPN.formatVND(thanhtien);
-            // Kiểm tra nếu các ô không được để trống
-
-            try {
-                if (soLuongInt <= 0) {
-                    JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+            for (int i = 0; i < modelDanhSachNhap.getRowCount(); i++) {
+                String maSPTrongBang = modelDanhSachNhap.getValueAt(i, 0).toString();
+                if (maSPTrongBang.equals(maSP)) {
+                    JOptionPane.showMessageDialog(null, "Sản phẩm đã tồn tại trong bảng", "Lỗi", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ!", "Lỗi", JOptionPane.WARNING_MESSAGE);
-                return;
             }
-            int selectedRow = tableSanPham.getSelectedRow();
-
-            double soluongton = Double.parseDouble(tableModel.getValueAt(selectedRow, 3).toString());
-
-            if (soLuongInt > soluongton) {
-                JOptionPane.showMessageDialog(null, "Số lượng bán vượt quá số lượng tồn!", "Lỗi", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
             // Thêm vào bảng danh sách nhập hàng
-            modelDanhSachNhap.addRow(new Object[]{maSP, tenSP, soLuong,giaban,thanhtienformatted});
+            modelDanhSachNhap.addRow(new Object[]{maSP, tenSP, soLuongInt,giaban,thanhtienformatted});
             updateTotal(modelDanhSachNhap, txtTongTien);
 
 
@@ -411,6 +474,7 @@ public class ThemHD extends JPanel {
             hienthi_tensp.setText("");
             nhapsoluong.setText("");
             nhapgiaban.setText("");
+            txtSoLuongTon.setText("");
         });
 
         btnHuyBoSP.addActionListener( e ->{
@@ -447,6 +511,17 @@ public class ThemHD extends JPanel {
             );
 
             if (confirm == JOptionPane.YES_OPTION) {
+                hienthi_masp.setText("");
+                hienthi_tensp.setText("");
+                nhapsoluong.setText("");
+                nhapgiaban.setText("");
+                txtSoLuongTon.setText("");
+                txtKhachHang.setText("");
+                hienthi_masp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                hienthi_tensp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                nhapgiaban.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                txtSoLuongTon.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
                 hoaDon.showTrangChinh(); // Gọi hàm trong MainFrame
                 modelDanhSachNhap.setRowCount(0);
                 updateTotal(modelDanhSachNhap, txtTongTien);
@@ -465,6 +540,14 @@ public class ThemHD extends JPanel {
             String soLuong = modelDanhSachNhap.getValueAt(selectedRow, 2).toString();
             String giaban = modelDanhSachNhap.getValueAt(selectedRow, 3).toString();
 
+            String tonKho = "0";
+            for (int i = 0; i < tableSanPham.getRowCount(); i++) {
+                String maSPGoc = tableSanPham.getValueAt(i, 0).toString(); // Cột 0 là mã sản phẩm
+                if (maSP.equals(maSPGoc)) {
+                    tonKho = (tableSanPham.getValueAt(i, 3).toString()); // Cột 2 là số lượng tồn
+                    break;
+                }
+            }
             // Tạo JDialog
             JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(panelLeft), "Sửa sản phẩm", true);
             dialog.setSize(400, 350);
@@ -505,13 +588,24 @@ public class ThemHD extends JPanel {
             txtSoLuong.setFont(fieldFont);
             txtSoLuong.setBounds(150, 90, 200, 25);
 
+            JLabel lblTonKho = new JLabel("Tồn kho:");
+            lblTonKho.setFont(labelFont);
+            lblTonKho.setBounds(30, 125, 100, 25);
+            JTextField txtTonKho = new JTextField(tonKho);
+            txtTonKho.setFont(fieldFont);
+            txtTonKho.setBounds(150, 125, 200, 25);
+            txtTonKho.setEditable(false);
+            txtTonKho.setBackground(new Color(240, 240, 240));
+            dialog.add(lblTonKho);
+            dialog.add(txtTonKho);
+
             JLabel lblGiaNhap = new JLabel("Số lượng:");
             lblGiaNhap.setFont(labelFont);
-            lblGiaNhap.setBounds(30, 125, 100, 25);
+            lblGiaNhap.setBounds(30, 160, 100, 25);
             JTextField txtGiaNhap = new JTextField(soLuong);
             ((AbstractDocument) txtGiaNhap.getDocument()).setDocumentFilter(new OnlyDigitFilter());
             txtGiaNhap.setFont(fieldFont);
-            txtGiaNhap.setBounds(150, 125, 200, 25);
+            txtGiaNhap.setBounds(150, 160, 200, 25);
 
 // Nút lưu
             JButton btnLuu = new JButton("Lưu");
@@ -546,7 +640,36 @@ public class ThemHD extends JPanel {
             // Sự kiện nút Lưu
             btnLuu.addActionListener(ev -> {
                     String newSoLuong = txtGiaNhap.getText();
-                    modelDanhSachNhap.setValueAt(newSoLuong, selectedRow, 2);
+                    if(newSoLuong.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng","Lỗi", JOptionPane.WARNING_MESSAGE);
+                        txtGiaNhap.setBorder(BorderFactory.createLineBorder(Color.RED));
+                        txtGiaNhap.requestFocus();
+                    }
+                    else{
+                        txtGiaNhap.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                    }
+                    int sl = Integer.parseInt(txtGiaNhap.getText());
+                    if (sl <= 0) {
+                        JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                        txtGiaNhap.setBorder(BorderFactory.createLineBorder(Color.RED));
+                        txtGiaNhap.requestFocus();
+                        return;
+                    }
+                    else{
+                        txtGiaNhap.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+                    }
+                    double soluongton = Double.parseDouble(txtTonKho.getText());
+                    if(sl > soluongton){
+                        JOptionPane.showMessageDialog(null, "Số lượng bán vượt tồn trong kho", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                        txtGiaNhap.setBorder(BorderFactory.createLineBorder(Color.RED));
+                        txtGiaNhap.requestFocus();
+                        return;
+                    }
+                    else{
+                        txtGiaNhap.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
+                    }
+                    modelDanhSachNhap.setValueAt(sl, selectedRow, 2);
                     // Nếu cần cập nhật tổng tiền:
                     updateTotal(modelDanhSachNhap,txtTongTien);
 
@@ -558,7 +681,12 @@ public class ThemHD extends JPanel {
         btnNhapHang.addActionListener(ev -> {
             if (maKhachHangDuocChon == -1) {
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng trước khi tạo hóa đơn!");
+                txtKhachHang.setBorder(BorderFactory.createLineBorder(Color.RED));
                 return;
+            }
+            else{
+                txtKhachHang.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
             }
             if (modelDanhSachNhap.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
@@ -787,8 +915,7 @@ public class ThemHD extends JPanel {
         DecimalFormat format = new DecimalFormat("#,###");
         return format.format(value).replace(",", ".") + " ₫";
     }
-    private void loadDataToTableSanPham() {
-
+    public void loadDataToTableSanPham() {
         SanPhamDAO dao = new SanPhamDAO();
         List<SanPhamEntity> list = dao.showlist();
 
