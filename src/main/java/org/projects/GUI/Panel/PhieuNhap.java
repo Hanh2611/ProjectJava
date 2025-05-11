@@ -23,7 +23,7 @@ import java.util.List;
 
 public class PhieuNhap extends JPanel {
     private headerBar header;
-    private JPanel themPN;
+    private ThemPN themPN;
     private CapNhatPN capNhatPN;
     private ChiTietPN chiTietPN;
     private JPanel contentpanel;
@@ -169,8 +169,10 @@ public class PhieuNhap extends JPanel {
     }
 
     public void showThemPN() {
+        themPN.resetForm();
         cardLayout.show(contentpanel, "Them PN");
         currentPanel = 1;
+        themPN.loadDataToTableSanPham();
     }
 
     public void showChiTietPN(List<ChiTietPhieuNhapFullEntity> list) {
@@ -180,9 +182,11 @@ public class PhieuNhap extends JPanel {
 
     }
     public void showCapNhatPN(List<ChiTietPhieuNhapFullEntity> list) {
+        capNhatPN.resetForm();
         capNhatPN.loadDatatoTablePhieuNhap(list);
         cardLayout.show(contentpanel, "CapNhat PN");
         currentPanel = 1;
+        capNhatPN.loadDataToTableSanPham();
 
     }
 }

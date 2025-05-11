@@ -22,9 +22,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,7 +37,7 @@ public class ThemHD extends JPanel {
     JLabel lblTitle,masp, tensp, soluong, giaban, lblQuyCach, lblKhachHang, maPN, nvNhap,
             ncc, lblTongTien, txtTongTien, lblNgayTao,lblSoLuongTon;
     JPanel panelLeft, panelright;
-    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP, btnThemKH,btnSuaSP;
+    JButton themSP, btnNhapHang, btnHuyBo, btnHuyBoSP, btnThemKH,btnSuaSP,btnThanhToan;
     JTable tableSanPham, danhSachSanPhamNhap;
     JTableHeader header, headerdanhSachSanPhamNhap;
     JScrollPane scrollPane, scrollPaneNhap;
@@ -310,7 +308,27 @@ public class ThemHD extends JPanel {
         btnHuyBo.setForeground(Color.WHITE);
         btnHuyBo.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
+        btnThanhToan = new JButton("Thanh toán ngay");
+        btnThanhToan.setBounds(10, 600, 190, 35);
+        btnThanhToan.setBackground(Color.BLUE);
+        btnThanhToan.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnThanhToan.setForeground(Color.WHITE);
+        btnThanhToan.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
+        btnThanhToan.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Xác nhận thanh toán",
+                        "Xác nhận",
+                        JOptionPane.YES_NO_OPTION
+                );
+            }
+        });
+
+        panelright.add(btnThanhToan);
         panelright.add(btnHuyBo);
         panelright.add(btnNhapHang);
         // Thêm vào sau khi tạo bảng sản phẩm
@@ -897,8 +915,7 @@ public class ThemHD extends JPanel {
         DecimalFormat format = new DecimalFormat("#,###");
         return format.format(value).replace(",", ".") + " ₫";
     }
-    private void loadDataToTableSanPham() {
-
+    public void loadDataToTableSanPham() {
         SanPhamDAO dao = new SanPhamDAO();
         List<SanPhamEntity> list = dao.showlist();
 

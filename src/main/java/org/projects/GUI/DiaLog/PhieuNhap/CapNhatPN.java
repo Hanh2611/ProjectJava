@@ -12,6 +12,7 @@ import org.projects.GUI.utils.Session;
 import org.projects.entity.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -425,16 +426,7 @@ public class CapNhatPN extends JPanel {
             );
 
             if (confirm == JOptionPane.YES_OPTION) {
-                hienthi_masp.setText("");
-                hienthi_tensp.setText("");
-                nhapsoluong.setText("");
-                nhapgiaban.setText("");
-                hienthi_masp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                hienthi_tensp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapgiaban.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapNCC.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapNCC.setSelectedIndex(0);
+                resetForm();
                 phieuNhap.showTrangChinh(); // Gọi hàm trong MainFrame
                 modelDanhSachNhap.setRowCount(0);
                 updateTotal(modelDanhSachNhap, txtTongTien);
@@ -640,8 +632,26 @@ public class CapNhatPN extends JPanel {
             });
             panelright.add(nhapNCC);
         }
+    public void resetForm() {
+        // Xóa nội dung các ô nhập
+        hienthi_masp.setText("");
+        hienthi_tensp.setText("");
+        nhapsoluong.setText("");
+        nhapgiaban.setText("");
 
-    private void loadDataToTableSanPham() {
+        // Reset viền về mặc định
+        Border defaultBorder = UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border");
+        hienthi_masp.setBorder(defaultBorder);
+        hienthi_tensp.setBorder(defaultBorder);
+        nhapgiaban.setBorder(defaultBorder);
+        nhapsoluong.setBorder(defaultBorder);
+        nhapNCC.setBorder(defaultBorder);
+
+        // Reset combobox và dữ liệu bảng
+        updateTotal(modelDanhSachNhap, txtTongTien);
+
+    }
+    public void loadDataToTableSanPham() {
         SanPhamDAO dao = new SanPhamDAO();
         java.util.List<SanPhamEntity> list = dao.showlist();
 
@@ -649,10 +659,12 @@ public class CapNhatPN extends JPanel {
         model.setRowCount(0); // clear dữ liệu cũ
 
         for (SanPhamEntity sp : list) {
-            model.addRow(new Object[]{
-                    sp.getId(),
-                    sp.getTenSanPham(),
-            });
+            if (sp.isTrangThai() ) {
+                model.addRow(new Object[]{
+                        sp.getId(),
+                        sp.getTenSanPham(),
+                });
+            }
         }
     }
     private void loadNhaCungCapCombobox(int maNCCCu) {

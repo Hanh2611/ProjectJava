@@ -882,7 +882,7 @@ public class CapNhatHD extends JPanel {
         txtTongTien.setText(formatted);
     }
 
-    private void loadDataToTableSanPham() {
+    public void loadDataToTableSanPham() {
         SanPhamDAO dao = new SanPhamDAO();
         List<SanPhamEntity> list = dao.showlist();
 

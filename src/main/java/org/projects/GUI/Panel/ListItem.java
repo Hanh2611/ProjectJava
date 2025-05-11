@@ -111,6 +111,12 @@ public class ListItem extends JPanel{
     public void showPanel(String name) {
         JPanel panel = mapItem.get(name);
         if(panel != null) {
+            if(name.equals("PhieuNhap")) {
+                ((PhieuNhap) panel).showTrangChinh();
+            }
+            if(name.equals("HoaDon")) {
+                ((HoaDon) panel).showTrangChinh();
+            }
             mainGui.addPanelContent(panel);
         }
     }

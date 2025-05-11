@@ -74,7 +74,8 @@ CREATE TABLE hoa_don
     ma_khach_hang INT,
     ngay_tao      TIMESTAMP                                 DEFAULT CURRENT_TIMESTAMP,
     tong_gia_tri  DOUBLE NOT NULL,
-    trang_thai    ENUM ('chua_thanh_toan', 'da_thanh_toan') DEFAULT 'chua_thanh_toan'
+    trang_thai    ENUM ('chua_thanh_toan', 'da_thanh_toan') DEFAULT 'chua_thanh_toan',
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE danh_muc_san_pham
@@ -122,7 +123,8 @@ CREATE TABLE phieu_nhap
     ma_nhan_vien      INT,
     ma_nha_cung_cap   INT,
     ngay_nhap         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    tong_gia_tri_nhap DOUBLE
+    tong_gia_tri_nhap DOUBLE,
+    is_delete     BIT DEFAULT 0
 );
 
 CREATE TABLE chi_tiet_phieu_nhap

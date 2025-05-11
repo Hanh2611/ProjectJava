@@ -17,6 +17,7 @@ import org.projects.entity.PhieuNhapEntity;
 import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
@@ -45,6 +46,7 @@ public class ThemPN extends JPanel {
     JComboBox<String> nhapNCC;
     JScrollPane scrollPane, scrollPaneNhap;
     FlatSVGIcon icon_them, icon_sua,icon_xoa,icon_huybo,icon_nhaphang;
+    DefaultTableModel tableModel,modelDanhSachNhap;
     private PhieuNhap phieuNhap;
     private SanPhamEntity sanPhamEntity;
     private Map<String, NhaCungCapEntity> nccMap = new HashMap<>();
@@ -105,7 +107,7 @@ public class ThemPN extends JPanel {
 
         // Bảng dữ liệu sản phẩm
         String[] columnNames = {"Mã SP", "Tên SP"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames,0);
+        tableModel = new DefaultTableModel(columnNames,0);
         tableSanPham = new JTable(tableModel);
         tableSanPham.setRowHeight(25);
         tableSanPham.getColumnModel().getColumn(0).setPreferredWidth(80);
@@ -298,7 +300,7 @@ public class ThemPN extends JPanel {
         });
         // 🆕 Tạo bảng chứa danh sách sản phẩm đã chọn
         String[] columnNamesNhap = {"Mã SP", "Tên SP", "Số lượng", "Giá nhập", "Thành Tiền"};
-        DefaultTableModel modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
+        modelDanhSachNhap = new DefaultTableModel(columnNamesNhap, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -469,19 +471,9 @@ public class ThemPN extends JPanel {
             );
 
             if (confirm == JOptionPane.YES_OPTION) {
-                hienthi_masp.setText("");
-                hienthi_tensp.setText("");
-                nhapsoluong.setText("");
-                nhapgiaban.setText("");
-                hienthi_masp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                hienthi_tensp.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapgiaban.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapsoluong.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapNCC.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-                nhapNCC.setSelectedIndex(0);
                 phieuNhap.showTrangChinh(); // Gọi hàm trong MainFrame
-                modelDanhSachNhap.setRowCount(0);
-                updateTotal(modelDanhSachNhap, txtTongTien);
+                resetForm();
+
             }
         });
         btnSuaSP.addActionListener(e -> {
@@ -683,6 +675,25 @@ public class ThemPN extends JPanel {
         panelright.add(nhapNCC);
 
     }
+
+    public void resetForm() {
+        hienthi_masp.setText("");
+        hienthi_tensp.setText("");
+        nhapsoluong.setText("");
+        nhapgiaban.setText("");
+
+        Border defaultBorder = UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border");
+
+        hienthi_masp.setBorder(defaultBorder);
+        hienthi_tensp.setBorder(defaultBorder);
+        nhapgiaban.setBorder(defaultBorder);
+        nhapsoluong.setBorder(defaultBorder);
+        nhapNCC.setBorder(defaultBorder);
+        nhapNCC.setSelectedIndex(0);
+        modelDanhSachNhap.setRowCount(0);
+        updateTotal(modelDanhSachNhap, txtTongTien);
+    }
+
     public static String formatVND(long value) {
         return new DecimalFormat("#,###").format(value).replace(",", ".") + " ₫";
     }
@@ -691,7 +702,7 @@ public class ThemPN extends JPanel {
         text = text.replaceAll("[^\\d]", "");
         return text.isEmpty() ? 0 : Long.parseLong(text);
     }
-    private void loadDataToTableSanPham() {
+    public void loadDataToTableSanPham() {
         SanPhamDAO dao = new SanPhamDAO();
         List<SanPhamEntity> list = dao.showlist();
 
@@ -699,10 +710,12 @@ public class ThemPN extends JPanel {
         model.setRowCount(0); // clear dữ liệu cũ
 
         for (SanPhamEntity sp : list) {
-            model.addRow(new Object[]{
-                    sp.getId(),
-                    sp.getTenSanPham(),
-            });
+            if (sp.isTrangThai() ) {
+                model.addRow(new Object[]{
+                        sp.getId(),
+                        sp.getTenSanPham(),
+                });
+            }
         }
         loadNhaCungCapCombobox();
         loadMaPhieuNhap();
