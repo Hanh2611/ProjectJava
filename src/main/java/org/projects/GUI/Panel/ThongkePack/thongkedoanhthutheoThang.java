@@ -47,8 +47,8 @@ public class thongkedoanhthutheoThang extends JPanel {
         cbxthang = new JComboBox<>(new String[]{"Tất cả","1","2","3","4","5","6","7","8","9","10","11","12"});
         cbxthang.setSelectedItem("Tất cả");
         nam = handleComponents.setLabelText("Năm:");
-        cbxnam = new JComboBox<>(new String[]{"2020","2021","2022","2023","2024","2025"});
-        cbxnam.setSelectedItem("2025");
+        cbxnam = new JComboBox<>(new String[]{"Tất cả","2020","2021","2022","2023","2024","2025"});
+        cbxnam.setSelectedItem("Tất cả");
         thongke = new ButtonEditStyle("Thống kê",Color.decode("#2ed573"),Color.WHITE,100,30);
         reset = new ButtonEditStyle("Làm mới",Color.decode("#1e90ff"),Color.WHITE,100,30);
 

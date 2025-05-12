@@ -25,15 +25,17 @@ public class ThongKePhieuNhapAction implements ActionListener, ItemListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == tkpn.getTimkiembtn()) {
-            String from = ChangeDateToString.changeDate(tkpn.getDateFrom());
-            String to = ChangeDateToString.changeDate(tkpn.getDateTo());
+            String from = ChangeDateToString.changeDate(tkpn.getDateFrom().getDate());
+            String to = ChangeDateToString.changeDate(tkpn.getDateTo().getDate());
             String tenncc = tkpn.getNccBox().getSelectedItem().toString();
             String tennv = tkpn.getNvBox().getSelectedItem().toString();
             updateChartandTable();
             tkpn.loadList(tkpnBUS.getListtheonhieutieuchi(from,to,tenncc,tennv));
         } else if(e.getSource() == tkpn.getResetbtn()) {
-            tkpn.getDateFrom().setDate(ThongKePhieuNhapDAO.layngaynhapnhonhat());
-            tkpn.getDateTo().setDate(ThongKePhieuNhapDAO.layngayhientai());
+//            tkpn.getDateFrom().setDate(ThongKePhieuNhapDAO.layngaynhapnhonhat());
+//            tkpn.getDateTo().setDate(ThongKePhieuNhapDAO.layngayhientai());
+            tkpn.getDateFrom().setDate(null);
+            tkpn.getDateTo().setDate(null);
             tkpn.getNccBox().setSelectedIndex(0);
             tkpn.getNvBox().setSelectedIndex(0);
             updateChartandTable();
@@ -44,8 +46,8 @@ public class ThongKePhieuNhapAction implements ActionListener, ItemListener {
     }
 
     public void updateChartandTable() {
-        String from = ChangeDateToString.changeDate(tkpn.getDateFrom());
-        String to = ChangeDateToString.changeDate(tkpn.getDateTo());
+        String from = ChangeDateToString.changeDate(tkpn.getDateFrom().getDate());
+        String to = ChangeDateToString.changeDate(tkpn.getDateTo().getDate());
         String tenncc = tkpn.getNccBox().getSelectedItem().toString();
         String tennv = tkpn.getNvBox().getSelectedItem().toString();
 

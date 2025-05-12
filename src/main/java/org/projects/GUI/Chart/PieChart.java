@@ -32,9 +32,15 @@ public class PieChart {
         plot.setOutlineVisible(false);
         plot.setShadowPaint(new Color(150, 150, 150, 80));
         plot.setSimpleLabels(true);
+
         chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(width, height));
-        panel.add(chartPanel);
+        chartPanel.setOpaque(false);
+        chartPanel.setPreferredSize(new Dimension(width - 20, height - 20));
+        JPanel panelcon = new JPanel(new BorderLayout());
+        panelcon.setOpaque(false);
+        panelcon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelcon.add(chartPanel, BorderLayout.CENTER);
+        panel.add(panelcon);
         return panel;
     }
 }

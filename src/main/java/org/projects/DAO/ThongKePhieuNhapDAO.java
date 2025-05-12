@@ -35,15 +35,15 @@ public class ThongKePhieuNhapDAO {
     //bieu do cot so sánh tổng giá trị phiếu nhập theo ngày
     public HashMap<String,Double> gettonggiatriphieunhap() {
             HashMap<String,Double> hm = new HashMap<>();
-        String query = "SELECT pn.ngay_nhap, SUM(pn.tong_gia_tri_nhap) AS tong_gia_tri_nhap " +
+        String query = "SELECT DATE(pn.ngay_nhap) as ngay, SUM(pn.tong_gia_tri_nhap) AS tong_gia_tri_nhap " +
                 "FROM phieu_nhap pn " +
-                "GROUP BY pn.ngay_nhap " +
-                "ORDER BY pn.ngay_nhap";
+                "GROUP BY DATE(pn.ngay_nhap) " +
+                "ORDER BY DATE(pn.ngay_nhap)";
             try(Connection c = DatabasesConfig.getConnection();
                 PreparedStatement prs = c.prepareStatement(query);
                 ResultSet rs = prs.executeQuery();) {
                 while(rs.next()) {
-                    hm.put(rs.getString("ngay_nhap"),rs.getDouble("tong_gia_tri_nhap"));
+                    hm.put(rs.getString("ngay"),rs.getDouble("tong_gia_tri_nhap"));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

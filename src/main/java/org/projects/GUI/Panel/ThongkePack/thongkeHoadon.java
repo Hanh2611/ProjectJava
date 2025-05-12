@@ -6,6 +6,7 @@ import org.projects.Action.ThongKeHoaDonAction;
 import org.projects.BUS.ThongKeHoaDonBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.ButtonEditStyle;
+import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.ChangeDateToString;
 import org.projects.entity.ThongkeHoaDonEntity;
@@ -47,7 +48,8 @@ public class thongkeHoadon extends JPanel {
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         //header
-        header = new JPanel(new FlowLayout(FlowLayout.LEFT,10,10));
+        header = new PanelBorderRadius();
+        header.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
         header.setBackground(Color.WHITE);
         ngayLabel = new JLabel("Ngày: ");
         ngayLabel.setFont(new Font("Jetbrains Mono ", Font.BOLD, 14));
@@ -82,12 +84,11 @@ public class thongkeHoadon extends JPanel {
         header.add(reset);
 
         //center
-        String from = ChangeDateToString.changeDate(dateFrom);
-        String to = ChangeDateToString.changeDate(dateTo);
+        String from = ChangeDateToString.changeDate(dateFrom.getDate());
+        String to = ChangeDateToString.changeDate(dateTo.getDate());
         String trangthai = cbxtrangthai.getSelectedItem().toString();
         soluonghoadontheongay  = tkhdBUS.getSLHDtheongay(from,to,trangthai);
-        center = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày",hoadonChart,"Ngày-tháng-năm","Số lượng",soluonghoadontheongay,500,500);
-        this.add(center);
+        center = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày",hoadonChart,"Ngày-tháng-năm","Số lượng",soluonghoadontheongay,700,500);
 
         bottom = new JPanel(new BorderLayout());
         String[] cols = new String[]{"Ngày","Số lượng hóa đơn","Trạng thái"};

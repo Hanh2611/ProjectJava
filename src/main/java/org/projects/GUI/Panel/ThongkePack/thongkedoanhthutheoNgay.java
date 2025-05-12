@@ -63,7 +63,7 @@ public class thongkedoanhthutheoNgay extends JPanel {
         center = new JPanel(new GridLayout(2,1));
         center1 = new JPanel(new GridLayout(1,1));
         center2 = new JPanel(new GridLayout(1,1));
-        columnsPanel = ColumnsChart.createColumnChart2("Doanh thu",doanhthuChart,"Ngày","Doanh thu",tkdtBUS.getngayvatongtien(ChangeDateToString.changeDate(datefrom),ChangeDateToString.changeDate(dateto)),900,300);
+        columnsPanel = ColumnsChart.createColumnChart2("Doanh thu",doanhthuChart,"Ngày","Doanh thu",tkdtBUS.getngayvatongtien(ChangeDateToString.changeDate(datefrom.getDate()),ChangeDateToString.changeDate(dateto.getDate())),900,300);
         center1.add(columnsPanel);
         center.add(center1);
 
@@ -118,7 +118,7 @@ public class thongkedoanhthutheoNgay extends JPanel {
         }
     }
     public void loadData() {
-        loadList(tkdtBUS.getdanhsach(ChangeDateToString.changeDate(datefrom),ChangeDateToString.changeDate(dateto)));
+        loadList(tkdtBUS.getdanhsach(ChangeDateToString.changeDate(datefrom.getDate()),ChangeDateToString.changeDate(dateto.getDate())));
     }
     public JPanel getCenter1() {
         return center1;

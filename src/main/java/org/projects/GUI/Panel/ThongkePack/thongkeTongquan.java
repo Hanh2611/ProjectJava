@@ -81,7 +81,7 @@ public class thongkeTongquan extends JPanel {
         centerChart.add(doanhthuPanel);
 
         //top nha cung cap panel
-        topnhacungcapPanel = ColumnsChart.createColumnChart2("Doanh thu theo tháng",topnhacungcapChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getNhacungcapvatonggiatrinhap(),360,300);
+        topnhacungcapPanel = ColumnsChart.createColumnChartWithLongText("Doanh thu theo tháng",topnhacungcapChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getNhacungcapvatonggiatrinhap(),360,300);
         centerChart.add(topnhacungcapPanel);
         this.add(centerChart,BorderLayout.CENTER);
 
