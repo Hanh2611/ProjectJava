@@ -8,6 +8,7 @@ import org.projects.BUS.NhanVienBus;
 import org.projects.BUS.ThongKePhieuNhapBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Chart.PieChart;
+import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
@@ -91,10 +92,8 @@ public class thongkePhieunhap extends JPanel {
         tenNvPanel.add(tenNv);
         tenNvPanel.add(nvBox);
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        timkiembtn = handleComponents.createButton("Tìm",70,25);
-        timkiembtn.setBackground(Color.decode("#55efc4"));
-        resetbtn = handleComponents.createButton("Reset",70,25);
-        resetbtn.setBackground(Color.decode("#0984e3"));
+        timkiembtn = new ButtonEditStyle("Tìm",Color.decode("#55efc4"),Color.WHITE,100,30);
+        resetbtn = new ButtonEditStyle("Làm mới",Color.decode("#0984e3"),Color.WHITE,100,30);
         buttonPanel.add(timkiembtn);
         buttonPanel.add(resetbtn);
 

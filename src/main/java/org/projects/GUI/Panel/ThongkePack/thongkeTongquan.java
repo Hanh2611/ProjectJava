@@ -16,6 +16,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.projects.BUS.ThongkeTongQuanBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.CardPanel;
+import org.projects.GUI.Components.PanelBorderRadius;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,8 +61,8 @@ public class thongkeTongquan extends JPanel {
 
     public thongkeTongquan() {
         this.setLayout(new BorderLayout(10,10));
-
-        headerCard = new JPanel(new GridLayout(1,4,10,10));
+        headerCard = new JPanel();
+        headerCard.setLayout(new GridLayout(1,4,10,10));
         sanphamCard = new CardPanel("icon/dairy-products.svg","Số sản phẩm",tktqBUS.getTongsoluongton());
         doanhthuCard = new CardPanel("icon/revenue.svg","Doanh thu",tktqBUS.getTonggiatri());
         hoadonCard = new CardPanel("icon/bill.svg","Số hóa đơn",tktqBUS.getSoluonghoadon());
@@ -80,11 +81,12 @@ public class thongkeTongquan extends JPanel {
         centerChart.add(doanhthuPanel);
 
         //top nha cung cap panel
-        topnhacungcapPanel = ColumnsChart.createColumnChart2("Doanh thu theo tháng",topnhacungcapChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getNhacungcapvatonggiatrinhap(),360,300);
+        topnhacungcapPanel = ColumnsChart.createColumnChartWithLongText("Doanh thu theo tháng",topnhacungcapChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getNhacungcapvatonggiatrinhap(),360,300);
         centerChart.add(topnhacungcapPanel);
         this.add(centerChart,BorderLayout.CENTER);
 
         //bottom
+
         bottomChart = new JPanel(new GridLayout(1,3,10,10));
         taikhoantt = tktqBUS.getTKtrangthai();
         taikhoanPanel = createPieChart("tài khoản",taikhoantt,taikhoanChart);
@@ -103,10 +105,10 @@ public class thongkeTongquan extends JPanel {
 
     //bieu do pie cho tai khoan + ton kho
     private JPanel createPieChart(String title,HashMap<Integer,String> hm,ChartPanel cp) {
-            JPanel panel = new JPanel(new BorderLayout());
+            JPanel panel = new PanelBorderRadius();
+            panel.setLayout(new BorderLayout());
+            panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
             panel.setBackground(Color.WHITE);
-            panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-
         DefaultPieDataset dataPie = new DefaultPieDataset();
         for(Integer key : hm.keySet()) {
             dataPie.setValue(hm.get(key),key);
@@ -126,12 +128,13 @@ public class thongkeTongquan extends JPanel {
             }
         }
         plot.setOutlineVisible(false);
-        plot.setShadowPaint(new Color(150, 150, 150, 80));
         plot.setSimpleLabels(true);
         plot.setInteriorGap(0.04);
 
         cp = new ChartPanel(pieChart);
+        cp.setOpaque(false);
         cp.setPreferredSize(new Dimension(150,200));
+
         panel.add(cp,BorderLayout.CENTER);
         return panel;
     }

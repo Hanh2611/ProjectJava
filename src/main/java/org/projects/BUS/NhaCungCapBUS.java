@@ -75,7 +75,7 @@ public class NhaCungCapBUS {
                 break;
             case "địa chỉ":
                 for(NhaCungCapEntity nccEntity : listncc) {
-                    if(String.valueOf(nccEntity.getTenNCC()).contains(textField)) {
+                    if(String.valueOf(nccEntity.getTenNCC()).toLowerCase().contains(textField)) {
                         newlist.add(nccEntity);
                     }
                 }
@@ -84,8 +84,6 @@ public class NhaCungCapBUS {
                 System.out.println("khong tim thay" + keyword + "va" + textField);
                 break;
         }
-        System.out.println("danh sach ban dau: " + listncc.size());
-        System.out.println("danh sach sau khi tim kiem theo " + keyword + " va " + textField + ": " + newlist.size());
         return newlist;
     }
 }

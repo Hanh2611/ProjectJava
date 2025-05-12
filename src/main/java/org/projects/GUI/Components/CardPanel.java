@@ -5,7 +5,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import javax.swing.*;
 import java.awt.*;
 
-public class CardPanel extends JPanel {
+public class CardPanel extends PanelBorderRadius {
     private String nameCard;
     private String value;
     private JLabel iconLabel;
