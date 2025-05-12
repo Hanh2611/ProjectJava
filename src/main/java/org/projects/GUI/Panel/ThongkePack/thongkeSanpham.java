@@ -59,7 +59,7 @@ public class thongkeSanpham extends JPanel {
         notePanel = new JPanel();
         notePanel.setPreferredSize(new Dimension(150, 150));
         tongquanLabel = new JLabel("Tổng quan tồn kho:");
-        tongtonLabel = new JLabel("Tổng tồn: " + String.valueOf(tkspBUS.getSoluongtonsp()) + "Sản phẩm");
+        tongtonLabel = new JLabel("Tổng tồn: " + String.valueOf((int)tkspBUS.getSoluongtonsp()) + "Sản phẩm");
         tongquanLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
         tongtonLabel.setFont(new Font("Jetbrains Mono", Font.PLAIN, 12));
         tongtonLabel.setForeground(new Color(50, 150, 50));
