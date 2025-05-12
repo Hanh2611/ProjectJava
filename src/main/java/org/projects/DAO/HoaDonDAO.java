@@ -139,4 +139,17 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
         }
         return false;
     }
+    public int getMaxMaHoaDon() {
+        String sql = "SELECT MAX(ma_hoa_don) AS maxMaHD FROM hoa_don";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("maxMaHD");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

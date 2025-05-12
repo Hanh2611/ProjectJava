@@ -1,6 +1,7 @@
 package org.projects.GUI.DiaLog.PhieuNhap;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.SanPhamBus;
 import org.projects.DAO.ChiTietPhieuNhapDAO;
 import org.projects.DAO.NhaCungCapDAO;
 import org.projects.DAO.PhieuNhapDAO;
@@ -41,12 +42,15 @@ public class CapNhatPN extends JPanel {
     private PhieuNhap phieuNhap;
     private SanPhamEntity sanPhamEntity;
     private Map<String, NhaCungCapEntity> nccMap = new HashMap<>();
+    private final SanPhamBus sanPhamBus;
+
 
 
     public CapNhatPN(PhieuNhap phieuNhap) {
         setPreferredSize(new Dimension(940, 650));
         setOpaque(false);
         setLayout(null);
+        this.sanPhamBus = new SanPhamBus();
         this.phieuNhap = phieuNhap;
         init();
         loadDataToTableSanPham(); // Gọi ở cuối để load dữ liệu ban đầu
@@ -604,6 +608,18 @@ public class CapNhatPN extends JPanel {
 
                 if (result > 0) {
                     ChiTietPhieuNhapDAO ctDAO = new ChiTietPhieuNhapDAO();
+                    List<ChiTietPhieuNhapEntity> danhSachCu = ctDAO.getChiTietByMaPhieuNhap(maPN);
+
+                    for (ChiTietPhieuNhapEntity ctCu : danhSachCu) {
+                        int maSP = ctCu.getMaSP();
+                        int soLuongCu = ctCu.getSoLuong();
+                        // Lấy sản phẩm từ DB
+                        SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
+                        // Trừ số lượng cũ ra khỏi tồn kho
+                        sp.setSoLuongTon(sp.getSoLuongTon() - soLuongCu);
+                        sanPhamBus.updateSanPham(sp);
+                    }
+
                     ctDAO.xoaTheoMaPhieuNhap(maPN);
                     for (int i = 0; i < modelDanhSachNhap.getRowCount(); i++) {
                         int maSP = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 0).toString());
@@ -618,6 +634,13 @@ public class CapNhatPN extends JPanel {
                         ct.setSoLuong(soLuong);
                         ct.setGiaNhap(giaNhap);
                         ct.setThanhTien(thanhTien);
+
+                        SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
+                        sp.setSoLuongTon(sp.getSoLuongTon() + soLuong);
+                        if(sp.getSoLuongTon() > 0){
+                            sp.setHetHang(false);
+                        }
+                        sanPhamBus.updateSanPham(sp);
 
                         ctDAO.them(ct); // thêm vào db
                     }

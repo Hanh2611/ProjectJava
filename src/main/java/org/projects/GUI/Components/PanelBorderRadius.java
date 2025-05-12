@@ -2,7 +2,6 @@ package org.projects.GUI.Components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class PanelBorderRadius extends JPanel{
 
