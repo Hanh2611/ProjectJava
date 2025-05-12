@@ -13,6 +13,8 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.projects.Action.ThongKeSanPhamAction;
 import org.projects.BUS.ThongKeSanPhamBUS;
 import org.projects.GUI.Chart.PieChart;
+import org.projects.GUI.Components.ButtonEditStyle;
+import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.ThongKeSanPhamEntity;
 
@@ -48,17 +50,17 @@ public class thongkeSanpham extends JPanel {
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         //center
-        centerPanel = new JPanel();
+        centerPanel = new PanelBorderRadius();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         sanphamPanel = PieChart.createPieChart("Tỉ lệ sản phẩm theo danh mục sản phẩm",sanphamChart,tkspBUS.getDanhmucvasoluongsp(),650,400);
         centerPanel.add(sanphamPanel);
 
-        notePanel = new JPanel();
+        notePanel = new PanelBorderRadius();
         notePanel.setPreferredSize(new Dimension(150, 150));
         tongquanLabel = new JLabel("Tổng quan tồn kho:");
-        tongtonLabel = new JLabel("Tổng tồn: " + String.valueOf(tkspBUS.getSoluongtonsp()) + "Sản phẩm");
+        tongtonLabel = new JLabel("Tổng tồn: " + String.valueOf((int)tkspBUS.getSoluongtonsp()) + " Sản phẩm");
         tongquanLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
         tongtonLabel.setFont(new Font("Jetbrains Mono", Font.PLAIN, 12));
         tongtonLabel.setForeground(new Color(50, 150, 50));
@@ -79,9 +81,7 @@ public class thongkeSanpham extends JPanel {
             danhmucsanphamComboBox.addItem(i);
         }
         danhmucsanphamComboBox.setSelectedItem("Tất cả");
-        btnExcel = handleComponents.createButton("Xuất Excel",80,30);
-        btnExcel.setForeground(Color.WHITE);
-        btnExcel.setBackground(Color.decode("#2ecc71"));
+        btnExcel = new ButtonEditStyle("Xuất Excel",Color.decode("#2ecc71"),Color.WHITE,100,30);
         headerBottom.add(danhmucsanphamComboBox);
         headerBottom.add(btnExcel);
         bottomPanel.add(headerBottom, BorderLayout.NORTH);

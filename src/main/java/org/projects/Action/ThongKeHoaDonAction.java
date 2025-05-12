@@ -35,8 +35,8 @@ public class ThongKeHoaDonAction implements ActionListener, ItemListener {
             tkhd.loadlist(all);
         } else {
             updateChart();
-            String from = ChangeDateToString.changeDate(tkhd.getDateFrom());
-            String to = ChangeDateToString.changeDate(tkhd.getDateTo());
+            String from = ChangeDateToString.changeDate(tkhd.getDateFrom().getDate());
+            String to = ChangeDateToString.changeDate(tkhd.getDateTo().getDate());
             String trangthai = tkhd.getCbxtrangthai().getSelectedItem().toString();
             List<ThongkeHoaDonEntity> loc = tkhdBUS.getListtheongayvatrangthai(from, to, trangthai);
             tkhd.loadlist(loc);

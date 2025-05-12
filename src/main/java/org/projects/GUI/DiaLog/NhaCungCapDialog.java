@@ -10,6 +10,8 @@ import org.projects.GUI.Components.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NhaCungCapDialog extends JDialog {
     private NhaCungCap ncc;
@@ -23,23 +25,28 @@ public class NhaCungCapDialog extends JDialog {
     private JButton thoatBTN;
     private NhaCungCapAction nccAction;
     private mainTransition ts = new mainTransition();
+    private List<JLabel> listErrorLabel;
+    private List<JTextField> listTextField;
 
     private JPanel centerPanel,bottomPanel;
     public NhaCungCapDialog(String nccType,NhaCungCap ncc) {
         this.ncc = ncc;
         this.nccType = nccType;
         nccAction = new NhaCungCapAction(ncc, this);
+        listErrorLabel = new ArrayList<>();
+        listTextField = new ArrayList<>();
         this.setTitle(this.setType());
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.getContentPane().setBackground(new Color(240, 240, 240));
         this.init();
         getEdit(this.getNccType());
-        ts.showZoomIn(this,600,400);
+        ts.showZoomIn(this,600,500);
     }
     public void init() {
-        centerPanel = new JPanel(new GridLayout(4,1,10,10));
-        centerPanel.setBorder(new EmptyBorder(20,20,20,20));
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         centerPanel.setBackground(new Color(240, 240, 240));
 
         tenNCC = new labelText("tên nhà cung cấp ",30,5);
@@ -47,16 +54,29 @@ public class NhaCungCapDialog extends JDialog {
         emailNCC = new labelText("email",30,5);
         diachiNCC = new labelText("địa chỉ ",30,5);
 
+        listTextField.add(tenNCC.getTextField());
+        listTextField.add(sodienthoaiNCC.getTextField());
+        listTextField.add(emailNCC.getTextField());
+        listTextField.add(diachiNCC.getTextField());
+
+        listErrorLabel.add(tenNCC.getErrorLabel());
+        listErrorLabel.add(sodienthoaiNCC.getErrorLabel());
+        listErrorLabel.add(emailNCC.getErrorLabel());
+        listErrorLabel.add(diachiNCC.getErrorLabel());
+
         centerPanel.add(tenNCC);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         centerPanel.add(sodienthoaiNCC);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         centerPanel.add(emailNCC);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         centerPanel.add(diachiNCC);
 
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10,10));
         bottomPanel.setBackground(new Color(240, 240, 240));
 
-        chucnangBTN = ButtonEditStyle.styleButton(typeButton(getNccType()),new Color(52,152,219),Color.WHITE);
-        thoatBTN = ButtonEditStyle.styleButton("Thoát",new Color(231,76,60),Color.WHITE);
+        chucnangBTN = new ButtonEditStyle(typeButton(getNccType()),new Color(52,152,219),Color.WHITE,100,30);
+        thoatBTN = new ButtonEditStyle("Thoát",new Color(231,76,60),Color.WHITE,100,30);
 
         bottomPanel.add(chucnangBTN);
         bottomPanel.add(thoatBTN);
@@ -166,5 +186,21 @@ public class NhaCungCapDialog extends JDialog {
 
     public JPanel getBottomPanel() {
         return bottomPanel;
+    }
+
+    public List<JLabel> getListErrorLabel() {
+        return listErrorLabel;
+    }
+
+    public void setListErrorLabel(List<JLabel> listErrorLabel) {
+        this.listErrorLabel = listErrorLabel;
+    }
+
+    public List<JTextField> getListTextField() {
+        return listTextField;
+    }
+
+    public void setListTextField(List<JTextField> listTextField) {
+        this.listTextField = listTextField;
     }
 }
