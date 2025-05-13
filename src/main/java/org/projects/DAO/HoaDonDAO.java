@@ -158,7 +158,8 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
         try (Connection c = DatabasesConfig.getConnection();
         PreparedStatement ps = c.prepareStatement(query)) {
             ps.setInt(1, maHoaDon);
-            ps.executeUpdate();
+            int tmp = ps.executeUpdate();
+            System.out.println(tmp);
         } catch (SQLException e) {
             e.printStackTrace();
         }

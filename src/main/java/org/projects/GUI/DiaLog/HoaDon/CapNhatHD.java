@@ -16,10 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -310,18 +307,22 @@ public class CapNhatHD extends JPanel {
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
-        btnThanhToan.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ThanhToan(null,hoaDon.layhoadonduochon()).setVisible(true);
-//                int confirm = JOptionPane.showConfirmDialog(
-//                        null,
-//                        "Xác nhận thanh toán",
-//                        "Xác nhận",
-//                        JOptionPane.YES_NO_OPTION
-//                );
+        btnThanhToan.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JDialog thanhToan = new ThanhToan(null ,hoaDon.layhoadonduochon());
+                thanhToan.setVisible(true);
+                HoaDon.reloadDAO();
             }
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                new ThanhToan(null,hoaDon.layhoadonduochon()).setVisible(true);
+////                int confirm = JOptionPane.showConfirmDialog(
+////                        null,
+////                        "Xác nhận thanh toán",
+////                        "Xác nhận",
+////                        JOptionPane.YES_NO_OPTION
+////                );
+//            }
         });
 
         panelright.add(btnThanhToan);

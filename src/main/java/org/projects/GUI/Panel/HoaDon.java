@@ -27,7 +27,7 @@ public class HoaDon extends JPanel{
     private headerBar header;
     private JPanel contentPanel,main;
     private ThemHD themHD;
-    private DefaultTableModel tableModel;
+    private static DefaultTableModel tableModel;
     private CardLayout cardLayout;
     private JTable table;
     private HoaDonAction actionHandler;
@@ -123,7 +123,7 @@ public class HoaDon extends JPanel{
         String trangthai = table.getValueAt(row,5).toString();
         return new HoaDonEntity(mahoadon,tennv,tenkh,ngaytao,tongiatri,trangthai);
     }
-    public void reloadDAO(){
+    public static void reloadDAO(){
         List<HoaDonEntity> lst = new HoaDonDAO().showlist();
         loadList(lst);
     }
@@ -131,7 +131,7 @@ public class HoaDon extends JPanel{
         DecimalFormat format = new DecimalFormat("#,###");
         return format.format(value).replace(",", ".") + " ₫";
     }
-    public void loadList(List<HoaDonEntity> list){
+    public static void loadList(List<HoaDonEntity> list){
         tableModel.setRowCount(0);
         if(list != null){
             for(HoaDonEntity hd : list){

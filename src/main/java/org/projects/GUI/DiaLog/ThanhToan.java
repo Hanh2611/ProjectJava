@@ -40,6 +40,7 @@ public class ThanhToan extends JDialog {
     private JLabel errorLabel;
     private JTextField incomeTextField;
     private boolean flag = false;
+    JLabel refundLabel;
     public ThanhToan(JFrame parent, HoaDonEntity hoaDon) {
         super(parent, "Thanh Toán", true);
         this.hoaDon = hoaDon;
@@ -65,7 +66,6 @@ public class ThanhToan extends JDialog {
         contentPanel.setPreferredSize(new Dimension(900, 660));
         this.add(contentPanel);
         initMainFrame();
-        setVisible(true);
     }
 
     public void initMainFrame() {
@@ -138,8 +138,8 @@ public class ThanhToan extends JDialog {
         total.setOpaque(true);
         total.setBackgroundColor(new Color(52, 152, 219));
         total.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JLabel totalLabel = new JLabel("Tổng: ");
-//        JLabel totalLabel = new JLabel("Tổng: " + hoaDon.getTongGiaTri() + "VNĐ");
+//        JLabel totalLabel = new JLabel("Tổng: " + hoaDon);
+        JLabel totalLabel = new JLabel("Tổng: " + hoaDon.getTongGiaTri() + "VNĐ");
         totalLabel.setForeground(new Color(255, 255, 255));
         totalLabel.setPreferredSize(new Dimension(270, 100));
         totalLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -184,11 +184,13 @@ public class ThanhToan extends JDialog {
         total.add(incomeTextField);
         total.add(errorLabel);
         errorLabel.setVisible(false);
-        JLabel refundLabel = new JLabel("Số tiền thừa: ");
+        refundLabel = new JLabel("Số tiền thừa: ");
         refundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         refundLabel.setForeground(new Color(255, 255, 255));
         refundLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 24));
         refundLabel.setPreferredSize(new Dimension(270, 100));
+        refundLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        refundLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         total.add(refundLabel);
         JButton buttonEditStyle = new ButtonEditStyle("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255), 100, 100);
         buttonEditStyle.setFont(new Font("Jetbrains Mono", Font.BOLD, 18));
@@ -235,8 +237,8 @@ public class ThanhToan extends JDialog {
         total.setOpaque(true);
         total.setBackgroundColor(new Color(52, 152, 219));
         total.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JLabel totalLabel = new JLabel("Tổng: ");
-//        JLabel totalLabel = new JLabel("Tổng: " + hoaDon.getTongGiaTri() + "VNĐ");
+//        JLabel totalLabel = new JLabel("Tổng: ");
+        JLabel totalLabel = new JLabel("Tổng: " + hoaDon.getTongGiaTri() + "VNĐ");
         totalLabel.setForeground(new Color(255, 255, 255));
         totalLabel.setPreferredSize(new Dimension(270, 100));
         totalLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -272,15 +274,15 @@ public class ThanhToan extends JDialog {
                 check();
             }
             public void changedUpdate(DocumentEvent e) {
-                check(); // ít khi dùng trong text field
+                check();
             }
 
             private void check() {
-                if (incomeTextField.getText().isEmpty() || incomeTextField.getText().length() > 10 || Integer.parseInt(incomeTextField.getText()) < 100) {
+                if (incomeTextField.getText().isEmpty() || incomeTextField.getText().length() > 10 || Integer.parseInt(incomeTextField.getText()) < hoaDon.getTongGiaTri()) {
                     incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#f70000")));
                     if(incomeTextField.getText().length() > 10) {
                         errorLabel.setText("Số quá lớn");
-                    } else if (incomeTextField.getText().isEmpty() || Integer.parseInt(incomeTextField.getText()) < 100) {
+                    } else if (incomeTextField.getText().isEmpty() || Integer.parseInt(incomeTextField.getText()) < hoaDon.getTongGiaTri()) {
                         errorLabel.setText("Số tiền nhận không đủ");
                     }
                     errorLabel.setVisible(true);
@@ -288,6 +290,7 @@ public class ThanhToan extends JDialog {
                 } else {
                     incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
                     errorLabel.setVisible(false);
+                    refundLabel.setText("Số tiền thừa: " + (Integer.parseInt(incomeTextField.getText()) - hoaDon.getTongGiaTri()) + "VNĐ");
                     flag = true;
                 }
             }
@@ -297,13 +300,15 @@ public class ThanhToan extends JDialog {
     public void doneAction() {
         if (!flag || incomeTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền nhận hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            incomeTextField.grabFocus();
+            incomeTextField.selectAll();
             return;
         }
 
         try {
             double tienKhachTra = Double.parseDouble(incomeTextField.getText());
             if (tienKhachTra < hoaDon.getTongGiaTri()) {
-                errorLabel.setText("SốPLAN tiền nhận không đủ");
+                errorLabel.setText("Số tiền nhận không đủ");
                 errorLabel.setVisible(true);
                 incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#f70000")));
                 return;
@@ -325,12 +330,6 @@ public class ThanhToan extends JDialog {
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi khi xử lý thanh toán!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public void checkCashPayment(JTextField incomeTextField) {
-        if (!flag) {
-            incomeTextField.selectAll();
         }
     }
 
@@ -373,8 +372,9 @@ public class ThanhToan extends JDialog {
     public JLabel createQr() {
         String bankCode = "970422";
         String stk = "0847979732";
-        int amount = 1000000;
-        String content = Integer.toString(100000);
+        double amountDouble = hoaDon.getTongGiaTri();
+        int amount = (int) amountDouble;
+        String content = Integer.toString(hoaDon.getMaHoaDon());
 
         String qrURL = String.format(
                 "https://img.vietqr.io/image/%s-%s-compact2.png?amount=%d&addInfo=%s",
