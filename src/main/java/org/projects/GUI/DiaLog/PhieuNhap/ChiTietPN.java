@@ -2,8 +2,14 @@ package org.projects.GUI.DiaLog.PhieuNhap;
 
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.Action.PhieuNhapAction;
+import org.projects.DAO.ChiTietPhieuNhapDAO;
+import org.projects.DAO.ChiTietPhieuNhapFullEntityDAO;
+import org.projects.DAO.PhieuNhapDAO;
 import org.projects.GUI.Panel.PhieuNhap;
+import org.projects.GUI.utils.VotePDF;
 import org.projects.entity.ChiTietPhieuNhapFullEntity;
+import org.projects.entity.PhieuNhapEntity;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -25,6 +31,7 @@ public class ChiTietPN extends JPanel {
     private DefaultTableModel tableModel;
     private DefaultTableCellRenderer tableCellRenderer;
     private JButton btndong;
+    private JButton xuatphieu;
     private PhieuNhap phieuNhap;
     FlatSVGIcon icon_close;
     JPanel panelcon;
@@ -158,7 +165,18 @@ public class ChiTietPN extends JPanel {
                 phieuNhap.showTrangChinh();
             }
         });
+        xuatphieu = new JButton("Xuất phiếu");
+        xuatphieu.setBackground(new Color(103,116,132));
+        xuatphieu.setForeground(Color.WHITE);
+        xuatphieu.setBounds(520,605,110,35);
+        xuatphieu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inPhieuNhap();
+            }
+        });
         panelcon.add(btndong);
+        panelcon.add(xuatphieu);
         panelcon.add(scrollPane);
 
         lblTongGiaTri = new JLabel("Tổng giá trị:");
@@ -207,5 +225,36 @@ public class ChiTietPN extends JPanel {
             };
             tableModel.addRow(row);
         }
+    }
+
+    //ham in phieu
+    public void inPhieuNhap() {
+        String maPNstr = txtmapn.getText().trim();
+        if (maPNstr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy mã phiếu nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int maphieunhap;
+        try {
+            maphieunhap = Integer.parseInt(maPNstr);
+        }catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Mã phiếu nhập không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        PhieuNhapEntity pnEntity = new PhieuNhapDAO().getPhieuNhapById(maphieunhap);
+        if (pnEntity == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy phiếu nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        List<ChiTietPhieuNhapFullEntity> chiTietList = new ChiTietPhieuNhapFullEntityDAO().showlist(maphieunhap);
+
+        if (chiTietList == null || chiTietList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Phiếu nhập không có sản phẩm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        VotePDF.taoPhieuNhap(pnEntity,chiTietList);
+
     }
 }
