@@ -253,7 +253,6 @@ public class ChiTietPN extends JPanel {
             JOptionPane.showMessageDialog(this, "Phiếu nhập không có sản phẩm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         VotePDF.taoPhieuNhap(pnEntity,chiTietList);
 
     }

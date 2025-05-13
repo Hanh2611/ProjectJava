@@ -119,7 +119,7 @@ public class VotePDF {
        }
     }
 
-    public void taoHoaDon(HoaDonEntity hdEntity, List<ChiTietHoaDonFullEntity> lst){
+    public static void taoHoaDon(HoaDonEntity hdEntity, List<ChiTietHoaDonFullEntity> lst,double tienkhachtra){
         try {
             String filePath = saveFilePDF(hdEntity.getMaHoaDon(),"HoaDon_");
             if(filePath == null) return;
@@ -169,10 +169,11 @@ public class VotePDF {
             doc.add(new Paragraph("Tổng số: " + tongso).setBold());
             Paragraph tongtienphaitra = new Paragraph("Tổng tiền phải trả: " + hdEntity.getTongGiaTri()).setBold();
 //            double sotienkhachtra =
-            Paragraph tienkhachtra = new Paragraph("Tiền khách trả: ").setBold();
-            Paragraph tienthoilai = new Paragraph("Ttiền thối lại: ").setBold();
+            Paragraph sotienkhachdua = new Paragraph("Tiền khách trả: " + String.valueOf(tienkhachtra)).setBold();
+            double tienthua = tienkhachtra - hdEntity.getTongGiaTri();
+            Paragraph tienthoilai = new Paragraph("Ttiền thối lại: " + String.valueOf(tienthua)).setBold();
             doc.add(tongtienphaitra);
-            doc.add(tienkhachtra);
+            doc.add(sotienkhachdua);
             doc.add(tienthoilai);
             doc.add(new Paragraph(" "));
             doc.add(new Paragraph("Xin cảm ơn quý khách!!!!"));
@@ -188,8 +189,6 @@ public class VotePDF {
             JOptionPane.showMessageDialog(null, "Lỗi khi xuất hóa đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-
 
     public static  String saveFilePDF(int maphieunhap,String loaiPHieu) {
         JFileChooser f = new JFileChooser();

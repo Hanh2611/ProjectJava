@@ -163,4 +163,19 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
             e.printStackTrace();
         }
     }
+
+    public HoaDonEntity getHoaDonById(int maHoaDon) {
+        String query = "select * from hoa_don where ma_hoa_don = ?";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement prs = c.prepareStatement(query)) {
+            prs.setInt(1,maHoaDon);
+            ResultSet rs = prs.executeQuery();
+            if(rs.next()) {
+                return new HoaDonEntity(rs.getInt("ma_hoa_don"),rs.getInt("ma_nhan_vien"),rs.getInt("ma_khach_hang"),rs.getTimestamp("ngay_tao"),rs.getDouble("tong_gia_tri"),rs.getString("trang_thai"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

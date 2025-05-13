@@ -3,12 +3,15 @@ package org.projects.GUI.DiaLog;
 import org.cloudinary.json.JSONArray;
 import org.cloudinary.json.JSONObject;
 import org.projects.BUS.HoaDonBUS;
+import org.projects.DAO.ChiTietHoaDonFullDAO;
+import org.projects.DAO.HoaDonDAO;
+import org.projects.DAO.PhieuNhapDAO;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.DiaLog.PhanQuyen.objectFactory;
-import org.projects.entity.DanhMucQuanLy;
-import org.projects.entity.HoaDonEntity;
+import org.projects.GUI.utils.VotePDF;
+import org.projects.entity.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -28,14 +31,16 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 
 public class ThanhToan extends JDialog {
     private JPanel titleBar, contentPanel, inputPanel;
     private JButton backButton;
     private HoaDonEntity hoaDon;
     private JLabel errorLabel;
+    private JTextField incomeTextField;
     private boolean flag = false;
-    ThanhToan(JFrame parent, HoaDonEntity hoaDon) {
+    public ThanhToan(JFrame parent, HoaDonEntity hoaDon) {
         super(parent, "Thanh Toán", true);
         this.hoaDon = hoaDon;
         this.getContentPane().setBackground(Color.WHITE);
@@ -146,7 +151,7 @@ public class ThanhToan extends JDialog {
         incomeLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 20));
         incomeLabel.setPreferredSize(new Dimension(270, 50));
         total.add(incomeLabel);
-        JTextField incomeTextField = new JTextField();
+        incomeTextField = new JTextField();
         incomeTextField.setBackground(new Color(52, 152, 219));
         incomeTextField.setForeground(new Color(255, 255, 255));
         incomeTextField.setFont(new Font("Jetbrains Mono", Font.BOLD, 20));
@@ -290,7 +295,37 @@ public class ThanhToan extends JDialog {
     }
 
     public void doneAction() {
-        this.dispose();
+        if (!flag || incomeTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền nhận hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            double tienKhachTra = Double.parseDouble(incomeTextField.getText());
+            if (tienKhachTra < hoaDon.getTongGiaTri()) {
+                errorLabel.setText("SốPLAN tiền nhận không đủ");
+                errorLabel.setVisible(true);
+                incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#f70000")));
+                return;
+            }
+            HoaDonEntity hdEntity = new HoaDonDAO().getHoaDonById(hoaDon.getMaHoaDon());
+            List<ChiTietHoaDonFullEntity> lst = new ChiTietHoaDonFullDAO().showList(hoaDon.getMaHoaDon());
+
+            // Gọi phương thức in hóa đơn
+            VotePDF.taoHoaDon(hdEntity, lst, tienKhachTra);
+
+            // Cập nhật trạng thái hóa đơn (nếu cần)
+            HoaDonBUS.payment(hoaDon); // Giả sử phương thức này cập nhật trạng thái thanh toán
+
+            // Đóng dialog
+            this.dispose();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Số tiền nhận không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi xử lý thanh toán!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void checkCashPayment(JTextField incomeTextField) {
@@ -357,10 +392,6 @@ public class ThanhToan extends JDialog {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        ThanhToan frame = new ThanhToan(null, null);
     }
 }
 

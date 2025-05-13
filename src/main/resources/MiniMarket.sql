@@ -463,3 +463,7 @@ Select * from nhan_vien;
 Select * from tai_khoan;
 select * from nguoi_dung;
 select * from khach_hang;
+
+
+select * from hoa_don
+where ma_hoa_don = 1
