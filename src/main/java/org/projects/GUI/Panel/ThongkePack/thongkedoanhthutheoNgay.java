@@ -5,6 +5,7 @@ import org.jfree.chart.ChartPanel;
 import org.projects.Action.ThongKeDoanhThuTheoNgayAction;
 import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
+import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.ChangeDateToString;
 import org.projects.entity.ThongkeDoanhThuEntity;
@@ -48,12 +49,8 @@ public class thongkedoanhthutheoNgay extends JPanel {
         datefrom = handleComponents.createDate(120,25);
         den = handleComponents.setLabelText("Đến:");
         dateto = handleComponents.createDate(120,25);
-        thongke = handleComponents.createButton("Thống kê",100,30);
-        thongke.setBackground(Color.decode("#2ed573"));
-        thongke.setForeground(Color.WHITE);
-        reset = handleComponents.createButton("Làm mới",100,30);
-        reset.setBackground(Color.decode("#1e90ff"));
-        reset.setForeground(Color.WHITE);
+        thongke = new ButtonEditStyle("Thống kê",Color.decode("#2ed573"),Color.WHITE,100,30);
+        reset = new ButtonEditStyle("Làm mới",Color.decode("#1e90ff"),Color.WHITE,100,30);
         header.add(ngay);
         header.add(datefrom);
         header.add(den);
@@ -66,7 +63,7 @@ public class thongkedoanhthutheoNgay extends JPanel {
         center = new JPanel(new GridLayout(2,1));
         center1 = new JPanel(new GridLayout(1,1));
         center2 = new JPanel(new GridLayout(1,1));
-        columnsPanel = ColumnsChart.createColumnChart2("Doanh thu",doanhthuChart,"Ngày","Doanh thu",tkdtBUS.getngayvatongtien(ChangeDateToString.changeDate(datefrom),ChangeDateToString.changeDate(dateto)),900,300);
+        columnsPanel = ColumnsChart.createColumnChart2("Doanh thu",doanhthuChart,"Ngày","Doanh thu",tkdtBUS.getngayvatongtien(ChangeDateToString.changeDate(datefrom.getDate()),ChangeDateToString.changeDate(dateto.getDate())),900,300);
         center1.add(columnsPanel);
         center.add(center1);
 
@@ -116,12 +113,12 @@ public class thongkedoanhthutheoNgay extends JPanel {
                     tkdtE.getMahoadon(),
                     tkdtE.getTenkhachhang(),
                     tkdtE.getNgaytaodon(),
-                    tkdtE.getTongtienhoadon()
+                    tkdtE.getTongtienhoadonformat()
             });
         }
     }
     public void loadData() {
-        loadList(tkdtBUS.getdanhsach(ChangeDateToString.changeDate(datefrom),ChangeDateToString.changeDate(dateto)));
+        loadList(tkdtBUS.getdanhsach(ChangeDateToString.changeDate(datefrom.getDate()),ChangeDateToString.changeDate(dateto.getDate())));
     }
     public JPanel getCenter1() {
         return center1;
