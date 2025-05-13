@@ -62,8 +62,7 @@ public class ThanhToan extends JDialog {
             titleBar.revalidate();
             titleBar.repaint();
         }
-        JButton cashMainButton = ButtonEditStyle.styleButton("TIỀN MẶT", new Color(255, 255, 255), new Color(52, 152, 219));
-        cashMainButton.setPreferredSize(new Dimension(300, 410));
+        JButton cashMainButton = new ButtonEditStyle("TIỀN MẶT", new Color(255, 255, 255), new Color(52, 152, 219),300,410);
         cashMainButton.setHorizontalTextPosition(SwingConstants.CENTER);
         cashMainButton.setVerticalTextPosition(SwingConstants.BOTTOM);
         cashMainButton.setFont(new Font("Jetbrains Mono", Font.BOLD, 16));
@@ -72,8 +71,7 @@ public class ThanhToan extends JDialog {
                 initCashFrame();
             }
         });
-        JButton qrMainButton = ButtonEditStyle.styleButton("CHUYỂN KHOẢN", new Color(255, 255, 255), new Color(52, 152, 219));
-        qrMainButton.setPreferredSize(new Dimension(300, 410));
+        JButton qrMainButton = new ButtonEditStyle("CHUYỂN KHOẢN", new Color(255, 255, 255), new Color(52, 152, 219),300,410);
         qrMainButton.setHorizontalTextPosition(SwingConstants.CENTER);
         qrMainButton.setVerticalTextPosition(SwingConstants.BOTTOM);
         qrMainButton.setFont(new Font("Jetbrains Mono", Font.BOLD, 16));
@@ -163,7 +161,7 @@ public class ThanhToan extends JDialog {
         refundLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 24));
         refundLabel.setPreferredSize(new Dimension(270, 100));
         total.add(refundLabel);
-        JButton buttonEditStyle = ButtonEditStyle.styleButton("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255));
+        JButton buttonEditStyle = new ButtonEditStyle("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255),300,410);
         buttonEditStyle.setFont(new Font("Jetbrains Mono", Font.BOLD, 18));
         buttonEditStyle.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -218,7 +216,7 @@ public class ThanhToan extends JDialog {
         JLabel qr = createQr();
         qr.setPreferredSize(new Dimension(270, 270));
         total.add(qr);
-        JButton buttonEditStyle = ButtonEditStyle.styleButton("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255));
+        JButton buttonEditStyle = new ButtonEditStyle("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255),300,410);
         buttonEditStyle.setFont(new Font("Jetbrains Mono", Font.BOLD, 18));
         control.add(total, c);
         c.gridy = 1;
@@ -270,6 +268,8 @@ public class ThanhToan extends JDialog {
         }
         return null;
     }
+
+
 
     public static void main(String[] args) {
         ThanhToan frame = new ThanhToan(null, null);
