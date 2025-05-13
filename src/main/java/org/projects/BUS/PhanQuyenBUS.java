@@ -95,4 +95,32 @@ public class PhanQuyenBUS {
     public static int getMaNhomQuyenByName(String name) {
         return new NhomQuyenDAO().getMaNhomQuyen(name);
     }
+
+    public static List<NhomQuyen> search(String key,String word) {
+        getNhomQuyen();
+        List<NhomQuyen> lst = new ArrayList<>();
+        word = word.toLowerCase();
+        switch (key) {
+            case "---":
+                lst.addAll(getNhomQuyen());
+                break;
+            case "Tên nhóm quyền":
+                for(NhomQuyen nq : getNhomQuyen()) {
+                    if(nq.getTenNomQuyen().contains(word)) {
+                        lst.add(nq);
+                    }
+                }
+                break;
+            case "Mã nhóm quyền":
+                for(NhomQuyen tk : getNhomQuyen()) {
+                    if(tk.getMaNhomQuyen() == (Integer.parseInt(word))) {
+                        lst.add(tk);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return lst;
+    }
  }

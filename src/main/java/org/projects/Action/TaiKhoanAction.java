@@ -52,9 +52,10 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
         }
         JButton refresh = tk.getHeader().getSearch().getSearchButton();
         if(c instanceof JButton && c.equals(refresh)) {
-            tk.getHeader().getSearch().getSearchComboBox().setSelectedItem("---");
+            tk.getHeader().getSearch().getSearchComboBox().setSelectedItem("--");
             tk.getHeader().getSearch().getSearchField().setText("");
-            this.tk.searchFunction(tk.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),tk.getHeader().getSearch().getSearchField().getText());
+//            this.tk.searchFunction(tk.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString(),tk.getHeader().getSearch().getSearchField().getText());
+            tk.loadDataIntoTable();
         }
     }
 
@@ -215,6 +216,8 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-
+        String keyword = tk.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = tk.getHeader().getSearch().getSearchField().getText();
+        tk.searchFunction(keyword, textfield);
     }
 }

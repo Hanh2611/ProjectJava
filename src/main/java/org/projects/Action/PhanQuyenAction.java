@@ -17,15 +17,14 @@ import org.projects.GUI.Panel.ThongkePack.ThongKe;
 import org.projects.GUI.utils.Session;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 import static org.projects.Action.LoginAction.mainGUI;
 
-public class PhanQuyenAction implements ActionListener, MouseListener {
+public class PhanQuyenAction implements ActionListener, MouseListener, ItemListener, DocumentListener {
     private PhanQuyen phanQuyen;
     private JTable mainTable;
     public PhanQuyenAction(PhanQuyen phanQuyen, JTable mainTable) {
@@ -34,7 +33,13 @@ public class PhanQuyenAction implements ActionListener, MouseListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        JComponent c = (JComponent) e.getSource();
+        JButton refresh = phanQuyen.getHeader().getSearch().getSearchButton();
+        if(c instanceof JButton && c.equals(refresh)) {
+            phanQuyen.getHeader().getSearch().getSearchComboBox().setSelectedItem("--");
+            phanQuyen.getHeader().getSearch().getSearchField().setText("");
+            phanQuyen.loadData();
+        }
     }
 
 
@@ -120,5 +125,33 @@ public class PhanQuyenAction implements ActionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        String keyword = e.getItem().toString();
+        String textfield = phanQuyen.getHeader().getSearch().getSearchField().getText();
+        phanQuyen.searchFunction(keyword, textfield);
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        String keyword = phanQuyen.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = phanQuyen.getHeader().getSearch().getSearchField().getText();
+        phanQuyen.searchFunction(keyword, textfield);
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        String keyword = phanQuyen.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = phanQuyen.getHeader().getSearch().getSearchField().getText();
+        phanQuyen.searchFunction(keyword, textfield);
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        String keyword = phanQuyen.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        String textfield = phanQuyen.getHeader().getSearch().getSearchField().getText();
+        phanQuyen.searchFunction(keyword, textfield);
     }
 }

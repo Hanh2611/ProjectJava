@@ -50,7 +50,7 @@ public class TaiKhoan extends JPanel{
     }
 
     public void initHeader() {
-        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("TaiKhoan") - 1), new String[]{"--","tên đăng nhập","mã người dùng"});
 //        header = new headerBar(listItemHeader,new ArrayList<>(Arrays.asList("add", "update", "delete", "detail")),new String[]{"---","tên đăng nhập","mã người dùng"});
 
         this.add(header);
