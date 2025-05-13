@@ -1,5 +1,8 @@
 package org.projects.GUI.DiaLog;
 
+import org.cloudinary.json.JSONArray;
+import org.cloudinary.json.JSONObject;
+import org.projects.BUS.HoaDonBUS;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
@@ -9,6 +12,8 @@ import org.projects.entity.HoaDonEntity;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -16,7 +21,11 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -24,6 +33,8 @@ public class ThanhToan extends JDialog {
     private JPanel titleBar, contentPanel, inputPanel;
     private JButton backButton;
     private HoaDonEntity hoaDon;
+    private JLabel errorLabel;
+    private boolean flag = false;
     ThanhToan(JFrame parent, HoaDonEntity hoaDon) {
         super(parent, "Thanh Toán", true);
         this.hoaDon = hoaDon;
@@ -62,7 +73,8 @@ public class ThanhToan extends JDialog {
             titleBar.revalidate();
             titleBar.repaint();
         }
-        JButton cashMainButton = new ButtonEditStyle("TIỀN MẶT", new Color(255, 255, 255), new Color(52, 152, 219),300,410);
+        JButton cashMainButton = new ButtonEditStyle("TIỀN MẶT", new Color(255, 255, 255), new Color(52, 152, 219), 300, 410);
+        cashMainButton.setPreferredSize(new Dimension(300, 410));
         cashMainButton.setHorizontalTextPosition(SwingConstants.CENTER);
         cashMainButton.setVerticalTextPosition(SwingConstants.BOTTOM);
         cashMainButton.setFont(new Font("Jetbrains Mono", Font.BOLD, 16));
@@ -71,7 +83,8 @@ public class ThanhToan extends JDialog {
                 initCashFrame();
             }
         });
-        JButton qrMainButton = new ButtonEditStyle("CHUYỂN KHOẢN", new Color(255, 255, 255), new Color(52, 152, 219),300,410);
+        JButton qrMainButton = new ButtonEditStyle("CHUYỂN KHOẢN", new Color(255, 255, 255), new Color(52, 152, 219), 300, 410);
+        qrMainButton.setPreferredSize(new Dimension(300, 410));
         qrMainButton.setHorizontalTextPosition(SwingConstants.CENTER);
         qrMainButton.setVerticalTextPosition(SwingConstants.BOTTOM);
         qrMainButton.setFont(new Font("Jetbrains Mono", Font.BOLD, 16));
@@ -139,6 +152,15 @@ public class ThanhToan extends JDialog {
         incomeTextField.setFont(new Font("Jetbrains Mono", Font.BOLD, 20));
         incomeTextField.setPreferredSize(new Dimension(200, 40));
         incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+        checkIncome(incomeTextField);
+
+        errorLabel = new JLabel("Test");
+        errorLabel.setForeground(Color.decode("#f70000"));
+        errorLabel.setFont(new Font("Jetbrains Mono", Font.PLAIN, 12));
+        errorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        errorLabel.setVerticalAlignment(SwingConstants.TOP);
+        errorLabel.setPreferredSize(new Dimension(200, 20));
+
         ((AbstractDocument) incomeTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
@@ -155,13 +177,15 @@ public class ThanhToan extends JDialog {
             }
         });
         total.add(incomeTextField);
+        total.add(errorLabel);
+        errorLabel.setVisible(false);
         JLabel refundLabel = new JLabel("Số tiền thừa: ");
         refundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         refundLabel.setForeground(new Color(255, 255, 255));
         refundLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 24));
         refundLabel.setPreferredSize(new Dimension(270, 100));
         total.add(refundLabel);
-        JButton buttonEditStyle = new ButtonEditStyle("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255),300,410);
+        JButton buttonEditStyle = new ButtonEditStyle("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255), 100, 100);
         buttonEditStyle.setFont(new Font("Jetbrains Mono", Font.BOLD, 18));
         buttonEditStyle.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -216,7 +240,12 @@ public class ThanhToan extends JDialog {
         JLabel qr = createQr();
         qr.setPreferredSize(new Dimension(270, 270));
         total.add(qr);
-        JButton buttonEditStyle = new ButtonEditStyle("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255),300,410);
+        JButton buttonEditStyle = new ButtonEditStyle("HOÀN TẤT!", Color.decode("#09ed6c"), new Color(255, 255, 255), 100, 100);
+        buttonEditStyle.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                checkQrPayemnt();
+            }
+        });
         buttonEditStyle.setFont(new Font("Jetbrains Mono", Font.BOLD, 18));
         control.add(total, c);
         c.gridy = 1;
@@ -229,20 +258,81 @@ public class ThanhToan extends JDialog {
         contentPanel.add(control);
     }
 
-    public void checkIncome() {
+    public void checkIncome(JTextField incomeTextField) {
+        incomeTextField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                check();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                check();
+            }
+            public void changedUpdate(DocumentEvent e) {
+                check(); // ít khi dùng trong text field
+            }
 
+            private void check() {
+                if (incomeTextField.getText().isEmpty() || incomeTextField.getText().length() > 10 || Integer.parseInt(incomeTextField.getText()) < 100) {
+                    incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#f70000")));
+                    if(incomeTextField.getText().length() > 10) {
+                        errorLabel.setText("Số quá lớn");
+                    } else if (incomeTextField.getText().isEmpty() || Integer.parseInt(incomeTextField.getText()) < 100) {
+                        errorLabel.setText("Số tiền nhận không đủ");
+                    }
+                    errorLabel.setVisible(true);
+                    flag = false;
+                } else {
+                    incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+                    errorLabel.setVisible(false);
+                    flag = true;
+                }
+            }
+        });
     }
 
     public void doneAction() {
         this.dispose();
     }
 
-    public void checkCashPayment() {
-
+    public void checkCashPayment(JTextField incomeTextField) {
+        if (!flag) {
+            incomeTextField.selectAll();
+        }
     }
 
-    public void checkQrPayemnt() {
+    public boolean checkQrPayemnt() {
+        try {
+            URL url = new URL("https://script.google.com/macros/s/AKfycbx8yH1SkEYBP6p068VAvkWZdin5vX_BAe_EzaLxgXUoFZQF3HvCdPwhyYP6CYRAgZ5R/exec");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
 
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line.trim());
+            }
+            System.out.println("JSON từ Apps Script:");
+            System.out.println(response.toString());
+
+            JSONObject obj = new JSONObject(response.toString());
+            JSONArray data = obj.getJSONArray("data");
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject gd = data.getJSONObject(i);
+                String moTa = gd.getString("Mô tả");
+                int giaTri = gd.getInt("Giá trị");
+
+                System.out.println("Mô tả: " + moTa);
+                System.out.println("Giá trị: " + giaTri);
+                if (giaTri == hoaDon.getTongGiaTri() && moTa.equals(Integer.toString(hoaDon.getMaHoaDon()))) {
+                    HoaDonBUS.payment(hoaDon);
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public JLabel createQr() {
@@ -268,8 +358,6 @@ public class ThanhToan extends JDialog {
         }
         return null;
     }
-
-
 
     public static void main(String[] args) {
         ThanhToan frame = new ThanhToan(null, null);

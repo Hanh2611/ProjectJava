@@ -152,4 +152,15 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
         }
         return 0;
     }
+
+    public void updateState(int maHoaDon) {
+        String query = "UPDATE hoa_don SET trang_thai = 'da_thanh_toan' WHERE ma_hoa_don = ?";
+        try (Connection c = DatabasesConfig.getConnection();
+        PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setInt(1, maHoaDon);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
