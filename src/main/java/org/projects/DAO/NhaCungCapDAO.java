@@ -93,4 +93,21 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
         return null;
     }
 
+    public NhaCungCapEntity layNhaCungCapByMaPhieuNhap(int maphieunhap) {
+        String query = "select ncc.ten_nha_cung_cap,ncc.so_dien_thoai,ncc.dia_chi_nha_cung_cap,ncc.email\n" +
+                "from phieu_nhap pn  join  nha_cung_cap ncc on pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap\n" +
+                "where pn.ma_phieu_nhap = ?";
+        try(Connection c = DatabasesConfig.getConnection();
+        PreparedStatement prs = c.prepareStatement(query)) {
+            prs.setInt(1,maphieunhap);
+            ResultSet rs = prs.executeQuery();
+            if(rs.next()) {
+                return new NhaCungCapEntity(rs.getString("ten_nha_cung_cap"),rs.getString("so_dien_thoai"),rs.getString("email"),rs.getString("dia_chi_nha_cung_cap"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

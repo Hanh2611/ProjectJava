@@ -2,13 +2,12 @@ package org.projects.GUI.DiaLog.HoaDon;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.BUS.SanPhamBus;
-import org.projects.DAO.ChiTietHoaDonDAO;
-import org.projects.DAO.HoaDonDAO;
-import org.projects.DAO.KhachHangDAO;
-import org.projects.DAO.SanPhamDAO;
+import org.projects.DAO.*;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
+import org.projects.GUI.DiaLog.ThanhToan;
 import org.projects.GUI.Panel.HoaDon;
+import org.projects.GUI.utils.VotePDF;
 import org.projects.entity.*;
 
 import javax.swing.*;
@@ -315,12 +314,13 @@ public class CapNhatHD extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(
-                        null,
-                        "Xác nhận thanh toán",
-                        "Xác nhận",
-                        JOptionPane.YES_NO_OPTION
-                );
+                new ThanhToan(null,hoaDon.layhoadonduochon()).setVisible(true);
+//                int confirm = JOptionPane.showConfirmDialog(
+//                        null,
+//                        "Xác nhận thanh toán",
+//                        "Xác nhận",
+//                        JOptionPane.YES_NO_OPTION
+//                );
             }
         });
 

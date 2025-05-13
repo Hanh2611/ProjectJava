@@ -2,6 +2,7 @@ package org.projects.DAO;
 
 import org.projects.config.DatabasesConfig;
 import org.projects.entity.ChiTietPhieuNhapEntity;
+import org.projects.entity.ChiTietPhieuNhapFullEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -100,6 +101,7 @@ public class ChiTietPhieuNhapDAO implements ChucNangDAO<ChiTietPhieuNhapEntity> 
 
         return list;
     }
+
 
 
 }

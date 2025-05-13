@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -94,6 +95,33 @@ public class HoaDon extends JPanel{
 
         right.add(scrollPane, BorderLayout.CENTER);
         return right;
+    }
+
+    public HoaDonEntity layhoadonduochon() {
+        int row = table.getSelectedRow();
+        if(row == -1) return null;
+        int mahoadon = (int) tableModel.getValueAt(row, 0);
+        String tennv = table.getValueAt(row, 1).toString();
+        String tenkh = table.getValueAt(row,2).toString();
+        Timestamp ngaytao = (Timestamp) tableModel.getValueAt(row,3);
+        double tongiatri;
+        Object value = tableModel.getValueAt(row, 4);
+        if (value instanceof String) {
+            try {
+                // Loại bỏ ký tự "₫" và dấu chấm phân cách hàng nghìn
+                String cleanedValue = ((String) value).replaceAll("[^0-9,]", "").replace(",", ".");
+                tongiatri = Double.parseDouble(cleanedValue);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (value instanceof Double) {
+            tongiatri = (Double) value;
+        } else {
+            return null;
+        }
+        String trangthai = table.getValueAt(row,5).toString();
+        return new HoaDonEntity(mahoadon,tennv,tenkh,ngaytao,tongiatri,trangthai);
     }
     public void reloadDAO(){
         List<HoaDonEntity> lst = new HoaDonDAO().showlist();
