@@ -17,7 +17,9 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
                     "FROM phieu_nhap pn " +
                     "JOIN nhan_vien nv ON pn.ma_nhan_vien = nv.ma_nhan_vien " +
                     "JOIN nha_cung_cap ncc ON pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap " +
-                    "WHERE pn.is_delete = 0;"; // Chỉ lấy bản ghi chưa bị xóa mềm
+                    "WHERE pn.is_delete = 0 " +
+                    "ORDER BY pn.ma_phieu_nhap ASC;"; // <-- Sắp xếp theo mã tăng dần
+
 
             try (Connection c = DatabasesConfig.getConnection();
                  PreparedStatement ps = c.prepareStatement(query);
@@ -40,7 +42,8 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
 
     @Override
     public int them(PhieuNhapEntity pn) {
-        String query = "INSERT INTO phieu_nhap (ma_phieu_nhap, ma_nhan_vien, ma_nha_cung_cap, tong_gia_tri_nhap) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO phieu_nhap (ma_phieu_nhap, ma_nhan_vien, ma_nha_cung_cap, tong_gia_tri_nhap, ngay_nhap)\n" +
+                "VALUES (?, ?, ?, ?, ?)\n";
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement ps = c.prepareStatement(query)) {
 
@@ -48,6 +51,7 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
             ps.setInt(2, pn.getMaNV());
             ps.setInt(3, pn.getMaNCC());
             ps.setDouble(4, pn.getTongGiaTri());
+            ps.setTimestamp(5, pn.getNgayNhap());
 
             return ps.executeUpdate();
         } catch (Exception e) {

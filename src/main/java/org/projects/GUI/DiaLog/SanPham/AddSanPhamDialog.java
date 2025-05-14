@@ -3,6 +3,7 @@ package org.projects.GUI.DiaLog.SanPham;
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
 import org.projects.GUI.Components.NumberOnlyFilter;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
 import org.projects.GUI.utils.Helper;
@@ -13,6 +14,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -29,16 +32,23 @@ public class AddSanPhamDialog extends JDialog {
     private JButton uploadBtn, lamMoiBtn, huyBtn, luuBtn, btnAddPhanLoai;
     private JFileChooser fileChooser;
     private File selectedFile;
-
+    mainTransition mainTransition = new mainTransition();
     public AddSanPhamDialog(SanPham sanPham) {
         this.sanPham = sanPham;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Thêm sản phẩm");
-        setSize(450, 650);
-        setLocationRelativeTo(null);
+        //setSize(450, 650);
+        //setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
-        setVisible(true);
+        mainTransition.showSlideIn(this , 450  ,670);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().setVisible(false);
+                mainTransition.closeSlideOut(AddSanPhamDialog.this);
+            }
+        });
+//        setVisible(true);
     }
 
     public void initComponent() {
@@ -71,13 +81,12 @@ public class AddSanPhamDialog extends JDialog {
         JPanel imgPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         imgPanel.setOpaque(false);
         imgPanel.add(imgPreview);
-        content.add(Box.createRigidArea(new Dimension(0, 10)));
         content.add(imgPanel);
 
         // Fields
-        tenSanPhamField = new labelText("Nhập tên sản phẩm", 30, 10);
-        giaBanField = new labelText("Nhập giá bán", 30, 10);
-        donViField = new labelText("Nhập đơn vị", 30, 10);
+        tenSanPhamField = new labelText("Nhập tên sản phẩm", 20, 10);
+        giaBanField = new labelText("Nhập giá bán", 20, 10);
+        donViField = new labelText("Nhập đơn vị", 20, 10);
 
         ((AbstractDocument) giaBanField.getTextField().getDocument()).setDocumentFilter(new NumberOnlyFilter());
 
@@ -89,12 +98,13 @@ public class AddSanPhamDialog extends JDialog {
         JPanel quyCachPanel = new JPanel();
         quyCachPanel.setLayout(new GridLayout(2, 1));
         JLabel quyCachLabel = new JLabel("Chọn quy cách:");
-        quyCachLabel.setPreferredSize(new Dimension(450, 20));
+        quyCachLabel.setPreferredSize(new Dimension(450, 0));
         quyCachPanel.add(quyCachLabel);
         List<String> listQuyCach = Arrays.stream(QuyCach.values())
                 .map(QuyCach::getValue)
                 .toList();
         quyCachField = new JComboBox<>(listQuyCach.toArray(new String[0]));
+        quyCachField.setPreferredSize(new Dimension(450, 30));
         quyCachPanel.add(quyCachField);
         content.add(quyCachPanel);
 
@@ -102,7 +112,7 @@ public class AddSanPhamDialog extends JDialog {
         JPanel phanLoaiPanel = new JPanel();
         phanLoaiPanel.setLayout(new GridLayout(2, 1));
         JLabel phanLoaiLabel = new JLabel("Chọn phân loại:");
-        JPanel phanLoaiContainer= new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        JPanel phanLoaiContainer= new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         phanLoaiLabel.setPreferredSize(new Dimension(450, 20));
         phanLoaiPanel.add(phanLoaiLabel);
         DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
@@ -116,7 +126,7 @@ public class AddSanPhamDialog extends JDialog {
             new AddDanhMucDialog(this, this.sanPham).showDialog();
         });
         phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
-        phanLoaiField.setPreferredSize(new Dimension(350, 30));
+        phanLoaiField.setPreferredSize(new Dimension(363, 30));
         phanLoaiContainer.add(phanLoaiField);
         phanLoaiContainer.add(btnAddPhanLoai);
         phanLoaiPanel.add(phanLoaiContainer);
@@ -130,7 +140,7 @@ public class AddSanPhamDialog extends JDialog {
 
         huyBtn = new JButton("Hủy");
         huyBtn.setBackground(Color.PINK);
-        huyBtn.addActionListener(e -> dispose());
+        huyBtn.addActionListener(e -> mainTransition.closeSlideOutSP(this));
 
         luuBtn = new JButton("Thêm");
         luuBtn.setBackground(Color.GREEN);

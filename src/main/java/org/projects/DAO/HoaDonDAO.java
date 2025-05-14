@@ -49,31 +49,31 @@ public class HoaDonDAO implements ChucNangDAO<HoaDonEntity> {
     }
 
     @Override
-    public int them(HoaDonEntity add) {
-        String query = "INSERT INTO hoa_don (ma_nhan_vien, ma_khach_hang, tong_gia_tri, trang_thai) " +
-                "VALUES (?, ?, ?, ?)";
+        public int them(HoaDonEntity add) {
+            String query = "INSERT INTO hoa_don (ma_nhan_vien, ma_khach_hang, tong_gia_tri, trang_thai, ngay_tao)\n " +
+                    "VALUES (?, ?, ?, ?, ?)\n";
 
-        try (Connection c = DatabasesConfig.getConnection();
-             PreparedStatement ps = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            try (Connection c = DatabasesConfig.getConnection();
+                 PreparedStatement ps = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, add.getMaNV());
-            ps.setInt(2, add.getMaKh());
-            ps.setDouble(3, add.getTongGiaTri());
-            ps.setString(4, add.getTrangThai());
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);  // trả về maHD vừa insert
+                ps.setInt(1, add.getMaNV());
+                ps.setInt(2, add.getMaKh());
+                ps.setDouble(3, add.getTongGiaTri());
+                ps.setString(4, add.getTrangThai());
+                ps.setTimestamp(5, add.getNgayTao());
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            return rs.getInt(1);  // trả về maHD vừa insert
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return -1;  // Lỗi nếu không lấy được mã
         }
-        return -1;  // Lỗi nếu không lấy được mã
-    }
 
 
 

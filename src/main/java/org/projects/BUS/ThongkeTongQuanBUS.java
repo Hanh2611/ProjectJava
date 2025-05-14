@@ -5,7 +5,10 @@ import org.projects.DAO.ThongKeTongQuanDAO;
 import java.util.HashMap;
 
 public class ThongkeTongQuanBUS {
-    private static ThongKeTongQuanDAO tktqDAO = new ThongKeTongQuanDAO();
+    private final ThongKeTongQuanDAO tktqDAO;
+    public ThongkeTongQuanBUS() {
+        tktqDAO = new ThongKeTongQuanDAO();
+    }
 
     public String getTongsoluongton() {
         double tong = tktqDAO.getSoluongtonsanpham();

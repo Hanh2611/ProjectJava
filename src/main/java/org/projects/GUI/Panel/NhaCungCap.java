@@ -74,8 +74,10 @@ public class NhaCungCap extends JPanel{
         nccTabel.setModel(nameTableModel);
         listRenderTable = new DefaultTableCellRenderer();
         listRenderTable.setHorizontalAlignment(JLabel.CENTER);
+        int[] columnsWidth = {20,100,50,100,100};
         for(int i = 0 ; i < nccTabel.getColumnCount();++i) {
             nccTabel.getColumnModel().getColumn(i).setCellRenderer(listRenderTable);
+            nccTabel.getColumnModel().getColumn(i).setPreferredWidth(columnsWidth[i]);
         }
 
         JTableHeader titleTableheader = nccTabel.getTableHeader();

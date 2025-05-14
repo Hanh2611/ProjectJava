@@ -1,6 +1,7 @@
     package org.projects.GUI.Panel.ThongkePack;
 
     import org.projects.GUI.Components.PanelBorderRadius;
+    import org.projects.GUI.utils.UIUtils;
 
     import java.awt.*;
     import java.awt.event.ActionEvent;
@@ -65,6 +66,7 @@
                     public void actionPerformed(ActionEvent e) {
                         ButtonThongke bttk = (ButtonThongke) e.getSource();
                         changeColorButton(bttk);
+                        refreshAllThongKePanels();
                         hienthiPanel(bttk);
                     }
                 });
@@ -109,6 +111,13 @@
             }
         }
 
+        public void refreshAllThongKePanels() {
+            tktq.init();
+            tksp.init();
+            tkhd.init();
+            tkpn.init();
+            tkdt.init();
+        }
 
 
         public JPanel getHeaderPanel() {

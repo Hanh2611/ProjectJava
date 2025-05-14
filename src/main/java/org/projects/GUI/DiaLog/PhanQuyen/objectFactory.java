@@ -1,5 +1,6 @@
 package org.projects.GUI.DiaLog.PhanQuyen;
 
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.LoginGUI;
 
@@ -10,6 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class objectFactory {
     public static void titleBar(JPanel titleBar, JDialog dialog, String title) {
+        mainTransition main = new mainTransition();
         JButton exitButton = handleComponents.createButtonIcon("icon/close.svg", 30, 30);
         JLabel titleText = new JLabel(title, JLabel.LEFT);
         titleText.setFont(new Font("JetBrains Mono",Font.PLAIN,13));
@@ -22,7 +24,7 @@ public class objectFactory {
         exitButton.setBounds(860, 0, 40, 40);
         exitButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                dialog.dispose();
+                main.closeFadeOut(dialog);
             }
         });
     }

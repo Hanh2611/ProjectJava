@@ -34,15 +34,38 @@ public class thongkedoanhthutheoThang extends JPanel {
     private DefaultTableModel doanhthutheothangTableModel;
     private JScrollPane doanhthutheothangScrollPane;
 
-    private ThongKeDoanhThuBUS tkdtBUS= new ThongKeDoanhThuBUS();
+    private ThongKeDoanhThuBUS tkdtBUS;
     private ThongKeDoanhThuTheoThangAction tkdtAction;
 
     public thongkedoanhthutheoThang() {
+        tkdtBUS = new ThongKeDoanhThuBUS();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         //header
         header = new JPanel(new FlowLayout(FlowLayout.LEFT,10,5));
+
+
+        this.add(header, BorderLayout.NORTH);
+
+        //center
+        center = new JPanel(new GridLayout(2,1));
+
+        this.add(center, BorderLayout.CENTER);
+        init();
+        //action
+        tkdtAction = new ThongKeDoanhThuTheoThangAction(this,tkdtBUS);
+        cbxthang.addItemListener(tkdtAction);
+        cbxnam.addItemListener(tkdtAction);
+        thongke.addActionListener(tkdtAction);
+        reset.addActionListener(tkdtAction);
+
+    }
+
+    public void init() {
+        header.removeAll();
+        center.removeAll();
+
         thang = handleComponents.setLabelText("Tháng:");
         cbxthang = new JComboBox<>(new String[]{"Tất cả","1","2","3","4","5","6","7","8","9","10","11","12"});
         cbxthang.setSelectedItem("Tất cả");
@@ -58,10 +81,6 @@ public class thongkedoanhthutheoThang extends JPanel {
         header.add(thongke);
         header.add(reset);
 
-        this.add(header, BorderLayout.NORTH);
-
-        //center
-        center = new JPanel(new GridLayout(2,1));
         thangChartPanel = new JPanel(new GridLayout(1,1));
         thangChartPanel.setBackground(Color.WHITE);
         String thang = String.valueOf(cbxthang.getSelectedItem());
@@ -104,13 +123,6 @@ public class thongkedoanhthutheoThang extends JPanel {
         center.add(thangChartPanel);
         center.add(tablePanel);
         loadData(thang,nam);
-        this.add(center, BorderLayout.CENTER);
-        //action
-        tkdtAction = new ThongKeDoanhThuTheoThangAction(this,tkdtBUS);
-        cbxthang.addItemListener(tkdtAction);
-        cbxnam.addItemListener(tkdtAction);
-        thongke.addActionListener(tkdtAction);
-        reset.addActionListener(tkdtAction);
 
     }
 
