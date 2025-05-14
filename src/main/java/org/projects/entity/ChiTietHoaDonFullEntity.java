@@ -15,6 +15,7 @@ public class ChiTietHoaDonFullEntity {
     private double giaBan;
     private double thanhTien;
     private double tongGiaTri;
+    private String trangThai;
     public ChiTietHoaDonFullEntity(Timestamp ngayTao, String tenNguoiLap,int maNguoiLap
     , int maHD, int maKH, String tenKH, int maSP, int soLuong, String tenSP,double giaBan, double thanhTien) {}
 
@@ -92,6 +93,6 @@ public class ChiTietHoaDonFullEntity {
     public void setTongGiaTri(double tongGiaTri) {
         this.tongGiaTri = tongGiaTri;
     }
-
-
+    public void setTrangThai(String trangThai) {this.trangThai = trangThai;}
+    public String getTrangThai() {return trangThai;}
 }

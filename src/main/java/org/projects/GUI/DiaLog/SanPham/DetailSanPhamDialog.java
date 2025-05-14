@@ -2,6 +2,7 @@ package org.projects.GUI.DiaLog.SanPham;
 
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
 import org.projects.GUI.utils.Helper;
@@ -11,6 +12,8 @@ import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,17 +27,24 @@ public class DetailSanPhamDialog extends JDialog {
     private JComboBox<String> quyCachField, phanLoaiField;
     private JButton dongBtn;
     private JRadioButton isAvailable, isNotAvailable, isInStock, isOutOfStock;
-
+    mainTransition mainTransition = new mainTransition();
     public DetailSanPhamDialog(SanPham sanPham, SanPhamEntity sanPhamEntity) {
         this.sanPham = sanPham;
         this.sanPhamEntity = sanPhamEntity;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Chi tiết sản phẩm");
-        setSize(450, 750);
-        setLocationRelativeTo(null);
+//        setSize(450, 750);
+//        setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
-        setVisible(true);
+        mainTransition.showSlideIn(this , 450  , 750);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().setVisible(false);
+                mainTransition.closeSlideOut(DetailSanPhamDialog.this);
+            }
+        });
+//        setVisible(true);
     }
 
     public void initComponent() {
@@ -152,7 +162,7 @@ public class DetailSanPhamDialog extends JDialog {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         dongBtn = new JButton("Đóng");
         dongBtn.setBackground(Color.GRAY);
-        dongBtn.addActionListener(e -> dispose());
+        dongBtn.addActionListener(e -> mainTransition.closeSlideOutSP(this));
 
         buttonPanel.add(dongBtn);
 

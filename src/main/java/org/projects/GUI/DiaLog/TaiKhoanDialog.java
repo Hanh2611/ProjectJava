@@ -14,6 +14,8 @@ import org.projects.entity.TaiKhoanEntity;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class TaiKhoanDialog extends JDialog {
@@ -51,7 +53,13 @@ public class TaiKhoanDialog extends JDialog {
 
         init();
         getEdit(tkType);
-        ts.showZoomIn(this, 900, 600);
+        ts.showSlideIn(this, 900, 600);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().setVisible(false);
+                ts.closeSlideOut(TaiKhoanDialog.this);
+            }
+        });
     }
 
     private void init() {

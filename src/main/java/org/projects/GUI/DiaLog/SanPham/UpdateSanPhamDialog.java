@@ -4,6 +4,7 @@ import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
 import org.projects.GUI.Components.NumberOnlyFilter;
 import org.projects.GUI.Components.OnlyDigitFilter;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
 import org.projects.GUI.utils.Helper;
@@ -15,6 +16,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -31,17 +34,25 @@ public class UpdateSanPhamDialog extends JDialog {
     private JFileChooser fileChooser;
     private File selectedFile;
     private JRadioButton isAvailable, isNotAvailable, isOutOfStock, isInStock;
-
+    mainTransition mainTransition = new mainTransition();
     public UpdateSanPhamDialog(SanPham sanPham, SanPhamEntity sanPhamEntity) {
         this.sanPham = sanPham;
         this.sanPhamEntity = sanPhamEntity;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Cập nhật sản phẩm");
-        setSize(450, 750);
-        setLocationRelativeTo(null);
+
+        //setSize(450, 750);
+        //setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
-        setVisible(true);
+        mainTransition.showSlideIn(this , 450  , 750);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().setVisible(false);
+                mainTransition.closeSlideOut(UpdateSanPhamDialog.this);
+            }
+        });
+//        setVisible(true);
     }
 
     public void initComponent() {
@@ -162,7 +173,7 @@ public class UpdateSanPhamDialog extends JDialog {
 
         huyBtn = new JButton("Hủy");
         huyBtn.setBackground(Color.PINK);
-        huyBtn.addActionListener(e -> dispose());
+        huyBtn.addActionListener(e -> mainTransition.closeSlideOutSP(this));
 
         luuBtn = new JButton("Lưu");
         luuBtn.setBackground(Color.GREEN);
