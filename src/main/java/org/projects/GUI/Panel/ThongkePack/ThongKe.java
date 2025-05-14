@@ -36,12 +36,6 @@
             this.init();
             hienthiPanel(listbtn.get(0));
             changeColorButton(listbtn.get(0));
-            UIUtils.refreshComponent(tktq);
-            UIUtils.refreshComponent(tksp);
-            UIUtils.refreshComponent(tkhd);
-            UIUtils.refreshComponent(tkpn);
-            UIUtils.refreshComponent(tkdt);
-
         }
         private void init() {
             JPanel headerPanel = new PanelBorderRadius();
@@ -72,6 +66,7 @@
                     public void actionPerformed(ActionEvent e) {
                         ButtonThongke bttk = (ButtonThongke) e.getSource();
                         changeColorButton(bttk);
+                        refreshAllThongKePanels();
                         hienthiPanel(bttk);
                     }
                 });
@@ -116,6 +111,13 @@
             }
         }
 
+        public void refreshAllThongKePanels() {
+            tktq.init();
+            tksp.init();
+            tkhd.init();
+            tkpn.init();
+            tkdt.init();
+        }
 
 
         public JPanel getHeaderPanel() {
@@ -158,11 +160,4 @@
             return listthongke;
         }
 
-        public void refreshAllThongKePanels() {
-            tktq.init();
-            tksp.init();
-            tkhd.init();
-            tkpn.init();
-            tkdt.refreshThongkeDoanhthu();
-        }
     }

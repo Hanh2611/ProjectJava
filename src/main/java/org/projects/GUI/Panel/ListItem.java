@@ -3,6 +3,7 @@ package org.projects.GUI.Panel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.projects.BUS.PhanQuyenBUS;
+import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Components.MenuItemComponents;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.LoginGUI;
@@ -83,14 +84,11 @@ public class ListItem extends JPanel {
                         mainGui.dispose();
                         new LoginGUI();
                     } else showPanel(namePanel);
-                    if(namePanel.equals("ThongKe")) {
-                        JPanel panel = mapItem.get(namePanel);
-                        if (panel instanceof ThongKe) {
-                            new ThongKe().refreshAllThongKePanels(); // load lại dữ liệu
-                        }
-                        showPanel(namePanel);
-                    }
-
+//                    if(namePanel.equals("ThongKe")) {
+//                        ThongKe tk = new ThongKe();
+//                        tk.refreshAllThongKePanels();
+//                        showPanel(namePanel);
+//                    }
                 }
             });
             list.add(c);

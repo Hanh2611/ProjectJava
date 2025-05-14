@@ -36,10 +36,20 @@ public class thongkeDoanhthu extends JPanel {
         }
         this.add(doanhthuPanel, BorderLayout.CENTER);
     }
+    public void init() {
+        refreshThongkeDoanhthu();
+    }
     public void refreshThongkeDoanhthu() {
-        new thongkedoanhthutheoNgay().init();
-        new thongkedoanhthutheoThang().init();
-        new thongkedoanhthutheoNam().init();
+        if (doanhthutheongayPanel instanceof thongkedoanhthutheoNgay ngay) {
+            ngay.init();
+        }
+        if (doanhthutheothangPanel instanceof thongkedoanhthutheoThang thang) {
+            thang.init();
+        }
+        if (doanhthutheoNamPanel instanceof thongkedoanhthutheoNam nam) {
+            nam.init();
+        }
         UIUtils.refreshComponent(this);
     }
+
 }

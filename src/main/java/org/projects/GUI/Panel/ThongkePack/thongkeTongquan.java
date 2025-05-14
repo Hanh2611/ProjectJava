@@ -61,7 +61,6 @@ public class thongkeTongquan extends JPanel {
     private ThongkeTongQuanBUS tktqBUS;
 
     public thongkeTongquan() {
-        tktqBUS = new ThongkeTongQuanBUS();
         this.setLayout(new BorderLayout(10,10));
 
         headerCard = new JPanel();
@@ -82,6 +81,8 @@ public class thongkeTongquan extends JPanel {
     }
 
     public void init() {
+        tktqBUS = new ThongkeTongQuanBUS();
+
         headerCard.removeAll();
         centerChart.removeAll();
         bottomChart.removeAll();
@@ -90,6 +91,7 @@ public class thongkeTongquan extends JPanel {
         doanhthuCard = new CardPanel("icon/revenue.svg","Doanh thu",tktqBUS.getTonggiatri());
         hoadonCard = new CardPanel("icon/bill.svg","Số hóa đơn",tktqBUS.getSoluonghoadon());
         khachhangCard = new CardPanel("icon/customer.svg","Số khách hàng",tktqBUS.getSoluongkhachhang());
+
         headerCard.add(sanphamCard);
         headerCard.add(doanhthuCard);
         headerCard.add(hoadonCard);
