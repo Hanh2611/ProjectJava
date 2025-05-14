@@ -357,9 +357,12 @@ public class ThanhToan extends JDialog {
 
                 System.out.println("Mô tả: " + moTa);
                 System.out.println("Giá trị: " + giaTri);
-                if (giaTri == hoaDon.getTongGiaTri() && moTa.equals(Integer.toString(hoaDon.getMaHoaDon()))) {
+                if (giaTri == hoaDon.getTongGiaTri() && moTa.contains("Thanhtoanhoadon" + hoaDon.getMaHoaDon())) {
                     HoaDonBUS.payment(hoaDon);
+                    this.dispose();
                     return true;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Thanh toán chưa thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -374,7 +377,8 @@ public class ThanhToan extends JDialog {
         String stk = "0847979732";
         double amountDouble = hoaDon.getTongGiaTri();
         int amount = (int) amountDouble;
-        String content = Integer.toString(hoaDon.getMaHoaDon());
+        String content = "Thanhtoanhoadon" + hoaDon.getMaHoaDon();
+//        String content = "Thanh toan hoa don " + Integer.toString(hoaDon.getMaHoaDon());
 
         String qrURL = String.format(
                 "https://img.vietqr.io/image/%s-%s-compact2.png?amount=%d&addInfo=%s",
