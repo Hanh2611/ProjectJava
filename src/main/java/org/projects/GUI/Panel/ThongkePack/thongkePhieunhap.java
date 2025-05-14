@@ -9,6 +9,7 @@ import org.projects.BUS.ThongKePhieuNhapBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Chart.PieChart;
 import org.projects.GUI.Components.ButtonEditStyle;
+import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
@@ -56,8 +57,9 @@ public class thongkePhieunhap extends JPanel {
         this.setBackground(Color.WHITE);
 
         //west
-        west = new JPanel(new GridLayout(2,1,5,5));
-        west.setPreferredSize(new Dimension(350,1000));
+        west = new JPanel();
+        west.setLayout(new GridLayout(2,1));
+        west.setPreferredSize(new Dimension(300,1000));
         west.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         west.setBackground(Color.WHITE);
         headerWest = new JPanel();
@@ -107,7 +109,7 @@ public class thongkePhieunhap extends JPanel {
         west.add(headerWest);
         west.add(bottomWest);
 
-        center = new JPanel(new GridLayout(2,1));
+        center = new JPanel(new GridLayout(2,1,10,10));
         contentChart = ColumnsChart.createColumnChart2("Tổng giá trị nhập theo ngày",columns,"Ngày","Tổng giá trị",tkpnBUS.gettonggiatriphieunhap(),550,300);
         center.add(contentChart);
         tableData = new JPanel(new BorderLayout());

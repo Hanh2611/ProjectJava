@@ -168,7 +168,6 @@ public class VotePDF {
             doc.add(new Paragraph(" "));
             doc.add(new Paragraph("Tổng số: " + tongso).setBold());
             Paragraph tongtienphaitra = new Paragraph("Tổng tiền phải trả: " + hdEntity.getTongGiaTri()).setBold();
-//            double sotienkhachtra =
             Paragraph sotienkhachdua = new Paragraph("Tiền khách trả: " + String.valueOf(tienkhachtra)).setBold();
             double tienthua = tienkhachtra - hdEntity.getTongGiaTri();
             Paragraph tienthoilai = new Paragraph("Ttiền thối lại: " + String.valueOf(tienthua)).setBold();
