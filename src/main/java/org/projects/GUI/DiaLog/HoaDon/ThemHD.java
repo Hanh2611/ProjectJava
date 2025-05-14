@@ -20,8 +20,10 @@ import javax.swing.table.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -680,7 +682,9 @@ public class ThemHD extends JPanel {
             }
             int maNV = Session.curUser.getMaNguoiDung();
             long tongTien = ThemPN.parseTien(txtTongTien.getText());
+            LocalDateTime nowVN = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
             HoaDonEntity hoaDonEntity = new HoaDonEntity();
+            hoaDonEntity.setNgayTao(Timestamp.valueOf(nowVN));
             hoaDonEntity.setMaNV(maNV);
             hoaDonEntity.setMaKh(maKhachHangDuocChon);
             hoaDonEntity.setTongGiaTri(tongTien);
