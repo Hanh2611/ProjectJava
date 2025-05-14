@@ -4,36 +4,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 
-public class ButtonEditStyle {
-    private JButton button;
-    private Color backgroundbutton;
-    private Color foregroundbutton;
+public class ButtonEditStyle extends JButton{
+    private final int bankinh = 30;
 
-    public static JButton styleButton(String buttontext, Color backgroundbutton, Color foregroundbutton) {
-        JButton button = new JButton(buttontext);
-        button.setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
-        button.setBackground(backgroundbutton);
-        button.setForeground(foregroundbutton);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(150, 150, 150)),
-                BorderFactory.createEmptyBorder(8, 15, 8, 15)
-        ));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        return button;
+    public ButtonEditStyle(String buttontext, Color backgroundbutton, Color foregroundbutton,int width,int height) {
+        super(buttontext);
+        setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
+        setBackground(backgroundbutton);
+        setForeground(foregroundbutton);
+        setFocusPainted(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+        setOpaque(false);
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setMargin(new Insets(5, 5, 5, 5));
+        setPreferredSize(new Dimension(width,height));
     }
 
-    public JButton getButton() {
-        return button;
+    @Override
+    public void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(getBackground());
+        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), bankinh, bankinh);
+
+        g2d.setColor(getBackground());
+        g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, bankinh, bankinh);
+
+        g2d.dispose();
+        super.paintComponent(g);
     }
 
-    public Color getBackgroundbutton() {
-        return backgroundbutton;
+    @Override
+    public boolean contains(int x, int y) {
+        Shape s = new RoundRectangle2D.Float(0,0,getWidth(),getHeight(),bankinh,bankinh);
+        return s.contains(x, y);
     }
 
-    public Color getForegroundbutton() {
-        return foregroundbutton;
-    }
 }

@@ -69,4 +69,8 @@ public class HoaDonBUS {
     public static boolean isExistedInHoaDon(int spId){
         return hoaDonDAO.isExistedInHoaDon(spId);
     }
+
+    public static void payment(HoaDonEntity hoaDon) {
+        new HoaDonDAO().updateState(hoaDon.getMaHoaDon());
+    }
 }

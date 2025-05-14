@@ -8,8 +8,9 @@ import java.util.ArrayList;
 public class labelText extends JPanel {
     private JLabel label;
     private JTextField textField;
+    private JLabel errorLabel;
     private JComboBox<String> cbx;
-    public  labelText(String text,int width,int height)  {
+    public  labelText(String text,int width,int columns)  {
         setLayout(new BorderLayout(5, 5));
         setBackground(new Color(240, 240, 240));
 
@@ -20,14 +21,19 @@ public class labelText extends JPanel {
         textField = new JTextField(width);
         textField.setFont(new Font("Jetbrains Mono", Font.PLAIN, 14));
         textField.setForeground(Color.BLACK);
-        textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
+//        textField.setBorder(BorderFactory.createCompoundBorder(
+//                BorderFactory.createLineBorder(new Color(200, 200, 200)),
+//                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+//        ));
+        textField.setPreferredSize(new Dimension(400, 30));
+
+        errorLabel = new JLabel(" ");
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setFont(new Font("Jetbrains Mono", Font.ITALIC, 10));
 
         add(label, BorderLayout.NORTH);
         add(textField, BorderLayout.CENTER);
-        setMaximumSize(new Dimension(500, 60));
+        add(errorLabel, BorderLayout.SOUTH);
     }
 
     public  labelText(String text,ArrayList<String> lst)  {
@@ -74,5 +80,13 @@ public class labelText extends JPanel {
 
     public void setCbx(JComboBox<String> cbx) {
         this.cbx = cbx;
+    }
+
+    public JLabel getErrorLabel() {
+        return errorLabel;
+    }
+
+    public void setErrorLabel(JLabel errorLabel) {
+        this.errorLabel = errorLabel;
     }
 }

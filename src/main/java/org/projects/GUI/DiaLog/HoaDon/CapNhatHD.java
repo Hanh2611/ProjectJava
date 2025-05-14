@@ -2,13 +2,12 @@ package org.projects.GUI.DiaLog.HoaDon;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.BUS.SanPhamBus;
-import org.projects.DAO.ChiTietHoaDonDAO;
-import org.projects.DAO.HoaDonDAO;
-import org.projects.DAO.KhachHangDAO;
-import org.projects.DAO.SanPhamDAO;
+import org.projects.DAO.*;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
+import org.projects.GUI.DiaLog.ThanhToan;
 import org.projects.GUI.Panel.HoaDon;
+import org.projects.GUI.utils.VotePDF;
 import org.projects.entity.*;
 
 import javax.swing.*;
@@ -17,10 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -311,17 +307,22 @@ public class CapNhatHD extends JPanel {
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
-        btnThanhToan.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(
-                        null,
-                        "Xác nhận thanh toán",
-                        "Xác nhận",
-                        JOptionPane.YES_NO_OPTION
-                );
+        btnThanhToan.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JDialog thanhToan = new ThanhToan(null ,hoaDon.layhoadonduochon());
+                thanhToan.setVisible(true);
+                HoaDon.reloadDAO();
             }
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                new ThanhToan(null,hoaDon.layhoadonduochon()).setVisible(true);
+////                int confirm = JOptionPane.showConfirmDialog(
+////                        null,
+////                        "Xác nhận thanh toán",
+////                        "Xác nhận",
+////                        JOptionPane.YES_NO_OPTION
+////                );
+//            }
         });
 
         panelright.add(btnThanhToan);

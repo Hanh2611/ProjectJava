@@ -4,6 +4,7 @@ import org.jfree.chart.ChartPanel;
 import org.projects.Action.ThongKeDoanhThuTheoNamAction;
 import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
+import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
@@ -41,12 +42,8 @@ public class thongkedoanhthutheoNam extends JPanel {
         nam = handleComponents.setLabelText("Năm:");
         cbxnam = new JComboBox<>(new String[]{"Tất cả","2020","2021","2022","2023","2024","2025","2026"});
         cbxnam.setSelectedItem("Tất cả");
-        thongke = handleComponents.createButton("Thống kê",100,30);
-        thongke.setBackground(Color.decode("#2ed573"));
-        thongke.setForeground(Color.WHITE);
-        reset = handleComponents.createButton("Làm mới",100,30);
-        reset.setBackground(Color.decode("#1e90ff"));
-        reset.setForeground(Color.WHITE);
+        thongke = new ButtonEditStyle("Thống kê",Color.decode("#2ed573"),Color.WHITE,100,30);
+        reset = new ButtonEditStyle("Làm mới",Color.decode("#1e90ff"),Color.WHITE,100,30);
         header.add(nam);
         header.add(cbxnam);
         header.add(thongke);
@@ -61,7 +58,7 @@ public class thongkedoanhthutheoNam extends JPanel {
 
 
         tablePanel = new JPanel(new GridLayout(1,1));
-        String[] cols = new String[]{"Năm","Tổng tiền","Tổng chi phí nhập trong tháng","lợi nhuận"};
+        String[] cols = new String[]{"Năm","Tổng tiền","Chi phí nhập","lợi nhuận"};
         doanhthutheonamTableModel = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -108,9 +105,9 @@ public class thongkedoanhthutheoNam extends JPanel {
         for(ThongkeDoanhThuEntity tkdtE : lst){
             doanhthutheonamTableModel.addRow(new Object[]{
                     tkdtE.getNam(),
-                    tkdtE.getTongtienhoadon(),
-                    tkdtE.getTongchiphinhaptrongthang(),
-                    tkdtE.getLoinhuan()
+                    tkdtE.getTongtienhoadonformat(),
+                    tkdtE.getTongchiphinhaptrongthangformat(),
+                    tkdtE.getLoinhuanformat()
             });
         }
     }

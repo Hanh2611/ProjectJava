@@ -1,6 +1,7 @@
 package org.projects.GUI.Panel.PhanQuyenPack;
 
 import org.projects.Action.PhanQuyenAction;
+import org.projects.Action.PhieuNhapAction;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.Components.layoutCompoment;
@@ -32,7 +33,7 @@ public class PhanQuyen extends JPanel{
                 {"icon/details.svg", "Chi tiết", "detail"},
                 {"icon/excel.svg", "Xuất excel", "export"}
         };
-        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"--"});
+        header = new headerBar(listItemHeader, Session.quyenTaiKhoan.get(PhanQuyenBUS.getMaDanhMuc("PhanQuyen") - 1),new String[]{"--","Mã nhóm quyền","Tên nhóm quyền"});
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         this.add(header);
@@ -79,11 +80,29 @@ public class PhanQuyen extends JPanel{
         for(String name : header.getHeaderFunc().getHm().keySet()) {
             header.getHeaderFunc().getHm().get(name).addMouseListener(new PhanQuyenAction(this, mainTable));
         }
+        header.getSearch().getSearchComboBox().addItemListener(new PhanQuyenAction(this,mainTable));
+        header.getSearch().getSearchField().getDocument().addDocumentListener(new PhanQuyenAction(this,mainTable));
+        header.getSearch().getSearchButton().addActionListener(new PhanQuyenAction(this,mainTable));
     }
     public void loadData() {
+        tableModel.setRowCount(0);
         List<NhomQuyen> list = new PhanQuyenBUS().getNhomQuyen();
         for (NhomQuyen nhomQuyen : list) {
             tableModel.addRow(new Object[]{nhomQuyen.getMaNhomQuyen(), nhomQuyen.getTenNomQuyen()});
+        }
+    }
+
+    public void searchFunction(String key,String word) {
+        key = this.getHeader().getSearch().getSearchComboBox().getSelectedItem().toString();
+        word = this.getHeader().getSearch().getSearchField().getText().trim();
+        if (!key.equals("---") && !word.isEmpty()) {
+            List<NhomQuyen> lst = PhanQuyenBUS.search(key, word);
+            tableModel.setRowCount(0);
+            for(NhomQuyen nhomQuyen : lst) {
+                tableModel.addRow(new Object[]{nhomQuyen.getMaNhomQuyen(), nhomQuyen.getTenNomQuyen()});
+            }
+        } else {
+            loadData();
         }
     }
 

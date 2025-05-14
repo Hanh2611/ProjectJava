@@ -5,6 +5,7 @@ import org.projects.Action.ThongKeDoanhThuTheoNgayAction;
 import org.projects.Action.ThongKeDoanhThuTheoThangAction;
 import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
+import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
@@ -46,20 +47,17 @@ public class thongkedoanhthutheoThang extends JPanel {
         cbxthang = new JComboBox<>(new String[]{"Tất cả","1","2","3","4","5","6","7","8","9","10","11","12"});
         cbxthang.setSelectedItem("Tất cả");
         nam = handleComponents.setLabelText("Năm:");
-        cbxnam = new JComboBox<>(new String[]{"2020","2021","2022","2023","2024","2025"});
-        cbxnam.setSelectedItem("2025");
-        thongke = handleComponents.createButton("Thống kê",100,30);
-        thongke.setBackground(Color.decode("#2ed573"));
-        thongke.setForeground(Color.WHITE);
-        reset = handleComponents.createButton("Làm mới",100,30);
-        reset.setBackground(Color.decode("#1e90ff"));
-        reset.setForeground(Color.WHITE);
-        header.add(thang);
+        cbxnam = new JComboBox<>(new String[]{"Tất cả","2020","2021","2022","2023","2024","2025"});
+        cbxnam.setSelectedItem("Tất cả");
+        thongke = new ButtonEditStyle("Thống kê",Color.decode("#2ed573"),Color.WHITE,100,30);
+        reset = new ButtonEditStyle("Làm mới",Color.decode("#1e90ff"),Color.WHITE,100,30);
+
         header.add(cbxthang);
         header.add(nam);
         header.add(cbxnam);
         header.add(thongke);
         header.add(reset);
+
         this.add(header, BorderLayout.NORTH);
 
         //center
@@ -72,7 +70,7 @@ public class thongkedoanhthutheoThang extends JPanel {
         thangChartPanel.add(columnsChartPanel);
 
         tablePanel = new JPanel(new GridLayout(1,1));
-        String[] cols = new String[]{"Tháng","Năm","Tổng tiền","Tổng chi phí nhập trong tháng","lợi nhuận"};
+        String[] cols = new String[]{"Tháng","Năm","Tổng tiền","chi phí nhập","lợi nhuận"};
         doanhthutheothangTableModel = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -113,6 +111,7 @@ public class thongkedoanhthutheoThang extends JPanel {
         cbxnam.addItemListener(tkdtAction);
         thongke.addActionListener(tkdtAction);
         reset.addActionListener(tkdtAction);
+
     }
 
     public void loadlist(List<ThongkeDoanhThuEntity> lst) {
@@ -121,9 +120,9 @@ public class thongkedoanhthutheoThang extends JPanel {
             doanhthutheothangTableModel.addRow(new Object[]{
                     tkdtE.getThang(),
                     tkdtE.getNam(),
-                    tkdtE.getTongtienhoadon(),
-                    tkdtE.getTongchiphinhaptrongthang(),
-                    tkdtE.getLoinhuan()
+                    tkdtE.getTongtienhoadonformat(),
+                    tkdtE.getTongchiphinhaptrongthangformat(),
+                    tkdtE.getLoinhuanformat()
             });
         }
     }
@@ -250,4 +249,6 @@ public class thongkedoanhthutheoThang extends JPanel {
     public void setThangChartPanel(JPanel thangChartPanel) {
         this.thangChartPanel = thangChartPanel;
     }
+
+
 }

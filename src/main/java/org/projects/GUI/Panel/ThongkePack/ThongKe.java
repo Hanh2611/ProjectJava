@@ -1,5 +1,7 @@
     package org.projects.GUI.Panel.ThongkePack;
 
+    import org.projects.GUI.Components.PanelBorderRadius;
+
     import java.awt.*;
     import java.awt.event.ActionEvent;
     import java.awt.event.ActionListener;
@@ -31,9 +33,12 @@
             this.setBackground(new Color(240, 240, 240));
             this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
             this.init();
+            hienthiPanel(listbtn.get(0));
+            changeColorButton(listbtn.get(0));
         }
         private void init() {
-            headerPanel = new JPanel(new BorderLayout());
+            JPanel headerPanel = new PanelBorderRadius();
+            headerPanel.setLayout(new BorderLayout());
             headerPanel.setBackground(Color.decode("#FFFFFF"));
             headerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
             headerTitle = new JLabel("THỐNG KÊ SIÊU THỊ MINI", SwingConstants.CENTER);
@@ -103,6 +108,7 @@
                 centerPanel.repaint();
             }
         }
+
 
 
         public JPanel getHeaderPanel() {

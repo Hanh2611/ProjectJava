@@ -33,8 +33,8 @@ public class ThongKeDoanhThuTheoNgayAction implements ActionListener {
     }
 
     public void updateChartAndTableDay() {
-        String from = ChangeDateToString.changeDate(tkdtTheoNgay.getDatefrom());
-        String to = ChangeDateToString.changeDate(tkdtTheoNgay.getDateto());
+        String from = ChangeDateToString.changeDate(tkdtTheoNgay.getDatefrom().getDate());
+        String to = ChangeDateToString.changeDate(tkdtTheoNgay.getDateto().getDate());
         tkdtTheoNgay.getCenter1().removeAll();
         JPanel newChartPanel = ColumnsChart.createColumnChart2("Doanh thu",tkdtTheoNgay.getDoanhthuChart(),"Ngày","Doanh thu",tkdtBUS.getngayvatongtien(from,to),900,300);
         tkdtTheoNgay.getCenter1().add(newChartPanel);

@@ -2,7 +2,6 @@ package org.projects.GUI.Panel.KhachHangPack;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.projects.Action.KhachHangAction;
-import org.projects.Action.NhanVienAction;
 import org.projects.DAO.KhachHangDAO;
 import org.projects.GUI.utils.InputValid;
 
@@ -12,11 +11,6 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -39,6 +33,7 @@ public class AddKhachHangConsole extends JPanel {
     GridBagConstraints f = new GridBagConstraints();
     private String ma ,ten , sdt , diachi;
     KhachHangDAO dao = new KhachHangDAO();
+    ArrayList<String> default_list;
     public AddKhachHangConsole() {
         initComponents();
     }
@@ -72,22 +67,26 @@ public class AddKhachHangConsole extends JPanel {
         mainInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfo.setBackground(new Color(240, 240, 240));
         mainInfo.setOpaque(true);
-        String[] list = {"Nhập họ và tên" ,"Nhập số điện thoại", "Nhập địa chỉ"};
+        String[] list = {"Nhập mã khách hàng","Nhập họ và tên" ,"Nhập số điện thoại", "Nhập địa chỉ"};
         String[] items = {"-- Chọn vai trò --", "Nhân viên bán hàng", "Kế toán", "Nhân viên kho", "Quản lí sản phẩm", "Nhân viên kĩ thuật", "Giám đốc"};
         listAdd = new ArrayList<>();
         errorLabels = new ArrayList<>();
         comboBox = new JComboBox<>(items);
-        int newMaNhanVien = dao.getMaxKhachHang() + 1;
-        JTextField maNhanVienField = new JTextField(String.valueOf(newMaNhanVien));
+        default_list = new ArrayList<>();
+        int newMaKH = dao.getMaxKhachHang() + 1;
+        JTextField maNhanVienField = new JTextField(String.valueOf(newMaKH));
         maNhanVienField.setVisible(false);
         listAdd.add(maNhanVienField);
+        default_list.add(String.valueOf(newMaKH));
         JLabel maNhanVienError = new JLabel("");
         maNhanVienError.setVisible(false);
+        //System.out.println(listAdd.get(0).getText());
         errorLabels.add(maNhanVienError);
-        for (int i = 0 ; i < list.length ; i++) {
+        for (int i = 1 ; i < list.length ; i++) {
             JTextField jTextField = new JTextField(list[i]);
             addPlaceholderStyle(jTextField, list[i]);
             jTextField.setName(list[i]);
+            default_list.add(list[i]);
             jTextField.setBackground(new Color(240, 240, 240));
             jTextField.setForeground(new Color(192, 192, 192));
             jTextField.setFont(new Font("JETBRAINS MONO", Font.ITALIC, 14));
@@ -314,8 +313,10 @@ public class AddKhachHangConsole extends JPanel {
         for(JLabel label : errorLabels) {
             label.setText("");
         }
+        int i = 0;
         for (JTextField textField : listAdd) {
-            textField.setText(textField.getName());
+            textField.setText(default_list.get(i));
+            i++;
             textField.setForeground(new Color(192, 192, 192));
             InputValid.resetBorder(textField , false);
         }
