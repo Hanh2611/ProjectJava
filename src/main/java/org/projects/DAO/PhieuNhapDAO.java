@@ -17,7 +17,9 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
                     "FROM phieu_nhap pn " +
                     "JOIN nhan_vien nv ON pn.ma_nhan_vien = nv.ma_nhan_vien " +
                     "JOIN nha_cung_cap ncc ON pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap " +
-                    "WHERE pn.is_delete = 0;"; // Chỉ lấy bản ghi chưa bị xóa mềm
+                    "WHERE pn.is_delete = 0 " +
+                    "ORDER BY pn.ma_phieu_nhap ASC;"; // <-- Sắp xếp theo mã tăng dần
+
 
             try (Connection c = DatabasesConfig.getConnection();
                  PreparedStatement ps = c.prepareStatement(query);
