@@ -94,7 +94,7 @@ public class PhieuNhap extends JPanel {
     }
 
     public void reloadDAO() {
-        List<PhieuNhapEntity> lst = new PhieuNhapDAO().showlist();
+        List<PhieuNhapEntity> lst = phieuNhapBUS.getList();
         loadList(lst);
     }
     public static String formatCurrency(long value) {

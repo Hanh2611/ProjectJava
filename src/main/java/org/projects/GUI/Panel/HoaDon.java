@@ -3,7 +3,6 @@ package org.projects.GUI.Panel;
 import org.projects.Action.HoaDonAction;
 import org.projects.BUS.HoaDonBUS;
 import org.projects.BUS.PhanQuyenBUS;
-import org.projects.DAO.HoaDonDAO;
 import org.projects.GUI.Components.header.headerBar;
 import org.projects.GUI.DiaLog.HoaDon.CapNhatHD;
 import org.projects.GUI.DiaLog.HoaDon.ChiTietHD;
@@ -124,7 +123,7 @@ public class HoaDon extends JPanel{
         return new HoaDonEntity(mahoadon,tennv,tenkh,ngaytao,tongiatri,trangthai);
     }
     public static void reloadDAO(){
-        List<HoaDonEntity> lst = new HoaDonDAO().showlist();
+        List<HoaDonEntity> lst = HoaDonBUS.getList();
         loadList(lst);
     }
     public static String formatCurrency(long value) {

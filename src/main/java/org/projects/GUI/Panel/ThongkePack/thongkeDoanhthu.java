@@ -1,5 +1,7 @@
 package org.projects.GUI.Panel.ThongkePack;
 
+import org.projects.GUI.utils.UIUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,4 +36,20 @@ public class thongkeDoanhthu extends JPanel {
         }
         this.add(doanhthuPanel, BorderLayout.CENTER);
     }
+    public void init() {
+        refreshThongkeDoanhthu();
+    }
+    public void refreshThongkeDoanhthu() {
+        if (doanhthutheongayPanel instanceof thongkedoanhthutheoNgay ngay) {
+            ngay.init();
+        }
+        if (doanhthutheothangPanel instanceof thongkedoanhthutheoThang thang) {
+            thang.init();
+        }
+        if (doanhthutheoNamPanel instanceof thongkedoanhthutheoNam nam) {
+            nam.init();
+        }
+        UIUtils.refreshComponent(this);
+    }
+
 }

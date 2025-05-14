@@ -16,11 +16,13 @@ import javax.swing.JPanel;
 
 import org.projects.Action.MainAction;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.Panel.ThongkePack.ThongKe;
 import org.projects.GUI.Panel.TrangChu;
 import org.projects.GUI.Panel.WestTaskBar;
 import org.projects.GUI.utils.UIUtils;
 
 public class MainGUI extends JFrame {
+    private ThongKe thongKe;
     
     private JPanel title;
     private WestTaskBar MenuTask;
@@ -113,4 +115,5 @@ public class MainGUI extends JFrame {
     public static void main(String[] args) {
         new MainGUI();
     }
+
 }
