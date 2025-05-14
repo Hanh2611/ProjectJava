@@ -18,6 +18,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import static org.projects.Action.NhanVienAction.showToast;
+
 public class KhachHangAction extends FocusAdapter implements ActionListener  , MouseListener, ItemListener, KeyListener, DocumentListener {
     private KhachHang kh;
     private ShowAddKhachHang showAddKhachHang;
@@ -29,10 +31,11 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
     public int fieldIndex;
     public ArrayList<JTextField> listAdd;
     public ArrayList<JLabel> errorLabels;
-
+    public static boolean ok;
     public KhachHangAction(KhachHang kh) {
         this.kh = kh;
         bus = new KhachHangBUS(kh);
+        setOk(true);
     }
     public KhachHangAction(JTextField textField, int fieldIndex, ArrayList<JTextField> listAdd, ArrayList<JLabel> errorLabels) {
         this.textField = textField;
@@ -60,12 +63,14 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                     JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
                     kh.loadList(bus.getList());
                     showAddKhachHang.close();
+                    setOk(true);
                 }else {
                     JOptionPane.showMessageDialog(null, "Thêm khách hàng thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
                 }
             } else if (source.equals(showAddKhachHang.add.getCancelButton())) {
 //                System.out.println("cancel");
                 showAddKhachHang.close();
+                setOk(true);
             } else if (source.equals(showAddKhachHang.add.getResetButton())) {
 //                System.out.println("reset");
                 showAddKhachHang.add.resetForm();
@@ -85,12 +90,14 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                     JOptionPane.showMessageDialog(null , "Xóa thất bại" , "thông báo" , JOptionPane.ERROR_MESSAGE);
                 }
                 showDelKhachHang.close();
+                setOk(true);
             }
         }
         if(showFixKhachHang != null) {
             if (source.equals(showFixKhachHang.fix.getCancelButton())) {
 //                System.out.println("fix ok cancel");
                 showFixKhachHang.close();
+                setOk(true);
             }else if (source.equals(showFixKhachHang.fix.getUpdateButton())){
 //                System.out.println("fix ok update");
                 showFixKhachHang.fix.insertData();
@@ -103,6 +110,7 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                     if(bus.sua(khe)){
                         JOptionPane.showMessageDialog(null , "Đã sửa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
                         showFixKhachHang.close();
+                        setOk(true);
                     }else{
                         JOptionPane.showMessageDialog(null , "Sửa không thành công" , "thông báo" ,JOptionPane.ERROR_MESSAGE);
                     }
@@ -133,11 +141,16 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                 if(c.equals(gf)){
                     if (name == null && name.trim().isEmpty()) return;
 //                    System.out.println("ten cua nut la : " + name);
+                    if(!isOk()){
+                        showToast("Vui lòng tắt cửa sổ hiện tại mới thực hiện được thao tác khác xin cảm ơn!");
+                        return;
+                    }
                     if("add".equals(name)){
                         showAddKhachHang = new ShowAddKhachHang();
                         showAddKhachHang.add.getResetButton().addActionListener(this);
                         showAddKhachHang.add.getSaveButton().addActionListener(this);
                         showAddKhachHang.add.getCancelButton().addActionListener(this);
+                        setOk(false);
                     }else if("excel".equals(name)){
                         JFileChooser fileChooser = new JFileChooser();
                         int result = fileChooser.showSaveDialog(null);
@@ -167,6 +180,7 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                                 showFixKhachHang.fix.getUpdateButton().addActionListener(this);
                                 showFixKhachHang.fix.getCancelButton().addActionListener(this);
 //                                System.out.println("ok");
+                                setOk(false);
                             }
                         }else if("detail".equals(name)){
                             info = kh.getRow();
@@ -175,12 +189,14 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                                 showDeltailKhachHang.detailKhachHangConsole.setInfo(info);
                                 showDeltailKhachHang.Show();
 //                                System.out.println("ok");
+                                setOk(false);
                             }
                         }
                         else if("delete".equals(name)){
                             showDelKhachHang = new ShowDelKhachHang(info);
                             showDelKhachHang.del.getOkButton().addActionListener(this);
                             showDelKhachHang.del.getCancelButton().addActionListener(this);
+                            setOk(false);
                         }
                     }
                 }
@@ -295,5 +311,13 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                 }
                 break;
         }
+    }
+
+    public static void setOk(boolean ok) {
+        KhachHangAction.ok = ok;
+    }
+
+    public static boolean isOk() {
+        return ok;
     }
 }

@@ -215,7 +215,7 @@ public class DetailKhachHangConsole extends JPanel {
                     e.getMaHD(),
                     HoaDon.formatCurrency((long)e.getTongGiaTri()),
                     e.getNgayTao(),
-                    e.getTrangThai(),
+                    KhachHang.convertTrangThai(e.getTrangThai()),
             };
             tableModel.addRow(row);
         }

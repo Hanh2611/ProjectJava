@@ -14,6 +14,7 @@ import org.projects.entity.NhanVienEntity;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -29,10 +30,11 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
     private int fieldIndex;
     private ArrayList<JTextField> listAdd;
     private ArrayList<JLabel> errorLabels;
-
+    public static boolean ok;
     public NhanVienAction(NhanVien nv) {
         this.nv = nv;
         bus = new NhanVienBus(nv);
+        setOk(true);
     }
 
     public NhanVienAction(JTextField textField, int fieldIndex, ArrayList<JTextField> listAdd, ArrayList<JLabel> errorLabels) {
@@ -64,12 +66,14 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                         JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
                         nv.loadList(bus.getList());
                         show_add_nv.close();
+                        setOk(true);
                     } else {
                         JOptionPane.showMessageDialog(null, "Thêm nhân viên thất bại", "thông báo", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             } else if (source.equals(show_add_nv.add.getCancelButton())) {
                 show_add_nv.close();
+                setOk(true);
             } else if (source.equals(show_add_nv.add.getResetButton())) {
                 show_add_nv.add.resetForm();
             }
@@ -77,6 +81,7 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
         if(show_del_nv != null) {
             if (source.equals(show_del_nv.del.getCancelButton())) {
                 show_del_nv.close();
+                setOk(true);
             }else if(source.equals(show_del_nv.del.getOkButton())){
                 NhanVienEntity nve = nv.getRow();
                 if(bus.xoa(nve)){
@@ -86,11 +91,13 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                     JOptionPane.showMessageDialog(null , "Xóa thất bại" , "thông báo" , JOptionPane.ERROR_MESSAGE);
                 }
                 show_del_nv.close();
+                setOk(true);
             }
         }
         if(show_fix_nv != null) {
             if (source.equals(show_fix_nv.fix.getCancelButton())) {
                 show_fix_nv.close();
+                setOk(true);
             }else if (source.equals(show_fix_nv.fix.getUpdateButton())){
                 show_fix_nv.fix.insertData();
                 if(!show_fix_nv.fix.checkVaildALL()){
@@ -107,6 +114,7 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                         JOptionPane.showMessageDialog(null , "Đã sửa thành công" , "thông báo" ,JOptionPane.INFORMATION_MESSAGE);
                         nv.loadList(bus.getList());
                         show_fix_nv.close();
+                        setOk(true);
                     }else{
                         JOptionPane.showMessageDialog(null , "Sửa không thành công" , "thông báo" ,JOptionPane.ERROR_MESSAGE);
                     }
@@ -128,6 +136,27 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
 
     }
 
+    public static void showToast(String message) {
+        JWindow toast = new JWindow();
+        JLabel label = new JLabel(message, SwingConstants.CENTER);
+        label.setOpaque(true);
+        label.setBackground(new Color(255, 220, 220));
+        label.setForeground(Color.RED);
+        label.setFont(new Font("Jetbrains Mono", Font.BOLD, 14));
+        label.setBorder(BorderFactory.createLineBorder(Color.RED));
+        toast.getContentPane().add(label);
+        toast.setSize(900, 50);
+        int x = 900, y = 300;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        x = screenSize.width/2 - 450;
+        y = screenSize.height/2 - 50;
+        toast.setLocation(x, y);
+        toast.setAlwaysOnTop(true);
+
+        new javax.swing.Timer(1500, e -> toast.dispose()).start();
+        toast.setVisible(true);
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
         generalFunction c = (generalFunction) e.getSource();
@@ -136,11 +165,17 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                 generalFunction gf = nv.getHeader().getHeaderFunc().getHm().get(name);
                 if(c.equals(gf)){
                     if (name == null && name.trim().isEmpty()) return;
+                    if(!isOk()){
+                        //JOptionPane.showMessageDialog(null , "Vui lòng tắt cửa sổ hiện tại mới thực hiện được thao tác khác xin cảm ơn!" , "thông báo" , JOptionPane.ERROR_MESSAGE);
+                        showToast("Vui lòng tắt cửa sổ hiện tại mới thực hiện được thao tác khác xin cảm ơn!");
+                        return;
+                    }
                     if("add".equals(name)){
                         show_add_nv = new ShowAddNhanVienConsole();
                         show_add_nv.add.getResetButton().addActionListener(this);
                         show_add_nv.add.getSaveButton().addActionListener(this);
                         show_add_nv.add.getCancelButton().addActionListener(this);
+                        setOk(false);
                     }else if("excel".equals(name)){
                         JFileChooser fileChooser = new JFileChooser();
                         int result = fileChooser.showSaveDialog(null);
@@ -165,6 +200,7 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                                 show_fix_nv.Show();
                                 show_fix_nv.fix.getUpdateButton().addActionListener(this);
                                 show_fix_nv.fix.getCancelButton().addActionListener(this);
+                                setOk(false);
                             }
                         }else if("detail".equals(name)){
                             info = nv.getRow();
@@ -172,12 +208,14 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                             if(info != null){
                                 show_detail_nv.chiTietUserConsole.setInfo(info);
                                 show_detail_nv.Show();
+                                setOk(false);
                             }
                         }
                         else if("delete".equals(name)){
                             show_del_nv = new ShowDeleteNhanVienConsole(info);
                             show_del_nv.del.getOkButton().addActionListener(this);
                             show_del_nv.del.getCancelButton().addActionListener(this);
+                            setOk(false);
                         }
                     }
                 }
@@ -312,5 +350,13 @@ public class NhanVienAction extends FocusAdapter implements ActionListener, Mous
                 }
                 break;
         }
+    }
+
+    public static boolean isOk() {
+        return ok;
+    }
+
+    public static void setOk(boolean ok) {
+        NhanVienAction.ok = ok;
     }
 }

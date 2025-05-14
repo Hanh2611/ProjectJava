@@ -74,6 +74,12 @@ public class SanPham extends JPanel{
             table.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        JTableHeader tableHeader = table.getTableHeader();
+        tableHeader.setBackground(new Color(0, 102, 204));
+        tableHeader.setForeground(new Color(240, 240, 240));
+        tableHeader.setFont(new Font("JETBRAINS MONO", Font.BOLD, 13));
+        tableHeader.setPreferredSize(new Dimension(header.getWidth(), 35));
+
         sorter.setComparator(0,Comparator.comparingInt(o -> Integer.parseInt(o.toString())));
         sorter.setComparator(2, Comparator.comparing(String::toString));
         sorter.setComparator(4, Comparator.comparingDouble(o -> Double.parseDouble(o.toString().split("/")[0].replaceAll("đ", ""))));
