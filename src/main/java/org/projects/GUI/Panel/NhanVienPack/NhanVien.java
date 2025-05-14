@@ -177,7 +177,7 @@ public class NhanVien extends JPanel {
         cancelIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
+                transition.closeFadeOut(dialog);
             }
         });
         return cancelIcon;

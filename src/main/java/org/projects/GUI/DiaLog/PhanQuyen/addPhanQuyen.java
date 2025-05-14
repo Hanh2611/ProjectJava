@@ -2,9 +2,11 @@ package org.projects.GUI.DiaLog.PhanQuyen;
 
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.DAO.DanhMucQuanLyDAO;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
+import org.projects.GUI.Panel.TaiKhoan;
 import org.projects.GUI.utils.FocusListenerUtils;
 import org.projects.entity.DanhMucQuanLy;
 
@@ -14,10 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -33,19 +32,20 @@ public class addPhanQuyen extends JDialog {
     private JTable mainTable;
     private JButton addButton;
     private List<DanhMucQuanLy> listDanhMuc;
-
+    mainTransition mainTransition = new mainTransition();
     public addPhanQuyen(JFrame parent) {
-        super(parent, "ADD PHAN QUYEN", true);
+        super(parent, "ADD PHAN QUYEN", null);
         this.getContentPane().setBackground(Color.WHITE);
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        setSize(900, 700);
-        setLocationRelativeTo(parent);
+        //setSize(900, 700);
         setUndecorated(true);
         titleBar = new JPanel();
         objectFactory.titleBar(titleBar, this, "Thêm nhóm quyền");
         this.add(titleBar);
         init();
-        setVisible(true);
+        mainTransition.showSlideIn(this , 900 , 700);
+        //setLocationRelativeTo(parent);
+        //setVisible(true);
     }
     public void init() {
         listDanhMuc = new PhanQuyenBUS().getDanhMucQuanLy();
@@ -158,7 +158,7 @@ public class addPhanQuyen extends JDialog {
         int maNhomQuyen = PhanQuyenBUS.addNhomQuyen(nameNhomQuyen);
         PhanQuyenBUS.addCapQuyen(danhMucData, maNhomQuyen);
         JOptionPane.showMessageDialog(mainGUI, "Thêm nhóm quyền thành công!");
-        dispose();
+        mainTransition.closeFadeOut(this);
     }
 
     public boolean checkNameNhomQuyen(String nameNhomQuyen) {

@@ -51,7 +51,7 @@ public class ChiTietHoaDonFullDAO {
 
     public List<ChiTietHoaDonFullEntity> showListByKhachHang(int maKH) {
         List<ChiTietHoaDonFullEntity> list = new ArrayList<>();
-        String sql = "SELECT DISTINCT hd.ma_hoa_don, hd.ngay_tao, hd.tong_gia_tri, " +
+        String sql = "SELECT DISTINCT hd.ma_hoa_don, hd.ngay_tao, hd.tong_gia_tri, hd.trang_thai, " +
                 "nv.ma_nhan_vien, nv.ten_nhan_vien, " +
                 "kh.ma_khach_hang, kh.ten_khach_hang, " +
                 "ct.ma_san_pham, sp.ten_san_pham, ct.gia_ban, ct.so_luong, ct.thanh_tien " +
@@ -70,6 +70,7 @@ public class ChiTietHoaDonFullDAO {
                 e.setMaHD(rs.getInt("ma_hoa_don"));
                 e.setNgayTao(rs.getTimestamp("ngay_tao"));
                 e.setTongGiaTri(rs.getDouble("tong_gia_tri"));
+                e.setTrangThai(rs.getString("trang_thai"));
                 e.setMaNguoiLap(rs.getInt("ma_nhan_vien"));
                 e.setTenNguoiLap(rs.getString("ten_nhan_vien"));
                 e.setMaKH(rs.getInt("ma_khach_hang"));

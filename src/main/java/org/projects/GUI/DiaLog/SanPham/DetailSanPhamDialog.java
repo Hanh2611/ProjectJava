@@ -2,6 +2,7 @@ package org.projects.GUI.DiaLog.SanPham;
 
 import org.projects.Action.SanPhamAction;
 import org.projects.BUS.DanhMucSanPhamBus;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.labelText;
 import org.projects.GUI.Panel.SanPham;
 import org.projects.GUI.utils.Helper;
@@ -11,6 +12,9 @@ import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,20 +25,27 @@ public class DetailSanPhamDialog extends JDialog {
 
     private JLabel imgPreview, trangThai;
     private labelText tenSanPhamField, donViField, giaBanField, soLuongTonField;
-    private JComboBox<String> quyCachField, phanLoaiField;
+    private labelText quyCachField, phanLoaiField;
     private JButton dongBtn;
     private JRadioButton isAvailable, isNotAvailable, isInStock, isOutOfStock;
-
+    mainTransition mainTransition = new mainTransition();
     public DetailSanPhamDialog(SanPham sanPham, SanPhamEntity sanPhamEntity) {
         this.sanPham = sanPham;
         this.sanPhamEntity = sanPhamEntity;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Chi tiết sản phẩm");
-        setSize(450, 780);
-        setLocationRelativeTo(null);
+//        setSize(450, 750);
+//        setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
-        setVisible(true);
+        mainTransition.showSlideIn(this , 450  , 750);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().setVisible(false);
+                mainTransition.closeSlideOut(DetailSanPhamDialog.this);
+            }
+        });
+//        setVisible(true);
     }
 
     public void initComponent() {
@@ -70,6 +81,19 @@ public class DetailSanPhamDialog extends JDialog {
         donViField = new labelText("Đơn vị", 30, 10);
         soLuongTonField = new labelText("Số lượng tồn", 30, 10);
 
+        ArrayList<String> listQuyCach = new ArrayList<>(Arrays.stream(QuyCach.values())
+                .map(QuyCach::getValue)
+                .toList());
+        DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
+        ArrayList<String> listDanhMuc = new ArrayList<>(danhMucSanPhamBus.getAllDanhMucSanPham()
+                .stream()
+                .map(DanhMucSanPhamEntity::getTenDanhMuc)
+                .toList());
+        quyCachField = new labelText("Quy cách", listQuyCach);
+        phanLoaiField = new labelText("Phân loại", listDanhMuc);
+        quyCachField.getCbx().setSelectedIndex(sanPhamEntity.getQuyCach().ordinal());
+        phanLoaiField.getCbx().setSelectedItem(sanPhamEntity.getPhanLoai().getTenDanhMuc());
+
         tenSanPhamField.getTextField().setText(sanPhamEntity.getTenSanPham());
         giaBanField.getTextField().setText(String.valueOf(sanPhamEntity.getGiaBan()));
         donViField.getTextField().setText(sanPhamEntity.getDonVi());
@@ -79,43 +103,47 @@ public class DetailSanPhamDialog extends JDialog {
         giaBanField.getTextField().setEditable(false);
         donViField.getTextField().setEditable(false);
         soLuongTonField.getTextField().setEditable(false);
+        quyCachField.getCbx().setEnabled(false);
+        phanLoaiField.getCbx().setEnabled(false);
 
         content.add(tenSanPhamField);
         content.add(giaBanField);
         content.add(donViField);
         content.add(soLuongTonField);
+        content.add(quyCachField);
+        content.add(phanLoaiField);
 
-        // ComboBox - Quy cách
-        JPanel quyCachPanel = new JPanel();
-        quyCachPanel.setLayout(new GridLayout(2, 1));
-        JLabel quyCachLabel = new JLabel("Quy cách");
-        quyCachLabel.setPreferredSize(new Dimension(450, 20));
-        quyCachPanel.add(quyCachLabel);
-        List<String> listQuyCach = Arrays.stream(QuyCach.values())
-                .map(QuyCach::getValue)
-                .toList();
-        quyCachField = new JComboBox<>(listQuyCach.toArray(new String[0]));
-        quyCachField.setSelectedIndex(sanPhamEntity.getQuyCach().ordinal());
-        quyCachField.setEnabled(false);
-        quyCachPanel.add(quyCachField);
-        content.add(quyCachPanel);
+//        // ComboBox - Quy cách
+//        JPanel quyCachPanel = new JPanel();
+//        quyCachPanel.setLayout(new GridLayout(2, 1));
+//        JLabel quyCachLabel = new JLabel("Quy cách");
+//        quyCachLabel.setPreferredSize(new Dimension(450, 20));
+//        quyCachPanel.add(quyCachLabel);
+//        List<String> listQuyCach = Arrays.stream(QuyCach.values())
+//                .map(QuyCach::getValue)
+//                .toList();
+//        quyCachField = new JComboBox<>(listQuyCach.toArray(new String[0]));
+//        quyCachField.setSelectedIndex(sanPhamEntity.getQuyCach().ordinal());
+//        quyCachField.setEnabled(false);
+//        quyCachPanel.add(quyCachField);
+//        content.add(quyCachPanel);
 
-        // ComboBox - Phân loại
-        JPanel phanLoaiPanel = new JPanel();
-        phanLoaiPanel.setLayout(new GridLayout(2, 1));
-        JLabel phanLoaiLabel = new JLabel("Phân loại");
-        phanLoaiLabel.setPreferredSize(new Dimension(450, 20));
-        phanLoaiPanel.add(phanLoaiLabel);
-        DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
-        List<String> listDanhMuc = danhMucSanPhamBus.getAllDanhMucSanPham()
-                .stream()
-                .map(DanhMucSanPhamEntity::getTenDanhMuc)
-                .toList();
-        phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
-        phanLoaiField.setSelectedItem(sanPhamEntity.getPhanLoai().getTenDanhMuc());
-        phanLoaiField.setEnabled(false);
-        phanLoaiPanel.add(phanLoaiField);
-        content.add(phanLoaiPanel);
+//        // ComboBox - Phân loại
+//        JPanel phanLoaiPanel = new JPanel();
+//        phanLoaiPanel.setLayout(new GridLayout(2, 1));
+//        JLabel phanLoaiLabel = new JLabel("Phân loại");
+//        phanLoaiLabel.setPreferredSize(new Dimension(450, 20));
+//        phanLoaiPanel.add(phanLoaiLabel);
+//        DanhMucSanPhamBus danhMucSanPhamBus = new DanhMucSanPhamBus();
+//        List<String> listDanhMuc = danhMucSanPhamBus.getAllDanhMucSanPham()
+//                .stream()
+//                .map(DanhMucSanPhamEntity::getTenDanhMuc)
+//                .toList();
+//        phanLoaiField = new JComboBox<>(listDanhMuc.toArray(new String[0]));
+//        phanLoaiField.setSelectedItem(sanPhamEntity.getPhanLoai().getTenDanhMuc());
+//        phanLoaiField.setEnabled(false);
+//        phanLoaiPanel.add(phanLoaiField);
+//        content.add(phanLoaiPanel);
 
         //Radio - Hết hàng
         JPanel stockStatusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
@@ -152,7 +180,7 @@ public class DetailSanPhamDialog extends JDialog {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         dongBtn = new JButton("Đóng");
         dongBtn.setBackground(Color.GRAY);
-        dongBtn.addActionListener(e -> dispose());
+        dongBtn.addActionListener(e -> mainTransition.closeSlideOutSP(this));
 
         buttonPanel.add(dongBtn);
 

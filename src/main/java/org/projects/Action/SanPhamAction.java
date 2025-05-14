@@ -80,6 +80,12 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
             if((addSanPhamDialog != null || updateSanPhamDialog != null) && c instanceof JButton){
                 if("Thêm".equals(namebtn)) {
                     Border redBorder = BorderFactory.createLineBorder(Color.RED, 2);
+                    addSanPhamDialog.getUploadBtn().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                    addSanPhamDialog.getTenSanPhamField().getTextField().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                    addSanPhamDialog.getGiaBanField().getTextField().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                    addSanPhamDialog.getDonViField().getTextField().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                    addSanPhamDialog.getQuyCachField().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                    addSanPhamDialog.getPhanLoaiField().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
                     if(addSanPhamDialog.getSelectedFile() == null) {
                         addSanPhamDialog.getUploadBtn().setBorder(redBorder);
                         JOptionPane.showMessageDialog(addSanPhamDialog, "Vui lòng chọn hình ảnh", "thông báo", JOptionPane.ERROR_MESSAGE);
@@ -159,7 +165,7 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             updateSanPhamDialog.getDonViField().getTextField().setBorder(redBorder);
                             updateSanPhamDialog.getDonViField().getTextField().requestFocus();
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng nhập đơn vị sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
-                        } else if (updateSanPhamDialog.getQuyCachField().getSelectedItem() == null) {
+                        } else if (updateSanPhamDialog.getQuyCachField().getCbx().getSelectedItem() == null) {
                             updateSanPhamDialog.getQuyCachField().setBorder(redBorder);
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng chọn quy cách sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
                         }
@@ -167,17 +173,17 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             updateSanPhamDialog.getSoLuongTonField().getTextField().setBorder(redBorder);
                             updateSanPhamDialog.getSoLuongTonField().getTextField().requestFocus();
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng nhập số lượng tồn", "thông báo", JOptionPane.ERROR_MESSAGE);
-                        } else if (updateSanPhamDialog.getPhanLoaiField().getSelectedItem() == null) {
+                        } else if (updateSanPhamDialog.getPhanLoaiField().getCbx().getSelectedItem() == null) {
                             updateSanPhamDialog.getPhanLoaiField().setBorder(redBorder);
                             JOptionPane.showMessageDialog(updateSanPhamDialog, "Vui lòng chọn phân loại sản phẩm", "thông báo", JOptionPane.ERROR_MESSAGE);
                         } else {
                             int id = updateSanPhamDialog.getSanPhamEntity().getId();
                             String ten = updateSanPhamDialog.getTenSanPhamField().getTextField().getText().trim();
-                            String phanLoai = updateSanPhamDialog.getPhanLoaiField().getSelectedItem().toString().trim();
+                            String phanLoai = updateSanPhamDialog.getPhanLoaiField().getCbx().getSelectedItem().toString().trim();
                             String donVi = updateSanPhamDialog.getDonViField().getTextField().getText().trim();
                             String gia = updateSanPhamDialog.getGiaBanField().getTextField().getText().trim();
                             String soLuongTon = updateSanPhamDialog.getSoLuongTonField().getTextField().getText().trim();
-                            String quyCach = updateSanPhamDialog.getQuyCachField().getSelectedItem().toString();
+                            String quyCach = updateSanPhamDialog.getQuyCachField().getCbx().getSelectedItem().toString();
                             boolean trangThai = updateSanPhamDialog.getIsAvailable().isSelected();
                             File hinhAnh = updateSanPhamDialog.getSelectedFile();
                             String oldFileName = HashName.convertToSlug(updateSanPhamDialog.getSanPhamEntity().getTenSanPham()) + HashName.getFileExtension(updateSanPhamDialog.getSanPhamEntity().getHinhAnh());

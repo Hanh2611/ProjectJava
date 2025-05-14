@@ -1,6 +1,7 @@
 package org.projects.GUI.DiaLog.PhanQuyen;
 
 import org.projects.BUS.PhanQuyenBUS;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.FocusListenerUtils;
 import org.projects.entity.CapQuyen;
@@ -27,21 +28,22 @@ public class performPhanQuyen extends JDialog {
     private List<DanhMucQuanLy> listDanhMuc;
     private String nameNhomQuyen;
     private int maNhomQuyen;
-
+    mainTransition mainTransition = new mainTransition();
     public performPhanQuyen(JFrame parent, int maNhomQuyen, String nameNhomQuyen) {
-        super(parent, "ADD PHAN QUYEN", true);
+        super(parent, "ADD PHAN QUYEN", null);
         this.nameNhomQuyen = nameNhomQuyen;
         this.maNhomQuyen = maNhomQuyen;
         this.setBackground(Color.decode("#FFFFFF"));
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        setSize(900, 700);
-        setLocationRelativeTo(parent);
+//        setSize(900, 700);
+//        setLocationRelativeTo(parent);
         setUndecorated(true);
         titleBar = new JPanel();
         objectFactory.titleBar(titleBar, this, "Chi tiết nhóm quyền");
         this.add(titleBar);
         init();
-        setVisible(true);
+        mainTransition.showFadeIn(this , 900 , 700);
+//        setVisible(true);
     }
     public void init() {
         listDanhMuc = new PhanQuyenBUS().getDanhMucQuanLy();

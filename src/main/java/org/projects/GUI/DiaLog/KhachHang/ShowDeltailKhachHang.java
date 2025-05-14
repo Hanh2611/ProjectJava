@@ -20,7 +20,7 @@ public class ShowDeltailKhachHang extends JDialog {
     }
     public void Show() {
         init();
-//        transition.showZoomIn(this , 700 , 800);
+        transition.showFadeIn(this , 700 , 800);
     }
 
     public void init() {
@@ -39,7 +39,10 @@ public class ShowDeltailKhachHang extends JDialog {
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel);
         this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+//        this.setLocationRelativeTo(null);
+//        this.setVisible(true);
+    }
+    public void close(){
+        transition.closeFadeOut(this);
     }
 }
