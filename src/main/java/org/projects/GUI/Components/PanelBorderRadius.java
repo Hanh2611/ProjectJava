@@ -2,11 +2,10 @@ package org.projects.GUI.Components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class PanelBorderRadius extends JPanel{
 
-    int shadowSize = 3;
+    int shadowSize = 9;
     Color HowerBackgroundColor = new Color(255, 255, 255);
 
     public PanelBorderRadius () {
@@ -27,7 +26,7 @@ public class PanelBorderRadius extends JPanel{
 
         // Vẽ nền với bo góc
         g2.setColor(HowerBackgroundColor); // ← Dùng color từ biến
-        g2.fillRoundRect(0, 0, width, height, 15, 15);
+        g2.fillRoundRect(0, 0, width, height, 20, 20);
     }
 
     public void setBackgroundColor(Color color) {

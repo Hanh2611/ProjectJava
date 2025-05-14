@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class HoaDon extends JPanel{
     private headerBar header;
     private JPanel contentPanel,main;
     private ThemHD themHD;
-    private DefaultTableModel tableModel;
+    private static DefaultTableModel tableModel;
     private CardLayout cardLayout;
     private JTable table;
     private HoaDonAction actionHandler;
@@ -95,7 +96,34 @@ public class HoaDon extends JPanel{
         right.add(scrollPane, BorderLayout.CENTER);
         return right;
     }
-    public void reloadDAO(){
+
+    public HoaDonEntity layhoadonduochon() {
+        int row = table.getSelectedRow();
+        if(row == -1) return null;
+        int mahoadon = (int) tableModel.getValueAt(row, 0);
+        String tennv = table.getValueAt(row, 1).toString();
+        String tenkh = table.getValueAt(row,2).toString();
+        Timestamp ngaytao = (Timestamp) tableModel.getValueAt(row,3);
+        double tongiatri;
+        Object value = tableModel.getValueAt(row, 4);
+        if (value instanceof String) {
+            try {
+                // Loại bỏ ký tự "₫" và dấu chấm phân cách hàng nghìn
+                String cleanedValue = ((String) value).replaceAll("[^0-9,]", "").replace(",", ".");
+                tongiatri = Double.parseDouble(cleanedValue);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (value instanceof Double) {
+            tongiatri = (Double) value;
+        } else {
+            return null;
+        }
+        String trangthai = table.getValueAt(row,5).toString();
+        return new HoaDonEntity(mahoadon,tennv,tenkh,ngaytao,tongiatri,trangthai);
+    }
+    public static void reloadDAO(){
         List<HoaDonEntity> lst = new HoaDonDAO().showlist();
         loadList(lst);
     }
@@ -103,7 +131,7 @@ public class HoaDon extends JPanel{
         DecimalFormat format = new DecimalFormat("#,###");
         return format.format(value).replace(",", ".") + " ₫";
     }
-    public void loadList(List<HoaDonEntity> list){
+    public static void loadList(List<HoaDonEntity> list){
         tableModel.setRowCount(0);
         if(list != null){
             for(HoaDonEntity hd : list){
@@ -158,11 +186,13 @@ private void customizeTable() {
     }
 
     public void showThemHD(){
+        themHD.resetForm();
         cardLayout.show(contentPanel, "themHD");
         themHD.loadDataToTableSanPham(); // GỌI LẠI HÀM CẬP NHẬT DANH SÁCH SẢN PHẨM
 
     }
     public void showSuaHD(List <ChiTietHoaDonFullEntity> list){
+        capNhatHD.resetForm();
         capNhatHD.loadDatatoTableHoaDon(list);
         cardLayout.show(contentPanel, "Capnhat HD");
         currentPanel = 1;

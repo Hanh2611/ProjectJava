@@ -81,11 +81,9 @@ public class TaiKhoanDialog extends JDialog {
         center.setBorder(new EmptyBorder(20, 20, 20, 20));
         center.setBackground(new Color(240, 240, 240));
 
-        add = ButtonEditStyle.styleButton(typeButton(getTKType()), new Color(52, 152, 219), Color.WHITE);
-        add.setPreferredSize(new Dimension(420, 55));
+        add = new ButtonEditStyle(typeButton(getTKType()), new Color(52, 152, 219), Color.WHITE,420,55);
         add.setBorder(new EmptyBorder(15, 15, 15, 15));
-        cancel = ButtonEditStyle.styleButton("Thoát", new Color(231, 76, 60), Color.WHITE);
-        cancel.setPreferredSize(new Dimension(420, 55));
+        cancel = new ButtonEditStyle("Thoát", new Color(231, 76, 60), Color.WHITE,420,55);
         cancel.setBorder(new EmptyBorder(15, 15, 15, 15));
 
         content.add(right);
@@ -177,6 +175,8 @@ public class TaiKhoanDialog extends JDialog {
         center.add(matkhau);
         center.add(quyen);
         center.add(trangthai);
+        center.add(add);
+        center.add(cancel);
 
 
         if (tkEntity != null) {

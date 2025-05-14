@@ -17,6 +17,7 @@ public class InputValid {
     private static final String MA_HOP_LE_REGEX = "\\d+";
     private static final String EMAIL_HOP_LE_REGEX = "^[A-Za-z0-9+_.-]+@gmail+\\.com$";
     private static final String SO_DIEN_THOAI_HOP_LE_REGEX = "0\\d{9}";
+    private static final String DIA_CHI_HOP_LE_REGEX = "^[\\p{L}0-9.,\\-/ ]{5,100}$";
 
 
     public static boolean tenDangNhapHopLe(String ten) {
@@ -29,6 +30,9 @@ public class InputValid {
 
     public static boolean tenHopLe(String ten) {
         return ten != null && ten.matches(TEN_HOP_LE_REGEX);
+    }
+    public static boolean diachiHople(String dc) {
+        return dc != null && dc.matches(DIA_CHI_HOP_LE_REGEX);
     }
     // Regex nhan vien
     public static boolean checkRong_addPlace(String addplace, String key) {

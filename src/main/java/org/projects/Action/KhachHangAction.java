@@ -52,6 +52,8 @@ public class KhachHangAction extends FocusAdapter implements ActionListener  , M
                     JOptionPane.showMessageDialog(null,"Vui lòng kiểm tra lại thông tin" ,"thông báo", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                showAddKhachHang.add.insertData();
+                //System.out.println(showAddKhachHang.add.getMa());
                 KhachHangEntity khe = new KhachHangEntity(Integer.parseInt(showAddKhachHang.add.getMa()), showAddKhachHang.add.getTen()
                         , showAddKhachHang.add.getSdt(), showAddKhachHang.add.getDiachi() , showAddKhachHang.add.getAvatar());
                 if (bus.them(khe)) {

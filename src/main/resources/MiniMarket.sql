@@ -110,7 +110,7 @@ CREATE TABLE chi_tiet_hoa_don
 
 CREATE TABLE nha_cung_cap
 (
-    ma_nha_cung_cap      INT PRIMARY KEY,
+    ma_nha_cung_cap      INT PRIMARY KEY auto_increment,
     ten_nha_cung_cap     VARCHAR(50) NOT NULL,
     so_dien_thoai        VARCHAR(15) NOT NULL,
     email                VARCHAR(50) NOT NULL,
@@ -170,46 +170,7 @@ VALUES (1, 'Công ty Thực phẩm Tươi Sống FreshFood', '0912000111', 'fres
        (11, 'Công ty Gia vị Việt SpicePro', '0905111222', 'spicepro.vn@gmail.com', 'KCN Nam Thăng Long, Hà Nội'),
        (12, 'Nhà cung cấp Thịt sạch MeatLand', '0922333444', 'meatland.fresh@email.com', '45 Hoàng Hoa Thám, Hà Nội'),
        (13, 'Công ty Hải sản Biển Đông', '0944555666', 'bien_dong_seafood@gmail.com', 'KCN Cát Lái, TP.HCM'),
-       (14, 'Xưởng bánh ngọt SweetHome', '0911222333', 'sweethome.bakery@yahoo.com', '99 Lý Chính Thắng, Đà Nẵng'),
-       (15, 'Công ty Đồ uống VinJuice', '0955667788', 'vinjuice.sales@outlook.com', 'KCN Hòa Cầm, Đà Nẵng'),
-       (16, 'Cửa hàng Thực phẩm chay An Lạc', '0966778899', 'anlac.vegan@email.com', '23 Nguyễn Huệ, Huế'),
-       (17, 'Nhà máy Sữa Hạnh Phúc', '0988999000', 'hanhphuc.dairy@gmail.com', 'Số 4, Điện Biên Phủ, Hà Nội'),
-       (18, 'Công ty Ngũ cốc Dinh Dưỡng', '0899001122', 'ngucoc.vn@outlook.com', 'KCN Tân Tạo, TP.HCM'),
-       (19, 'Xưởng sản xuất Đồ hộp ViệtCan', '0900333222', 'vietcan.canned@gmail.com',
-        'Lô B1, KCN Long Thành, Đồng Nai'),
-       (20, 'Nhà cung cấp Đồ uống tinh khiết AquaPure', '0922113344', 'aquapure.water@email.com',
-        '15 Cách Mạng Tháng 8, Hà Nội'),
-       (21, 'Siêu thị Hàng nhập khẩu GlobalMart', '0988111222', 'globalmart.shop@gmail.com',
-        '50 Trần Hưng Đạo, TP.HCM'),
-       (22, 'Công ty Đồ ăn nhanh FastBite', '0911333444', 'fastbite.food@yahoo.com', '120 Lê Văn Sỹ, TP.HCM'),
-       (23, 'Nhà cung cấp Hạt điều CashewKing', '0933444555', 'cashewking.vn@email.com', 'KCN Nhơn Trạch, Đồng Nai'),
-       (24, 'Nhà máy Mì ăn liền QuickNoodles', '0977888999', 'quicknoodles.foods@outlook.com', 'KCN Vĩnh Lộc, TP.HCM'),
-       (25, 'Xưởng sản xuất Trà thảo mộc HerbalTea', '0988222333', 'herbaltea.natural@gmail.com',
-        '88 Phan Đình Phùng, Đà Nẵng'),
-       (26, 'Công ty Sản xuất Đường mía SweetSugar', '0911555777', 'sweetsugar.refined@email.com',
-        'Số 6, Quang Trung, Hà Nội'),
-       (27, 'Cửa hàng Đồ khô và Hạt dinh dưỡng NutriStore', '0966555777', 'nutristore.vn@gmail.com',
-        '12 Nguyễn Đình Chiểu, Hà Nội'),
-       (28, 'Công ty Bột mì và Ngũ cốc FlourMill', '0933666777', 'flourmill.foods@email.com', 'KCN Biên Hòa, Đồng Nai'),
-       (29, 'Nhà máy Sản xuất Gia vị SFlavor', '0955111222', 'sflavor.spices@outlook.com',
-        'Lô 8, KCN Bình Dương, Bình Dương'),
-       (30, 'Công ty Nông sản Xanh FreshAgro', '0999888777', 'freshagro.vn@gmail.com', 'Nông trại Đông Anh, Hà Nội'),
-       (31, 'Nhà cung cấp Thực phẩm Đông lạnh ColdPack', '0933222111', 'coldpack.frozen@email.com',
-        'KCN Tân Thuận, TP.HCM'),
-       (32, 'Cửa hàng Rau hữu cơ OrganicFarm', '0909888777', 'organicfarm.vn@gmail.com', 'Nông trại Gia Lâm, Hà Nội'),
-       (33, 'Nhà máy Sản xuất Đồ hộp TinCan', '0922000111', 'tincan.foods@email.com', 'Lô C2, KCN Long Hậu, Long An'),
-       (34, 'Công ty Cà phê Việt BeansKing', '0988222666', 'beansking.coffee@outlook.com', '110 Điện Biên Phủ, TP.HCM'),
-       (35, 'Nhà cung cấp Sữa hạt NutriMilk', '0912333444', 'nutrimilk.dairy@gmail.com', 'KCN Mỹ Phước, Bình Dương'),
-       (36, 'Công ty Thịt nguội và Xúc xích SausageLand', '0933666888', 'sausageland.food@email.com',
-        'KCN Hóc Môn, TP.HCM'),
-       (37, 'Xưởng sản xuất Đồ ăn nhanh QuickBites', '0955777888', 'quickbites.fastfood@gmail.com',
-        'Lô D3, KCN Trà Nóc, Cần Thơ'),
-       (38, 'Công ty Đồ uống từ Lúa mạch BarleyDrink', '0977444555', 'barleydrink.brewery@outlook.com',
-        'KCN Tân An, Long An'),
-       (39, 'Nhà cung cấp Dầu thực vật PureOil', '0966333555', 'pureoil.vn@gmail.com', 'Cụm CN Đức Hòa, Long An'),
-       (40, 'Cửa hàng Gạo và Nông sản Việt RiceHouse', '0905222333', 'ricehouse.agro@email.com',
-        'Số 20, Hùng Vương, Hà Nội');
-
+       (14, 'Xưởng bánh ngọt SweetHome', '0911222333', 'sweethome.bakery@yahoo.com', '99 Lý Chính Thắng, Đà Nẵng');
 INSERT INTO danh_muc_quan_ly (ma_danh_muc_quan_ly, ten_danh_muc_quan_ly)
 VALUES (1, 'NhanVien'),
        (2, 'KhachHang'),
@@ -407,7 +368,17 @@ VALUES (1, 1, 1, '2025-04-01 08:30:00', 70000),
        (3, 3, 3, '2025-04-03 14:45:00', 126000),
        (4, 4, 4, '2025-04-04 09:00:00', 1080000),
        (5, 5, 5, '2025-04-05 16:20:00', 440000),
-        (6, 6, 6, '2025-04-05 16:21:00', 2600000);
+        (6, 6, 6, '2025-04-05 16:21:00', 2600000),
+       (7, 1, 3, '2025-01-12 08:45:00', 120000),
+       (8, 2, 4, '2025-01-25 11:00:00', 64000),
+       (9, 3, 2, '2025-02-03 14:10:00', 315000),
+       (10, 4, 1, '2025-02-17 09:35:00', 57000),
+       (11, 5, 5, '2025-03-08 13:25:00', 200000),
+       (12, 6, 6, '2025-03-15 16:40:00', 150000),
+       (13, 1, 2, '2025-04-12 10:15:00', 99000),
+       (14, 2, 3, '2025-04-22 15:30:00', 222000),
+       (15, 3, 4, '2025-05-03 09:50:00', 88000),
+       (16, 4, 5, '2025-05-10 17:05:00', 154000);
 
 
 INSERT INTO chi_tiet_phieu_nhap (ma_phieu_nhap, ma_san_pham, so_luong, gia_nhap, thanh_tien)
@@ -417,7 +388,17 @@ VALUES (1, 1, 10, 7000, 70000),
        (4, 4, 12, 90000, 1080000),
        (5, 5, 4, 110000, 440000),
        (6, 5, 65, 20000 , 1300000),
-       (6, 2, 65, 20000 , 1300000);
+       (6, 2, 65, 20000 , 1300000),
+       (7, 1, 10, 12000, 120000),
+       (8, 4, 8, 8000, 64000),
+       (9, 5, 15, 21000, 315000),
+       (10, 3, 3, 19000, 57000),
+       (11, 2, 20, 10000, 200000),
+       (12, 6, 10, 15000, 150000),
+       (13, 8, 11, 9000, 99000),
+       (14, 9, 18, 12333, 222000),
+       (15, 7, 8, 11000, 88000),
+       (16, 10, 14, 11000, 154000);
 
 
     INSERT INTO quyen_nguoi_dung (ma_nguoi_dung, ma_nhom_quyen)
@@ -482,3 +463,7 @@ Select * from nhan_vien;
 Select * from tai_khoan;
 select * from nguoi_dung;
 select * from khach_hang;
+
+
+select * from hoa_don
+where ma_hoa_don = 1

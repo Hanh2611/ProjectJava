@@ -21,6 +21,16 @@ public class HoaDonEntity {
         this.tongGiaTri = tongGiaTri;
         this.trangThai = trangThai;
     }
+
+    public HoaDonEntity(int maHoaDon, int maNV, int maKh, Timestamp ngayTao, double tongGiaTri, String trangThai) {
+        this.maHoaDon = maHoaDon;
+        this.maNV = maNV;
+        this.maKh = maKh;
+        this.ngayTao = ngayTao;
+        this.tongGiaTri = tongGiaTri;
+        this.trangThai = trangThai;
+        this.isDelete = false;
+    }
     public HoaDonEntity() {}
     public int getMaHoaDon() {
         return maHoaDon;

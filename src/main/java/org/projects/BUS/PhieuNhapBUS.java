@@ -100,4 +100,5 @@ public class PhieuNhapBUS {
     public static boolean isExistedInPhieuNhap(int spId) {
         return pnDao.isExistedInPhieuNhap(spId);
     }
+
 }

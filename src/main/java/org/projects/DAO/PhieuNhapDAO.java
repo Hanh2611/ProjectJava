@@ -158,5 +158,55 @@ public class PhieuNhapDAO implements ChucNangDAO<PhieuNhapEntity> {
             }
             return false;
     }
+    public int getMaxMaPN() {
+        String sql = "SELECT MAX(ma_phieu_nhap) AS maxMaPN FROM phieu_nhap";
+        try (Connection c = DatabasesConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("maxMaPN");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
+    public PhieuNhapEntity getPhieuNhapById(int maPN) {
+            String query = "select * from phieu_nhap where ma_phieu_nhap = ?";
+            try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);) {
+                prs.setInt(1,maPN);
+                ResultSet rs = prs.executeQuery();
+                if(rs.next()) {
+                    PhieuNhapEntity pn = new PhieuNhapEntity();
+                   pn.setMaPN(rs.getInt("ma_phieu_nhap"));
+                   pn.setMaNV(rs.getInt("ma_nhan_vien"));
+                   pn.setMaNCC(rs.getInt("ma_nha_cung_cap"));
+                   pn.setNgayNhap(rs.getTimestamp("ngay_nhap"));
+                   pn.setTongGiaTri(rs.getDouble("tong_gia_tri_nhap"));
+                    return pn;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return null;
+    }
+
+    public String getTenNhaCungCapByMaPN(int maphieunhap) {
+            String query = "SELECT ncc.ten_nha_cung_cap FROM phieu_nhap pn " +
+                    "JOIN nha_cung_cap ncc ON pn.ma_nha_cung_cap = ncc.ma_nha_cung_cap " +
+                    "WHERE pn.ma_phieu_nhap = ?";
+            try(Connection c = DatabasesConfig.getConnection();
+            PreparedStatement prs = c.prepareStatement(query);) {
+                prs.setInt(1,maphieunhap);
+                ResultSet rs = prs.executeQuery();
+                if(rs.next()) {
+                    return rs.getString("ten_nha_cung_cap");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return "";
+    }
 }

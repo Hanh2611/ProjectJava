@@ -1,5 +1,7 @@
 package org.projects.entity;
 
+import org.projects.GUI.utils.FormatMoney;
+
 public class ThongkeDoanhThuEntity {
     private String thang,nam;
     private int mahoadon;
@@ -26,6 +28,17 @@ public class ThongkeDoanhThuEntity {
         this.tongtienhoadon = tongtienhoadon;
         this.tongchiphinhaptrongthang = tongchiphinhaptrongthang;
         this.loinhuan = loinhuan;
+    }
+
+    //format tong tien hoa don,tong chi phi nhap trong thang,loi nhuan
+    public String getTongtienhoadonformat() {
+      return FormatMoney.format(tongtienhoadon);
+    }
+    public String getTongchiphinhaptrongthangformat() {
+        return FormatMoney.format(tongchiphinhaptrongthang);
+    }
+    public String getLoinhuanformat() {
+        return FormatMoney.format(loinhuan);
     }
     public int getMahoadon() {
         return mahoadon;
