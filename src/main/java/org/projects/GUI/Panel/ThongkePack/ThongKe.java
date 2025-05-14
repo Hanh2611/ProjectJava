@@ -1,6 +1,7 @@
     package org.projects.GUI.Panel.ThongkePack;
 
     import org.projects.GUI.Components.PanelBorderRadius;
+    import org.projects.GUI.utils.UIUtils;
 
     import java.awt.*;
     import java.awt.event.ActionEvent;
@@ -35,6 +36,12 @@
             this.init();
             hienthiPanel(listbtn.get(0));
             changeColorButton(listbtn.get(0));
+            UIUtils.refreshComponent(tktq);
+            UIUtils.refreshComponent(tksp);
+            UIUtils.refreshComponent(tkhd);
+            UIUtils.refreshComponent(tkpn);
+            UIUtils.refreshComponent(tkdt);
+
         }
         private void init() {
             JPanel headerPanel = new PanelBorderRadius();
@@ -151,4 +158,11 @@
             return listthongke;
         }
 
+        public void refreshAllThongKePanels() {
+            tktq.init();
+            tksp.init();
+            tkhd.init();
+            tkpn.init();
+            tkdt.refreshThongkeDoanhthu();
+        }
     }

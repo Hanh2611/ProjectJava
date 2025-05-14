@@ -1,5 +1,7 @@
 package org.projects.GUI.Panel.ThongkePack;
 
+import org.projects.GUI.utils.UIUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,5 +35,11 @@ public class thongkeDoanhthu extends JPanel {
             doanhthuPanel.addTab(i, danhsachdoanhthuMap.get(i));
         }
         this.add(doanhthuPanel, BorderLayout.CENTER);
+    }
+    public void refreshThongkeDoanhthu() {
+        new thongkedoanhthutheoNgay().init();
+        new thongkedoanhthutheoThang().init();
+        new thongkedoanhthutheoNam().init();
+        UIUtils.refreshComponent(this);
     }
 }

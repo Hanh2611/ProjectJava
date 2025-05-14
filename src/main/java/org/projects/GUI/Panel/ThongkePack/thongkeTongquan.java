@@ -17,6 +17,7 @@ import org.projects.BUS.ThongkeTongQuanBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.CardPanel;
 import org.projects.GUI.Components.PanelBorderRadius;
+import org.projects.GUI.utils.UIUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,13 +58,35 @@ public class thongkeTongquan extends JPanel {
     private ChartPanel sanphamChart;
     private HashMap<Integer,String> sanphamtt;
 
-    private ThongkeTongQuanBUS tktqBUS = new ThongkeTongQuanBUS();
+    private ThongkeTongQuanBUS tktqBUS;
 
     public thongkeTongquan() {
+        tktqBUS = new ThongkeTongQuanBUS();
         this.setLayout(new BorderLayout(10,10));
+
         headerCard = new JPanel();
         headerCard.setLayout(new GridLayout(1,4,10,10));
-        sanphamCard = new CardPanel("icon/dairy-products.svg","Số sản phẩm",tktqBUS.getTongsoluongton());
+        this.add(headerCard, BorderLayout.NORTH);
+
+        //bieu do cot tinh doanh thu theo thang
+        centerChart = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
+        this.add(centerChart,BorderLayout.CENTER);
+
+        //bottom
+
+        bottomChart = new JPanel(new GridLayout(1,3,10,10));
+
+        this.add(bottomChart,BorderLayout.SOUTH);
+
+        init();
+    }
+
+    public void init() {
+        headerCard.removeAll();
+        centerChart.removeAll();
+        bottomChart.removeAll();
+
+        sanphamCard = new CardPanel("icon/dairy-products.svg","Tồn kho",tktqBUS.getTongsoluongton());
         doanhthuCard = new CardPanel("icon/revenue.svg","Doanh thu",tktqBUS.getTonggiatri());
         hoadonCard = new CardPanel("icon/bill.svg","Số hóa đơn",tktqBUS.getSoluonghoadon());
         khachhangCard = new CardPanel("icon/customer.svg","Số khách hàng",tktqBUS.getSoluongkhachhang());
@@ -71,10 +94,6 @@ public class thongkeTongquan extends JPanel {
         headerCard.add(doanhthuCard);
         headerCard.add(hoadonCard);
         headerCard.add(khachhangCard);
-        this.add(headerCard, BorderLayout.NORTH);
-
-        //bieu do cot tinh doanh thu theo thang
-        centerChart = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
 
         //doanh thu panel
         doanhthuPanel  = ColumnsChart.createColumnChart2("Doanh thu theo tháng",doanhthuChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getDoanhthu(),520,300);
@@ -83,11 +102,7 @@ public class thongkeTongquan extends JPanel {
         //top nha cung cap panel
         topnhacungcapPanel = ColumnsChart.createColumnChartWithLongText("Doanh thu theo tháng",topnhacungcapChart,"năm-tháng","Doanh thu(VNĐ)",tktqBUS.getNhacungcapvatonggiatrinhap(),360,300);
         centerChart.add(topnhacungcapPanel);
-        this.add(centerChart,BorderLayout.CENTER);
 
-        //bottom
-
-        bottomChart = new JPanel(new GridLayout(1,3,10,10));
         taikhoantt = tktqBUS.getTKtrangthai();
         taikhoanPanel = createPieChart("tài khoản",taikhoantt,taikhoanChart);
 
@@ -100,7 +115,8 @@ public class thongkeTongquan extends JPanel {
         bottomChart.add(taikhoanPanel);
         bottomChart.add(hoadonPanel);
         bottomChart.add(sanphamPanel);
-        this.add(bottomChart,BorderLayout.SOUTH);
+
+        UIUtils.refreshComponent(this);
     }
 
     //bieu do pie cho tai khoan + ton kho

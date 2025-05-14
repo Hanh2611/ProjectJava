@@ -16,6 +16,7 @@ import org.projects.GUI.Chart.PieChart;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ThongKeSanPhamEntity;
 
 import javax.swing.*;
@@ -44,9 +45,10 @@ public class thongkeSanpham extends JPanel {
     private JTable sanphamTable;
     private JScrollPane sanphamScroll;
     private DefaultTableModel tableModel;
-    private ThongKeSanPhamBUS tkspBUS = new ThongKeSanPhamBUS();
+    private ThongKeSanPhamBUS tkspBUS;
     private ThongKeSanPhamAction tkspAction;
     public thongkeSanpham() {
+        tkspBUS = new ThongKeSanPhamBUS();
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         //center
@@ -54,6 +56,23 @@ public class thongkeSanpham extends JPanel {
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        this.add(centerPanel, BorderLayout.CENTER);
+
+        //bottom
+        bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setPreferredSize(new Dimension(940,300));
+        this.add(bottomPanel,BorderLayout.SOUTH);
+        init();
+        //action
+        tkspAction = new ThongKeSanPhamAction(this,tkspBUS);
+        danhmucsanphamComboBox.addItemListener(tkspAction);
+        btnExcel.addActionListener(tkspAction);
+    }
+
+    public void init() {
+        centerPanel.removeAll();
+        bottomPanel.removeAll();
+
         sanphamPanel = PieChart.createPieChart("Tỉ lệ sản phẩm theo danh mục sản phẩm",sanphamChart,tkspBUS.getDanhmucvasoluongsp(),650,400);
         centerPanel.add(sanphamPanel);
 
@@ -68,11 +87,7 @@ public class thongkeSanpham extends JPanel {
         notePanel.add(Box.createVerticalStrut(10));  // Thêm khoảng cách giữa các label
         notePanel.add(tongtonLabel);
         centerPanel.add(notePanel);
-        this.add(centerPanel, BorderLayout.CENTER);
 
-        //bottom
-        bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setPreferredSize(new Dimension(940,300));
         headerBottom = new JPanel(new FlowLayout(FlowLayout.LEFT,10,10));
         danhmucsanphamComboBox = new JComboBox<>();
         danhmucsanphamComboBox.addItem("Tất cả");
@@ -115,13 +130,8 @@ public class thongkeSanpham extends JPanel {
         sanphamScroll = new JScrollPane(sanphamTable);
         sanphamScroll.setBorder(new EmptyBorder(10,10,10,10));
         bottomPanel.add(sanphamScroll,BorderLayout.CENTER);
-        this.add(bottomPanel,BorderLayout.SOUTH);
         loadData();
-
-        //action
-        tkspAction = new ThongKeSanPhamAction(this,tkspBUS);
-        danhmucsanphamComboBox.addItemListener(tkspAction);
-        btnExcel.addActionListener(tkspAction);
+        UIUtils.refreshComponent(this);
     }
 
     public void loadList(List<ThongKeSanPhamEntity> list) {

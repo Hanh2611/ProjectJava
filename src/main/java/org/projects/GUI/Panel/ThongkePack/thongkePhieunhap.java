@@ -11,6 +11,7 @@ import org.projects.GUI.Chart.PieChart;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.NhanVienEntity;
 import org.projects.entity.ThongKePhieuNhapEntity;
@@ -49,9 +50,10 @@ public class thongkePhieunhap extends JPanel {
     private DefaultTableModel thongkeTableModel;
     private JScrollPane thongkeScroll;
 
-    private ThongKePhieuNhapBUS tkpnBUS = new ThongKePhieuNhapBUS();
+    private ThongKePhieuNhapBUS tkpnBUS;
     private ThongKePhieuNhapAction tkpnAction;
     public thongkePhieunhap() {
+        tkpnBUS = new ThongKePhieuNhapBUS();
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         this.setBackground(Color.WHITE);
@@ -62,6 +64,24 @@ public class thongkePhieunhap extends JPanel {
         west.setPreferredSize(new Dimension(300,1000));
         west.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         west.setBackground(Color.WHITE);
+
+        center = new JPanel(new GridLayout(2,1,10,10));
+
+        this.add(west, BorderLayout.WEST);
+        this.add(center, BorderLayout.CENTER);
+        init();
+        //action
+        tkpnAction = new ThongKePhieuNhapAction(this,tkpnBUS);
+        nccBox.addItemListener(tkpnAction);
+        nvBox.addItemListener(tkpnAction);
+        timkiembtn.addActionListener(tkpnAction);
+        resetbtn.addActionListener(tkpnAction);
+    }
+
+    public void init() {
+        west.removeAll();
+        center.removeAll();
+
         headerWest = new JPanel();
         headerWest.setLayout(new BoxLayout(headerWest,BoxLayout.Y_AXIS));
         JPanel datePanel = new JPanel(new GridLayout(2,2));
@@ -109,7 +129,6 @@ public class thongkePhieunhap extends JPanel {
         west.add(headerWest);
         west.add(bottomWest);
 
-        center = new JPanel(new GridLayout(2,1,10,10));
         contentChart = ColumnsChart.createColumnChart2("Tổng giá trị nhập theo ngày",columns,"Ngày","Tổng giá trị",tkpnBUS.gettonggiatriphieunhap(),550,300);
         center.add(contentChart);
         tableData = new JPanel(new BorderLayout());
@@ -143,16 +162,8 @@ public class thongkePhieunhap extends JPanel {
         thongkeScroll = new JScrollPane(thongkeTable);
         tableData.add(thongkeScroll,BorderLayout.CENTER);
         center.add(tableData);
-
-        this.add(west, BorderLayout.WEST);
-        this.add(center, BorderLayout.CENTER);
         loadData();
-        //action
-        tkpnAction = new ThongKePhieuNhapAction(this,tkpnBUS);
-        nccBox.addItemListener(tkpnAction);
-        nvBox.addItemListener(tkpnAction);
-        timkiembtn.addActionListener(tkpnAction);
-        resetbtn.addActionListener(tkpnAction);
+        UIUtils.refreshComponent(this);
     }
 
     public void loadList(List<ThongKePhieuNhapEntity> list) {

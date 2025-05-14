@@ -9,6 +9,7 @@ import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.ChangeDateToString;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ThongkeHoaDonEntity;
 
 import javax.swing.*;
@@ -34,6 +35,7 @@ public class thongkeHoadon extends JPanel {
     private JButton reset;
 
     private JPanel center;
+    private JPanel center1;
     private ChartPanel hoadonChart;
     private HashMap<String,Integer> soluonghoadontheongay;
 
@@ -42,15 +44,36 @@ public class thongkeHoadon extends JPanel {
     private DefaultTableModel hoadonTableModel;
     private JScrollPane hoadonScrollPane;
 
-    private ThongKeHoaDonBUS tkhdBUS = new ThongKeHoaDonBUS();
+    private ThongKeHoaDonBUS tkhdBUS;
     private ThongKeHoaDonAction tkhdAction;
     public thongkeHoadon() {
+        tkhdBUS = new ThongKeHoaDonBUS();
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         //header
         header = new PanelBorderRadius();
         header.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
         header.setBackground(Color.WHITE);
+
+        initComponent();
+
+        //center
+        center = new JPanel(new GridLayout(1,1));
+
+        bottom = new JPanel(new BorderLayout());
+
+        this.add(header, BorderLayout.NORTH);
+        this.add(center, BorderLayout.CENTER);
+        this.add(bottom, BorderLayout.SOUTH);
+        init();
+        //action
+        tkhdAction = new ThongKeHoaDonAction(this,tkhdBUS);
+        cbxtrangthai.addItemListener(tkhdAction);
+        loctrangthai.addActionListener(tkhdAction);
+        reset.addActionListener(tkhdAction);
+    }
+
+    public void initComponent() {
         ngayLabel = new JLabel("Ngày: ");
         ngayLabel.setFont(new Font("Jetbrains Mono ", Font.BOLD, 14));
         dateFrom = new JDateChooser();
@@ -73,6 +96,16 @@ public class thongkeHoadon extends JPanel {
 
         reset = new ButtonEditStyle("Làm mới",Color.decode("#00a8ff"),Color.WHITE,100,30);
 
+        String from = ChangeDateToString.changeDate(dateFrom.getDate());
+        String to = ChangeDateToString.changeDate(dateTo.getDate());
+        String trangthai = cbxtrangthai.getSelectedItem().toString();
+        soluonghoadontheongay  = tkhdBUS.getSLHDtheongay(from,to,trangthai);
+    }
+
+    public void init() {
+        header.removeAll();
+        center.removeAll();
+        bottom.removeAll();
 
         header.add(ngayLabel);
         header.add(dateFrom);
@@ -83,14 +116,9 @@ public class thongkeHoadon extends JPanel {
         header.add(loctrangthai);
         header.add(reset);
 
-        //center
-        String from = ChangeDateToString.changeDate(dateFrom.getDate());
-        String to = ChangeDateToString.changeDate(dateTo.getDate());
-        String trangthai = cbxtrangthai.getSelectedItem().toString();
-        soluonghoadontheongay  = tkhdBUS.getSLHDtheongay(from,to,trangthai);
-        center = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày",hoadonChart,"Ngày-tháng-năm","Số lượng",soluonghoadontheongay,700,500);
+        center1 = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày",hoadonChart,"Ngày-tháng-năm","Số lượng",soluonghoadontheongay,700,500);
+        center.add(center1);
 
-        bottom = new JPanel(new BorderLayout());
         String[] cols = new String[]{"Ngày","Số lượng hóa đơn","Trạng thái"};
         hoadonTableModel = new DefaultTableModel(){
             @Override
@@ -122,16 +150,9 @@ public class thongkeHoadon extends JPanel {
         hoadonScrollPane.setBorder(new EmptyBorder(10,10,10,10));
         hoadonScrollPane.setPreferredSize(new Dimension(940, 250));
         bottom.add(hoadonScrollPane,BorderLayout.CENTER);
-
-        this.add(header, BorderLayout.NORTH);
-        this.add(center, BorderLayout.CENTER);
-        this.add(bottom, BorderLayout.SOUTH);
         loadData();
-        //action
-        tkhdAction = new ThongKeHoaDonAction(this,tkhdBUS);
-        cbxtrangthai.addItemListener(tkhdAction);
-        loctrangthai.addActionListener(tkhdAction);
-        reset.addActionListener(tkhdAction);
+        UIUtils.refreshComponent(this);
+
     }
 
     public void loadlist(List<ThongkeHoaDonEntity> list) {
@@ -186,5 +207,13 @@ public class thongkeHoadon extends JPanel {
 
     public JButton getReset() {
         return reset;
+    }
+
+    public JPanel getCenter1() {
+        return center1;
+    }
+
+    public void setCenter1(JPanel center1) {
+        this.center1 = center1;
     }
 }

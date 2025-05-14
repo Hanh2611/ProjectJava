@@ -85,9 +85,12 @@ public class ListItem extends JPanel {
                     } else showPanel(namePanel);
                     if(namePanel.equals("ThongKe")) {
                         JPanel panel = mapItem.get(namePanel);
-                        UIUtils.refreshComponent(panel);
+                        if (panel instanceof ThongKe) {
+                            new ThongKe().refreshAllThongKePanels(); // load lại dữ liệu
+                        }
                         showPanel(namePanel);
                     }
+
                 }
             });
             list.add(c);
