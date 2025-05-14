@@ -2,9 +2,11 @@ package org.projects.GUI.DiaLog.SanPham;
 
 import org.projects.BUS.DanhMucSanPhamBus;
 import org.projects.BUS.SanPhamBus;
+import org.projects.GUI.Components.Transition.mainTransition;
 import org.projects.GUI.Panel.SanPham;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class AddDanhMucDialog extends JDialog {
@@ -12,7 +14,7 @@ public class AddDanhMucDialog extends JDialog {
     private final DanhMucSanPhamBus danhMucSanPhamBus;
     private AddSanPhamDialog addSanPhamDialog;
     private final SanPham sanPham;
-
+    mainTransition mainTransition = new mainTransition();
     public AddDanhMucDialog(AddSanPhamDialog addSanPhamDialog, SanPham sanPham) {
         this.addSanPhamDialog = addSanPhamDialog;
         this.sanPham = sanPham;
@@ -53,6 +55,8 @@ public class AddDanhMucDialog extends JDialog {
                 }
                 dispose();
             } else {
+                Border redBorder = BorderFactory.createLineBorder(Color.RED, 2);
+                textField.setBorder(redBorder);
                 JOptionPane.showMessageDialog(this, "Vui lòng nhập tên danh mục.");
             }
         });

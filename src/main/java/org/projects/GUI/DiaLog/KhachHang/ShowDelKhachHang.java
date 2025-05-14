@@ -22,7 +22,7 @@ public class ShowDelKhachHang extends JDialog {
         khachHang = new KhachHang();
         del = new DelKhachHangConsole();
         initComponents();
-//        transition.showZoomIn(this,700 , 400);
+        transition.showFadeIn(this,700 , 400);
     }
     public ShowDelKhachHang(){}
     void initComponents() {
@@ -41,11 +41,11 @@ public class ShowDelKhachHang extends JDialog {
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel);
         this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+//        this.setLocationRelativeTo(null);
+//        this.setVisible(true);
     }
     public void close(){
-//        transition.closeWithZoomOut(this);
-        this.dispose();
+        transition.closeFadeOut(this);
+//        this.dispose();
     }
 }

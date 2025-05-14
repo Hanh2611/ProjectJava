@@ -10,6 +10,8 @@ import org.projects.GUI.Components.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +38,19 @@ public class NhaCungCapDialog extends JDialog {
         listErrorLabel = new ArrayList<>();
         listTextField = new ArrayList<>();
         this.setTitle(this.setType());
-        this.setLocationRelativeTo(null);
+        //this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.getContentPane().setBackground(new Color(240, 240, 240));
         this.init();
         getEdit(this.getNccType());
-        ts.showZoomIn(this,600,500);
+        ts.showSlideIn(this,600,500);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().setVisible(false);
+                ts.closeSlideOut(NhaCungCapDialog.this);
+            }
+        });
     }
     public void init() {
         centerPanel = new JPanel();

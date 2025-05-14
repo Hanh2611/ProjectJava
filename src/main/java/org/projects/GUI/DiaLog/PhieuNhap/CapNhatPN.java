@@ -1,16 +1,17 @@
 package org.projects.GUI.DiaLog.PhieuNhap;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.NhaCungCapBUS;
+import org.projects.BUS.PhieuNhapBUS;
 import org.projects.BUS.SanPhamBus;
-import org.projects.DAO.ChiTietPhieuNhapDAO;
-import org.projects.DAO.NhaCungCapDAO;
-import org.projects.DAO.PhieuNhapDAO;
-import org.projects.DAO.SanPhamDAO;
 import org.projects.GUI.Components.NumberOnlyFilter;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.Panel.PhieuNhap;
 import org.projects.GUI.utils.Session;
-import org.projects.entity.*;
+import org.projects.entity.ChiTietPhieuNhapFullEntity;
+import org.projects.entity.NhaCungCapEntity;
+import org.projects.entity.PhieuNhapEntity;
+import org.projects.entity.SanPhamEntity;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -583,76 +584,38 @@ public class CapNhatPN extends JPanel {
 
             dialog.setVisible(true);
         });
-            btnNhapHang.addActionListener(e -> {
-               int maPN = Integer.parseInt(nhapMaPN.getText());
-                String selectedName = (String) nhapNCC.getSelectedItem();
-                if (selectedName == null || !nccMap.containsKey(selectedName)) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp!");
-                    return;
-                }
-                if (modelDanhSachNhap.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
-                    return;
-                }
-                NhaCungCapEntity selectedNCC = nccMap.get(selectedName);
-                int maNCC = selectedNCC.getMaNCC();
-                long tongTien = ThemPN.parseTien(txtTongTien.getText()); // parse ngược lại số
-                int maNV = Session.curUser.getMaNguoiDung(); // Lấy nhân viên hiện tại (nếu có biến lưu)
-                PhieuNhapEntity pn = new PhieuNhapEntity();
-                pn.setMaPN(maPN);
-                pn.setMaNCC(maNCC);
-                pn.setMaNV(maNV);
-                pn.setTongGiaTri(tongTien);
+        btnNhapHang.addActionListener(e -> {
+            int maPN = Integer.parseInt(nhapMaPN.getText());
+            String selectedName = (String) nhapNCC.getSelectedItem();
 
-                int result = new PhieuNhapDAO().sua(pn);
+            if (selectedName == null || !nccMap.containsKey(selectedName)) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp!");
+                return;
+            }
 
-                if (result > 0) {
-                    ChiTietPhieuNhapDAO ctDAO = new ChiTietPhieuNhapDAO();
-                    List<ChiTietPhieuNhapEntity> danhSachCu = ctDAO.getChiTietByMaPhieuNhap(maPN);
+            if (modelDanhSachNhap.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
+                return;
+            }
 
-                    for (ChiTietPhieuNhapEntity ctCu : danhSachCu) {
-                        int maSP = ctCu.getMaSP();
-                        int soLuongCu = ctCu.getSoLuong();
-                        // Lấy sản phẩm từ DB
-                        SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
-                        // Trừ số lượng cũ ra khỏi tồn kho
-                        sp.setSoLuongTon(sp.getSoLuongTon() - soLuongCu);
-                        sanPhamBus.updateSanPham(sp);
-                    }
+            NhaCungCapEntity selectedNCC = nccMap.get(selectedName);
+            int maNCC = selectedNCC.getMaNCC();
+            long tongTien = ThemPN.parseTien(txtTongTien.getText());
+            int maNV = Session.curUser.getMaNguoiDung();
 
-                    ctDAO.xoaTheoMaPhieuNhap(maPN);
-                    for (int i = 0; i < modelDanhSachNhap.getRowCount(); i++) {
-                        int maSP = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 0).toString());
-                        int soLuong = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 2).toString());
-                        String giaStr = modelDanhSachNhap.getValueAt(i, 3).toString();
-                        long giaNhap = ThemPN.parseTien(giaStr); // parse định dạng tiền tệ
-                        long thanhTien = soLuong * giaNhap;
+            PhieuNhapEntity pn = new PhieuNhapEntity(maPN, maNV, maNCC, tongTien);
 
-                        ChiTietPhieuNhapEntity ct = new ChiTietPhieuNhapEntity();
-                        ct.setMaPN(maPN);
-                        ct.setMaSP(maSP);
-                        ct.setSoLuong(soLuong);
-                        ct.setGiaNhap(giaNhap);
-                        ct.setThanhTien(thanhTien);
+            PhieuNhapBUS pnBus = new PhieuNhapBUS();
+            boolean success = pnBus.suaPhieuNhap(pn, modelDanhSachNhap);
 
-                        SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
-                        sp.setSoLuongTon(sp.getSoLuongTon() + soLuong);
-                        if(sp.getSoLuongTon() > 0){
-                            sp.setHetHang(false);
-                        }
-                        sanPhamBus.updateSanPham(sp);
-
-                        ctDAO.them(ct); // thêm vào db
-                    }
-                    JOptionPane.showMessageDialog(null, "Cập nhật phiếu nhập thành công!");
-                    phieuNhap.reloadDAO();
-                    phieuNhap.showTrangChinh();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Cập nhật thất bại!");
-                }
-
-
-            });
+            if (success) {
+                JOptionPane.showMessageDialog(null, "Cập nhật phiếu nhập thành công!");
+                phieuNhap.reloadDAO();
+                phieuNhap.showTrangChinh();
+            } else {
+                JOptionPane.showMessageDialog(null, "Cập nhật thất bại!");
+            }
+        });
             panelright.add(nhapNCC);
         }
     public void resetForm() {
@@ -675,8 +638,7 @@ public class CapNhatPN extends JPanel {
 
     }
     public void loadDataToTableSanPham() {
-        SanPhamDAO dao = new SanPhamDAO();
-        java.util.List<SanPhamEntity> list = dao.showlist();
+        java.util.List<SanPhamEntity> list = sanPhamBus.getAllSanPham();
 
         DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();
         model.setRowCount(0); // clear dữ liệu cũ
@@ -691,8 +653,7 @@ public class CapNhatPN extends JPanel {
         }
     }
     private void loadNhaCungCapCombobox(int maNCCCu) {
-        NhaCungCapDAO dao = new NhaCungCapDAO();
-        java.util.List<NhaCungCapEntity> list = dao.showlist();
+        java.util.List<NhaCungCapEntity> list = NhaCungCapBUS.getList();
         nhapNCC.removeAllItems();
         nccMap.clear();
 

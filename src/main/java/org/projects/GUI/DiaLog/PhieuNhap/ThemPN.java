@@ -2,16 +2,13 @@ package org.projects.GUI.DiaLog.PhieuNhap;
 
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.NhaCungCapBUS;
+import org.projects.BUS.PhieuNhapBUS;
 import org.projects.BUS.SanPhamBus;
-import org.projects.DAO.ChiTietPhieuNhapDAO;
-import org.projects.DAO.NhaCungCapDAO;
-import org.projects.DAO.PhieuNhapDAO;
-import org.projects.DAO.SanPhamDAO;
 import org.projects.GUI.Components.NumberOnlyFilter;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.Panel.PhieuNhap;
 import org.projects.GUI.utils.Session;
-import org.projects.entity.ChiTietPhieuNhapEntity;
 import org.projects.entity.NhaCungCapEntity;
 import org.projects.entity.PhieuNhapEntity;
 import org.projects.entity.SanPhamEntity;
@@ -627,47 +624,44 @@ public class ThemPN extends JPanel {
                     int maPN = Integer.parseInt(nhapMaPN.getText());
                     int maNV = Session.curUser.getMaNguoiDung();
                     String selectedName = (String) nhapNCC.getSelectedItem();
+
+                    // Kiểm tra nhà cung cấp
                     if (selectedName == null || !nccMap.containsKey(selectedName)) {
                         JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp!");
                         nhapNCC.setBorder(BorderFactory.createLineBorder(Color.RED));
                         nhapNCC.requestFocus();
                         return;
-                    }
-                    else{
+                    } else {
                         nhapNCC.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
                     }
+
+                    // Kiểm tra sản phẩm đã chọn
                     if (modelDanhSachNhap.getRowCount() == 0) {
                         JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
                         return;
                     }
+
+                    // Lấy thông tin nhà cung cấp và tạo đối tượng PhieuNhapEntity
                     NhaCungCapEntity selectedNCC = nccMap.get(selectedName);
                     int maNCC = selectedNCC.getMaNCC();
                     long tongTien = parseTien(txtTongTien.getText());
-                    PhieuNhapEntity pn = new PhieuNhapEntity(maPN,maNV,maNCC,tongTien);
-                    PhieuNhapDAO dao = new PhieuNhapDAO();
-                    dao.them(pn);
 
-                    ChiTietPhieuNhapDAO chiTietPhieuNhapDAO = new ChiTietPhieuNhapDAO();
-                    for(int i=0;i<modelDanhSachNhap.getRowCount();i++){
-                        int masp = Integer.parseInt(modelDanhSachNhap.getValueAt(i,0).toString());
-                        int soluong = Integer.parseInt(modelDanhSachNhap.getValueAt(i,2).toString());
-                        String giaNhapStr = modelDanhSachNhap.getValueAt(i, 3).toString();
-                        double gianhap = parseTien(giaNhapStr); // Xử lý giống như tổng tiền
-                        double thanhtien = soluong * gianhap;
+                    PhieuNhapEntity pn = new PhieuNhapEntity(maPN, maNV, maNCC, tongTien);
 
-                        SanPhamEntity sp = sanPhamBus.getSanPhamById(masp);
-                        sp.setSoLuongTon(sp.getSoLuongTon() + soluong);
-                        if(sp.getSoLuongTon() > 0){
-                            sp.setHetHang(false);
-                        }
-                        sanPhamBus.updateSanPham(sp);
-                        ChiTietPhieuNhapEntity ct = new ChiTietPhieuNhapEntity(maPN, masp, soluong, gianhap, thanhtien);
-                        chiTietPhieuNhapDAO.them(ct);
+                    // Gọi PhieuNhapBUS để thêm phiếu nhập
+                    PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS();
+                    boolean isSuccess = phieuNhapBUS.themPhieuNhap(pn, modelDanhSachNhap);
+
+                    if (!isSuccess) {
+                        JOptionPane.showMessageDialog(null, "Lỗi khi nhập hàng!");
+                        return;
                     }
+
                     JOptionPane.showMessageDialog(null, "Nhập hàng thành công!");
-                    phieuNhap.showTrangChinh(); // Gọi hàm trong MainFrame
+                    phieuNhap.showTrangChinh();  // Gọi hàm trong MainFrame
                     phieuNhap.reloadDAO();
-                }catch (Exception ex){
+
+                } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Lỗi khi nhập hàng: " + ex.getMessage());
                 }
@@ -704,8 +698,7 @@ public class ThemPN extends JPanel {
         return text.isEmpty() ? 0 : Long.parseLong(text);
     }
     public void loadDataToTableSanPham() {
-        SanPhamDAO dao = new SanPhamDAO();
-        List<SanPhamEntity> list = dao.showlist();
+        List<SanPhamEntity> list = sanPhamBus.getAllSanPham();
 
         DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();
         model.setRowCount(0); // clear dữ liệu cũ
@@ -727,8 +720,7 @@ public class ThemPN extends JPanel {
         nhapNVNhap.setText(tenNV);
     }
     private void loadNhaCungCapCombobox() {
-        NhaCungCapDAO dao = new NhaCungCapDAO();
-        List<NhaCungCapEntity> list = dao.showlist();
+        List<NhaCungCapEntity> list = NhaCungCapBUS.getList();
         nhapNCC.removeAllItems();
         nccMap.clear(); // reset map
         // ➕ Thêm dòng placeholder đầu tiên
@@ -743,9 +735,9 @@ public class ThemPN extends JPanel {
     }
 
     private void loadMaPhieuNhap() {
-        PhieuNhapDAO dao = new PhieuNhapDAO();
-        int maxMaPN = dao.getMaxMaPN();
-        nhapMaPN.setText(String.valueOf(maxMaPN + 1));
+        PhieuNhapBUS bus = new PhieuNhapBUS();
+        int nextMaPN = bus.getNextMaPhieuNhap();
+        nhapMaPN.setText(String.valueOf(nextMaPN));
     }
 
     private void updateTotal(DefaultTableModel model, JLabel txtTongTien) {
