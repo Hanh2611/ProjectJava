@@ -37,7 +37,7 @@ public class UpdateSanPhamDialog extends JDialog {
         this.sanPhamEntity = sanPhamEntity;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Cập nhật sản phẩm");
-        setSize(450, 750);
+        setSize(450, 760);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
@@ -129,17 +129,17 @@ public class UpdateSanPhamDialog extends JDialog {
         content.add(phanLoaiPanel);
 
         //Radio - Hết hàng
-        JPanel stockStatusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        isOutOfStock = new JRadioButton("Hết hàng");
-        isInStock = new JRadioButton("Còn hàng");
-        isOutOfStock.setSelected(sanPhamEntity.isHetHang());
-        isInStock.setSelected(!sanPhamEntity.isHetHang());
-        ButtonGroup stockButtonGroup = new ButtonGroup();
-        stockButtonGroup.add(isInStock);
-        stockButtonGroup.add(isOutOfStock);
-        stockStatusPanel.add(isInStock);
-        stockStatusPanel.add(isOutOfStock);
-        content.add(stockStatusPanel);
+//        JPanel stockStatusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+//        isOutOfStock = new JRadioButton("Hết hàng");
+//        isInStock = new JRadioButton("Còn hàng");
+//        isOutOfStock.setSelected(sanPhamEntity.isHetHang());
+//        isInStock.setSelected(!sanPhamEntity.isHetHang());
+//        ButtonGroup stockButtonGroup = new ButtonGroup();
+//        stockButtonGroup.add(isInStock);
+//        stockButtonGroup.add(isOutOfStock);
+//        stockStatusPanel.add(isInStock);
+//        stockStatusPanel.add(isOutOfStock);
+//        content.add(stockStatusPanel);
 
         // Radio - Trạng thái
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));

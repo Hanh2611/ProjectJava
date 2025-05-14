@@ -30,7 +30,7 @@ public class DetailSanPhamDialog extends JDialog {
         this.sanPhamEntity = sanPhamEntity;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Chi tiết sản phẩm");
-        setSize(450, 750);
+        setSize(450, 780);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();

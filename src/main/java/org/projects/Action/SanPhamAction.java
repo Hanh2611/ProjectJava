@@ -179,7 +179,6 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             String soLuongTon = updateSanPhamDialog.getSoLuongTonField().getTextField().getText().trim();
                             String quyCach = updateSanPhamDialog.getQuyCachField().getSelectedItem().toString();
                             boolean trangThai = updateSanPhamDialog.getIsAvailable().isSelected();
-                            boolean hetHang = updateSanPhamDialog.getIsOutOfStock().isSelected();
                             File hinhAnh = updateSanPhamDialog.getSelectedFile();
                             String oldFileName = HashName.convertToSlug(updateSanPhamDialog.getSanPhamEntity().getTenSanPham()) + HashName.getFileExtension(updateSanPhamDialog.getSanPhamEntity().getHinhAnh());
                             String newFileName = HashName.convertToSlug(ten) + HashName.getFileExtension(hinhAnh.getName());
@@ -210,11 +209,12 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                                 JOptionPane.showMessageDialog(null, "Error saving the image.");
                             }
 
+
+                            double soLuongTonDouble = Double.parseDouble(soLuongTon);
+                            boolean hetHang = (soLuongTonDouble == 0);
                             int idDanhMuc = danhMucSanPhamBus.getIdDanhMuc(phanLoai);
                             DanhMucSanPhamEntity danhMucSanPhamEntity = new DanhMucSanPhamEntity(idDanhMuc, phanLoai);
-                            this.sanPhamEntity = new SanPhamEntity(id, ten, danhMucSanPhamEntity, donVi, Double.parseDouble(gia), Double.parseDouble(soLuongTon), QuyCach.fromValue(quyCach), newFileName, hetHang, trangThai);
-                            this.sanPhamEntity.setHetHang(Double.parseDouble(soLuongTon) == 0);
-                            this.sanPhamEntity.setHetHang(hetHang);
+                            this.sanPhamEntity = new SanPhamEntity(id, ten, danhMucSanPhamEntity, donVi, Double.parseDouble(gia), soLuongTonDouble, QuyCach.fromValue(quyCach), newFileName, hetHang, trangThai);
 
                             if (sanPhamBus.updateSanPham(sanPhamEntity)) {
                                 JOptionPane.showMessageDialog(updateSanPhamDialog, "Cập nhật sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

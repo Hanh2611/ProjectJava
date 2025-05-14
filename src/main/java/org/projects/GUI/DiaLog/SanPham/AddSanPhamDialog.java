@@ -34,7 +34,7 @@ public class AddSanPhamDialog extends JDialog {
         this.sanPham = sanPham;
         this.sanPhamAction = new SanPhamAction(sanPham, this);
         setTitle("Thêm sản phẩm");
-        setSize(450, 650);
+        setSize(450, 660);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponent();
