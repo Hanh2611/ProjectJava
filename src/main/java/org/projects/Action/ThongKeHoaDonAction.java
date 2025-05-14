@@ -53,9 +53,9 @@ public class ThongKeHoaDonAction implements ActionListener, ItemListener {
         String to = toDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(toDate) : "";
         String trangthai = tkhd.getCbxtrangthai().getSelectedItem().toString();
         HashMap<String,Integer> hm = tkhdBUS.getSLHDtheongay(from,to,trangthai);
-        tkhd.remove(tkhd.getCenter());
+        tkhd.getCenter1().removeAll();
         JPanel center = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày", tkhd.getHoadonChart(), "Ngày", "Số lượng", hm,600,300);
-        tkhd.add(center,BorderLayout.CENTER);
+        tkhd.setCenter1(center);
         tkhd.setSoluonghoadontheongay(hm);
         tkhd.setCenter(center);
     }
