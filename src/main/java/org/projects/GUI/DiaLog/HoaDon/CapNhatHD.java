@@ -1,13 +1,14 @@
 package org.projects.GUI.DiaLog.HoaDon;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.projects.BUS.HoaDonBUS;
+import org.projects.BUS.KhachHangBUS;
 import org.projects.BUS.SanPhamBus;
-import org.projects.DAO.*;
+import org.projects.DAO.ChiTietHoaDonDAO;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
 import org.projects.GUI.DiaLog.ThanhToan;
 import org.projects.GUI.Panel.HoaDon;
-import org.projects.GUI.utils.VotePDF;
 import org.projects.entity.*;
 
 import javax.swing.*;
@@ -16,7 +17,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -649,13 +653,13 @@ public class CapNhatHD extends JPanel {
                 return;
             }
 
-            // Lấy thông tin cần thiết
+            // Lấy thông tin cần thiết từ giao diện
             int maHD = Integer.parseInt(nhapMaPN.getText());
             int maNV = Integer.parseInt(nhapNVNhap.getText());
             int maKH = maKhachHangDuocChon;
             double tonggiatri = ThemPN.parseTien(txtTongTien.getText());
 
-            // Tạo đối tượng hóa đơn mới để cập nhật
+            // Tạo đối tượng HoaDonEntity
             HoaDonEntity hoaDonEntity = new HoaDonEntity();
             hoaDonEntity.setMaNV(maNV);
             hoaDonEntity.setMaKh(maKH);
@@ -663,43 +667,23 @@ public class CapNhatHD extends JPanel {
             hoaDonEntity.setTongGiaTri(tonggiatri);
             hoaDonEntity.setTrangThai("chua_thanh_toan");
 
-            HoaDonDAO hoaDonDAO = new HoaDonDAO();
-
+            // Lấy danh sách chi tiết hóa đơn cũ
             ChiTietHoaDonDAO chiTietDAO = new ChiTietHoaDonDAO();
+            List<ChiTietHoaDonEntity> danhSachCu = chiTietDAO.getChiTietByMaHoaDon(maHD);
 
-            // Cập nhật thông tin hóa đơn
-            int result = hoaDonDAO.sua(hoaDonEntity);
-            if (result != 1) {
+            // Gọi HoaDonBUS để cập nhật
+            HoaDonBUS hoaDonBUS = new HoaDonBUS();
+            boolean isUpdated = hoaDonBUS.suaHoaDon(hoaDonEntity, danhSachCu, modelDanhSachNhap);
+
+            if (!isUpdated) {
                 JOptionPane.showMessageDialog(null, "Cập nhật hóa đơn thất bại!");
                 return;
             }
 
-            List<ChiTietHoaDonEntity> danhSachCu = chiTietDAO.getChiTietByMaHoaDon(maHD);
-            for (ChiTietHoaDonEntity ct : danhSachCu) {
-                SanPhamEntity sp = sanPhamBus.getSanPhamById(ct.getMaSP());
-                sp.setSoLuongTon(sp.getSoLuongTon() + ct.getSoLuong()); // hoàn lại số lượng cũ
-                if (sp.getSoLuongTon() > 0) sp.setHetHang(false);
-                sanPhamBus.updateSanPham(sp);
-            }
-            // Xóa chi tiết hóa đơn cũ
-            chiTietDAO.xoaTatCaTheoMaHD(maHD);
-            // Thêm lại chi tiết hóa đơn mới
-            for (int i = 0; i < modelDanhSachNhap.getRowCount(); i++) {
-                int maSP = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 0).toString());
-                int soLuong = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 2).toString());
-                double giaBan = ThemPN.parseTien(modelDanhSachNhap.getValueAt(i, 3).toString());
-                double thanhTien = soLuong * giaBan;
-                SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
-                sp.setSoLuongTon(sp.getSoLuongTon() - soLuong); // trừ số lượng mới
-                if(sp.getSoLuongTon() == 0) sp.setHetHang(true);
-                sanPhamBus.updateSanPham(sp);
-                ChiTietHoaDonEntity chiTiet = new ChiTietHoaDonEntity(maSP, maHD, soLuong, giaBan, thanhTien);
-                chiTietDAO.them(chiTiet);
-            }
-
+            // Thông báo thành công
             JOptionPane.showMessageDialog(null, "Cập nhật hóa đơn thành công!");
 
-            // Làm mới
+            // Làm mới giao diện
             modelDanhSachNhap.setRowCount(0);
             txtKhachHang.setText("");
             txtTongTien.setText("0");
@@ -760,8 +744,7 @@ public class CapNhatHD extends JPanel {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Danh sách khách hàng"));
 
         // Load dữ liệu khách hàng
-        KhachHangDAO dao = new KhachHangDAO();
-        List<KhachHangEntity> list = dao.showlist();
+        List<KhachHangEntity> list = KhachHangBUS.getList();
 
         for (KhachHangEntity kh : list) {
             String displayName = kh.getTen() + " - " + kh.getSdt();
@@ -835,8 +818,7 @@ public class CapNhatHD extends JPanel {
             maKhachHangDuocChon = first.getMaKH(); // Lấy mã khách hàng từ ChiTietHoaDonFullEntity
 
             // Làm mới khMap từ cơ sở dữ liệu mỗi khi nạp hóa đơn
-            KhachHangDAO dao = new KhachHangDAO();
-            List<KhachHangEntity> khList = dao.showlist();
+            List<KhachHangEntity> khList = KhachHangBUS.getList();
             khMap.clear(); // Xóa bản đồ cũ
             for (KhachHangEntity kh : khList) {
                 String displayName = kh.getTen() + " - " + kh.getSdt();
@@ -911,8 +893,7 @@ public class CapNhatHD extends JPanel {
     }
 
     public void loadDataToTableSanPham() {
-        SanPhamDAO dao = new SanPhamDAO();
-        List<SanPhamEntity> list = dao.showlist();
+        List<SanPhamEntity> list = sanPhamBus.getAllSanPham();
 
         DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();
         model.setRowCount(0); // clear dữ liệu cũ
