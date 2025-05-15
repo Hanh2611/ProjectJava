@@ -5,6 +5,7 @@ import org.projects.BUS.HoaDonBUS;
 import org.projects.BUS.KhachHangBUS;
 import org.projects.BUS.SanPhamBus;
 import org.projects.DAO.ChiTietHoaDonDAO;
+import org.projects.GUI.Components.CapNhatSoLuongTon;
 import org.projects.GUI.Components.OnlyDigitFilter;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
 import org.projects.GUI.DiaLog.ThanhToan;
@@ -438,6 +439,7 @@ public class CapNhatHD extends JPanel {
 
             // Thêm vào bảng danh sách nhập hàng
             modelDanhSachNhap.addRow(new Object[]{maSP, tenSP, soLuong,giaban,thanhtienformatted});
+
             updateTotal(modelDanhSachNhap, txtTongTien);
 
 
@@ -504,11 +506,14 @@ public class CapNhatHD extends JPanel {
             for (int i = 0; i < tableSanPham.getRowCount(); i++) {
                 String maSPGoc = tableSanPham.getValueAt(i, 0).toString(); // Cột 0 là mã sản phẩm
                 if (maSP.equals(maSPGoc)) {
-                    tonKho = (tableSanPham.getValueAt(i, 3).toString()); // Cột 2 là số lượng tồn
+                    tonKho = (tableSanPham.getValueAt(i, 3).toString()) ; // Cột 2 là số lượng tồn
                     break;
                 }
             }
 
+            double tonKhoHienTai = Double.parseDouble(tonKho);
+            int soluongnhapgoc = CapNhatSoLuongTon.soLuongNhapGoc.getOrDefault(Integer.parseInt(maSP), 0);
+            double tongTonKho = tonKhoHienTai + soluongnhapgoc;
             // Tạo JDialog
             JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(panelLeft), "Sửa sản phẩm", true);
             dialog.setSize(400, 350);
@@ -552,7 +557,7 @@ public class CapNhatHD extends JPanel {
             JLabel lblTonKho = new JLabel("Tồn kho:");
             lblTonKho.setFont(labelFont);
             lblTonKho.setBounds(30, 125, 100, 25);
-            JTextField txtTonKho = new JTextField(tonKho);
+            JTextField txtTonKho = new JTextField(String.valueOf(tongTonKho));
             txtTonKho.setFont(fieldFont);
             txtTonKho.setBounds(150, 125, 200, 25);
             txtTonKho.setEditable(false);
@@ -630,7 +635,13 @@ public class CapNhatHD extends JPanel {
                     txtGiaNhap.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
 
                 }
+
                 modelDanhSachNhap.setValueAt(newSoLuong, selectedRow, 2);
+                String giaBanStr = modelDanhSachNhap.getValueAt(selectedRow, 3).toString(); // Giá bán hiện tại
+                long giaBan = ThemPN.parseTien(giaBanStr);
+                long thanhTien = sl * giaBan;
+                String thanhTienFormatted = ThemPN.formatVND(thanhTien);
+                modelDanhSachNhap.setValueAt(thanhTienFormatted, selectedRow, 4);
                 // Nếu cần cập nhật tổng tiền:
                 updateTotal(modelDanhSachNhap,txtTongTien);
 
