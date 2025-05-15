@@ -3,6 +3,7 @@ import org.projects.Action.SanPhamAction;
 import org.projects.BUS.PhanQuyenBUS;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.headerBar;
+import org.projects.GUI.utils.CustomTableCellRenderer;
 import org.projects.GUI.utils.Helper;
 import org.projects.GUI.utils.Session;
 import org.projects.GUI.utils.UIUtils;
@@ -130,6 +131,10 @@ public class SanPham extends JPanel{
                 });
             }
         }
+        TableColumn statusColumn = table.getColumnModel().getColumn(5);
+        statusColumn.setCellRenderer(new CustomTableCellRenderer());
+        TableColumn statusColumn2 = table.getColumnModel().getColumn(6);
+        statusColumn2.setCellRenderer(new CustomTableCellRenderer());
     }
 
     public void reloadDAO() {

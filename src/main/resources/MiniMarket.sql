@@ -91,7 +91,7 @@ CREATE TABLE san_pham
     don_vi       VARCHAR(50),
     gia_ban      DOUBLE  DEFAULT 0,
     so_luong_ton DOUBLE  DEFAULT 0,
-    quy_cach     ENUM ('Thùng', 'Chai', 'Túi', 'KG', 'Hộp', 'G', 'Khay'),
+    quy_cach     ENUM ('Thùng', 'Chai', 'Túi', 'KG', 'Hộp', 'G', 'Khay', 'Gói'),
     img          VARCHAR(255),
     het_hang     BOOLEAN DEFAULT TRUE,
     trang_thai   BOOLEAN DEFAULT TRUE

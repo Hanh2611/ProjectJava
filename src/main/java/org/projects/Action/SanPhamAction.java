@@ -5,6 +5,7 @@ import org.projects.BUS.HoaDonBUS;
 import org.projects.BUS.PhieuNhapBUS;
 import org.projects.BUS.SanPhamBus;
 import org.projects.GUI.Components.header.generalFunction;
+import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
 import org.projects.GUI.DiaLog.SanPham.AddSanPhamDialog;
 import org.projects.GUI.DiaLog.SanPham.DetailSanPhamDialog;
 import org.projects.GUI.DiaLog.SanPham.UpdateSanPhamDialog;
@@ -117,10 +118,12 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                         String newFileName = HashName.convertToSlug(ten) + HashName.getFileExtension(hinhAnh.getName());
                         File destinationFile = new File(Helper.imageBasePath, newFileName);
 
-                        if (!isDouble(gia)) {
+                        long newGia = ThemPN.parseTien(gia);
+
+                        if (newGia <= 0) {
                             addSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
                             addSanPhamDialog.getGiaBanField().getTextField().requestFocus();
-                            JOptionPane.showMessageDialog(addSanPhamDialog, "Giá không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(addSanPhamDialog, "Giá phải là số", "Thông báo", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
 
@@ -134,7 +137,7 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
 
                         int idDanhMuc = danhMucSanPhamBus.getIdDanhMuc(phanLoai);
                         DanhMucSanPhamEntity danhMucSanPhamEntity = new DanhMucSanPhamEntity(idDanhMuc, phanLoai);
-                        this.sanPhamEntity = new SanPhamEntity(ten, danhMucSanPhamEntity, donVi, Double.parseDouble(gia), QuyCach.fromValue(quyCach), newFileName);
+                        this.sanPhamEntity = new SanPhamEntity(ten, danhMucSanPhamEntity, donVi, newGia, QuyCach.fromValue(quyCach), newFileName);
 
                         if(sanPhamBus.addSanPham(sanPhamEntity)) {
                             JOptionPane.showMessageDialog(addSanPhamDialog, "Thêm sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -190,17 +193,24 @@ public class SanPhamAction implements ActionListener, MouseListener, ItemListene
                             String newFileName = HashName.convertToSlug(ten) + HashName.getFileExtension(hinhAnh.getName());
                             File destinationFile = new File(Helper.getProductImagePath(newFileName));
 
-                            if (!isDouble(soLuongTon) || Double.parseDouble(soLuongTon) < 0) {
+                            if(!isDouble(gia)){
+                                updateSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
+                                updateSanPhamDialog.getGiaBanField().getTextField().requestFocus();
+                                JOptionPane.showMessageDialog(updateSanPhamDialog, "Giá phải là số", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            if (Double.parseDouble(soLuongTon) < 0) {
                                 updateSanPhamDialog.getSoLuongTonField().getTextField().setBorder(redBorder);
                                 updateSanPhamDialog.getSoLuongTonField().getTextField().requestFocus();
                                 JOptionPane.showMessageDialog(updateSanPhamDialog, "Số lượng tồn không được âm", "Thông báo", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
-                            if (!isDouble(gia)) {
+                            if (Double.parseDouble(gia)<= 0) {
                                 updateSanPhamDialog.getGiaBanField().getTextField().setBorder(redBorder);
                                 updateSanPhamDialog.getGiaBanField().getTextField().requestFocus();
-                                JOptionPane.showMessageDialog(updateSanPhamDialog, "Giá không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(updateSanPhamDialog, "Giá không được là số âm", "Thông báo", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 

@@ -116,7 +116,7 @@ public class UpdateSanPhamDialog extends JDialog {
         donViField.getTextField().setText(sanPhamEntity.getDonVi());
         soLuongTonField.getTextField().setText(String.valueOf(sanPhamEntity.getSoLuongTon()));
 
-        ((AbstractDocument) giaBanField.getTextField().getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) giaBanField.getTextField().getDocument()).setDocumentFilter(new OnlyDigitFilter());
         ((AbstractDocument) soLuongTonField.getTextField().getDocument()).setDocumentFilter(new OnlyDigitFilter());
 
         content.add(tenSanPhamField);
@@ -221,12 +221,13 @@ public class UpdateSanPhamDialog extends JDialog {
 
     private void resetForm() {
         tenSanPhamField.getTextField().setText(sanPhamEntity.getTenSanPham());
+        giaBanField.getTextField().setText("");
         giaBanField.getTextField().setText(String.valueOf(sanPhamEntity.getGiaBan()));
         donViField.getTextField().setText(sanPhamEntity.getDonVi());
         soLuongTonField.getTextField().setText(String.valueOf(sanPhamEntity.getSoLuongTon()));
         quyCachField.getCbx().setSelectedItem(sanPhamEntity.getQuyCach().ordinal());
         phanLoaiField.getCbx().setSelectedItem(sanPhamEntity.getPhanLoai().getTenDanhMuc());
-        imgPreview.setIcon(new ImageIcon(new ImageIcon(Helper.getProductImagePath(sanPhamEntity.getHinhAnh())).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+        imgPreview.setIcon(new ImageIcon(new ImageIcon(Helper.getProductImagePath(sanPhamEntity.getHinhAnh())).getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH)));
         isAvailable.setSelected(sanPhamEntity.isTrangThai());
         isNotAvailable.setSelected(!sanPhamEntity.isTrangThai());
     }
