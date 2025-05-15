@@ -6,6 +6,7 @@ import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
 import javax.swing.*;
@@ -31,14 +32,32 @@ public class thongkedoanhthutheoNam extends JPanel {
     private DefaultTableModel doanhthutheonamTableModel;
     private JScrollPane doanhthutheonamScrollPane;
 
-    private final ThongKeDoanhThuBUS tkdtBUS = new ThongKeDoanhThuBUS();
+    private final ThongKeDoanhThuBUS tkdtBUS;
     private final ThongKeDoanhThuTheoNamAction tkdtAction;
     public thongkedoanhthutheoNam() {
+        tkdtBUS = new ThongKeDoanhThuBUS();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         //header
         header = new JPanel(new FlowLayout(FlowLayout.LEFT,10,5));
+        this.add(header, BorderLayout.NORTH);
+
+        center = new JPanel(new GridLayout(2,1));
+        this.add(center, BorderLayout.CENTER);
+        init();
+        //action
+        tkdtAction = new ThongKeDoanhThuTheoNamAction(this,tkdtBUS);
+        cbxnam.addItemListener(tkdtAction);
+        thongke.addActionListener(tkdtAction);
+        reset.addActionListener(tkdtAction);
+
+    }
+
+    public void init() {
+        header.removeAll();
+        center.removeAll();
+
         nam = handleComponents.setLabelText("Năm:");
         cbxnam = new JComboBox<>(new String[]{"Tất cả","2020","2021","2022","2023","2024","2025","2026"});
         cbxnam.setSelectedItem("Tất cả");
@@ -48,8 +67,7 @@ public class thongkedoanhthutheoNam extends JPanel {
         header.add(cbxnam);
         header.add(thongke);
         header.add(reset);
-        this.add(header, BorderLayout.NORTH);
-        center = new JPanel(new GridLayout(2,1));
+
         namChartPanel  = new JPanel(new GridLayout(1,1));
         namChartPanel.setBackground(Color.WHITE);
         String nam = String.valueOf(cbxnam.getSelectedItem());
@@ -91,13 +109,8 @@ public class thongkedoanhthutheoNam extends JPanel {
 
         center.add(namChartPanel);
         center.add(tablePanel);
-        this.add(center, BorderLayout.CENTER);
-        //action
-        tkdtAction = new ThongKeDoanhThuTheoNamAction(this,tkdtBUS);
-        cbxnam.addItemListener(tkdtAction);
-        thongke.addActionListener(tkdtAction);
-        reset.addActionListener(tkdtAction);
         loadData(nam);
+        UIUtils.refreshComponent(this);
     }
 
     public void loadList(List<ThongkeDoanhThuEntity> lst) {

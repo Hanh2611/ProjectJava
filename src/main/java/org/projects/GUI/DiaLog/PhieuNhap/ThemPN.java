@@ -24,7 +24,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -645,8 +648,11 @@ public class ThemPN extends JPanel {
                     NhaCungCapEntity selectedNCC = nccMap.get(selectedName);
                     int maNCC = selectedNCC.getMaNCC();
                     long tongTien = parseTien(txtTongTien.getText());
+                    ZoneId vietnamZone = ZoneId.of("Asia/Ho_Chi_Minh");
+                    LocalDateTime nowVN = LocalDateTime.now(vietnamZone);
+                    Timestamp ngayTao = Timestamp.valueOf(nowVN);
 
-                    PhieuNhapEntity pn = new PhieuNhapEntity(maPN, maNV, maNCC, tongTien);
+                    PhieuNhapEntity pn = new PhieuNhapEntity(maPN, maNV, maNCC, tongTien, ngayTao);
 
                     // Gọi PhieuNhapBUS để thêm phiếu nhập
                     PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS();

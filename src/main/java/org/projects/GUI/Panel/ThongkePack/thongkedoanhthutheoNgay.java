@@ -8,6 +8,7 @@ import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.utils.ChangeDateToString;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
 import javax.swing.*;
@@ -36,31 +37,50 @@ public class thongkedoanhthutheoNgay extends JPanel {
     private DefaultTableModel doanhthuTheongayTableModel;
     private JScrollPane doanhthuTheongayScrollPane;
 
-    private ThongKeDoanhThuBUS tkdtBUS = new ThongKeDoanhThuBUS();
+    private ThongKeDoanhThuBUS tkdtBUS;
     private ThongKeDoanhThuTheoNgayAction tkdtAction;
 
     public thongkedoanhthutheoNgay() {
+        tkdtBUS = new ThongKeDoanhThuBUS();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         //header
         header = new JPanel(new FlowLayout(FlowLayout.LEFT,20,5));
-        ngay = handleComponents.setLabelText("Ngày:");
+        this.add(header, BorderLayout.NORTH);
+        initComponent();
+
+        //center
+        center = new JPanel(new GridLayout(2,1));
+        this.add(center, BorderLayout.CENTER);
+
+        //action
+        tkdtAction = new ThongKeDoanhThuTheoNgayAction(this,tkdtBUS);
+        thongke.addActionListener(tkdtAction);
+        reset.addActionListener(tkdtAction);
+        init();
+    }
+
+    public void initComponent() {
         datefrom = handleComponents.createDate(120,25);
         den = handleComponents.setLabelText("Đến:");
         dateto = handleComponents.createDate(120,25);
         thongke = new ButtonEditStyle("Thống kê",Color.decode("#2ed573"),Color.WHITE,100,30);
         reset = new ButtonEditStyle("Làm mới",Color.decode("#1e90ff"),Color.WHITE,100,30);
+    }
+    public void init() {
+        header.removeAll();
+        center.removeAll();
+
+        ngay = handleComponents.setLabelText("Ngày:");
+
         header.add(ngay);
         header.add(datefrom);
         header.add(den);
         header.add(dateto);
         header.add(thongke);
         header.add(reset);
-        this.add(header, BorderLayout.NORTH);
 
-        //center
-        center = new JPanel(new GridLayout(2,1));
         center1 = new JPanel(new GridLayout(1,1));
         center2 = new JPanel(new GridLayout(1,1));
         columnsPanel = ColumnsChart.createColumnChart2("Doanh thu",doanhthuChart,"Ngày","Doanh thu",tkdtBUS.getngayvatongtien(ChangeDateToString.changeDate(datefrom.getDate()),ChangeDateToString.changeDate(dateto.getDate())),900,300);
@@ -99,12 +119,9 @@ public class thongkedoanhthutheoNgay extends JPanel {
         doanhthuTheongayScrollPane.setPreferredSize(new Dimension(940, 250));
         center2.add(doanhthuTheongayScrollPane);
         center.add(center2);
-        //action
-        tkdtAction = new ThongKeDoanhThuTheoNgayAction(this,tkdtBUS);
-        thongke.addActionListener(tkdtAction);
-        reset.addActionListener(tkdtAction);
-        this.add(center, BorderLayout.CENTER);
         loadData();
+        UIUtils.refreshComponent(this);
+
     }
     public void loadList(List<ThongkeDoanhThuEntity> lst) {
         doanhthuTheongayTableModel.setRowCount(0);

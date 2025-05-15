@@ -43,7 +43,7 @@ public class updatePhanQuyen extends JDialog {
         objectFactory.titleBar(titleBar, this, "Cập nhật nhóm quyền");
         this.add(titleBar);
         init();
-        mainTransition.showSlideIn(this , 900 , 700);
+        mainTransition.showFadeIn(this , 900 , 700);
         //setVisible(true);
     }
     public void init() {
@@ -153,6 +153,6 @@ public class updatePhanQuyen extends JDialog {
         }
         PhanQuyenBUS.updateNhomQuyen(danhMucData, maNhomQuyen);
         JOptionPane.showMessageDialog(mainGUI, "Cập nhật nhóm quyền thành công!");
-        mainTransition.closeSlideOut(this);
+        mainTransition.closeFadeOut(this);
     }
 }

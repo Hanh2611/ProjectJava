@@ -12,6 +12,13 @@ public class PhieuNhapEntity {
     private Timestamp ngayNhap;
     private boolean isDelete; // <-- Thêm thuộc tính này
 
+    public PhieuNhapEntity(int maPN, int maNV, int maNCC, double tongGiaTri, Timestamp ngayNhap) {
+        this.maPN = maPN;
+        this.maNV = maNV;
+        this.maNCC = maNCC;
+        this.tongGiaTri = tongGiaTri;
+        this.ngayNhap = ngayNhap;
+    }
     public PhieuNhapEntity(int maPN, int maNV, int maNCC, double tongGiaTri) {
         this.maPN = maPN;
         this.maNV = maNV;

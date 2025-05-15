@@ -3,6 +3,7 @@ package org.projects.GUI.Panel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.projects.BUS.PhanQuyenBUS;
+import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Components.MenuItemComponents;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.LoginGUI;
@@ -12,8 +13,10 @@ import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 import org.projects.GUI.Panel.PhanQuyenPack.PhanQuyen;
 import org.projects.GUI.Panel.ThongkePack.ThongKe;
 import org.projects.GUI.utils.Session;
+import org.projects.GUI.utils.UIUtils;
 
 import javax.swing.*;
+import javax.swing.text.Utilities;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -81,6 +84,11 @@ public class ListItem extends JPanel {
                         mainGui.dispose();
                         new LoginGUI();
                     } else showPanel(namePanel);
+//                    if(namePanel.equals("ThongKe")) {
+//                        ThongKe tk = new ThongKe();
+//                        tk.refreshAllThongKePanels();
+//                        showPanel(namePanel);
+//                    }
                 }
             });
             list.add(c);
