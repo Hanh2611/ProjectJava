@@ -48,7 +48,6 @@ public class thongkeSanpham extends JPanel {
     private ThongKeSanPhamBUS tkspBUS;
     private ThongKeSanPhamAction tkspAction;
     public thongkeSanpham() {
-        tkspBUS = new ThongKeSanPhamBUS();
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         //center
@@ -62,11 +61,9 @@ public class thongkeSanpham extends JPanel {
         bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setPreferredSize(new Dimension(940,300));
         this.add(bottomPanel,BorderLayout.SOUTH);
+        tkspBUS = new ThongKeSanPhamBUS();
         init();
-        //action
-        tkspAction = new ThongKeSanPhamAction(this,tkspBUS);
-        danhmucsanphamComboBox.addItemListener(tkspAction);
-        btnExcel.addActionListener(tkspAction);
+
     }
 
     public void init() {
@@ -132,6 +129,10 @@ public class thongkeSanpham extends JPanel {
         bottomPanel.add(sanphamScroll,BorderLayout.CENTER);
         loadData();
         UIUtils.refreshComponent(this);
+        //action
+        tkspAction = new ThongKeSanPhamAction(this,tkspBUS);
+        danhmucsanphamComboBox.addItemListener(tkspAction);
+        btnExcel.addActionListener(tkspAction);
     }
 
     public void loadList(List<ThongKeSanPhamEntity> list) {
