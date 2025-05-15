@@ -53,7 +53,6 @@ public class thongkePhieunhap extends JPanel {
     private ThongKePhieuNhapBUS tkpnBUS;
     private ThongKePhieuNhapAction tkpnAction;
     public thongkePhieunhap() {
-        tkpnBUS = new ThongKePhieuNhapBUS();
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         this.setBackground(Color.WHITE);
@@ -69,16 +68,13 @@ public class thongkePhieunhap extends JPanel {
 
         this.add(west, BorderLayout.WEST);
         this.add(center, BorderLayout.CENTER);
+        tkpnBUS = new ThongKePhieuNhapBUS();
         init();
-        //action
-        tkpnAction = new ThongKePhieuNhapAction(this,tkpnBUS);
-        nccBox.addItemListener(tkpnAction);
-        nvBox.addItemListener(tkpnAction);
-        timkiembtn.addActionListener(tkpnAction);
-        resetbtn.addActionListener(tkpnAction);
+
     }
 
     public void init() {
+
         west.removeAll();
         center.removeAll();
 
@@ -163,6 +159,12 @@ public class thongkePhieunhap extends JPanel {
         tableData.add(thongkeScroll,BorderLayout.CENTER);
         center.add(tableData);
         loadData();
+        //action
+        tkpnAction = new ThongKePhieuNhapAction(this,tkpnBUS);
+        nccBox.addItemListener(tkpnAction);
+        nvBox.addItemListener(tkpnAction);
+        timkiembtn.addActionListener(tkpnAction);
+        resetbtn.addActionListener(tkpnAction);
         UIUtils.refreshComponent(this);
     }
 

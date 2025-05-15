@@ -7,6 +7,7 @@ import org.projects.BUS.ThongKeDoanhThuBUS;
 import org.projects.GUI.Chart.ColumnsChart;
 import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.handleComponents;
+import org.projects.GUI.utils.UIUtils;
 import org.projects.entity.ThongkeDoanhThuEntity;
 
 import javax.swing.*;
@@ -38,7 +39,6 @@ public class thongkedoanhthutheoThang extends JPanel {
     private ThongKeDoanhThuTheoThangAction tkdtAction;
 
     public thongkedoanhthutheoThang() {
-        tkdtBUS = new ThongKeDoanhThuBUS();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -52,13 +52,9 @@ public class thongkedoanhthutheoThang extends JPanel {
         center = new JPanel(new GridLayout(2,1));
 
         this.add(center, BorderLayout.CENTER);
+        tkdtBUS = new ThongKeDoanhThuBUS();
         init();
-        //action
-        tkdtAction = new ThongKeDoanhThuTheoThangAction(this,tkdtBUS);
-        cbxthang.addItemListener(tkdtAction);
-        cbxnam.addItemListener(tkdtAction);
-        thongke.addActionListener(tkdtAction);
-        reset.addActionListener(tkdtAction);
+
 
     }
 
@@ -123,7 +119,13 @@ public class thongkedoanhthutheoThang extends JPanel {
         center.add(thangChartPanel);
         center.add(tablePanel);
         loadData(thang,nam);
-
+        //action
+        tkdtAction = new ThongKeDoanhThuTheoThangAction(this,tkdtBUS);
+        cbxthang.addItemListener(tkdtAction);
+        cbxnam.addItemListener(tkdtAction);
+        thongke.addActionListener(tkdtAction);
+        reset.addActionListener(tkdtAction);
+        UIUtils.refreshComponent(this);
     }
 
     public void loadlist(List<ThongkeDoanhThuEntity> lst) {
