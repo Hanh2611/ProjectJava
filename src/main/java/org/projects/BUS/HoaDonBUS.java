@@ -2,6 +2,8 @@ package org.projects.BUS;
 
 import org.projects.DAO.ChiTietHoaDonDAO;
 import org.projects.DAO.HoaDonDAO;
+import org.projects.GUI.Components.CapNhatSoLuongTon;
+import org.projects.GUI.DiaLog.HoaDon.ThemHD;
 import org.projects.GUI.DiaLog.PhieuNhap.ThemPN;
 import org.projects.GUI.Panel.HoaDon;
 import org.projects.entity.ChiTietHoaDonEntity;
@@ -18,6 +20,7 @@ public class HoaDonBUS {
     private static List<HoaDonEntity> listHoaDon;
     private final SanPhamBus sanPhamBus;
     private ChiTietHoaDonDAO chiTietDAO;
+    private ThemHD themHD;
 
     public HoaDonBUS(HoaDon hoaDon) {
         this.hoaDon = hoaDon;
@@ -47,9 +50,9 @@ public class HoaDonBUS {
                 int soLuong = Integer.parseInt(modelDanhSachNhap.getValueAt(i, 2).toString());
                 double giaBan = ThemPN.parseTien(modelDanhSachNhap.getValueAt(i, 3).toString());
                 double thanhTien = giaBan * soLuong;
-
                 SanPhamEntity sp = sanPhamBus.getSanPhamById(maSP);
                 sp.setSoLuongTon(sp.getSoLuongTon() - soLuong);
+                CapNhatSoLuongTon.soLuongNhapGoc.put(maSP, soLuong);
                 if (sp.getSoLuongTon() <= 0) {
                     sp.setHetHang(true);
                 }
