@@ -7,7 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ThongKePhieuNhapBUS {
-    private static ThongKePhieuNhapDAO tkpnDAO = new ThongKePhieuNhapDAO();
+    private final ThongKePhieuNhapDAO tkpnDAO;
+
+    public ThongKePhieuNhapBUS() {
+        tkpnDAO = new ThongKePhieuNhapDAO();
+    }
 
     public HashMap<String,Integer> getnhacungcapvasoluong() {
         return  tkpnDAO.getnhacungcapvasoluong();

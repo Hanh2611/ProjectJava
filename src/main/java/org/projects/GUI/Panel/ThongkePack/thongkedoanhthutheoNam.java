@@ -32,10 +32,9 @@ public class thongkedoanhthutheoNam extends JPanel {
     private DefaultTableModel doanhthutheonamTableModel;
     private JScrollPane doanhthutheonamScrollPane;
 
-    private final ThongKeDoanhThuBUS tkdtBUS;
-    private final ThongKeDoanhThuTheoNamAction tkdtAction;
+    private ThongKeDoanhThuBUS tkdtBUS;
+    private  ThongKeDoanhThuTheoNamAction tkdtAction;
     public thongkedoanhthutheoNam() {
-        tkdtBUS = new ThongKeDoanhThuBUS();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -45,12 +44,9 @@ public class thongkedoanhthutheoNam extends JPanel {
 
         center = new JPanel(new GridLayout(2,1));
         this.add(center, BorderLayout.CENTER);
+        tkdtBUS = new ThongKeDoanhThuBUS();
         init();
-        //action
-        tkdtAction = new ThongKeDoanhThuTheoNamAction(this,tkdtBUS);
-        cbxnam.addItemListener(tkdtAction);
-        thongke.addActionListener(tkdtAction);
-        reset.addActionListener(tkdtAction);
+
 
     }
 
@@ -110,6 +106,11 @@ public class thongkedoanhthutheoNam extends JPanel {
         center.add(namChartPanel);
         center.add(tablePanel);
         loadData(nam);
+        //action
+        tkdtAction = new ThongKeDoanhThuTheoNamAction(this,tkdtBUS);
+        cbxnam.addItemListener(tkdtAction);
+        thongke.addActionListener(tkdtAction);
+        reset.addActionListener(tkdtAction);
         UIUtils.refreshComponent(this);
     }
 

@@ -53,11 +53,13 @@ public class ThongKeHoaDonAction implements ActionListener, ItemListener {
         String to = toDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(toDate) : "";
         String trangthai = tkhd.getCbxtrangthai().getSelectedItem().toString();
         HashMap<String,Integer> hm = tkhdBUS.getSLHDtheongay(from,to,trangthai);
-        tkhd.getCenter1().removeAll();
-        JPanel center = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày", tkhd.getHoadonChart(), "Ngày", "Số lượng", hm,600,300);
+        tkhd.getCenter().remove(tkhd.getCenter1());
+        JPanel center = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày", tkhd.getHoadonChart(), "Ngày", "Số lượng", hm,800,500);
         tkhd.setCenter1(center);
         tkhd.setSoluonghoadontheongay(hm);
-        tkhd.setCenter(center);
+        tkhd.getCenter().add(tkhd.getCenter1(),BorderLayout.CENTER);
+        tkhd.getCenter().revalidate();
+        tkhd.getCenter().repaint();
     }
 
     @Override

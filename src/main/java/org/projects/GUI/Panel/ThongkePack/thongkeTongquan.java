@@ -77,11 +77,11 @@ public class thongkeTongquan extends JPanel {
 
         this.add(bottomChart,BorderLayout.SOUTH);
 
+        tktqBUS = new ThongkeTongQuanBUS();
         init();
     }
 
     public void init() {
-        tktqBUS = new ThongkeTongQuanBUS();
 
         headerCard.removeAll();
         centerChart.removeAll();
