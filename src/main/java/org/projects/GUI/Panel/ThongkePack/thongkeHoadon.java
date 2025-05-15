@@ -47,7 +47,6 @@ public class thongkeHoadon extends JPanel {
     private ThongKeHoaDonBUS tkhdBUS;
     private ThongKeHoaDonAction tkhdAction;
     public thongkeHoadon() {
-        tkhdBUS = new ThongKeHoaDonBUS();
         this.setLayout(new BorderLayout(10,10));
         this.setPreferredSize(new Dimension(940, 1000));
         //header
@@ -55,10 +54,11 @@ public class thongkeHoadon extends JPanel {
         header.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
         header.setBackground(Color.WHITE);
 
+        tkhdBUS = new ThongKeHoaDonBUS();
         initComponent();
 
         //center
-        center = new JPanel(new GridLayout(1,1));
+        center = new JPanel(new BorderLayout());
 
         bottom = new JPanel(new BorderLayout());
 
@@ -103,6 +103,7 @@ public class thongkeHoadon extends JPanel {
     }
 
     public void init() {
+
         header.removeAll();
         center.removeAll();
         bottom.removeAll();
@@ -116,8 +117,8 @@ public class thongkeHoadon extends JPanel {
         header.add(loctrangthai);
         header.add(reset);
 
-        center1 = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày",hoadonChart,"Ngày-tháng-năm","Số lượng",soluonghoadontheongay,700,500);
-        center.add(center1);
+        center1 = ColumnsChart.createColumnsChart("Số lượng hóa đơn theo ngày",hoadonChart,"Ngày-tháng-năm","Số lượng",soluonghoadontheongay,800,500);
+        center.add(center1,BorderLayout.CENTER);
 
         String[] cols = new String[]{"Ngày","Số lượng hóa đơn","Trạng thái"};
         hoadonTableModel = new DefaultTableModel(){

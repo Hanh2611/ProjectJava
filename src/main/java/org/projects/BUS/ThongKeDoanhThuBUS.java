@@ -7,7 +7,11 @@
     import java.util.List;
 
     public class ThongKeDoanhThuBUS {
-        private static final ThongKeDoanhThuDAO tkdtDAO = new ThongKeDoanhThuDAO();
+        private final ThongKeDoanhThuDAO tkdtDAO;
+
+        public ThongKeDoanhThuBUS() {
+            tkdtDAO = new ThongKeDoanhThuDAO();
+        }
 
         public HashMap<String,Double> getngayvatongtien(String from, String to) {
                 return tkdtDAO.laytongtiencuahoadontheongay(from, to);

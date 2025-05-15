@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ThongKeHoaDonBUS {
-    private static ThongKeHoaDonDAO tkhdDAO = new ThongKeHoaDonDAO();
+    private final ThongKeHoaDonDAO tkhdDAO;
+    public ThongKeHoaDonBUS() {
+        tkhdDAO = new ThongKeHoaDonDAO();
+    }
     public HashMap<String,Integer> getSLHDtheongay(String from,String to,String trangthai) {
         if ((from == null || from.isEmpty()) && (to == null || to.isEmpty()) && trangthai.equalsIgnoreCase("Tất cả")) {
             return tkhdDAO.getALLsoluong();
