@@ -308,27 +308,6 @@ public class ThemHD extends JPanel {
         btnHuyBo.setForeground(Color.WHITE);
         btnHuyBo.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
 
-        btnThanhToan = new JButton("Thanh toán ngay");
-        btnThanhToan.setBounds(10, 600, 190, 35);
-        btnThanhToan.setBackground(Color.BLUE);
-        btnThanhToan.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnThanhToan.setForeground(Color.WHITE);
-        btnThanhToan.setFont(new Font("JETBRAINS MONO", Font.BOLD, 11));
-
-        btnThanhToan.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(
-                        null,
-                        "Xác nhận thanh toán",
-                        "Xác nhận",
-                        JOptionPane.YES_NO_OPTION
-                );
-            }
-        });
-
-        panelright.add(btnThanhToan);
         panelright.add(btnHuyBo);
         panelright.add(btnNhapHang);
         // Thêm vào sau khi tạo bảng sản phẩm
@@ -666,50 +645,50 @@ public class ThemHD extends JPanel {
 
             dialog.setVisible(true);
         });
-        btnNhapHang.addActionListener(ev -> {
-            if (maKhachHangDuocChon == -1) {
-                JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng trước khi tạo hóa đơn!");
-                txtKhachHang.setBorder(BorderFactory.createLineBorder(Color.RED));
-                return;
-            }
-            else{
-                txtKhachHang.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+            btnNhapHang.addActionListener(ev -> {
+                if (maKhachHangDuocChon == -1) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng trước khi tạo hóa đơn!");
+                    txtKhachHang.setBorder(BorderFactory.createLineBorder(Color.RED));
+                    return;
+                }
+                else{
+                    txtKhachHang.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
 
-            }
-            if (modelDanhSachNhap.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
-                return;
-            }
-            int maNV = Session.curUser.getMaNguoiDung();
-            long tongTien = ThemPN.parseTien(txtTongTien.getText());
-            LocalDateTime nowVN = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
-            HoaDonEntity hoaDonEntity = new HoaDonEntity();
-            hoaDonEntity.setNgayTao(Timestamp.valueOf(nowVN));
-            hoaDonEntity.setMaNV(maNV);
-            hoaDonEntity.setMaKh(maKhachHangDuocChon);
-            hoaDonEntity.setTongGiaTri(tongTien);
-            hoaDonEntity.setTrangThai("chua_thanh_toan");
+                }
+                if (modelDanhSachNhap.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một sản phẩm!");
+                    return;
+                }
+                int maNV = Session.curUser.getMaNguoiDung();
+                long tongTien = ThemPN.parseTien(txtTongTien.getText());
+                LocalDateTime nowVN = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+                HoaDonEntity hoaDonEntity = new HoaDonEntity();
+                hoaDonEntity.setNgayTao(Timestamp.valueOf(nowVN));
+                hoaDonEntity.setMaNV(maNV);
+                hoaDonEntity.setMaKh(maKhachHangDuocChon);
+                hoaDonEntity.setTongGiaTri(tongTien);
+                hoaDonEntity.setTrangThai("chua_thanh_toan");
 
-            HoaDonBUS hoaDonBUS = new HoaDonBUS();
-            boolean success = hoaDonBUS.themHoaDon(hoaDonEntity, modelDanhSachNhap);
+                HoaDonBUS hoaDonBUS = new HoaDonBUS();
+                boolean success = hoaDonBUS.themHoaDon(hoaDonEntity, modelDanhSachNhap);
 
-            if (!success) {
-                JOptionPane.showMessageDialog(null, "Tạo hóa đơn thất bại!");
-                return;
-            }
+                if (!success) {
+                    JOptionPane.showMessageDialog(null, "Tạo hóa đơn thất bại!");
+                    return;
+                }
 
-            JOptionPane.showMessageDialog(null, "Tạo hóa đơn thành công!");
-            modelDanhSachNhap.setRowCount(0);
-            txtKhachHang.setText("");
-            txtTongTien.setText("0");
-            maKhachHangDuocChon = -1;
+                JOptionPane.showMessageDialog(null, "Tạo hóa đơn thành công!");
+                modelDanhSachNhap.setRowCount(0);
+                txtKhachHang.setText("");
+                txtTongTien.setText("0");
+                maKhachHangDuocChon = -1;
 
-            hoaDon.reloadDAO();      // nếu cần cập nhật lại danh sách
-            hoaDon.showTrangChinh(); // trở lại giao diện chính
-        });
+                hoaDon.reloadDAO();      // nếu cần cập nhật lại danh sách
+                hoaDon.showTrangChinh(); // trở lại giao diện chính
+            });
 
-        panelright.add(nvNhap);
-    }
+            panelright.add(nvNhap);
+        }
     private void loadMaHoaDon() {
         int manv = Session.curUser.getMaNguoiDung();
         String tennv = Session.curUser.getTenDangNhap();
@@ -918,4 +897,5 @@ public class ThemHD extends JPanel {
             }
         }
     }
+
 }
