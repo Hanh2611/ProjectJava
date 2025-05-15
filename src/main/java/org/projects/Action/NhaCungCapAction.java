@@ -205,6 +205,10 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
         if(!InputValid.tenHopLe(tenncc)) {
             InputValid.showError(0,"Tên không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
             isComplete = false;
+            int x = JOptionPane.showConfirmDialog(null,"ten khong hop le","thong bao",JOptionPane.YES_NO_OPTION);
+            if(x == JOptionPane.YES_OPTION) {
+                nccDialog.getTenNCC().getTextField().requestFocus();
+            }
         } else {
             InputValid.clearError(0,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
         }
@@ -212,6 +216,10 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
         if(!InputValid.checkSoDienThoai(sdtncc)) {
             InputValid.showError(1,"Số điện thoại không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
             isComplete = false;
+            int x = JOptionPane.showConfirmDialog(null,"ten khong hop le","thong bao",JOptionPane.YES_NO_OPTION);
+            if(x == JOptionPane.YES_OPTION) {
+                nccDialog.getSodienthoaiNCC().getTextField().requestFocus();
+            }
         } else {
             InputValid.clearError(1,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
         }
@@ -219,6 +227,11 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
         if(!InputValid.checkEmail(emailncc)) {
             InputValid.showError(2,"Email không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
             isComplete = false;
+            int x = JOptionPane.showConfirmDialog(null,"ten khong hop le","thong bao",JOptionPane.YES_NO_OPTION);
+            if(x == JOptionPane.YES_OPTION) {
+                nccDialog.getEmailNCC().getTextField().requestFocus();
+            }
+
         } else {
             InputValid.clearError(2,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
         }
@@ -226,6 +239,11 @@ public class NhaCungCapAction implements ActionListener, MouseListener,ItemListe
         if(!InputValid.diachiHople(diachincc)) {
             InputValid.showError(3,"Địa chỉ không hợp lệ",(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
             isComplete = false;
+            int x = JOptionPane.showConfirmDialog(null,"ten khong hop le","thong bao",JOptionPane.YES_NO_OPTION);
+            if(x == JOptionPane.YES_OPTION) {
+                nccDialog.getDiachiNCC().getTextField().requestFocus();
+            }
+
         } else {
             InputValid.clearError(3,(ArrayList<JLabel>) nccDialog.getListErrorLabel(),(ArrayList<JTextField>) nccDialog.getListTextField(),true);
         }

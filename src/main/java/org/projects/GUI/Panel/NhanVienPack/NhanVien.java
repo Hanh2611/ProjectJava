@@ -4,6 +4,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.mysql.cj.PreparedQuery;
 import com.mysql.cj.jdbc.integration.c3p0.MysqlConnectionTester;
 import com.mysql.cj.protocol.Resultset;
+import org.projects.Action.KhachHangAction;
 import org.projects.Action.NhanVienAction;
 import org.projects.BUS.NhaCungCapBUS;
 import org.projects.BUS.NhanVienBus;
@@ -178,6 +179,8 @@ public class NhanVien extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 transition.closeFadeOut(dialog);
+                NhanVienAction.setOk(true);
+                KhachHangAction.setOk(true);
             }
         });
         return cancelIcon;

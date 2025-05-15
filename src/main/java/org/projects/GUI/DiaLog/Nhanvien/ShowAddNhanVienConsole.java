@@ -7,7 +7,6 @@ import org.projects.GUI.Panel.NhanVienPack.NhanVien;
 
 import javax.swing.*;
 import java.awt.*;
-
 public class ShowAddNhanVienConsole extends JDialog {
     NhanVien nhanVien;
     public AddNhanVienConsole add;
@@ -19,9 +18,8 @@ public class ShowAddNhanVienConsole extends JDialog {
         transition.showSplitHorizontal(this , 500 , 700);
     }
     public void init(){
-        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setUndecorated(true);
-
         JPanel detailPanel = add;
         FlatSVGIcon svgIcon = new FlatSVGIcon("icon/cashier.svg", 32, 32);
         this.setIconImage(svgIcon.getImage());
@@ -36,7 +34,6 @@ public class ShowAddNhanVienConsole extends JDialog {
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(titleLabel, BorderLayout.NORTH);
         this.getContentPane().add(detailPanel, BorderLayout.CENTER);
-
         this.pack();
 //        this.setLocationRelativeTo(null);
 //        this.setVisible(true);

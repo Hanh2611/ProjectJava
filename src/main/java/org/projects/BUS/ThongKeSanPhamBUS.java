@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ThongKeSanPhamBUS {
-    private static ThongKeSanPhamDAO tkspDAO = new ThongKeSanPhamDAO();
+    private final ThongKeSanPhamDAO tkspDAO;
+    public ThongKeSanPhamBUS() {
+        tkspDAO = new ThongKeSanPhamDAO();
+    }
 
     public HashMap<String,Integer> getDanhmucvasoluongsp() {
         HashMap<String,Integer> hm = tkspDAO.getSoluongsanphamtheodanhmuc();

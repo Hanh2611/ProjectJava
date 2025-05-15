@@ -113,7 +113,8 @@ CREATE TABLE nha_cung_cap
     ten_nha_cung_cap     VARCHAR(50) NOT NULL,
     so_dien_thoai        VARCHAR(15) NOT NULL,
     email                VARCHAR(50) NOT NULL,
-    dia_chi_nha_cung_cap VARCHAR(50) NOT NULL
+    dia_chi_nha_cung_cap VARCHAR(50) NOT NULL,
+    isVisible BIT default 0
 );
 
 CREATE TABLE phieu_nhap
@@ -262,12 +263,12 @@ VALUES ('a', 1, '123', 'hoat_dong', false),
        ('hoangnam', 10, 'password555', 'hoat_dong' , false);
 
 INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh , avatar , is_delete)
-VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1 , 'https://res.cloudinary.com/dmw5hl35v/image/upload/v1746715122/z6578188841594_4fc3c5a58a2114e5f38790fd3309d17e_wnte5i.jpg' , false),
-       (2, 2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0 , null , false),
-       (3, 6, 'Lê Minh C', 'minhc@example.com', '0912345678', 'Kế toán', 18000000, 1 , null , false),
-       (4, 8, 'Lê Đức D', 'leducd@example.com', '0934567890', 'Nhân viên kho', 16000000, 1,  null , false),
-       (5, 10, 'Nguyễn Thiết F', 'nguyenf@example.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1 , null , false),
-       (6, 5, 'Hoàng Minh G', 'hoangmg@example.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1 , null , false);
+VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@gmail.com', '0123456789', 'Giám đốc', 30000000, 1 , 'https://res.cloudinary.com/dmw5hl35v/image/upload/v1746715122/z6578188841594_4fc3c5a58a2114e5f38790fd3309d17e_wnte5i.jpg' , false),
+       (2, 2, 'Trần Thị B', 'tranthib@gmail.com', '0987654321', 'Nhân viên bán hàng', 15000000, 0 , null , false),
+       (3, 6, 'Lê Minh C', 'minhc@gmail.com', '0912345678', 'Kế toán', 18000000, 1 , null , false),
+       (4, 8, 'Lê Đức D', 'leducd@gmail.com', '0934567890', 'Nhân viên kho', 16000000, 1,  null , false),
+       (5, 10, 'Nguyễn Thiết F', 'nguyenf@gmail.com', '0978654321', 'Quản lý sản phẩm', 20000000, 1 , null , false),
+       (6, 5, 'Hoàng Minh G', 'hoangmg@gmail.com', '0913456789', 'Nhân viên kỹ thuật', 17000000, 1 , null , false);
 
 INSERT INTO khach_hang (ma_khach_hang, ma_nguoi_dung, ten_khach_hang, so_dien_thoai, dia_chi , avatar , is_delete)
 VALUES (1, 3, 'Lê Văn C', '0912345678', 'Hà Nội, Việt Nam' ,NULL , false),
@@ -463,5 +464,5 @@ select * from nguoi_dung;
 select * from khach_hang;
 
 
-select * from hoa_don
-where ma_hoa_don = 1
+select * from nha_cung_cap
+where isVisible = 0

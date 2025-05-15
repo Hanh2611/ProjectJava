@@ -14,7 +14,7 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
     @Override
     public List<NhaCungCapEntity> showlist() {
         List<NhaCungCapEntity> list = new ArrayList<>();
-        String query = "select * from nha_cung_cap;";
+        String query = "select * from nha_cung_cap where isVisible = 0";
         try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement ps = c.prepareStatement(query);
             ResultSet rs = ps.executeQuery()) {
@@ -64,7 +64,7 @@ public class NhaCungCapDAO implements ChucNangDAO<NhaCungCapEntity> {
 
     @Override
     public int xoa(NhaCungCapEntity delete) {
-        String query = "delete from nha_cung_cap where ma_nha_cung_cap= ?";
+        String query = "update nha_cung_cap set isVisible = 1 where ma_nha_cung_cap = ? ";
         try(Connection c = DatabasesConfig.getConnection();
         PreparedStatement ps = c.prepareStatement(query);) {
             ps.setInt(1,delete.getMaNCC());

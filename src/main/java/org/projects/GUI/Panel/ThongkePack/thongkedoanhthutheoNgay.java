@@ -41,7 +41,6 @@ public class thongkedoanhthutheoNgay extends JPanel {
     private ThongKeDoanhThuTheoNgayAction tkdtAction;
 
     public thongkedoanhthutheoNgay() {
-        tkdtBUS = new ThongKeDoanhThuBUS();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -53,12 +52,9 @@ public class thongkedoanhthutheoNgay extends JPanel {
         //center
         center = new JPanel(new GridLayout(2,1));
         this.add(center, BorderLayout.CENTER);
-
-        //action
-        tkdtAction = new ThongKeDoanhThuTheoNgayAction(this,tkdtBUS);
-        thongke.addActionListener(tkdtAction);
-        reset.addActionListener(tkdtAction);
+        tkdtBUS = new ThongKeDoanhThuBUS();
         init();
+
     }
 
     public void initComponent() {
@@ -120,6 +116,10 @@ public class thongkedoanhthutheoNgay extends JPanel {
         center2.add(doanhthuTheongayScrollPane);
         center.add(center2);
         loadData();
+        //action
+        tkdtAction = new ThongKeDoanhThuTheoNgayAction(this,tkdtBUS);
+        thongke.addActionListener(tkdtAction);
+        reset.addActionListener(tkdtAction);
         UIUtils.refreshComponent(this);
 
     }

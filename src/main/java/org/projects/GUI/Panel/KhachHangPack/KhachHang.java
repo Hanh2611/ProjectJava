@@ -74,6 +74,10 @@ public class KhachHang extends JPanel {
         List<KhachHangEntity> showlist = new KhachHangDAO().showlist();
         loadList(showlist);
     }
+    public static String convertTrangThai(String s){
+        if(s.equals("da_thanh_toan")) return "Đã thanh toán";
+        return "Chưa thanh toán";
+    }
 
     private void CustomTable(){
         table.getColumnModel().getColumn(0).setPreferredWidth(100);
