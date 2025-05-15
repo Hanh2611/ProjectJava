@@ -211,4 +211,12 @@ private void customizeTable() {
         currentPanel =0;
 
     }
+
+    public CapNhatHD getCapNhatHD() {
+        return capNhatHD;
+    }
+
+    public void setCapNhatHD(CapNhatHD capNhatHD) {
+        this.capNhatHD = capNhatHD;
+    }
 }

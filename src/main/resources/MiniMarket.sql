@@ -37,7 +37,6 @@ CREATE TABLE tai_khoan
     ten_dang_nhap    VARCHAR(50) NOT NULL PRIMARY KEY,
     ma_nguoi_dung    INT         NOT NULL,
     mat_khau         VARCHAR(50) NOT NULL,
-    quyen_nguoi_dung INT         NOT NULL,
     trang_thai       ENUM ('hoat_dong', 'da_khoa') DEFAULT 'hoat_dong',
     is_delete     BIT DEFAULT 0
 );
@@ -250,17 +249,17 @@ VALUES (1, 'nhan_vien_ban_hang', 'Nguyen An' , false),
        (9, 'khach_hang', 'Lan Ha' ,false),
        (10, 'nhan_vien_ban_hang', 'Hoang Nam' , false);
 
-INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, quyen_nguoi_dung, trang_thai , is_delete)
-VALUES ('a', 1, '123', 1, 'hoat_dong', false),
-       ('tranbinh', 2, 'password456', 2, 'da_khoa', false),
-       ('levan', 3, 'password789', 3, 'hoat_dong' , false),
-       ('phamduong', 4, 'password000', 3, 'hoat_dong' , false),
-       ('hoangem', 5, 'password999', 2, 'hoat_dong' , false),
-       ('mattheao', 6, 'password111', 1, 'hoat_dong' , false),
-       ('vietanh', 7, 'password222', 3, 'hoat_dong' , false),
-       ('duonghoang', 8, 'password333', 2, 'da_khoa' , false),
-       ('lanhha', 9, 'password444', 3, 'hoat_dong' , false),
-       ('hoangnam', 10, 'password555', 2, 'hoat_dong' , false);
+INSERT INTO tai_khoan (ten_dang_nhap, ma_nguoi_dung, mat_khau, trang_thai , is_delete)
+VALUES ('a', 1, '123', 'hoat_dong', false),
+       ('tranbinh', 2, 'password456',  'da_khoa', false),
+       ('levan', 3, 'password789',  'hoat_dong' , false),
+       ('phamduong', 4, 'password000', 'hoat_dong' , false),
+       ('hoangem', 5, 'password999',  'hoat_dong' , false),
+       ('mattheao', 6, 'password111',  'hoat_dong' , false),
+       ('vietanh', 7, 'password222', 'hoat_dong' , false),
+       ('duonghoang', 8, 'password333', 'da_khoa' , false),
+       ('lanhha', 9, 'password444','hoat_dong' , false),
+       ('hoangnam', 10, 'password555', 'hoat_dong' , false);
 
 INSERT INTO nhan_vien (ma_nhan_vien, ma_nguoi_dung, ten_nhan_vien, email, so_dien_thoai, chuc_vu, luong, gioi_tinh , avatar , is_delete)
 VALUES (1, 1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Giám đốc', 30000000, 1 , 'https://res.cloudinary.com/dmw5hl35v/image/upload/v1746715122/z6578188841594_4fc3c5a58a2114e5f38790fd3309d17e_wnte5i.jpg' , false),
@@ -423,8 +422,7 @@ ALTER TABLE cap_quyen
     ADD CONSTRAINT FOREIGN KEY (ma_danh_muc_quan_ly) REFERENCES danh_muc_quan_ly (ma_danh_muc_quan_ly);
 
 ALTER TABLE tai_khoan
-    ADD CONSTRAINT FOREIGN KEY (ma_nguoi_dung) REFERENCES nguoi_dung (ma_nguoi_dung),
-    ADD CONSTRAINT FOREIGN KEY (quyen_nguoi_dung) REFERENCES nhom_quyen (ma_nhom_quyen);
+    ADD CONSTRAINT FOREIGN KEY (ma_nguoi_dung) REFERENCES nguoi_dung (ma_nguoi_dung);
 
 ALTER TABLE nhan_vien
     ADD CONSTRAINT FOREIGN KEY (ma_nguoi_dung) REFERENCES nguoi_dung (ma_nguoi_dung);

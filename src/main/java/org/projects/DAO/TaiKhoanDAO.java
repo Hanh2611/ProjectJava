@@ -23,7 +23,7 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
              PreparedStatement preparedStatement = connection.prepareStatement(query);) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                TaiKhoanEntity tk = new TaiKhoanEntity(resultSet.getString("ten_dang_nhap"), resultSet.getString("mat_khau"), resultSet.getString("trang_thai"), resultSet.getInt("ma_nguoi_dung"), resultSet.getInt("quyen_nguoi_dung"));
+                TaiKhoanEntity tk = new TaiKhoanEntity(resultSet.getString("ten_dang_nhap"), resultSet.getString("mat_khau"), resultSet.getString("trang_thai"), resultSet.getInt("ma_nguoi_dung"));
                 result.add(tk);
             }
         } catch (SQLException e) {
@@ -34,16 +34,16 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
 
         @Override
         public int them(TaiKhoanEntity add) {
-            String query = "insert into tai_khoan (ten_dang_nhap,ma_nguoi_dung,mat_khau,quyen_nguoi_dung,trang_thai,is_delete) values(?,?,?,?,?,?)";
+            String query = "insert into tai_khoan (ten_dang_nhap,ma_nguoi_dung,mat_khau,trang_thai,is_delete) values(?,?,?,?,?)";
             try(Connection c = DatabasesConfig.getConnection();
             PreparedStatement prs = c.prepareStatement(query);) {
                 prs.setString(1,add.getTenDangNhap());
                 prs.setInt(2,add.getMaNguoiDung());
                 prs.setString(3,add.getMatKhau());
-                System.out.println(add.getQuyenNguoiDung());
-                prs.setInt(4,add.getQuyenNguoiDung());
-                prs.setString(5,add.getTrangThai());
-                prs.setBoolean(6 , false);
+//                System.out.println(add.getQuyenNguoiDung());
+//                prs.setInt(4,add.getQuyenNguoiDung());
+                prs.setString(4,add.getTrangThai());
+                prs.setBoolean(5 , false);
                 return prs.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -72,12 +72,12 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
 
     @Override
     public int sua(TaiKhoanEntity fix) {
-        String query = "UPDATE tai_khoan SET mat_khau = ?, ma_nguoi_dung = ?, quyen_nguoi_dung = ?, trang_thai = ? WHERE ten_dang_nhap = ?";
+        String query = "UPDATE tai_khoan SET mat_khau = ?, ma_nguoi_dung = ?, trang_thai = ? WHERE ten_dang_nhap = ?";
         try (Connection c = DatabasesConfig.getConnection();
              PreparedStatement prs = c.prepareStatement(query)) {
             prs.setString(1, fix.getMatKhau());
             prs.setInt(2, fix.getMaNguoiDung());
-            prs.setInt(3, fix.getQuyenNguoiDung());
+//            prs.setInt(3, fix.getQuyenNguoiDung());
             prs.setString(4, fix.getTrangThai());
             prs.setString(5, fix.getTenDangNhap());
             return prs.executeUpdate();
@@ -230,7 +230,6 @@ public class TaiKhoanDAO implements ChucNangDAO<TaiKhoanEntity>{
                 taiKhoan.setMaNguoiDung(rs.getInt("ma_nguoi_dung"));
                 taiKhoan.setMatKhau(rs.getString("mat_khau"));
                 taiKhoan.setTrangThai(rs.getString("trang_thai"));
-                taiKhoan.setQuyenNguoiDung(rs.getInt("quyen_nguoi_dung"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

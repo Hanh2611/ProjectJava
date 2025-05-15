@@ -5,7 +5,6 @@ public class TaiKhoanEntity {
     private String matKhau;
     private String trangThai;
     private int maNguoiDung;
-    private int quyenNguoiDung;
     private boolean is_delete;
     public TaiKhoanEntity() {
         this.trangThai = "hoat_dong";
@@ -16,7 +15,6 @@ public class TaiKhoanEntity {
         this.matKhau = matKhau;
         trangThai = "hoat_dong";
         maNguoiDung = 0;
-        quyenNguoiDung = 0;
         this.is_delete = false;
     }
     public TaiKhoanEntity(String tenDangNhap, String matKhau, String trangThai, int maNguoiDung) {
@@ -31,7 +29,6 @@ public class TaiKhoanEntity {
         this.matKhau = matKhau;
         this.trangThai = trangThai;
         this.maNguoiDung = maNguoiDung;
-        this.quyenNguoiDung = quyenNguoiDung;
         this.is_delete = false;
     }
 
@@ -65,14 +62,6 @@ public class TaiKhoanEntity {
 
     public void setMaNguoiDung(int maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
-    }
-
-    public int getQuyenNguoiDung() {
-        return quyenNguoiDung;
-    }
-
-    public void setQuyenNguoiDung(int quyenNguoiDung) {
-        this.quyenNguoiDung = quyenNguoiDung;
     }
 
     public boolean isIs_delete() {

@@ -2,6 +2,7 @@ package org.projects.Action;
 
 import org.projects.BUS.LoginBUS;
 import org.projects.BUS.PhanQuyenBUS;
+import org.projects.BUS.QuyenNguoiDungBUS;
 import org.projects.BUS.TaiKhoanBUS;
 import org.projects.GUI.LoginGUI;
 import org.projects.GUI.MainGUI;
@@ -34,12 +35,16 @@ public class LoginAction implements MouseListener {
             //todo: focus textfield
             if (user == null) {
                 JOptionPane.showMessageDialog(loginGUI, "Tên đăng nhập hoặc mật khẩu không đúng","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+            } else if(user.isIs_delete() || user.getTrangThai().equals("da_khoa")) {
+                JOptionPane.showMessageDialog(loginGUI, "Tài khoản đã bị khóa!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//onPane.showMessageDialog(loginGUI, "Tài khoản đã bị khóa!","Thông báo",JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(loginGUI, "Đăng nhập thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
                 Session.curUser = TaiKhoanBUS.getTaiKhoan(user.getTenDangNhap());
                 Session.maDanhMucQuyen = PhanQuyenBUS.getQuyenDanhMuc(Session.curUser);
                 Session.maNhomQuyen = new ArrayList<Integer>();
-                Session.maNhomQuyen.add(Session.curUser.getQuyenNguoiDung());
+                Session.maNhomQuyen.add(QuyenNguoiDungBUS.getMaNhomQuyenByMaNguoiDung(Session.curUser.getMaNguoiDung()));
+//                Session.maNhomQuyen.add(Session.curUser.getQuyenNguoiDung());
                 PhanQuyenBUS.getListAction();
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override

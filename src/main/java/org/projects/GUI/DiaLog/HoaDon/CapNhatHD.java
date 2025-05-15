@@ -313,7 +313,7 @@ public class CapNhatHD extends JPanel {
 
         btnThanhToan.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                JDialog thanhToan = new ThanhToan(null ,hoaDon.layhoadonduochon());
+                JDialog thanhToan = new ThanhToan(null ,hoaDon.layhoadonduochon(), hoaDon);
                 thanhToan.setVisible(true);
                 HoaDon.reloadDAO();
             }
@@ -919,5 +919,21 @@ public class CapNhatHD extends JPanel {
             System.out.println("Không thể tạo icon từ file SVG.");
             return null;  // Nếu không thành công thì trả về null
         }
+    }
+
+    public JButton getBtnThanhToan() {
+        return btnThanhToan;
+    }
+
+    public void setBtnThanhToan(JButton btnThanhToan) {
+        this.btnThanhToan = btnThanhToan;
+    }
+
+    public JButton getBtnSuaSP() {
+        return btnSuaSP;
+    }
+
+    public void setBtnSuaSP(JButton btnSuaSP) {
+        this.btnSuaSP = btnSuaSP;
     }
 }

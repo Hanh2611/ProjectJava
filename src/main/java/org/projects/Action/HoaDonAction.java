@@ -46,7 +46,15 @@ public class HoaDonAction  extends MouseAdapter implements ActionListener, Docum
                     int maHD = (int) table.getValueAt(selectedRow, 0);
                     ChiTietHoaDonFullBUS bus = new ChiTietHoaDonFullBUS();
                     List<ChiTietHoaDonFullEntity> list = bus.getChiTietHoaDonFull(maHD);
-                    hoaDon.showSuaHD(list);
+                    if (HoaDonBUS.getHoaDon(maHD).getTrangThai().equals("da_thanh_toan")) {
+                        System.out.println("hoaDon.getTrangThai()");
+                        hoaDon.getCapNhatHD().getBtnSuaSP().setVisible(false);
+                        hoaDon.getCapNhatHD().getBtnSuaSP().setEnabled(false);
+                        JOptionPane.showMessageDialog(hoaDon, "Không thể sửa hóa đơn đã thanh toán!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        hoaDon.showSuaHD(list);
+                    }
+                    System.out.println(HoaDonBUS.getHoaDon(maHD).getTrangThai());
                 }
                 break;
             case "delete":

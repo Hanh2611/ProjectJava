@@ -10,6 +10,7 @@ import org.projects.GUI.Components.ButtonEditStyle;
 import org.projects.GUI.Components.PanelBorderRadius;
 import org.projects.GUI.Components.handleComponents;
 import org.projects.GUI.DiaLog.PhanQuyen.objectFactory;
+import org.projects.GUI.Panel.HoaDon;
 import org.projects.GUI.utils.VotePDF;
 import org.projects.entity.*;
 
@@ -35,15 +36,17 @@ import java.util.List;
 
 public class ThanhToan extends JDialog {
     private JPanel titleBar, contentPanel, inputPanel;
+    private HoaDon hoaDonPanel;
     private JButton backButton;
     private HoaDonEntity hoaDon;
     private JLabel errorLabel;
     private JTextField incomeTextField;
     private boolean flag = false;
     JLabel refundLabel;
-    public ThanhToan(JFrame parent, HoaDonEntity hoaDon) {
+    public ThanhToan(JFrame parent, HoaDonEntity hoaDon, HoaDon hoaDonPanel) {
         super(parent, "Thanh Toán", true);
         this.hoaDon = hoaDon;
+        this.hoaDonPanel = hoaDonPanel;
         this.getContentPane().setBackground(Color.WHITE);
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         setSize(900, 700);
@@ -159,7 +162,7 @@ public class ThanhToan extends JDialog {
         incomeTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
         checkIncome(incomeTextField);
 
-        errorLabel = new JLabel("Test");
+        errorLabel = new JLabel("");
         errorLabel.setForeground(Color.decode("#f70000"));
         errorLabel.setFont(new Font("Jetbrains Mono", Font.PLAIN, 12));
         errorLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -187,7 +190,7 @@ public class ThanhToan extends JDialog {
         refundLabel = new JLabel("Số tiền thừa: ");
         refundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         refundLabel.setForeground(new Color(255, 255, 255));
-        refundLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 24));
+        refundLabel.setFont(new Font("Jetbrains Mono", Font.BOLD, 20));
         refundLabel.setPreferredSize(new Dimension(270, 100));
         refundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         refundLabel.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -324,7 +327,7 @@ public class ThanhToan extends JDialog {
 
             // Đóng dialog
             this.dispose();
-
+            hoaDonPanel.showTrangChinh();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Số tiền nhận không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
@@ -360,6 +363,7 @@ public class ThanhToan extends JDialog {
                 if (giaTri == hoaDon.getTongGiaTri() && moTa.contains("Thanhtoanhoadon" + hoaDon.getMaHoaDon())) {
                     HoaDonBUS.payment(hoaDon);
                     this.dispose();
+                    hoaDonPanel.showTrangChinh();
                     return true;
                 } else {
                     JOptionPane.showMessageDialog(this, "Thanh toán chưa thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);

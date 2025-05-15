@@ -1,9 +1,6 @@
 package org.projects.Action;
 
-import org.projects.BUS.NhaCungCapBUS;
-import org.projects.BUS.NhanVienBus;
-import org.projects.BUS.PhanQuyenBUS;
-import org.projects.BUS.TaiKhoanBUS;
+import org.projects.BUS.*;
 import org.projects.DAO.NguoiDungDAO;
 import org.projects.DAO.NhanVienDao;
 import org.projects.DAO.QuyenNguoiDungDAO;
@@ -45,8 +42,10 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
             if(tkDialog != null && c instanceof JButton) {
                 if(action.equals("Thêm")) {
                     themtaikhoan();
+                    tkDialog.dispose();
                 } else if(action.equals("Cập nhật")) {
                     suataikhoan();
+                    tkDialog.dispose();
                 }
             }
         }
@@ -98,7 +97,8 @@ public class TaiKhoanAction implements ActionListener, ItemListener, MouseListen
         TaiKhoanEntity tkEntity = new TaiKhoanEntity(tendangnhap, matkhau);
         tkEntity.setMaNguoiDung(manguoidung);
         System.out.println(tkDialog.getQuyen().getCbx().getSelectedItem().toString());
-        tkEntity.setQuyenNguoiDung(PhanQuyenBUS.getMaNhomQuyenByName(tkDialog.getQuyen().getCbx().getSelectedItem().toString()));
+        QuyenNguoiDungBUS.addQuyenNguoiDung(tkEntity.getMaNguoiDung(), PhanQuyenBUS.getMaNhomQuyenByName(tkDialog.getQuyen().getCbx().getSelectedItem().toString()));
+//        tkEntity.setQuyenNguoiDung(PhanQuyenBUS.getMaNhomQuyenByName(tkDialog.getQuyen().getCbx().getSelectedItem().toString()));
         if (TaiKhoanBUS.themtaikhoan(tkEntity)) {
             JOptionPane.showMessageDialog(null, "Thêm tài khoản thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             tk.loadDataIntoTable();

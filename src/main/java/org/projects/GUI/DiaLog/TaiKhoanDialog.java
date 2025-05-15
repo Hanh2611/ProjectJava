@@ -14,6 +14,8 @@ import org.projects.entity.TaiKhoanEntity;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -102,8 +104,15 @@ public class TaiKhoanDialog extends JDialog {
 
         // Gắn action
         add.addActionListener(tkAction);
-        cancel.addActionListener(tkAction);
+//        cancel.addActionListener(tkAction);
+        cancel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dispose();
+            }
+        });
     }
+
 
     private String typeButton(String tkType) {
         switch (tkType) {

@@ -151,6 +151,10 @@ public class HoaDonBUS {
         return newlist;
     }
 
+    public static HoaDonEntity getHoaDon(int maHoaDon) {
+        return new HoaDonDAO().getHoaDonById(maHoaDon);
+    }
+
     public static boolean isExistedInHoaDon(int spId){
         return hoaDonDAO.isExistedInHoaDon(spId);
     }

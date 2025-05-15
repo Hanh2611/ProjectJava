@@ -18,6 +18,15 @@ public class QuyenNguoiDungDAO implements ChucNangDAO<QuyenNguoiDung>{
 
     @Override
     public int them(QuyenNguoiDung add) {
+        String query = "insert into quyen_nguoi_dung (ma_nguoi_dung, ma_nhom_quyen) values(?,?)";
+        try (Connection c = DatabasesConfig.getConnection();
+        PreparedStatement preparedStatement = c.prepareStatement(query)) {
+            preparedStatement.setInt(1, add.getMa_nguoi_dung());
+            preparedStatement.setInt(2, add.getMa_nhom_quyen());
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
